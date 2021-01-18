@@ -4,6 +4,7 @@ from interruptingcow import timeout
 import pygatt
 import logging
 from binascii import hexlify
+import crcmod
 
 logging.basicConfig()
 #logging.getLogger('pygatt').setLevel(logging.DEBUG)
@@ -17,6 +18,8 @@ waitTime=1
 test=RuuviTagSensor._get_ruuvitag_datas(search_duratio_sec=2)
 cnt=0
 taskrun=True
+
+crcfun = crcmod.mkCrcFun(0x11021, rev=False, initCrc=0xffff, xorOut=0)
 
 def findTagsMac():
     macSet=set()
@@ -36,29 +39,8 @@ def findTagsMac():
         print("Out")
         return macSet
         pass
-
-
-
-def crc16(data: bytes, poly=0x8408):
-    '''
-    CRC-16-CCITT Algorithm from https://gist.github.com/oysstu/68072c44c02879a2abf94ef350d1c7c6
-    '''
-    data = bytearray(data)
-    crc = 0xFFFF
-    for b in data:
-        cur_byte = 0xFF & b
-        for _ in range(0, 8):
-            if (crc & 0x0001) ^ (cur_byte & 0x0001):
-                crc = (crc >> 1) ^ poly
-            else:
-                crc >>= 1
-            cur_byte >>= 1
-    crc = (~crc & 0xFFFF)
-    crc = (crc << 8) | ((crc >> 8) & 0xFF)
     
-    return crc & 0xFFFF
     
-
 def ConnectToMac(adapter,i):
 
     device = adapter.connect(i,address_type=pygatt.BLEAddressType.random)
@@ -84,7 +66,7 @@ def ConnectToMac(adapter,i):
             print("Received CRC: %s" % hexlify(crc))
             
             # CRC prüfen
-            ourcrc = crc16(handle_data.sensordaten)
+            ourcrc = crcfun(handle_data.sensordaten)
             print("Recalculated CRC: %x" % ourcrc)
             
             # Anzahl Bytes
