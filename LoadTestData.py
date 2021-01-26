@@ -11,7 +11,7 @@ logging.basicConfig()
 
 macSet=set()
 macList=[]
-readAllString="FAFA050000000000000000"
+readAllString="FAFA010000000000000000"
 uuIdWrite="6e400002-b5a3-f393-e0a9-e50e24dcca9e"
 uuIdRead="6e400003-b5a3-f393-e0a9-e50e24dcca9e"
 waitTime=1
