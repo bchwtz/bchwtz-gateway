@@ -94,6 +94,39 @@ def findTagsMac():
         pass
     
 
+def unpack8(bytes, scale):
+    j = 0;
+    koords = [ "\nx", "y", "z" ]
+    
+    if(scale==2):
+        print("Scale: 2G")
+        faktor = 16/(256*1000)
+    elif(scale==4):
+        print("Scale: 4G")
+        faktor = 32/(256*1000)
+    elif(scale==8):
+        print("Scale: 8G")
+        faktor = 64/(256*1000)
+    elif(scale==16):
+        print("Scale: 16G")
+        faktor = 192/(256*1000)
+        
+    for i in range(len(bytes)):
+        value = bytes[ i ] << 8
+        if(value & 0x8000 == 0x8000):
+            # negative Zahl
+            # 16Bit Zweierkomplement zurückrechnen
+            value = value ^ 0xffff
+            value += 1
+            # negieren
+            value = -value
+        value *= faktor
+        print("%s = %f" % (koords[j%3], value))
+        j += 1
+
+    print("\n%d Werte entpackt" % (j,))
+
+
 def unpack10(bytes, scale):
     j = 0;
     koords = [ "\nx", "y", "z" ]
@@ -270,6 +303,7 @@ def ConnectToMac(adapter,i):
             elif(value[4]==8):
                 # 8 Bit
                 print("8 Bit Resolution")
+                unpack8(handle_data.sensordaten[8:], value[5])
             else:
                 print("unbekannte Resolution")
             
