@@ -163,8 +163,56 @@ def unpack10(bytes, scale):
         value *= faktor
         print("%s = %f" % (koords[j%3], value))
         j += 1
+
     print("\n%d Werte entpackt" % (j,))
     
+
+def unpack12(bytes, scale):
+    j = 0;
+    koords = [ "\nx", "y", "z" ]
+    
+    if(scale==2):
+        print("Scale: 2G")
+        faktor = 1/(16*1000)
+    elif(scale==4):
+        print("Scale: 4G")
+        faktor = 2/(16*1000)
+    elif(scale==8):
+        print("Scale: 8G")
+        faktor = 4/(16*1000)
+    elif(scale==16):
+        print("Scale: 16G")
+        faktor = 12/(16*1000)
+        
+    for i in range(int(len(bytes)/3)):
+        value = bytes[ i*3 ] & 0xf0
+        value |= (bytes[ i*3 ] & 0x0f) << 12
+        value |= (bytes[ 1 + i*3 ] & 0xf0) << 4
+        if(value & 0x8000 == 0x8000):
+            # negative Zahl
+            # 16Bit Zweierkomplement zurückrechnen
+            value = value ^ 0xffff
+            value += 1
+            # negieren
+            value = -value
+        value *= faktor
+        print("%s = %f" % (koords[j%3], value))
+        j += 1
+        value = (bytes[ 1 + i*3 ] & 0x0f) << 4
+        value |= bytes[ 2 + i*3 ] << 8
+        if(value & 0x8000 == 0x8000):
+            # negative Zahl
+            # 16Bit Zweierkomplement zurückrechnen
+            value = value ^ 0xffff
+            value += 1
+            # negieren
+            value = -value
+        value *= faktor
+        print("%s = %f" % (koords[j%3], value))
+        j += 1
+
+    print("\n%d Werte entpackt" % (j,))
+
     
 def ConnectToMac(adapter,i):
 
@@ -214,6 +262,7 @@ def ConnectToMac(adapter,i):
             if(value[4]==12):
                 # 12 Bit
                 print("12 Bit Resolution")
+                unpack12(handle_data.sensordaten[8:], value[5])
             elif(value[4]==10):
                 # 10 Bit
                 print("10 Bit Resolution")
