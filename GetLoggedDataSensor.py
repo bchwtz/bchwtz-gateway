@@ -320,7 +320,6 @@ def ConnectToMac(adapter,i):
             
             # Auslesen beenden
             device.disconnect()
-            ConnectToMac.taskrun=False
             
             # Daten entpacken
             if(value[4]==12):
@@ -337,6 +336,9 @@ def ConnectToMac(adapter,i):
                 unpack8(handle_data.sensordaten, value[5])
             else:
                 print("unbekannte Resolution")
+
+            ConnectToMac.taskrun=False
+
             
     # Speicher für Daten
     handle_data.sensordaten = bytearray();
