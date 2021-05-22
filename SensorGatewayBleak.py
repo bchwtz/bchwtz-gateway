@@ -211,7 +211,7 @@ class RuuviTagAccelerometerCommunicationBleak:
     For connect_to_mac use hanle_data. Use the process_sensor_data functions to interpret the values.
 
     """
-    async def connect_to_mac(self, command_string, specific_mac = ""):
+    async def connect_to_mac_command(self, command_string, specific_mac = ""):
         # Second Funktion -> Connect to Ruuvitag and send commands
         if specific_mac != "":
             mac = [specific_mac]
@@ -265,14 +265,17 @@ class RuuviTagAccelerometerCommunicationBleak:
                 self.logger.error("Mac is not valid!")
                 return
         try:
-            taskobj = my_loop.create_task(self.connect_to_mac(command_string))
+            taskobj = my_loop.create_task(self.connect_to_mac_command(command_string))
             my_loop.run_until_complete(taskobj)
         except RuntimeError as e:
             print("Error: {}".format(e))
         print("logging activated")
         
-
+    """
+    Bug: Befehl wird 2X pro sensor ausgeführt
+    """
     def deactivate_logging_at_sensor(self, specific_mac=""):
+        my_loop = asyncio.get_running_loop()  # ?
         if specific_mac != "":
             if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
                 mac = [specific_mac]
@@ -286,7 +289,8 @@ class RuuviTagAccelerometerCommunicationBleak:
         command_string = "FAFA0a0000000000000000"
         for i in mac:
             try:
-                self.connect_to_mac_command(command_string)
+                taskobj = my_loop.create_task(self.connect_to_mac_command(command_string))
+                my_loop.run_until_complete(taskobj)
             except RuntimeError as e:
                 print("Error: {}".format(e))
 
