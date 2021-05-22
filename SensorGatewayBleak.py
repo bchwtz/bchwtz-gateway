@@ -136,22 +136,22 @@ class RuuviTagAccelerometerCommunicationBleak:
                     self.logger.info('Stop notify: %d' % (i))
             except Exception as e:
                 self.logger.warning('Connection faild at MAC %d' %(i))
-                self.logger.error(e)
+                self.logger.error("Error: {}".format(e))
                 
-            self.logger.info("Connection established")   
+            self.logger.info("")   
 
-
+    # Reciving and Handling of Callbacks
     def callback(self, sender: int, value: bytearray):
+        self.logger.info("Received %s" % hexlify(value))
         try:
             self.data.append((sender, value))
             self.logger.info('Callback saved in self.data')
         except Exception as e:
             self.logger.warning('Error while handling data: ' + str(e))    
-        # Listen to Messages send by the Ruuvitags
-        #print("Received %s" % hexlify(value))
+
     #-------------------------------------------------------------------------
     
-    #-----------------------------Activate Logging----------------------------
+    #------------------------Activate/Deactivate Logging----------------------
     def activate_logging_at_sensor(self, specific_mac=""):
         """
         Loop funktion zum aufrufen in eigene Funktion, die activate Logging aufruft.
@@ -165,8 +165,9 @@ class RuuviTagAccelerometerCommunicationBleak:
         if specific_mac != "":
             if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
                 mac = [specific_mac]
+                self.logger.info('MAC set to specific Mac-Address')
             else:
-                print("Mac is not valid")
+                self.logger.error("Mac is not valid!")
                 return
         try:
             taskobj = my_loop.create_task(self.connect_to_mac(command_string))
@@ -174,9 +175,27 @@ class RuuviTagAccelerometerCommunicationBleak:
         except RuntimeError as e:
             print("Error: {}".format(e))
         print("logging activated")
+        
 
+    def deactivate_logging_at_sensor(self, specific_mac=""):
+        if specific_mac != "":
+            if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
+                mac = [specific_mac]
+                self.logger.info('MAC set to specific Mac-Address')
+            else:
+                self.logger.error("Mac is not valid!")
+                return
+        else:
+            mac = self.mac
+        # Stop Logging Command
+        command_string = "FAFA0a0000000000000000"
+        for i in mac:
+            try:
+                self.connect_to_mac_command(command_string)
+            except RuntimeError as e:
+                print("Error: {}".format(e))
 
-#----------------------------Acceleration Logging----------------------------    
+    #----------------------------Acceleration Logging-------------------------    
     def get_acceleration_data(self,specific_mac=""):
         #global readAllString #? Wofür ist dieser String
         self.data = []
@@ -210,20 +229,22 @@ class RuuviTagAccelerometerCommunicationBleak:
                 time.sleep(1)
 
         #adapter.reset()
-        
-        recieved_data = self.data
-        """Exit function if recieved data is empty"""
-        if(len(self.data[0][0])==0):
-            print("No data stored")
-            return
-        """Write data into csv file"""
-        for i in range(0, len(recieved_data)):
-            data = list(zip(recieved_data[i][0]))
-            current_mac = recieved_data[i][1]
-            for i in data:
-                with open("acceleration-{}.csv".format(data[0][0][3]), 'a') as f:
-                    f.write("{},{}".format(str(i[0])[1:-1], current_mac))
-                    f.write("\n")
+        try:
+            recieved_data = self.data
+            """Exit function if recieved data is empty"""
+            if(len(self.data[0][0])==0):
+                print("No data stored")
+                return
+            """Write data into csv file"""
+            for i in range(0, len(recieved_data)):
+                data = list(zip(recieved_data[i][0]))
+                current_mac = recieved_data[i][1]
+                for i in data:
+                    with open("acceleration-{}.csv".format(data[0][0][3]), 'a') as f:
+                        f.write("{},{}".format(str(i[0])[1:-1], current_mac))
+                        f.write("\n")
+        except Exception as e:
+            self.logger.error("Error: {}".format(e))
         return self.data
 
 
