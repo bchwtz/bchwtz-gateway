@@ -1,8 +1,17 @@
 # -*- coding: utf-8 -*-
+"""
+TO-DOs:
+    1. init : self.find_tags gehört nicht in den Konstruktor
+    
+
+"""
+
+
 import asyncio
 import nest_asyncio
 import re
 import operator
+import time
 from binascii import hexlify
 from bleak import BleakScanner
 from bleak import BleakClient
@@ -10,10 +19,11 @@ import logging
 
 # -------------------Global Variables-------------------------
 address = "F2:23:D0:45:E4:DD"
-
+readAllString = "FAFA030000000000000000"
 UART_SRV = '6E400001-B5A3-F393-E0A9-E50E24DCCA9E'
 UART_TX = '6E400002-B5A3-F393-E0A9-E50E24DCCA9E'
 UART_RX = '6E400003-B5A3-F393-E0A9-E50E24DCCA9E'
+
 
 # -------------------Logger Configurations--------------------
 # Load the default configurations of the python logger
@@ -78,13 +88,22 @@ class RuuviTagAccelerometerCommunicationBleak:
         self.logger.info('Searching for tags completed')
 
         my_loop.run_until_complete(taskobj)
+        
+        #Einige functionen müssen evtl. in eine __enter__-Funktion z.B. fand_tags
+        
+        
+    def __exit__(self):
+        self.data = []
+        self.logger.info('Reset self.data !')
+        self.mac = []
+        self.logger.info('Reset self.mac')
+        # Do we need a "Reset Tag"-Command to get the Tag in a safe state?
 
-        # print(self.mac)
 
-    def callback(self, sender: int, value: bytearray):
-        print("Received %s" % hexlify(value))
-
+    #-------------Find -> Connect -> Listen-Functions---------------------
     async def find_tags(self):
+        # First Funktion -> Find Ruuvitags
+        
         Tags_sofar = len(self.mac)
         devices = await BleakScanner.discover()
         for i in devices:
@@ -96,19 +115,53 @@ class RuuviTagAccelerometerCommunicationBleak:
         self.logger.info('%d new Ruuvi tags were found' % tags_new)
         return
 
-    '''
-    Activate acceleration logging.
-    '''
 
+    async def connect_to_mac(self, command_string, specific_mac = ""):
+        # Second Funktion -> Connect to Ruuvitag and send commands
+        if specific_mac != "":
+            mac = [specific_mac]
+        else:
+            mac = self.mac
+        for i in mac:
+            try:
+                async with BleakClient(i) as client:
+                    #Send the command (Wait for Response must be True)
+                    await client.write_gatt_char("6e400002-b5a3-f393-e0a9-e50e24dcca9e",
+                                                 bytearray.fromhex(command_string), True)
+                    self.logger.info('Message send to MAC: %d' % (i))
+                    await client.start_notify(UART_RX, self.callback)
+                    await asyncio.sleep(1)
+                    self.logger.info('Stop notify: %d' % (i))
+                    await client.stop_notify(UART_RX)
+                    self.logger.info('Stop notify: %d' % (i))
+            except Exception as e:
+                self.logger.warning('Connection faild at MAC %d' %(i))
+                self.logger.error(e)
+                
+            self.logger.info("Connection established")   
+
+
+    def callback(self, sender: int, value: bytearray):
+        try:
+            self.data.append((sender, value))
+            self.logger.info('Callback saved in self.data')
+        except Exception as e:
+            self.logger.warning('Error while handling data: ' + str(e))    
+        # Listen to Messages send by the Ruuvitags
+        #print("Received %s" % hexlify(value))
+    #-------------------------------------------------------------------------
+    
+    #-----------------------------Activate Logging----------------------------
     def activate_logging_at_sensor(self, specific_mac=""):
         """
         Loop funktion zum aufrufen in eigene Funktion, die activate Logging aufruft.
         Async
         """
-        my_loop = asyncio.get_running_loop()
-
-        print(self.mac)
+        my_loop = asyncio.get_running_loop() #?
+        
+        # Command send to the Ruuvitag
         command_string = "FAFA0a0100000000000000"
+        
         if specific_mac != "":
             if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
                 mac = [specific_mac]
@@ -122,20 +175,56 @@ class RuuviTagAccelerometerCommunicationBleak:
             print("Error: {}".format(e))
         print("logging activated")
 
-    async def connect_to_mac(self, command_string):
-        for i in self.mac:
-            try:
-                async with BleakClient(i) as client:
-                    await client.write_gatt_char("6e400002-b5a3-f393-e0a9-e50e24dcca9e",
-                                                 bytearray.fromhex(command_string), True)
-                    print("sended")
-                    await client.start_notify(UART_RX, self.callback)
-                    await asyncio.sleep(1)
-                    await client.stop_notify(UART_RX)
-                    print("Stopped")
-            except Exception as e:
-                print(e)
 
-                print("No connection Available")
+#----------------------------Acceleration Logging----------------------------    
+    def get_acceleration_data(self,specific_mac=""):
+        #global readAllString #? Wofür ist dieser String
+        self.data = []
+        self.ConnectionError=False
+        readAllString = "FAFA050000000000000000"
+        
+        # This is a DEBUG Funktion to Connect to a specific tag
+        if specific_mac != "":
+            if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
+                mac = [specific_mac]
+            else:
+                self.logger.error('Mac address is not valid' + specific_mac)
+                print("Mac is not valid")
+                return
+        else:
+            self.logger.info('Try to get acceleration data from tags')
+            mac = self.mac
+            #mac = self.find_tags_mac()
 
-            print("Connection established")
+        """Read acceleration samples for each sensor"""
+        for i in mac:
+            self.reading_done=False
+            # if adapter._running.is_set() == False:
+            #     print("Need to start adapter")
+            #     adapter = pygatt.GATTToolBackend()
+            #     adapter.start()
+            self.connect_to_mac(readAllString)
+
+            """Wait  until all reading is done. We can only read one sensor at the time"""
+            while not self.reading_done:
+                time.sleep(1)
+
+        #adapter.reset()
+        
+        recieved_data = self.data
+        """Exit function if recieved data is empty"""
+        if(len(self.data[0][0])==0):
+            print("No data stored")
+            return
+        """Write data into csv file"""
+        for i in range(0, len(recieved_data)):
+            data = list(zip(recieved_data[i][0]))
+            current_mac = recieved_data[i][1]
+            for i in data:
+                with open("acceleration-{}.csv".format(data[0][0][3]), 'a') as f:
+                    f.write("{},{}".format(str(i[0])[1:-1], current_mac))
+                    f.write("\n")
+        return self.data
+
+
+    
