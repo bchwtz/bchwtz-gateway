@@ -115,7 +115,102 @@ class RuuviTagAccelerometerCommunicationBleak:
         self.logger.info('%d new Ruuvi tags were found' % tags_new)
         return
 
+    def handle_sensor_commands(self,sender: int, value: bytearray):
+        """
+        handle -- integer, characteristic read handle the data was received on
+        value -- bytearray, the data returned in the notification
+        """
+        print("handle sensor commands")
+        if value[0] == 0xFB:
+            if (value[1] == 0x00):
+                print("Status: %s" % str(self.ri_error_to_string(value[2])))
+            elif (value[1] == 0x07):
+                print("Status: %s" % str(self.ri_error_to_string(value[2])))
+                print("Received data: %s" % hexlify(value[3:]))
+                print(value[3])
+                print(type(value[3]))
+                print("Samplerate:    %s Hz" % value[3])
+                print("Resolution:    %s Bits" % (int(value[4])))
+                print("Scale:         %xG" % value[5])
+                print("DSP function:  %x" % value[6])
+                print("DSP parameter: %x" % value[7])
+                print("Mode:          %x" % value[8])
+            elif (value[1] == 0x09):
+                print("Status: %s" % str(self.ri_error_to_string(value[2])))
+                # die Daten sind little-endian (niegrigwertigstes Bytes zuerst) gespeichert
+                # die menschliche lesart erwartet aber big-endian (höchstwertstes Bytes zuerst)
+                # deswegen Reihenfolge umdrehen
+                print("Received data: %s" % hexlify(value[:-9:-1]))
+                print(time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(value[:-9:-1]), 16) / 1000)))
 
+            else:
+                print("Antwort enthält falschen Typ")
+        self.reading_done=True
+
+    """Error messages"""
+
+    @staticmethod
+    def ri_error_to_string(error):
+        result = set()
+        if error == 0:
+            result.add("RD_SUCCESS")
+
+        else:
+            if error & (1 << 0):
+                result.add("RD_ERROR_INTERNAL")
+            if error & (1 << 1):
+                result.add("RD_ERROR_NO_MEM")
+            if error & (1 << 2):
+                result.add("RD_ERROR_NOT_FOUND")
+            if error & (1 << 3):
+                result.add("RD_ERROR_NOT_SUPPORTED")
+            if error & (1 << 4):
+                result.add("RD_ERROR_INVALID_PARAM")
+            if error & (1 << 5):
+                result.add("RD_ERROR_INVALID_STATE")
+            if error & (1 << 6):
+                result.add("RD_ERROR_INVALID_LENGTH")
+            if error & (1 << 7):
+                result.add("RD_ERROR_INVALID_FLAGS")
+            if error & (1 << 8):
+                result.add("RD_ERROR_INVALID_DATA")
+            if error & (1 << 9):
+                result.add("RD_ERROR_DATA_SIZE")
+            if error & (1 << 10):
+                result.add("RD_ERROR_TIMEOUT")
+            if error & (1 << 11):
+                result.add("RD_ERROR_NULL")
+            if error & (1 << 12):
+                result.add("RD_ERROR_FORBIDDEN")
+            if error & (1 << 13):
+                result.add("RD_ERROR_INVALID_ADDR")
+            if error & (1 << 14):
+                result.add("RD_ERROR_BUSY")
+            if error & (1 << 15):
+                result.add("RD_ERROR_RESOURCES")
+            if error & (1 << 16):
+                result.add("RD_ERROR_NOT_IMPLEMENTED")
+            if error & (1 << 16):
+                result.add("RD_ERROR_SELFTEST")
+            if error & (1 << 18):
+                result.add("RD_STATUS_MORE_AVAILABLE")
+            if error & (1 << 19):
+                result.add("RD_ERROR_NOT_INITIALIZED")
+            if error & (1 << 20):
+                result.add("RD_ERROR_NOT_ACKNOWLEDGED")
+            if error & (1 << 21):
+                result.add("RD_ERROR_NOT_ENABLED")
+            if error & (1 << 31):
+                result.add("RD_ERROR_FATAL")
+        return result
+    """
+    Copy Pasta, rename one to connect_to_mac_command
+    connect_to_mac_command handels sending commands to tag, like activate deactivate Logging. 
+    And handle recieving data from sensor in handle sensor command.
+
+    For connect_to_mac use hanle_data. Use the process_sensor_data functions to interpret the values.
+
+    """
     async def connect_to_mac(self, command_string, specific_mac = ""):
         # Second Funktion -> Connect to Ruuvitag and send commands
         if specific_mac != "":
@@ -128,14 +223,14 @@ class RuuviTagAccelerometerCommunicationBleak:
                     #Send the command (Wait for Response must be True)
                     await client.write_gatt_char("6e400002-b5a3-f393-e0a9-e50e24dcca9e",
                                                  bytearray.fromhex(command_string), True)
-                    self.logger.info('Message send to MAC: %d' % (i))
-                    await client.start_notify(UART_RX, self.callback)
+                    self.logger.info('Message send to MAC: %s' % (i))
+                    await client.start_notify(UART_RX, self.handle_sensor_commands)
                     await asyncio.sleep(1)
-                    self.logger.info('Stop notify: %d' % (i))
+                    self.logger.info('Stop notify: %s' % (i))
                     await client.stop_notify(UART_RX)
-                    self.logger.info('Stop notify: %d' % (i))
+                    self.logger.info('Stop notify: %s' % (i))
             except Exception as e:
-                self.logger.warning('Connection faild at MAC %d' %(i))
+                self.logger.warning('Connection faild at MAC %s' %(i))
                 self.logger.error("Error: {}".format(e))
                 
             self.logger.info("")   
@@ -201,7 +296,7 @@ class RuuviTagAccelerometerCommunicationBleak:
         self.data = []
         self.ConnectionError=False
         readAllString = "FAFA050000000000000000"
-        
+        my_loop = asyncio.get_running_loop()
         # This is a DEBUG Funktion to Connect to a specific tag
         if specific_mac != "":
             if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
@@ -217,12 +312,15 @@ class RuuviTagAccelerometerCommunicationBleak:
 
         """Read acceleration samples for each sensor"""
         for i in mac:
+
+            taskobj = my_loop.create_task(self.connect_to_mac(readAllString))
+            my_loop.run_until_complete(taskobj)
             self.reading_done=False
             # if adapter._running.is_set() == False:
             #     print("Need to start adapter")
             #     adapter = pygatt.GATTToolBackend()
             #     adapter.start()
-            self.connect_to_mac(readAllString)
+          # self.connect_to_mac(readAllString)
 
             """Wait  until all reading is done. We can only read one sensor at the time"""
             while not self.reading_done:
