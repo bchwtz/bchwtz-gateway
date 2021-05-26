@@ -6,16 +6,18 @@ TO-DOs:
 
 """
 
-
+#import operator
 import asyncio
 import nest_asyncio
 import re
-import operator
 import time
 from binascii import hexlify
 from bleak import BleakScanner
 from bleak import BleakClient
 import logging
+
+#New library
+import crcmod
 
 # -------------------Global Variables-------------------------
 address = "F2:23:D0:45:E4:DD"
@@ -23,7 +25,8 @@ readAllString = "FAFA030000000000000000"
 UART_SRV = '6E400001-B5A3-F393-E0A9-E50E24DCCA9E'
 UART_TX = '6E400002-B5A3-F393-E0A9-E50E24DCCA9E'
 UART_RX = '6E400003-B5A3-F393-E0A9-E50E24DCCA9E'
-
+sensordaten = []
+crcfun = crcmod.mkCrcFun(0x11021, rev=False, initCrc=0xffff, xorOut=0)
 
 # -------------------Logger Configurations--------------------
 # Load the default configurations of the python logger
@@ -50,11 +53,9 @@ Log_SensorGatewayBleak.addHandler(file_handler)
 Log_SensorGatewayBleak.addHandler(console_handler)
 # ------------------------------------------------------------
 
-
 # --------------------Acitvate nest_asyncio-------------------
 # Aktivate nest_asyncio to prevent an error while processing the communication loops
 nest_asyncio.apply()
-
 
 # ------------------------------------------------------------
 
@@ -76,28 +77,29 @@ class RuuviTagAccelerometerCommunicationBleak:
         self.data = []
 
         # Auxiliary Variables
-        # self.reading_done=False
+        self.reading_done=False
         # self.ConnectionError = False
 
         # Search for asyncio loops that are already running
-        my_loop = asyncio.get_running_loop()
+        self.my_loop = asyncio.get_running_loop()
         self.logger.info('Searching for running loops completed')
 
         # Create a task 
-        taskobj = my_loop.create_task(self.find_tags())
+        taskobj = self.my_loop.create_task(self.find_tags())
         self.logger.info('Searching for tags completed')
 
-        my_loop.run_until_complete(taskobj)
+        self.my_loop.run_until_complete(taskobj)
         
         #Einige functionen müssen evtl. in eine __enter__-Funktion z.B. fand_tags
         
         
-    def __exit__(self):
-        self.data = []
-        self.logger.info('Reset self.data !')
-        self.mac = []
-        self.logger.info('Reset self.mac')
-        # Do we need a "Reset Tag"-Command to get the Tag in a safe state?
+    # def __exit__(self):
+        
+    #     self.data = []
+    #     self.logger.info('Reset self.data !')
+    #     self.mac = []
+    #     self.logger.info('Reset self.mac')
+    #     # Do we need a "Reset Tag"-Command to get the Tag in a safe state?
 
 
     #-------------Find -> Connect -> Listen-Functions---------------------
@@ -115,15 +117,55 @@ class RuuviTagAccelerometerCommunicationBleak:
         self.logger.info('%d new Ruuvi tags were found' % tags_new)
         return
 
-    def handle_sensor_commands(self,sender: int, value: bytearray):
+    
+    async def connect_to_mac_command(self, command_string, specific_mac = ""):
+        # Second Funktion -> Connect to Ruuvitag and send commands
+        if specific_mac != "":
+            mac = [specific_mac]
+        else:
+            mac = self.mac
+        for i in mac:
+            try:
+                async with BleakClient(i) as client:
+                    #Send the command (Wait for Response must be True)
+                    await client.write_gatt_char("6e400002-b5a3-f393-e0a9-e50e24dcca9e",
+                                                 bytearray.fromhex(command_string), True)
+                    self.logger.info('Message send to MAC: %s' % (i))
+                    await client.start_notify(UART_RX, self.handle_sensor_commands)
+                    await asyncio.sleep(1)
+                    await client.stop_notify(UART_RX)
+                    self.logger.info('Stop notify: %s' % (i))
+            except Exception as e:
+                self.logger.warning('Connection faild at MAC %s' %(i))
+                self.logger.error("Error: {}".format(e))
+                
+            self.logger.info("")   
+            
+    
+
+    # Reciving and Handling of Callbacks
+    def callback(self, sender: int, value: bytearray):
+        self.logger.info("Received %s" % hexlify(value))
+        try:
+            self.data.append((sender, value))
+            self.logger.info('Callback saved in self.data')
+        except Exception as e:
+            self.logger.warning('Error while handling data: ' + str(e))    
+
+    #-------------------------------------------------------------------------
+    
+    
+    #----------------------Interprete Ruuvitag Callback-----------------------
+    async def handle_sensor_commands(self,sender: int, value: bytearray):
         """
         handle -- integer, characteristic read handle the data was received on
         value -- bytearray, the data returned in the notification
-        """
-        print("handle sensor commands")
+        """        
+        self.logger.info("handle_sensor_command calld sender: {} and value {}".format(sender,value))
+
         if value[0] == 0xFB:
             if (value[1] == 0x00):
-                print("Status: %s" % str(self.ri_error_to_string(value[2])))
+                self.logger.warning("Status: %s" % str(self.ri_error_to_string(value[2])))
             elif (value[1] == 0x07):
                 print("Status: %s" % str(self.ri_error_to_string(value[2])))
                 print("Received data: %s" % hexlify(value[3:]))
@@ -138,15 +180,134 @@ class RuuviTagAccelerometerCommunicationBleak:
             elif (value[1] == 0x09):
                 print("Status: %s" % str(self.ri_error_to_string(value[2])))
                 # die Daten sind little-endian (niegrigwertigstes Bytes zuerst) gespeichert
-                # die menschliche lesart erwartet aber big-endian (höchstwertstes Bytes zuerst)
+                # die menschliche leseart erwartet aber big-endian (höchstwertstes Bytes zuerst)
                 # deswegen Reihenfolge umdrehen
                 print("Received data: %s" % hexlify(value[:-9:-1]))
-                print(time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(value[:-9:-1]), 16) / 1000)))
-
+                print(time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(value[:-9:-1]), 16) / 1000)))    
             else:
                 print("Antwort enthält falschen Typ")
         self.reading_done=True
 
+
+    """
+    Copy Pasta, rename one to connect_to_mac_command
+    connect_to_mac_command handels sending commands to tag, like activate deactivate Logging. 
+    And handle recieving data from sensor in handle sensor command.
+    
+    For connect_to_mac use hanle_data. Use the process_sensor_data functions to interpret the values.
+    
+    """
+    #------------------------Activate/Deactivate Logging----------------------
+    def activate_logging_at_sensor(self, specific_mac=""):
+        # """
+        # Loop funktion zum aufrufen in eigene Funktion, die activate Logging aufruft.
+        # Async
+        # """
+        #my_loop = asyncio.get_running_loop() #?
+        
+        # Command send to the Ruuvitag
+        command_string = "FAFA0a0100000000000000"
+        
+        # if specific_mac != "":
+        #     if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
+        #         mac = [specific_mac]
+        #         self.logger.info('MAC set to specific Mac-Address')
+        #     else:
+        #         self.logger.error("Mac is not valid!")
+        #         return
+        try:
+            taskobj = self.my_loop.create_task(self.connect_to_mac_command(command_string))
+            self.my_loop.run_until_complete(taskobj)
+            self.logger.info("Logging activated!")
+        except RuntimeError as e:
+            self.logger.error("Error while activate logging: {}".format(e))
+
+        
+    """
+    Bug: Befehl wird 2X pro sensor ausgeführt
+    """
+    def deactivate_logging_at_sensor(self, specific_mac=""):
+        #my_loop = asyncio.get_running_loop()  # ?
+        if specific_mac != "":
+            if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
+                mac = [specific_mac]
+                self.logger.info('MAC set to specific Mac-Address')
+            else:
+                self.logger.error("Mac is not valid!")
+                return
+        else:
+            mac = self.mac
+        # Stop Logging Command
+        command_string = "FAFA0a0000000000000000"
+        for i in mac:
+            try:
+                taskobj = self.my_loop.create_task(self.connect_to_mac_command(command_string))
+                self.my_loop.run_until_complete(taskobj)
+            except RuntimeError as e:
+                print("Error: {}".format(e))
+
+    #----------------------------Acceleration Logging-------------------------    
+    def get_acceleration_data(self,specific_mac=""):
+        #global readAllString #? Wofür ist dieser String
+        self.data = []
+        self.ConnectionError=False
+        readAllString = "FAFA050000000000000000"
+        #my_loop = asyncio.get_running_loop()
+        # This is a DEBUG Funktion to Connect to a specific tag
+        if specific_mac != "":
+            if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
+                mac = [specific_mac]
+            else:
+                self.logger.error('Mac address is not valid' + specific_mac)
+                print("Mac is not valid")
+                return
+        else:
+            self.logger.info('Try to get acceleration data from tags')
+            mac = self.mac
+            #mac = self.find_tags_mac()
+
+        """Read acceleration samples for each sensor"""
+        for i in mac:
+
+            taskobj = self.my_loop.create_task(self.connect_to_mac(readAllString))
+            self.my_loop.run_until_complete(taskobj)
+            self.reading_done=False
+            # if adapter._running.is_set() == False:
+            #     print("Need to start adapter")
+            #     adapter = pygatt.GATTToolBackend()
+            #     adapter.start()
+            # self.connect_to_mac(readAllString)
+
+            """Wait  until all reading is done. We can only read one sensor at the time"""
+            while not self.reading_done:
+                time.sleep(1)
+
+        try:
+            recieved_data = self.data
+            """Exit function if recieved data is empty"""
+            if(len(self.data[0][0])==0):
+                print("No data stored")
+                return
+            """Write data into csv file"""
+            for i in range(0, len(recieved_data)):
+                data = list(zip(recieved_data[i][0]))
+                current_mac = recieved_data[i][1]
+                for i in data:
+                    with open("acceleration-{}.csv".format(data[0][0][3]), 'a') as f:
+                        f.write("{},{}".format(str(i[0])[1:-1], current_mac))
+                        f.write("\n")
+        except Exception as e:
+            self.logger.error("Error: {}".format(e))
+        return self.data
+
+
+
+
+
+
+
+
+#--------------------Error Interpretation----------------------------------
     """Error messages"""
 
     @staticmethod
@@ -154,7 +315,6 @@ class RuuviTagAccelerometerCommunicationBleak:
         result = set()
         if error == 0:
             result.add("RD_SUCCESS")
-
         else:
             if error & (1 << 0):
                 result.add("RD_ERROR_INTERNAL")
@@ -203,151 +363,378 @@ class RuuviTagAccelerometerCommunicationBleak:
             if error & (1 << 31):
                 result.add("RD_ERROR_FATAL")
         return result
-    """
-    Copy Pasta, rename one to connect_to_mac_command
-    connect_to_mac_command handels sending commands to tag, like activate deactivate Logging. 
-    And handle recieving data from sensor in handle sensor command.
 
-    For connect_to_mac use hanle_data. Use the process_sensor_data functions to interpret the values.
+#----------------------------------------------------------------------------
+#############################################################################
+#--------------------------------handle data--------------------------------
+        """Handle received data"""
+        def handle_data(self,handle, value):
+            """
+            handle -- integer, characteristic read handle the data was received on
+            value -- bytearray, the data returned in the notification
+            """
+            if (value.startswith(b'\xfc')):
+                # Daten
+                sensordaten.extend(value[1:])
+                print("Received data block: %s" % hexlify(value[1:]))
+            # Marks end of data stream
+            elif (value.startswith(b'\xfb')):
+                # Status
+                print("Status: %s" % str(self.ri_error_to_string(value[2])))
 
-    """
-    async def connect_to_mac_command(self, command_string, specific_mac = ""):
-        # Second Funktion -> Connect to Ruuvitag and send commands
-        if specific_mac != "":
-            mac = [specific_mac]
-        else:
-            mac = self.mac
-        for i in mac:
-            try:
-                async with BleakClient(i) as client:
-                    #Send the command (Wait for Response must be True)
-                    await client.write_gatt_char("6e400002-b5a3-f393-e0a9-e50e24dcca9e",
-                                                 bytearray.fromhex(command_string), True)
-                    self.logger.info('Message send to MAC: %s' % (i))
-                    await client.start_notify(UART_RX, self.handle_sensor_commands)
-                    await asyncio.sleep(1)
-                    self.logger.info('Stop notify: %s' % (i))
-                    await client.stop_notify(UART_RX)
-                    self.logger.info('Stop notify: %s' % (i))
-            except Exception as e:
-                self.logger.warning('Connection faild at MAC %s' %(i))
-                self.logger.error("Error: {}".format(e))
+                crc = value[11:13];
+                print("Received CRC: %s" % hexlify(crc))
+
+                # CRC validation
+                ourcrc = crcfun(sensordaten)
+                print("Recalculated CRC: %x" % ourcrc)
+
+                print("Received %d bytes" % len(sensordaten))
+                print(hexlify(crc))
+                if hexlify(crc) == bytearray():
+                    print("No crc Received")
+                    #device.disconnect
+                    self.reading_done = True
+                    self.taskrun = False
+                    #adapter.reset()
+                    return None
+
+                if int(hexlify(crc), 16) != ourcrc:
+                    print("CRC are unequal")
+                    #device.disconnect
+                    self.reading_done = True
+                    self.taskrun = False
+                    #adapter.reset()
+                    return None
                 
-            self.logger.info("")   
+                #device.disconnect()
 
-    # Reciving and Handling of Callbacks
-    def callback(self, sender: int, value: bytearray):
-        self.logger.info("Received %s" % hexlify(value))
-        try:
-            self.data.append((sender, value))
-            self.logger.info('Callback saved in self.data')
-        except Exception as e:
-            self.logger.warning('Error while handling data: ' + str(e))    
 
-    #-------------------------------------------------------------------------
+                self.taskrun = False                
+
+                timeStamp = hexlify(sensordaten[7::-1])
+
+                # Start data
+                if (value[4] == 12):
+                    # 12 Bit
+
+                    AccelorationData = self.process_sensor_data_12(sensordaten, value[5], value[3])
+                elif (value[4] == 10):
+                    # 10 Bit
+
+                    AccelorationData = self.process_sensor_data_10(sensordaten, value[5], value[3])
+                elif (value[4] == 8):
+                    # 8 Bit
+
+                    AccelorationData = self.process_sensor_data_8(sensordaten, value[5], value[3])
+                else:
+                    print("Unknown Resolution")
+                if AccelorationData != None:
+                    self.data.append([list(map(list, zip(AccelorationData[0], AccelorationData[1], AccelorationData[2],
+                                                          AccelorationData[3]))), i])
+                    print(self.data)
+                self.reading_done = True
+
+        device.subscribe(uuIdRead, callback=handle_data)
+        
+        
+        #---------------------Parse the Sesor Data
+        """Parse the received data"""
+        def process_sensor_data_8(self, bytes, scale, rate):
+            j = 0
+            pos = 0
+            koords = ["\nx", "y", "z"]
+            x_vector = list()
+            y_vector = list()
+            z_vector = list()
+            timestamp_list = list()
+            time_between_samples = 1 / rate
     
-    #------------------------Activate/Deactivate Logging----------------------
-    def activate_logging_at_sensor(self, specific_mac=""):
-        """
-        Loop funktion zum aufrufen in eigene Funktion, die activate Logging aufruft.
-        Async
-        """
-        my_loop = asyncio.get_running_loop() #?
-        
-        # Command send to the Ruuvitag
-        command_string = "FAFA0a0100000000000000"
-        
-        if specific_mac != "":
-            if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
-                mac = [specific_mac]
-                self.logger.info('MAC set to specific Mac-Address')
-            else:
-                self.logger.error("Mac is not valid!")
-                return
-        try:
-            taskobj = my_loop.create_task(self.connect_to_mac_command(command_string))
-            my_loop.run_until_complete(taskobj)
-        except RuntimeError as e:
-            print("Error: {}".format(e))
-        print("logging activated")
-        
-    """
-    Bug: Befehl wird 2X pro sensor ausgeführt
-    """
-    def deactivate_logging_at_sensor(self, specific_mac=""):
-        my_loop = asyncio.get_running_loop()  # ?
-        if specific_mac != "":
-            if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
-                mac = [specific_mac]
-                self.logger.info('MAC set to specific Mac-Address')
-            else:
-                self.logger.error("Mac is not valid!")
-                return
-        else:
-            mac = self.mac
-        # Stop Logging Command
-        command_string = "FAFA0a0000000000000000"
-        for i in mac:
-            try:
-                taskobj = my_loop.create_task(self.connect_to_mac_command(command_string))
-                my_loop.run_until_complete(taskobj)
-            except RuntimeError as e:
-                print("Error: {}".format(e))
+            if (scale == 2):
+                print("Scale: 2G")
+                faktor = 16 / (256 * 1000)
+            elif (scale == 4):
+                print("Scale: 4G")
+                faktor = 32 / (256 * 1000)
+            elif (scale == 8):
+                print("Scale: 8G")
+                faktor = 64 / (256 * 1000)
+            elif (scale == 16):
+                print("Scale: 16G")
+                faktor = 192 / (256 * 1000)
+    
+            while (pos < len(bytes)):
+                """Read and store timestamp. This is little endian again"""
+                t = bytes[pos:pos + 8]
+                inv_t = t[::-1]
+                timestamp = int(hexlify(inv_t), 16) / 1000
+                #
+                # dt = datetime.datetime.utcfromtimestamp(int(hexlify(inv_t), 16) / 1000).strftime('%Y-%m-%d %H:%M:%S.%f')
+                # print(dt)
+                pos += 8
+                """Read values"""
+                for i in range(96):
+                    value = bytes[pos] << 8
+                    pos += 1
+                    if (value & 0x8000 == 0x8000):
+                        # negative Zahl
+                        # 16Bit Zweierkomplement zurückrechnen
+                        value = value ^ 0xffff
+                        value += 1
+                        # negieren
+                        value = -value
+                    value *= faktor
+    
+                    print(timestamp)
+                    if j % 3 == 0:
+                        x_vector.append(value)
+                    if j % 3 == 1:
+                        y_vector.append(value)
+                    if j % 3 == 2:
+                        z_vector.append(value)
+                        timestamp += time_between_samples
+                        print(datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
+                        timestamp_list.append(
+                            datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
+                    print("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                    j += 1
+    
+            print("%d Werte entpackt" % (j,))
+            print(len(x_vector))
+            return x_vector, y_vector, z_vector, timestamp_list
+    
+        def process_sensor_data_10(self, bytes, scale, rate):
+            j = 0
+            pos = 0
+            koords = ["\nx", "y", "z"]
+    
+            x_vector = list()
+            y_vector = list()
+            z_vector = list()
+            timestamp_list = list()
+            time_between_samples = 1 / rate
+    
+            if (scale == 2):
+                print("Scale: 2G")
+                faktor = 4 / (64 * 1000)
+            elif (scale == 4):
+                print("Scale: 4G")
+                faktor = 8 / (64 * 1000)
+            elif (scale == 8):
+                print("Scale: 8G")
+                faktor = 16 / (64 * 1000)
+            elif (scale == 16):
+                print("Scale: 16G")
+                faktor = 48 / (64 * 1000)
+    
+            while (pos < len(bytes)):
+                print("Timestamp: %s" % hexlify(bytes[pos + 7:pos:-1]))
+                t = bytes[pos:pos + 8]
+                inv_t = t[::-1]
+                timestamp = int(hexlify(inv_t), 16) / 1000
+    
+                pos += 8
+    
+                for i in range(24):
+                    value = bytes[pos] & 0xc0
+                    value |= (bytes[pos] & 0x3f) << 10
+                    pos += 1
+                    value |= (bytes[pos] & 0xc0) << 2
+                    if (value & 0x8000 == 0x8000):
+                        # negative Zahl
+                        # 16Bit Zweierkomplement zurückrechnen
+                        value = value ^ 0xffff
+                        value += 1
+                        # negieren
+                        value = -value
+                    value *= faktor
+                    if j % 3 == 0:
+                        x_vector.append(value)
+                    if j % 3 == 1:
+                        y_vector.append(value)
+                    if j % 3 == 2:
+                        timestamp += time_between_samples
+                        timestamp_list.append(
+                            datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
+                        z_vector.append(value)
+                    print("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                    j += 1
+                    value = (bytes[pos] & 0x30) << 2
+                    value |= (bytes[pos] & 0x0f) << 12
+                    pos += 1
+                    value |= (bytes[pos] & 0xf0) << 4
+                    if (value & 0x8000 == 0x8000):
+                        # negative Zahl
+                        # 16Bit Zweierkomplement zurückrechnen
+                        value = value ^ 0xffff
+                        value += 1
+                        # negieren
+                        value = -value
+                    value *= faktor
+                    if j % 3 == 0:
+                        x_vector.append(value)
+                    if j % 3 == 1:
+                        y_vector.append(value)
+                    if j % 3 == 2:
+                        timestamp += time_between_samples
+                        timestamp_list.append(
+                            datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
+                        z_vector.append(value)
+                    print("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                    j += 1
+                    value = (bytes[pos] & 0x0c) << 4
+                    value |= (bytes[pos] & 0x03) << 14
+                    pos += 1
+                    value |= (bytes[pos] & 0xfc) << 6
+                    if (value & 0x8000 == 0x8000):
+                        # negative Zahl
+                        # 16Bit Zweierkomplement zurückrechnen
+                        value = value ^ 0xffff
+                        value += 1
+                        # negieren
+                        value = -value
+                    value *= faktor
+                    if j % 3 == 0:
+                        x_vector.append(value)
+                    if j % 3 == 1:
+                        y_vector.append(value)
+                    if j % 3 == 2:
+                        timestamp += time_between_samples
+                        timestamp_list.append(
+                            datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
+                        z_vector.append(value)
+                    print("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                    j += 1
+                    value = (bytes[pos] & 0x03) << 6
+                    pos += 1
+                    value |= (bytes[pos]) << 8
+                    pos += 1
+                    if (value & 0x8000 == 0x8000):
+                        # negative Zahl
+                        # 16Bit Zweierkomplement zurückrechnen
+                        value = value ^ 0xffff
+                        value += 1
+                        # negieren
+                        value = -value
+                    value *= faktor
+                    if j % 3 == 0:
+                        x_vector.append(value)
+                    if j % 3 == 1:
+                        y_vector.append(value)
+                    if j % 3 == 2:
+                        timestamp += time_between_samples
+                        timestamp_list.append(
+                            datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
+    
+                        z_vector.append(value)
+                    print("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                    j += 1
+    
+            print("%d Werte entpackt" % (j,))
+            print(len(x_vector))
+            return x_vector, y_vector, z_vector, timestamp_list
+    
+        def process_sensor_data_12(self, bytes, scale, rate):
+            j = 0
+            pos = 0
+            koords = ["x", "y", "z"]
+            x_vector = list()
+            y_vector = list()
+            z_vector = list()
+            timestamp_list = list()
+            time_between_samples = 1 / rate
+    
+            if (scale == 2):
+                print("Scale: 2G")
+                faktor = 1 / (16 * 1000)
+            elif (scale == 4):
+                print("Scale: 4G")
+                faktor = 2 / (16 * 1000)
+            elif (scale == 8):
+                print("Scale: 8G")
+                faktor = 4 / (16 * 1000)
+            elif (scale == 16):
+                print("Scale: 16G")
+                faktor = 12 / (16 * 1000)
+    
+            while (pos < len(bytes)):
+                print("Timestamp: %s" % hexlify(bytes[pos + 7:pos:-1]))
+                t = bytes[pos:pos + 8]
+                inv_t = t[::-1]
+                timestamp = int(hexlify(inv_t), 16) / 1000
+                pos += 8
+    
+                for i in range(48):
+                    value = bytes[pos] & 0xf0
+                    value |= (bytes[pos] & 0x0f) << 12
+                    pos += 1
+                    value |= (bytes[pos] & 0xf0) << 4
+                    if (value & 0x8000 == 0x8000):
+                        # negative Zahl
+                        # 16Bit Zweierkomplement zurückrechnen
+                        value = value ^ 0xffff
+                        value += 1
+                        # negieren
+                        value = -value
+                    value *= faktor
+                    if j % 3 == 0:
+                        x_vector.append(value)
+                    if j % 3 == 1:
+                        y_vector.append(value)
+                    if j % 3 == 2:
+                        timestamp_list.append(
+                            datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
+                        timestamp += time_between_samples
+                        z_vector.append(value)
+                    print("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                    j += 1
+                    value = (bytes[pos] & 0x0f) << 4
+                    pos += 1
+                    value |= bytes[pos] << 8
+                    pos += 1
+                    if (value & 0x8000 == 0x8000):
+                        # negative Zahl
+                        # 16Bit Zweierkomplement zurückrechnen
+                        value = value ^ 0xffff
+                        value += 1
+                        # negieren
+                        value = -value
+                    value *= faktor
+                    if j % 3 == 0:
+                        x_vector.append(value)
+                    if j % 3 == 1:
+                        y_vector.append(value)
+                    if j % 3 == 2:
+                        timestamp += time_between_samples
+                        timestamp_list.append(
+                            datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
+                        z_vector.append(value)
+                    print("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                    j += 1
+    
+            print("%d Werte entpackt" % (j,))
+            return x_vector, y_vector, z_vector, timestamp_list
 
-    #----------------------------Acceleration Logging-------------------------    
-    def get_acceleration_data(self,specific_mac=""):
-        #global readAllString #? Wofür ist dieser String
-        self.data = []
-        self.ConnectionError=False
-        readAllString = "FAFA050000000000000000"
-        my_loop = asyncio.get_running_loop()
-        # This is a DEBUG Funktion to Connect to a specific tag
-        if specific_mac != "":
-            if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
-                mac = [specific_mac]
-            else:
-                self.logger.error('Mac address is not valid' + specific_mac)
-                print("Mac is not valid")
-                return
-        else:
-            self.logger.info('Try to get acceleration data from tags')
-            mac = self.mac
-            #mac = self.find_tags_mac()
 
-        """Read acceleration samples for each sensor"""
-        for i in mac:
 
-            taskobj = my_loop.create_task(self.connect_to_mac(readAllString))
-            my_loop.run_until_complete(taskobj)
-            self.reading_done=False
-            # if adapter._running.is_set() == False:
-            #     print("Need to start adapter")
-            #     adapter = pygatt.GATTToolBackend()
-            #     adapter.start()
-          # self.connect_to_mac(readAllString)
 
-            """Wait  until all reading is done. We can only read one sensor at the time"""
-            while not self.reading_done:
-                time.sleep(1)
 
-        #adapter.reset()
-        try:
-            recieved_data = self.data
-            """Exit function if recieved data is empty"""
-            if(len(self.data[0][0])==0):
-                print("No data stored")
-                return
-            """Write data into csv file"""
-            for i in range(0, len(recieved_data)):
-                data = list(zip(recieved_data[i][0]))
-                current_mac = recieved_data[i][1]
-                for i in data:
-                    with open("acceleration-{}.csv".format(data[0][0][3]), 'a') as f:
-                        f.write("{},{}".format(str(i[0])[1:-1], current_mac))
-                        f.write("\n")
-        except Exception as e:
-            self.logger.error("Error: {}".format(e))
-        return self.data
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     
