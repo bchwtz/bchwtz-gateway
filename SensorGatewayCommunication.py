@@ -793,4 +793,3 @@ class RuuviTagAccelerometerCommunication:
                 self.reading_done = True
 
         device.subscribe(uuIdRead, callback=handle_data)
-

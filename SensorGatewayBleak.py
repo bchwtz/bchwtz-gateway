@@ -5,6 +5,8 @@ TO-DOs:
 
 """
 
+#%% libraries
+
 # import operator
 import asyncio
 import nest_asyncio
@@ -15,11 +17,11 @@ from bleak import BleakScanner
 from bleak import BleakClient
 import datetime
 import logging
-
-# New library
+from enum import Enum
 import crcmod
+import struct
 
-# -------------------Global Variables-------------------------
+#%% Global variables
 address = "F2:23:D0:45:E4:DD"
 readAllString = "FAFA030000000000000000"
 UART_SRV = '6E400001-B5A3-F393-E0A9-E50E24DCCA9E'
@@ -28,9 +30,7 @@ UART_RX = '6E400003-B5A3-F393-E0A9-E50E24DCCA9E'
 sensordaten = bytearray()
 crcfun = crcmod.mkCrcFun(0x11021, rev=False, initCrc=0xffff, xorOut=0)
 
-# -------------------Logger Configurations--------------------
-# Load the default configurations of the python logger
-# logging.basicConfig()
+#%% Configuration Logger------------------------------------------------------
 # Creat a named logger 'SensorGatewayBleak' and set it on INFO level
 Log_SensorGatewayBleak = logging.getLogger('SensorGatewayBleak')
 Log_SensorGatewayBleak.setLevel(logging.INFO)
@@ -51,21 +51,56 @@ console_handler.setFormatter(formatter)
 # Add the handlers to the logger
 Log_SensorGatewayBleak.addHandler(file_handler)
 Log_SensorGatewayBleak.addHandler(console_handler)
-# ------------------------------------------------------------
 
-# --------------------Acitvate nest_asyncio-------------------
+
+
+#%% Acitvate nest_asyncio-----------------------------------------------------
 # Aktivate nest_asyncio to prevent an error while processing the communication loops
 nest_asyncio.apply()
+Log_SensorGatewayBleak.info('Set nest_asyncio as global configuration')
 
 
-# ------------------------------------------------------------
+#%%region enums for sensor config
+
+class SamplingRate(Enum):
+    x01 = 1
+    x0A = 10
+    x19 = 25
+    x32 = 50
+    x64 = 100
+    xC8 = 200
+    xC9 = 400
 
 
-# -----------Class RuuviTagAccelerometerCommunicationBleak----
-class RuuviTagAccelerometerCommunicationBleak:
+class SamplingResolution(Enum):
+    x08 = 8
+    x0A = 10
+    x0C = 12
+
+
+class MeasuringRange(Enum):
+    x02 = 2
+    x04 = 4
+    x08 = 8
+    x10 = 16
+
+#%% Class Async-Events
+# Thread Safe Event Class
+class Event_ts(asyncio.Event):
+    def clear(self):
+        self._loop.call_soon_threadsafe(super().clear)
+    def set(self):
+        self._loop.call_soon_threadsafe(super().set)
+
+#%% Class RuuviTagAccelerometerCommunicationBleak----------------------------
+class RuuviTagAccelerometerCommunicationBleak(Event_ts):
     def __init__(self):
+        self.stopEvent = Event_ts()
+        self.delta = 'Time'
+        self.start_time = 'Time'
+        self.end_time = 'Time'
         # Constructor of the class RuuviTagAccelerometerCommunicationBleak
-
+        self.client = 'TestClient'
         # Create a child of the previously created logger 'SensorGatewayBleak'
         self.logger = logging.getLogger('SensorGatewayBleak.ClassRuuvi')
         self.logger.info('Initialize child logger ClassRuuvi')
@@ -76,7 +111,10 @@ class RuuviTagAccelerometerCommunicationBleak:
 
         # Data recieved by the bluetooth devices
         self.data = []
-
+        
+        # Variable for bandwidth calculation
+        self.start_time = time.time()
+        
         # Auxiliary Variables
         self.reading_done = False
         # self.ConnectionError = False
@@ -106,7 +144,7 @@ class RuuviTagAccelerometerCommunicationBleak:
         # First Funktion -> Find Ruuvitags
 
         Tags_sofar = len(self.mac)
-        devices = await BleakScanner.discover()
+        devices = await BleakScanner.discover(timeout=5.0)
         for i in devices:
             self.logger.info('Device: %s with Address %s found!' % (i.name, i.address))
             if ("Ruuvi" in i.name) & (i.address not in self.mac):
@@ -126,10 +164,10 @@ class RuuviTagAccelerometerCommunicationBleak:
             try:
                 async with BleakClient(i) as client:
                     # Send the command (Wait for Response must be True)
+                    await client.start_notify(UART_RX, self.handle_sensor_commands)
                     await client.write_gatt_char("6e400002-b5a3-f393-e0a9-e50e24dcca9e",
                                                  bytearray.fromhex(command_string), True)
                     self.logger.info('Message send to MAC: %s' % (i))
-                    await client.start_notify(UART_RX, self.handle_sensor_commands)
                     await asyncio.sleep(1)
                     await client.stop_notify(UART_RX)
                     self.logger.info('Stop notify: %s' % (i))
@@ -137,34 +175,37 @@ class RuuviTagAccelerometerCommunicationBleak:
                 self.logger.warning('Connection faild at MAC %s' % (i))
                 self.logger.error("Error: {}".format(e))
 
-            self.logger.info("")
+            self.logger.info("Task done connect_to_mac_command!")
 
             # Reciving and Handling of Callbacks
 
+    # Main Function for sensordatalogging
     async def connect_to_mac(self, i, readCommand):
         try:
             print("Mac address:"+str(i))
             async with BleakClient(i) as client:
                 # Send the command (Wait for Response must be True)
-                await client.write_gatt_char("6e400002-b5a3-f393-e0a9-e50e24dcca9e",
-                                             bytearray.fromhex(readCommand), True)
-                self.logger.info('Message send to MAC: %s' % (i))
+                self.client = client
                 await client.start_notify(UART_RX, self.handle_data)
-                await asyncio.sleep(1)
+                await client.write_gatt_char("6e400002-b5a3-f393-e0a9-e50e24dcca9e", bytearray.fromhex(readCommand), True)
+                self.logger.info('Message send to MAC: %s' % (i))
+                self.start_time = time.time()
+                #print(self.start_time)
+                #print(time.time())
+                self.start_time = time.time()
+                await self.stopEvent.wait()
                 await client.stop_notify(UART_RX)
+                self.stopEvent.clear()
                 self.logger.info('Stop notify: %s' % (i))
 
-
-
         except Exception as e:
-            print(e)
-            print(i)
+            self.logger.error('Error occured on tag {} with errorcode: {}'.format(i,e))
+            self.logger.warning('Connection to tag not available')
             # self.ConnectionError = True
             # self.reading_done = True
             print(self.taskrun)
-            print("No connection Available")
             return None
-        print("Connection established")
+        #print("Connection established")
 
     def callback(self, sender: int, value: bytearray):
         self.logger.info("Received %s" % hexlify(value))
@@ -174,7 +215,7 @@ class RuuviTagAccelerometerCommunicationBleak:
         except Exception as e:
             self.logger.warning('Error while handling data: ' + str(e))
 
-            # -------------------------------------------------------------------------
+    
 
     # ----------------------Interprete Ruuvitag Callback-----------------------
     async def handle_sensor_commands(self, sender: int, value: bytearray):
@@ -182,11 +223,11 @@ class RuuviTagAccelerometerCommunicationBleak:
         handle -- integer, characteristic read handle the data was received on
         value -- bytearray, the data returned in the notification
         """
-        self.logger.info("handle_sensor_command calld sender: {} and value {}".format(sender, value))
+        self.logger.info("handle_sensor_command called sender: {} and value {}".format(sender, value))
 
         if value[0] == 0xFB:
             if (value[1] == 0x00):
-                self.logger.warning("Status: %s" % str(self.ri_error_to_string(value[2])))
+                self.logger.info("Status: %s" % str(self.ri_error_to_string(value[2])))
             elif (value[1] == 0x07):
                 print("Status: %s" % str(self.ri_error_to_string(value[2])))
                 print("Received data: %s" % hexlify(value[3:]))
@@ -209,15 +250,7 @@ class RuuviTagAccelerometerCommunicationBleak:
                 print("Antwort enthält falschen Typ")
         self.reading_done = True
 
-    """
-    Copy Pasta, rename one to connect_to_mac_command
-    connect_to_mac_command handels sending commands to tag, like activate deactivate Logging. 
-    And handle recieving data from sensor in handle sensor command.
-
-    For connect_to_mac use hanle_data. Use the process_sensor_data functions to interpret the values.
-
-    """
-
+ 
     # ------------------------Activate/Deactivate Logging----------------------
     def activate_logging_at_sensor(self, specific_mac=""):
         # """
@@ -243,9 +276,6 @@ class RuuviTagAccelerometerCommunicationBleak:
         except RuntimeError as e:
             self.logger.error("Error while activate logging: {}".format(e))
 
-    """
-    Bug: Befehl wird 2X pro sensor ausgeführt
-    """
 
     def deactivate_logging_at_sensor(self, specific_mac=""):
         # my_loop = asyncio.get_running_loop()  # ?
@@ -289,101 +319,38 @@ class RuuviTagAccelerometerCommunicationBleak:
 
         """Read acceleration samples for each sensor"""
         for i in mac:
+            self.reading_done = False
             global sensordaten
             sensordaten=bytearray()
             taskobj = self.my_loop.create_task(self.connect_to_mac(i,readAllString))
             self.my_loop.run_until_complete(taskobj)
-            self.reading_done = False
-
-            # if adapter._running.is_set() == False:
-            #     print("Need to start adapter")
-            #     adapter = pygatt.GATTToolBackend()
-            #     adapter.start()
-            # self.connect_to_mac(readAllString)
+            
 
             """Wait  until all reading is done. We can only read one sensor at the time"""
             # while not self.reading_done:
             #     time.sleep(1)
 
-        try:
-            recieved_data = self.data
-            """Exit function if recieved data is empty"""
-            if (len(self.data[0][0]) == 0):
-                print("No data stored")
-                return
-            """Write data into csv file"""
-            for i in range(0, len(recieved_data)):
-                data = list(zip(recieved_data[i][0]))
-                current_mac = recieved_data[i][1]
-                for i in data:
-                    with open("acceleration-{}.csv".format(data[0][0][3]), 'a') as f:
-                        f.write("{},{}".format(str(i[0])[1:-1], current_mac))
-                        f.write("\n")
-        except Exception as e:
-            self.logger.error("Error: {}".format(e))
+        # try:
+        #     recieved_data = self.data
+        #     """Exit function if recieved data is empty"""
+        #     if (len(self.data[0][0]) == 0):
+        #         print("No data stored")
+        #         return
+        #     """Write data into csv file"""
+        #     for i in range(len(recieved_data)):
+        #         data = list(zip(recieved_data[i][0]))
+        #         current_mac = recieved_data[i][1]
+        #         for i in data:
+        #             with open("acceleration-{}.csv".format(data[0][0][3]), 'a') as f:
+        #                 f.write("{},{}".format(str(i[0])[1:-1], current_mac))
+        #                 f.write("\n")
+        # except Exception as e:
+        #     self.logger.error("Error: {}".format(e))
         return self.data
 
-    # --------------------Error Interpretation----------------------------------
-    """Error messages"""
 
-    @staticmethod
-    def ri_error_to_string(error):
-        result = set()
-        print(error)
-        if error == 0:
-            result.add("RD_SUCCESS")
-        else:
-            if error & (1 << 0):
-                result.add("RD_ERROR_INTERNAL")
-            if error & (1 << 1):
-                result.add("RD_ERROR_NO_MEM")
-            if error & (1 << 2):
-                result.add("RD_ERROR_NOT_FOUND")
-            if error & (1 << 3):
-                result.add("RD_ERROR_NOT_SUPPORTED")
-            if error & (1 << 4):
-                result.add("RD_ERROR_INVALID_PARAM")
-            if error & (1 << 5):
-                result.add("RD_ERROR_INVALID_STATE")
-            if error & (1 << 6):
-                result.add("RD_ERROR_INVALID_LENGTH")
-            if error & (1 << 7):
-                result.add("RD_ERROR_INVALID_FLAGS")
-            if error & (1 << 8):
-                result.add("RD_ERROR_INVALID_DATA")
-            if error & (1 << 9):
-                result.add("RD_ERROR_DATA_SIZE")
-            if error & (1 << 10):
-                result.add("RD_ERROR_TIMEOUT")
-            if error & (1 << 11):
-                result.add("RD_ERROR_NULL")
-            if error & (1 << 12):
-                result.add("RD_ERROR_FORBIDDEN")
-            if error & (1 << 13):
-                result.add("RD_ERROR_INVALID_ADDR")
-            if error & (1 << 14):
-                result.add("RD_ERROR_BUSY")
-            if error & (1 << 15):
-                result.add("RD_ERROR_RESOURCES")
-            if error & (1 << 16):
-                result.add("RD_ERROR_NOT_IMPLEMENTED")
-            if error & (1 << 16):
-                result.add("RD_ERROR_SELFTEST")
-            if error & (1 << 18):
-                result.add("RD_STATUS_MORE_AVAILABLE")
-            if error & (1 << 19):
-                result.add("RD_ERROR_NOT_INITIALIZED")
-            if error & (1 << 20):
-                result.add("RD_ERROR_NOT_ACKNOWLEDGED")
-            if error & (1 << 21):
-                result.add("RD_ERROR_NOT_ENABLED")
-            if error & (1 << 31):
-                result.add("RD_ERROR_FATAL")
-        return result
 
-        # ----------------------------------------------------------------------------
-        #############################################################################
-        # --------------------------------handle data--------------------------------
+    # --------------------------------handle data--------------------------------
 
     """Handle received data"""
     async def handle_data(self, handle, value):
@@ -391,12 +358,20 @@ class RuuviTagAccelerometerCommunicationBleak:
         handle -- integer, characteristic read handle the data was received on
         value -- bytearray, the data returned in the notification
         """
+        print(time.time())
         if (value.startswith(b'\xfc')):
             # Daten
             sensordaten.extend(value[1:])
             print("Received data block: %s" % hexlify(value[1:]))
             # Marks end of data stream
         elif (value.startswith(b'\xfb')):
+            self.end_time = time.time()
+            print(len(sensordaten))
+            self.delta = len(sensordaten)/(self.end_time-self.start_time)
+            
+            print('Bandwidth : {} Bytes/Second'.format(self.delta))
+            self.stopEvent.set()
+            #await self.client.stop_notify(UART_RX)
             # Status
             print("Status: %s" % str(self.ri_error_to_string(value[2])))
 
@@ -435,19 +410,20 @@ class RuuviTagAccelerometerCommunicationBleak:
             # Start data
             if (value[4] == 12):
                 # 12 Bit
-
+                self.logger.info("Start processing reveived data with process_sensor_data_12")
                 AccelorationData = self.process_sensor_data_12(sensordaten, value[5], value[3])
             elif (value[4] == 10):
                 # 10 Bit
-
+                self.logger.info("Start processing reveived data with process_sensor_data_10")
                 AccelorationData = self.process_sensor_data_10(sensordaten, value[5], value[3])
             elif (value[4] == 8):
                 # 8 Bit
-
+                self.logger.info("Start processing reveived data with process_sensor_data_10")
                 AccelorationData = self.process_sensor_data_8(sensordaten, value[5], value[3])
             else:
                 print("Unknown Resolution")
             if AccelorationData != None:
+                self.logger.info("Run in Funktion AccelorationData != None")
                 self.data.append([list(map(list, zip(AccelorationData[0], AccelorationData[1], AccelorationData[2],
                                                      AccelorationData[3])))])
                 print(self.data)
@@ -455,10 +431,8 @@ class RuuviTagAccelerometerCommunicationBleak:
 
     #device.subscribe(uuIdRead, callback=handle_data)
 
-    # ---------------------Parse the Sesor Data
-    """Parse the received data"""
 
-#region processdata
+    ##%% region processdata
     def process_sensor_data_8(self, bytes, scale, rate):
         j = 0
         pos = 0
@@ -523,6 +497,7 @@ class RuuviTagAccelerometerCommunicationBleak:
         return x_vector, y_vector, z_vector, timestamp_list
 
     def process_sensor_data_10(self, bytes, scale, rate):
+        runtime = time.time()-self.start_time
         j = 0
         pos = 0
         koords = ["\nx", "y", "z"]
@@ -648,7 +623,7 @@ class RuuviTagAccelerometerCommunicationBleak:
                     z_vector.append(value)
                 print("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
-
+        print((j/runtime))
         print("%d Werte entpackt" % (j,))
         print(len(x_vector))
         return x_vector, y_vector, z_vector, timestamp_list
@@ -733,28 +708,179 @@ class RuuviTagAccelerometerCommunicationBleak:
 
         print("%d Werte entpackt" % (j,))
         return x_vector, y_vector, z_vector, timestamp_list
-    #endregion
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     
+    ##%% Set configurations of the sensor
+    def set_config_sensor(self, specific_mac="", sampling_rate='FF', sampling_resolution='FF', measuring_range='FF'):
+        """Check if arguments are given and valid"""
+        if sampling_rate == 'FF':
+            hex_sampling_rate = 'FF'
+        elif sampling_rate in SamplingRate._value2member_map_:
+            hex_sampling_rate = SamplingRate(sampling_rate).name[1:]
+        else:
+            self.logger.warning("Wrong sampling rate")
+            hex_sampling_rate = 'FF'
+        """Check if arguments are given and valid"""
+        if sampling_resolution == 'FF':
+            hex_sampling_resolution = 'FF'
+        elif sampling_resolution in SamplingResolution._value2member_map_:
+            hex_sampling_resolution = SamplingResolution(sampling_resolution).name[1:]
+        else:
+            self.logger.warning("Wrong sampling resolution")
+            hex_sampling_resolution = 'FF'
+        """Check if arguments are given and valid"""
+        if measuring_range == 'FF':
+            hex_measuring_range = 'FF'
+        elif measuring_range in MeasuringRange._value2member_map_:
+            hex_measuring_range = MeasuringRange(measuring_range).name[1:]
+        else:
+            hex_measuring_range = 'FF'
+        """Exit function if no changes are made"""
+        if (hex_sampling_rate == "FF") and (hex_sampling_resolution == "FF") and (hex_measuring_range == "FF"):
+            self.logger.warning("No changes are made. Try again with correct values")
+            #adapter.reset()
+            return
+        """Check if mac address is valid"""
+        if specific_mac != "":
+            if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
+                mac = [specific_mac]
+            else:
+                self.logger.error("Mac is not valid")
+                return
+        else:
+            mac = self.find_tags_mac()
+        """Create command string and send it to targets"""
+        command_string = "FAFA06" + hex_sampling_rate + hex_sampling_resolution + hex_measuring_range + "FFFFFF0000"
+        self.connect_to_mac_command(command_string,specific_mac=mac)
+        #"""Adapter reset is required, to connect to other sensors without restart everything """
+        #adapter.reset()
+
+    """Get configuration from sensors"""
+    async def get_config_from_sensor(self, specific_mac=""):
+        #"""Check if mac address is valid"""
+        # if specific_mac != "":
+        #     if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
+        #         mac = [specific_mac]
+        #     else:
+        #         self.logger.error("Mac is not valid")
+        #         return
+        # else:
+        #     mac = self.find_tags_mac()
+        command_string = "FAFA070000000000000000"
+        self.connect_to_mac_command(command_string)
+        return
+        #adapter.reset()
+
+    """Get time from sensors"""
+    def get_time_from_sensor(self,specific_mac=""):
+        # if specific_mac != "":
+        #     if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
+        #         mac = [specific_mac]
+        #     else:
+        #         self.logger.error("Mac is not valid")
+        # else:
+        #     mac = self.find_tags_mac()
+        command_string = "FAFA090000000000000000"
+        self.connect_to_mac_command(command_string)
+
+    """Set sensor time"""
+    def set_sensor_time(self,specific_mac=""):
+        # if specific_mac != "":
+        #     if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
+        #         mac = [specific_mac]
+        #     else:
+        #         self.logger.error("Mac is not valid")
+        #         return
+        # else:
+        #     mac = self.find_tags_mac()
+        """Time has to be little endian and 16 bit long"""
+        timestamp = struct.pack("<Q", int(time.time() * 1000)).hex()
+
+        command_string = "FAFA08" + timestamp
+        self.connect_to_mac_command(command_string)
+    
+
+        
+    
+       
+    ##%% region error messages
+    
+    @staticmethod
+    def ri_error_to_string(error):
+        result = set()
+        #print(error)
+        if error == 0:
+            Log_SensorGatewayBleak.info("RD_SUCCESS")
+            result.add("RD_SUCCESS")
+        else:
+            if error & (1 << 0):
+                Log_SensorGatewayBleak.error("RD_ERROR_INTERNAL")
+                result.add("RD_ERROR_INTERNAL")
+            if error & (1 << 1):
+                Log_SensorGatewayBleak.error("RD_ERROR_NO_MEM")
+                result.add("RD_ERROR_NO_MEM")
+            if error & (1 << 2):
+                Log_SensorGatewayBleak.error("RD_ERROR_NOT_FOUND")
+                result.add("RD_ERROR_NOT_FOUND")
+            if error & (1 << 3):
+                Log_SensorGatewayBleak.error("RD_ERROR_NOT_SUPPORTED")
+                result.add("RD_ERROR_NOT_SUPPORTED")
+            if error & (1 << 4):
+                Log_SensorGatewayBleak.error("RD_ERROR_INVALID_PARAM")
+                result.add("RD_ERROR_INVALID_PARAM")
+            if error & (1 << 5):
+                Log_SensorGatewayBleak.error("RD_ERROR_INVALID_STATE")
+                result.add("RD_ERROR_INVALID_STATE")
+            if error & (1 << 6):
+                Log_SensorGatewayBleak.error("RD_ERROR_INVALID_LENGTH")
+                result.add("RD_ERROR_INVALID_LENGTH")
+            if error & (1 << 7):
+                Log_SensorGatewayBleak.error("RD_ERROR_INVALID_FLAGS")
+                result.add("RD_ERROR_INVALID_FLAGS")
+            if error & (1 << 8):
+                Log_SensorGatewayBleak.error("RD_ERROR_INVALID_DATA")
+                result.add("RD_ERROR_INVALID_DATA")
+            if error & (1 << 9):
+                Log_SensorGatewayBleak.error("RD_ERROR_DATA_SIZE")
+                result.add("RD_ERROR_DATA_SIZE")
+            if error & (1 << 10):
+                Log_SensorGatewayBleak.error("RD_ERROR_TIMEOUT")
+                result.add("RD_ERROR_TIMEOUT")
+            if error & (1 << 11):
+                Log_SensorGatewayBleak.error("RD_ERROR_NULL")
+                result.add("RD_ERROR_NULL")
+            if error & (1 << 12):
+                Log_SensorGatewayBleak.error("RD_ERROR_FORBIDDEN")
+                result.add("RD_ERROR_FORBIDDEN")
+            if error & (1 << 13):
+                Log_SensorGatewayBleak.error("RD_ERROR_INVALID_ADDR")
+                result.add("RD_ERROR_INVALID_ADDR")
+            if error & (1 << 14):
+                Log_SensorGatewayBleak.error("RD_ERROR_BUSY")
+                result.add("RD_ERROR_BUSY")
+            if error & (1 << 15):
+                Log_SensorGatewayBleak.error("RD_ERROR_RESOURCES")
+                result.add("RD_ERROR_RESOURCES")
+            if error & (1 << 16):
+                Log_SensorGatewayBleak.error("RD_ERROR_NOT_IMPLEMENTED")
+                result.add("RD_ERROR_NOT_IMPLEMENTED")
+            if error & (1 << 16):
+                Log_SensorGatewayBleak.error("RD_ERROR_SELFTEST")
+                result.add("RD_ERROR_SELFTEST")
+            if error & (1 << 18):
+                Log_SensorGatewayBleak.error("RD_STATUS_MORE_AVAILABLE")
+                result.add("RD_STATUS_MORE_AVAILABLE")
+            if error & (1 << 19):
+                Log_SensorGatewayBleak.error("RD_ERROR_NOT_INITIALIZED")
+                result.add("RD_ERROR_NOT_INITIALIZED")
+            if error & (1 << 20):
+                Log_SensorGatewayBleak.error("RD_ERROR_NOT_ACKNOWLEDGED")
+                result.add("RD_ERROR_NOT_ACKNOWLEDGED")
+            if error & (1 << 21):
+                Log_SensorGatewayBleak.error("RD_ERROR_NOT_ENABLED")
+                result.add("RD_ERROR_NOT_ENABLED")
+            if error & (1 << 31):
+                Log_SensorGatewayBleak.error("RD_ERROR_FATAL")
+                result.add("RD_ERROR_FATAL")
+        return result
+ 
