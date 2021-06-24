@@ -5,7 +5,7 @@ TO-DOs:
 
 """
 
-#%% libraries
+# %% libraries
 
 # import operator
 import asyncio
@@ -21,8 +21,7 @@ from enum import Enum
 import crcmod
 import struct
 
-#%% Global variables
-address = "F2:23:D0:45:E4:DD"
+# %% Global variables
 readAllString = "FAFA030000000000000000"
 UART_SRV = '6E400001-B5A3-F393-E0A9-E50E24DCCA9E'
 UART_TX = '6E400002-B5A3-F393-E0A9-E50E24DCCA9E'
@@ -30,7 +29,7 @@ UART_RX = '6E400003-B5A3-F393-E0A9-E50E24DCCA9E'
 sensordaten = bytearray()
 crcfun = crcmod.mkCrcFun(0x11021, rev=False, initCrc=0xffff, xorOut=0)
 
-#%% Configuration Logger------------------------------------------------------
+# %% Configuration Logger------------------------------------------------------
 # Creat a named logger 'SensorGatewayBleak' and set it on INFO level
 Log_SensorGatewayBleak = logging.getLogger('SensorGatewayBleak')
 Log_SensorGatewayBleak.setLevel(logging.INFO)
@@ -52,15 +51,13 @@ console_handler.setFormatter(formatter)
 Log_SensorGatewayBleak.addHandler(file_handler)
 Log_SensorGatewayBleak.addHandler(console_handler)
 
-
-
-#%% Acitvate nest_asyncio-----------------------------------------------------
+# %% Acitvate nest_asyncio-----------------------------------------------------
 # Aktivate nest_asyncio to prevent an error while processing the communication loops
 nest_asyncio.apply()
 Log_SensorGatewayBleak.info('Set nest_asyncio as global configuration')
 
 
-#%%region enums for sensor config
+# %%region enums for sensor config
 
 class SamplingRate(Enum):
     x01 = 1
@@ -84,15 +81,18 @@ class MeasuringRange(Enum):
     x08 = 8
     x10 = 16
 
-#%% Class Async-Events
+
+# %% Class Async-Events
 # Thread Safe Event Class
 class Event_ts(asyncio.Event):
     def clear(self):
         self._loop.call_soon_threadsafe(super().clear)
+
     def set(self):
         self._loop.call_soon_threadsafe(super().set)
 
-#%% Class RuuviTagAccelerometerCommunicationBleak----------------------------
+
+# %% Class RuuviTagAccelerometerCommunicationBleak----------------------------
 class RuuviTagAccelerometerCommunicationBleak(Event_ts):
     def __init__(self):
         self.stopEvent = Event_ts()
@@ -111,23 +111,25 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
 
         # Data recieved by the bluetooth devices
         self.data = []
-        
+
         # Variable for bandwidth calculation
         self.start_time = time.time()
-        
+
         # Auxiliary Variables
         self.reading_done = False
+        self.success = ""
         # self.ConnectionError = False
 
         # Search for asyncio loops that are already running
-        self.my_loop = asyncio.get_running_loop()
+        self.my_loop = asyncio.get_event_loop()
+        # self.my_loop = asyncio.get_running_loop()
         self.logger.info('Searching for running loops completed')
 
         # Create a task 
-        taskobj = self.my_loop.create_task(self.find_tags())
-        self.logger.info('Searching for tags completed')
-
-        self.my_loop.run_until_complete(taskobj)
+        # taskobj = self.my_loop.create_task(self.find_tags())
+        # self.logger.info('Searching for tags completed')
+        #
+        # self.my_loop.run_until_complete(taskobj)
 
         # Einige functionen müssen evtl. in eine __enter__-Funktion z.B. fand_tags
 
@@ -138,21 +140,63 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
     #     self.mac = []
     #     self.logger.info('Reset self.mac')
     #     # Do we need a "Reset Tag"-Command to get the Tag in a safe state?
+    """    Check if mac address is a valid mac address    """
 
-    # -------------Find -> Connect -> Listen-Functions---------------------
-    async def find_tags(self):
-        # First Funktion -> Find Ruuvitags
+    def __check_mac_address(self, mac):
+        if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", mac.lower()):
+            self.logger.info('MAC set to specific Mac-Address')
 
-        Tags_sofar = len(self.mac)
-        devices = await BleakScanner.discover(timeout=5.0)
+            return self.find_tags(mac)
+        else:
+            self.logger.error("Mac is not valid!")
+            return False
+
+    """    validate that found macs are ruuvi tags    """
+
+    def __validate_mac(self, devices):
+        tags_so_far = len(self.mac)
         for i in devices:
             self.logger.info('Device: %s with Address %s found!' % (i.name, i.address))
             if ("Ruuvi" in i.name) & (i.address not in self.mac):
                 self.mac.append(i.address)
                 self.logger.info('Device: %s with Address %s saved in MAC list!' % (i.name, i.address))
-        tags_new = len(self.mac) - Tags_sofar
+        tags_new = len(self.mac) - tags_so_far
         self.logger.info('%d new Ruuvi tags were found' % tags_new)
-        return
+
+    def work_loop(self, macs="", command=""):
+        print(macs)
+        if not isinstance(macs, list):
+            print("Search Mac")
+            if macs != "":
+                # self.__check_mac_address()
+                # taskobj = self.my_loop.create_task(self.__check_mac_address(macs))
+                # self.my_loop.run_until_complete(self.__check_mac_address())
+                # print(taskobj.result())
+                if not self.__check_mac_address(macs):
+                    return
+            else:
+                taskobj = self.my_loop.create_task(self.find_tags())
+                self.my_loop.run_until_complete(taskobj)
+        try:
+            taskobj = self.my_loop.create_task(self.connect_to_mac_command(command_string=command,specific_mac=macs))
+            self.my_loop.run_until_complete(taskobj)
+            # self.logger.info("Logging activated!")
+        except RuntimeError as e:
+            self.logger.error("Error while activate logging: {}".format(e))
+
+    # -------------Find -> Connect -> Listen-Functions---------------------
+    async def find_tags(self, mac=""):
+        # First Funktion -> Find Ruuvitags
+
+        if mac != "":
+            device = [await BleakScanner.find_device_by_address(mac)]
+            self.__validate_mac(device)
+        else:
+            devices = await BleakScanner.discover(timeout=5.0)
+            self.__validate_mac(devices)
+        if len(self.mac) == 0:
+            return False
+        return True
 
     async def connect_to_mac_command(self, command_string, specific_mac=""):
         # Second Funktion -> Connect to Ruuvitag and send commands
@@ -161,11 +205,13 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         else:
             mac = self.mac
         for i in mac:
+            print("Mac: "+str(i))
+            print(command_string)
             try:
                 async with BleakClient(i) as client:
                     # Send the command (Wait for Response must be True)
                     await client.start_notify(UART_RX, self.handle_sensor_commands)
-                    await client.write_gatt_char("6e400002-b5a3-f393-e0a9-e50e24dcca9e",
+                    await client.write_gatt_char(UART_TX,
                                                  bytearray.fromhex(command_string), True)
                     self.logger.info('Message send to MAC: %s' % (i))
                     await asyncio.sleep(1)
@@ -182,16 +228,17 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
     # Main Function for sensordatalogging
     async def connect_to_mac(self, i, readCommand):
         try:
-            print("Mac address:"+str(i))
+            print("Mac address:" + str(i))
             async with BleakClient(i) as client:
                 # Send the command (Wait for Response must be True)
                 self.client = client
                 await client.start_notify(UART_RX, self.handle_data)
-                await client.write_gatt_char("6e400002-b5a3-f393-e0a9-e50e24dcca9e", bytearray.fromhex(readCommand), True)
+                await client.write_gatt_char("6e400002-b5a3-f393-e0a9-e50e24dcca9e", bytearray.fromhex(readCommand),
+                                             True)
                 self.logger.info('Message send to MAC: %s' % (i))
                 self.start_time = time.time()
-                #print(self.start_time)
-                #print(time.time())
+                # print(self.start_time)
+                # print(time.time())
                 self.start_time = time.time()
                 await self.stopEvent.wait()
                 await client.stop_notify(UART_RX)
@@ -199,23 +246,11 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 self.logger.info('Stop notify: %s' % (i))
 
         except Exception as e:
-            self.logger.error('Error occured on tag {} with errorcode: {}'.format(i,e))
+            self.logger.error('Error occured on tag {} with errorcode: {}'.format(i, e))
             self.logger.warning('Connection to tag not available')
-            # self.ConnectionError = True
-            # self.reading_done = True
-            print(self.taskrun)
+
             return None
-        #print("Connection established")
 
-    def callback(self, sender: int, value: bytearray):
-        self.logger.info("Received %s" % hexlify(value))
-        try:
-            self.data.append((sender, value))
-            self.logger.info('Callback saved in self.data')
-        except Exception as e:
-            self.logger.warning('Error while handling data: ' + str(e))
-
-    
 
     # ----------------------Interprete Ruuvitag Callback-----------------------
     async def handle_sensor_commands(self, sender: int, value: bytearray):
@@ -228,11 +263,22 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         if value[0] == 0xFB:
             if (value[1] == 0x00):
                 self.logger.info("Status: %s" % str(self.ri_error_to_string(value[2])))
+            elif value[0] == 0x4a and value[3] == 0x00:
+                print("Status: %s" % (str(self.ri_error_to_string(value[3]), )))
+                print("Samplerate:    %d Hz" % value[4])
+                print("Resolution:    %d Bits" % (int(value[5])))
+                print("Scale:         %d G" % value[6])
+                print("DSP function:  %x" % value[7])
+                print("DSP parameter: %x" % value[8])
+                print("Mode:          %x" % value[9])
+                if value[10] > 1:
+                    print("Frequency divider: %d" % value[10])
+
             elif (value[1] == 0x07):
                 print("Status: %s" % str(self.ri_error_to_string(value[2])))
-                print("Received data: %s" % hexlify(value[3:]))
-                print(value[3])
-                print(type(value[3]))
+                # print("Received data: %s" % hexlify(value[3:]))
+                # print(value[3])
+                # print(type(value[3]))
                 print("Samplerate:    %s Hz" % value[3])
                 print("Resolution:    %s Bits" % (int(value[4])))
                 print("Scale:         %xG" % value[5])
@@ -240,6 +286,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 print("DSP parameter: %x" % value[7])
                 print("Mode:          %x" % value[8])
             elif (value[1] == 0x09):
+                print("TIME")
                 print("Status: %s" % str(self.ri_error_to_string(value[2])))
                 # die Daten sind little-endian (niegrigwertigstes Bytes zuerst) gespeichert
                 # die menschliche leseart erwartet aber big-endian (höchstwertstes Bytes zuerst)
@@ -248,54 +295,31 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 print(time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(value[:-9:-1]), 16) / 1000)))
             else:
                 print("Antwort enthält falschen Typ")
-        self.reading_done = True
 
- 
     # ------------------------Activate/Deactivate Logging----------------------
     def activate_logging_at_sensor(self, specific_mac=""):
         # """
         # Loop funktion zum aufrufen in eigene Funktion, die activate Logging aufruft.
         # Async
         # """
-        # my_loop = asyncio.get_running_loop() #?
-
-        # Command send to the Ruuvitag
         command_string = "FAFA0a0100000000000000"
-
-        # if specific_mac != "":
-        #     if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
-        #         mac = [specific_mac]
-        #         self.logger.info('MAC set to specific Mac-Address')
-        #     else:
-        #         self.logger.error("Mac is not valid!")
-        #         return
-        try:
-            taskobj = self.my_loop.create_task(self.connect_to_mac_command(command_string))
-            self.my_loop.run_until_complete(taskobj)
-            self.logger.info("Logging activated!")
-        except RuntimeError as e:
-            self.logger.error("Error while activate logging: {}".format(e))
-
+        self.success = False
+        self.work_loop(macs=specific_mac, command=command_string)
+        if self.success:
+            print("logging activated")
+        else:
+            logging.error("Logging is not activated")
+            print("Logging is not activated")
 
     def deactivate_logging_at_sensor(self, specific_mac=""):
-        # my_loop = asyncio.get_running_loop()  # ?
-        if specific_mac != "":
-            if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
-                mac = [specific_mac]
-                self.logger.info('MAC set to specific Mac-Address')
-            else:
-                self.logger.error("Mac is not valid!")
-                return
-        else:
-            mac = self.mac
-        # Stop Logging Command
+        self.success = False
         command_string = "FAFA0a0000000000000000"
-        for i in mac:
-            try:
-                taskobj = self.my_loop.create_task(self.connect_to_mac_command(command_string))
-                self.my_loop.run_until_complete(taskobj)
-            except RuntimeError as e:
-                print("Error: {}".format(e))
+        self.work_loop(macs=specific_mac, command=command_string)
+        if self.success:
+            print("logging deactivated")
+        else:
+            logging.error("Logging is not deactivated")
+            print("Logging is not deactivated")
 
     # ----------------------------Acceleration Logging-------------------------
     def get_acceleration_data(self, specific_mac=""):
@@ -321,10 +345,9 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         for i in mac:
             self.reading_done = False
             global sensordaten
-            sensordaten=bytearray()
-            taskobj = self.my_loop.create_task(self.connect_to_mac(i,readAllString))
+            sensordaten = bytearray()
+            taskobj = self.my_loop.create_task(self.connect_to_mac(i, readAllString))
             self.my_loop.run_until_complete(taskobj)
-            
 
             """Wait  until all reading is done. We can only read one sensor at the time"""
             # while not self.reading_done:
@@ -348,11 +371,10 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         #     self.logger.error("Error: {}".format(e))
         return self.data
 
-
-
     # --------------------------------handle data--------------------------------
 
     """Handle received data"""
+
     async def handle_data(self, handle, value):
         """
         handle -- integer, characteristic read handle the data was received on
@@ -367,11 +389,11 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         elif (value.startswith(b'\xfb')):
             self.end_time = time.time()
             print(len(sensordaten))
-            self.delta = len(sensordaten)/(self.end_time-self.start_time)
-            
+            self.delta = len(sensordaten) / (self.end_time - self.start_time)
+
             print('Bandwidth : {} Bytes/Second'.format(self.delta))
             self.stopEvent.set()
-            #await self.client.stop_notify(UART_RX)
+            # await self.client.stop_notify(UART_RX)
             # Status
             print("Status: %s" % str(self.ri_error_to_string(value[2])))
 
@@ -429,8 +451,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 print(self.data)
             self.reading_done = True
 
-    #device.subscribe(uuIdRead, callback=handle_data)
-
+    # device.subscribe(uuIdRead, callback=handle_data)
 
     ##%% region processdata
     def process_sensor_data_8(self, bytes, scale, rate):
@@ -497,7 +518,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         return x_vector, y_vector, z_vector, timestamp_list
 
     def process_sensor_data_10(self, bytes, scale, rate):
-        runtime = time.time()-self.start_time
+        runtime = time.time() - self.start_time
         j = 0
         pos = 0
         koords = ["\nx", "y", "z"]
@@ -623,7 +644,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                     z_vector.append(value)
                 print("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
-        print((j/runtime))
+        print((j / runtime))
         print("%d Werte entpackt" % (j,))
         print(len(x_vector))
         return x_vector, y_vector, z_vector, timestamp_list
@@ -709,9 +730,8 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         print("%d Werte entpackt" % (j,))
         return x_vector, y_vector, z_vector, timestamp_list
 
-    
     ##%% Set configurations of the sensor
-    def set_config_sensor(self, specific_mac="", sampling_rate='FF', sampling_resolution='FF', measuring_range='FF'):
+    def set_config_sensor(self, specific_mac="", sampling_rate='FF', sampling_resolution='FF', measuring_range='FF', divider="1"):
         """Check if arguments are given and valid"""
         if sampling_rate == 'FF':
             hex_sampling_rate = 'FF'
@@ -735,83 +755,77 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             hex_measuring_range = MeasuringRange(measuring_range).name[1:]
         else:
             hex_measuring_range = 'FF'
-        """Exit function if no changes are made"""
-        if (hex_sampling_rate == "FF") and (hex_sampling_resolution == "FF") and (hex_measuring_range == "FF"):
-            self.logger.warning("No changes are made. Try again with correct values")
-            #adapter.reset()
-            return
-        """Check if mac address is valid"""
-        if specific_mac != "":
-            if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
-                mac = [specific_mac]
-            else:
-                self.logger.error("Mac is not valid")
-                return
+        if divider == '1':
+            hex_divider = '01'
         else:
-            mac = self.find_tags_mac()
+            hex_divider= str(divider)
+        """Exit function if no changes are made"""
+        if (hex_sampling_rate == "FF") and (hex_sampling_resolution == "FF") and (hex_measuring_range == "FF")and(hex_divider=="1"):
+            self.logger.warning("No changes are made. Try again with correct values")
+            return False
         """Create command string and send it to targets"""
-        command_string = "FAFA06" + hex_sampling_rate + hex_sampling_resolution + hex_measuring_range + "FFFFFF0000"
-        self.connect_to_mac_command(command_string,specific_mac=mac)
-        #"""Adapter reset is required, to connect to other sensors without restart everything """
-        #adapter.reset()
+        command_string = "FAFA06" + hex_sampling_rate + hex_sampling_resolution + hex_measuring_range + "FFFFFF"+hex_divider+"00"
+
+        self.success = False
+        self.work_loop(macs=specific_mac, command=command_string)
+
+        if self.success:
+            print("Config set")
+        else:
+            logging.error("Config set")
+            print("Config set")
 
     """Get configuration from sensors"""
-    async def get_config_from_sensor(self, specific_mac=""):
-        #"""Check if mac address is valid"""
-        # if specific_mac != "":
-        #     if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
-        #         mac = [specific_mac]
-        #     else:
-        #         self.logger.error("Mac is not valid")
-        #         return
-        # else:
-        #     mac = self.find_tags_mac()
+    def get_config_from_sensor(self, specific_mac=""):
         command_string = "FAFA070000000000000000"
-        self.connect_to_mac_command(command_string)
-        return
-        #adapter.reset()
+        self.success = False
+        self.work_loop(macs=specific_mac, command=command_string)
+        if self.success:
+            print("Config read")
+        else:
+            logging.error("Config not read")
+            print("Config not read")
 
     """Get time from sensors"""
-    def get_time_from_sensor(self,specific_mac=""):
-        # if specific_mac != "":
-        #     if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
-        #         mac = [specific_mac]
-        #     else:
-        #         self.logger.error("Mac is not valid")
-        # else:
-        #     mac = self.find_tags_mac()
+
+    def get_time_from_sensor(self, specific_mac=""):
         command_string = "FAFA090000000000000000"
-        self.connect_to_mac_command(command_string)
+        self.success = False
+        self.work_loop(macs=specific_mac, command=command_string)
+        if self.success:
+            print("Time read")
+        else:
+            logging.error("Time  read")
+            print("Time  read")
+
 
     """Set sensor time"""
-    def set_sensor_time(self,specific_mac=""):
-        # if specific_mac != "":
-        #     if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
-        #         mac = [specific_mac]
-        #     else:
-        #         self.logger.error("Mac is not valid")
-        #         return
-        # else:
-        #     mac = self.find_tags_mac()
+
+    def set_sensor_time(self, specific_mac=""):
         """Time has to be little endian and 16 bit long"""
         timestamp = struct.pack("<Q", int(time.time() * 1000)).hex()
+        print(time.time())
+        print(timestamp)
 
         command_string = "FAFA08" + timestamp
-        self.connect_to_mac_command(command_string)
-    
+        print(command_string)
+        self.success = False
+        self.work_loop(macs=specific_mac, command=command_string)
+        if self.success:
+            print("Time set")
+        else:
+            logging.error("Time  set")
+            print("Time  set")
 
-        
-    
-       
     ##%% region error messages
-    
-    @staticmethod
-    def ri_error_to_string(error):
+
+    def ri_error_to_string(self, error):
         result = set()
-        #print(error)
+        # print(error)
         if error == 0:
             Log_SensorGatewayBleak.info("RD_SUCCESS")
             result.add("RD_SUCCESS")
+            self.success = True
         else:
             if error & (1 << 0):
                 Log_SensorGatewayBleak.error("RD_ERROR_INTERNAL")
@@ -883,4 +897,3 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 Log_SensorGatewayBleak.error("RD_ERROR_FATAL")
                 result.add("RD_ERROR_FATAL")
         return result
- 
