@@ -265,7 +265,15 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 self.logger.info("Status: %s" % str(self.ri_error_to_string(value[2])))
             elif value[0] == 0x4a and value[3] == 0x00:
                 print("Status: %s" % (str(self.ri_error_to_string(value[3]), )))
-                print("Samplerate:    %d Hz" % value[4])
+
+                print("test Value")
+
+                print(value[4])
+
+                if value[4] == "C9":
+                    print("Samplerate: 400 Hz")
+                else:
+                    print("Samplerate:    %d Hz" % value[4])
                 print("Resolution:    %d Bits" % (int(value[5])))
                 print("Scale:         %d G" % value[6])
                 print("DSP function:  %x" % value[7])
@@ -276,10 +284,13 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
 
             elif (value[1] == 0x07):
                 print("Status: %s" % str(self.ri_error_to_string(value[2])))
-                # print("Received data: %s" % hexlify(value[3:]))
-                # print(value[3])
-                # print(type(value[3]))
-                print("Samplerate:    %s Hz" % value[3])
+
+                print(value[3])
+                """400 Hz cant be shown within 8bit. Value xC9 (201) is used for 400 Hz"""
+                if value[3] == 201:
+                    print("Samplerate: 400 Hz")
+                else:
+                    print("Samplerate:    %d Hz" % value[3])
                 print("Resolution:    %s Bits" % (int(value[4])))
                 print("Scale:         %xG" % value[5])
                 print("DSP function:  %x" % value[6])
