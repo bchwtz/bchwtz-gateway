@@ -21,6 +21,9 @@ from enum import Enum
 import crcmod
 import struct
 
+# Timeout libraries
+#from interruptingcow import timeout
+import signal
 # %% Global variables
 readAllString = "FAFA030000000000000000"
 UART_SRV = '6E400001-B5A3-F393-E0A9-E50E24DCCA9E'
@@ -56,6 +59,11 @@ Log_SensorGatewayBleak.addHandler(console_handler)
 nest_asyncio.apply()
 Log_SensorGatewayBleak.info('Set nest_asyncio as global configuration')
 
+
+# %% TimeOutException
+
+class TimeOutException(Exception):
+    pass
 
 # %%region enums for sensor config
 
@@ -96,6 +104,7 @@ class Event_ts(asyncio.Event):
 class RuuviTagAccelerometerCommunicationBleak(Event_ts):
     def __init__(self):
         self.stopEvent = Event_ts()
+        self.TIMEOUT = 2
         self.delta = 'Time'
         self.start_time = 'Time'
         self.end_time = 'Time'
@@ -132,14 +141,20 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         # self.my_loop.run_until_complete(taskobj)
 
         # Einige functionen müssen evtl. in eine __enter__-Funktion z.B. fand_tags
-
-    # def __exit__(self):
+        
+    def timeout_handler(self, signum, frame):
+        self.logger.error('Timeout on Funktion!')
+        raise TimeOutException()
+        
+    #def __exit__(self):
 
     #     self.data = []
     #     self.logger.info('Reset self.data !')
     #     self.mac = []
     #     self.logger.info('Reset self.mac')
     #     # Do we need a "Reset Tag"-Command to get the Tag in a safe state?
+
+
     """    Check if mac address is a valid mac address    """
 
     def __check_mac_address(self, mac):
@@ -164,6 +179,8 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.logger.info('%d new Ruuvi tags were found' % tags_new)
 
     def work_loop(self, macs="", command=""):
+        signal.signal(signal.SIGALRM, self.timeout_handler)
+        signal.alarm(3)
         print(macs)
         if not isinstance(macs, list):
             print("Search Mac")
@@ -175,14 +192,18 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 if not self.__check_mac_address(macs):
                     return
             else:
-                taskobj = self.my_loop.create_task(self.find_tags())
-                self.my_loop.run_until_complete(taskobj)
+                try:
+                    taskobj = self.my_loop.create_task(self.find_tags())
+                    self.my_loop.run_until_complete(taskobj)
+                except TimeOutException as e:
+                    print("Timeout {}".format(e))
         try:
             taskobj = self.my_loop.create_task(self.connect_to_mac_command(command_string=command,specific_mac=macs))
             self.my_loop.run_until_complete(taskobj)
             # self.logger.info("Logging activated!")
-        except RuntimeError as e:
+        except Exception as e:
             self.logger.error("Error while activate logging: {}".format(e))
+        signal.alarm(0)
 
     # -------------Find -> Connect -> Listen-Functions---------------------
     async def find_tags(self, mac=""):
@@ -222,6 +243,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 self.logger.error("Error: {}".format(e))
 
             self.logger.info("Task done connect_to_mac_command!")
+            #return
 
             # Reciving and Handling of Callbacks
 
@@ -244,12 +266,10 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 await client.stop_notify(UART_RX)
                 self.stopEvent.clear()
                 self.logger.info('Stop notify: %s' % (i))
-
         except Exception as e:
             self.logger.error('Error occured on tag {} with errorcode: {}'.format(i, e))
             self.logger.warning('Connection to tag not available')
-
-            return None
+        return None
 
 
     # ----------------------Interprete Ruuvitag Callback-----------------------
