@@ -95,6 +95,7 @@ class Event_ts(asyncio.Event):
 # %% Class RuuviTagAccelerometerCommunicationBleak----------------------------
 class RuuviTagAccelerometerCommunicationBleak(Event_ts):
     def __init__(self):
+        self.heartbeat = 1
         self.stopEvent = Event_ts()
         self.delta = 'Time'
         self.start_time = 'Time'
@@ -163,8 +164,10 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         tags_new = len(self.mac) - tags_so_far
         self.logger.info('%d new Ruuvi tags were found' % tags_new)
 
+
     def work_loop(self, macs="", command=""):
         print(macs)
+        # test=self.__killswitch(True)
         if not isinstance(macs, list):
             print("Search Mac")
             if macs != "":
@@ -175,13 +178,14 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 if not self.__check_mac_address(macs):
                     return
             else:
-                taskobj = self.my_loop.create_task(self.find_tags())
-                self.my_loop.run_until_complete(taskobj)
+                #asyncio.wait_for(taskobj,2)
+                self.taskobj = self.my_loop.create_task(self.find_tags())
+                self.my_loop.run_until_complete( self.taskobj)
         try:
-            taskobj = self.my_loop.create_task(self.connect_to_mac_command(command_string=command, specific_mac=macs))
-            self.my_loop.run_until_complete(taskobj)
+            self.taskobj = self.my_loop.create_task(self.connect_to_mac_command(command_string=command, specific_mac=macs))
+            self.my_loop.run_until_complete(asyncio.wait_for(self.taskobj, 1))
             # self.logger.info("Logging activated!")
-        except RuntimeError as e:
+        except Exception as e:
             self.logger.error("Error while activate logging: {}".format(e))
 
     # -------------Find -> Connect -> Listen-Functions---------------------
@@ -410,9 +414,9 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             self.stopEvent.set()
             # await self.client.stop_notify(UART_RX)
             # Status
-            print("Status: %s" % str(self.ri_error_to_string(value[2])))
+            print("Status: %s" % str(self.ri_error_to_string(value[3])))
 
-            crc = value[11:13];
+            crc = value[12:14];
             print("Received CRC: %s" % hexlify(crc))
 
             # CRC validation
@@ -445,18 +449,18 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             timeStamp = hexlify(sensordaten[7::-1])
 
             # Start data
-            if (value[4] == 12):
+            if (value[5] == 12):
                 # 12 Bit
                 self.logger.info("Start processing reveived data with process_sensor_data_12")
-                AccelorationData = self.process_sensor_data_12(sensordaten, value[5], value[3])
-            elif (value[4] == 10):
+                AccelorationData = self.process_sensor_data_12(sensordaten, value[6], value[4])
+            elif (value[5] == 10):
                 # 10 Bit
                 self.logger.info("Start processing reveived data with process_sensor_data_10")
-                AccelorationData = self.process_sensor_data_10(sensordaten, value[5], value[3])
-            elif (value[4] == 8):
+                AccelorationData = self.process_sensor_data_10(sensordaten, value[6], value[4])
+            elif (value[5] == 8):
                 # 8 Bit
                 self.logger.info("Start processing reveived data with process_sensor_data_10")
-                AccelorationData = self.process_sensor_data_8(sensordaten, value[5], value[3])
+                AccelorationData = self.process_sensor_data_8(sensordaten, value[6], value[4])
             else:
                 print("Unknown Resolution")
             if AccelorationData != None:
