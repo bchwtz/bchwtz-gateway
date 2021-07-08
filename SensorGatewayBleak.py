@@ -21,6 +21,7 @@ from enum import Enum
 import crcmod
 import struct
 import async_timeout
+import configparser
 
 # %% Global variables
 readAllString = "FAFA030000000000000000"
@@ -96,7 +97,7 @@ class Event_ts(asyncio.Event):
 # %% Class RuuviTagAccelerometerCommunicationBleak----------------------------
 class RuuviTagAccelerometerCommunicationBleak(Event_ts):
     def __init__(self):
-        self.heartbeat = 1
+        self.heartbeat = 8
         self.killTask=""
         self.stopEvent = Event_ts()
         self.delta = 'Time'
@@ -127,6 +128,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.my_loop = asyncio.get_event_loop()
         # self.my_loop = asyncio.get_running_loop()
         self.logger.info('Searching for running loops completed')
+        self.__handle_config_file(Mode="INIT")
 
         # Create a task 
         # taskobj = self.my_loop.create_task(self.find_tags())
@@ -149,6 +151,37 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         await asyncio.sleep(10)
         print("Taskkill")
         self.taskobj.cancel()
+        print(self.taskobj)
+        raise asyncio.TimeoutError
+
+    def __handle_config_file(self, Mode=""):
+        # [[Tag1,MAC1],...,[TagN,MACN]]
+        ErrFlag = 0
+        if Mode == "Read" or Mode == "INIT":
+            try:
+                Read_Parser = configparser.ConfigParser()
+                Read_Parser.read('TagList.ini')
+                for tag in Read_Parser["Tags"]:
+                    self.TagList.append([tag, Read_Parser.get("Tag", tag)])
+            except:
+                ErrFlag = 1
+                print("Could not read ini")
+                pass
+        if Mode == "INIT" and ErrFlag == 1:
+            Write_Parser = configparser.ConfigParser()
+            Write_Parser.add_section("Tags")
+            cfgfile = open("TagList.ini", "w")
+            Write_Parser.write(cfgfile)
+            cfgfile.close()
+            self.TagList = []
+        if Mode == "WRITE":
+            Write_Parser = configparser.ConfigParser()
+            Write_Parser.add_section("Tags")
+            for tag in self.TagList:
+                Write_Parser.set("Tags", tag[0], tag[1])
+            cfgfile = open("TagList.ini", "w")
+            Write_Parser.write(cfgfile)
+            cfgfile.close()
 
     def __check_mac_address(self, mac):
         if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", mac.lower()):
@@ -242,16 +275,17 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
     # Main Function for sensordatalogging
     async def connect_to_mac(self, i, readCommand):
         try:
-            with async_timeout.timeout(5):
+            """Timeout after 60 Seconds"""
+            with async_timeout.timeout(60):
                 print("Mac address:" + str(i))
                 async with BleakClient(i) as client:
-                    # Send the command (Wait for Response must be True)
+                # Send the command (Wait for Response must be True)
                     self.client = client
                     await client.start_notify(UART_RX, self.handle_data)
                     await client.write_gatt_char("6e400002-b5a3-f393-e0a9-e50e24dcca9e", bytearray.fromhex(readCommand),
                                              True)
                     self.logger.info('Message send to MAC: %s' % (i))
-                    self.my_loop.create_task(self.killswitch())
+                #self.my_loop.create_task(self.killswitch())
                     self.start_time = time.time()
                     # print(self.start_time)
                     # print(time.time())
@@ -411,6 +445,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         handle -- integer, characteristic read handle the data was received on
         value -- bytearray, the data returned in the notification
         """
+        self.heartbeat=20
         print(time.time())
         if value[0] == 0x11:
             # Daten
