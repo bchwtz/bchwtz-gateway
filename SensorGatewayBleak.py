@@ -20,6 +20,7 @@ import logging
 from enum import Enum
 import crcmod
 import struct
+import async_timeout
 
 # %% Global variables
 readAllString = "FAFA030000000000000000"
@@ -96,6 +97,7 @@ class Event_ts(asyncio.Event):
 class RuuviTagAccelerometerCommunicationBleak(Event_ts):
     def __init__(self):
         self.heartbeat = 1
+        self.killTask=""
         self.stopEvent = Event_ts()
         self.delta = 'Time'
         self.start_time = 'Time'
@@ -142,6 +144,11 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
     #     self.logger.info('Reset self.mac')
     #     # Do we need a "Reset Tag"-Command to get the Tag in a safe state?
     """    Check if mac address is a valid mac address    """
+    async def killswitch(self):
+        print("killswitch")
+        await asyncio.sleep(10)
+        print("Taskkill")
+        self.taskobj.cancel()
 
     def __check_mac_address(self, mac):
         if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", mac.lower()):
@@ -180,10 +187,10 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             else:
                 #asyncio.wait_for(taskobj,2)
                 self.taskobj = self.my_loop.create_task(self.find_tags())
-                self.my_loop.run_until_complete( self.taskobj)
+                self.my_loop.run_until_complete(self.taskobj)
         try:
             self.taskobj = self.my_loop.create_task(self.connect_to_mac_command(command_string=command, specific_mac=macs))
-            self.my_loop.run_until_complete(asyncio.wait_for(self.taskobj, 1))
+            self.my_loop.run_until_complete(self.taskobj)
             # self.logger.info("Logging activated!")
         except Exception as e:
             self.logger.error("Error while activate logging: {}".format(e))
@@ -204,11 +211,13 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
 
     async def connect_to_mac_command(self, command_string, specific_mac=""):
         # Second Funktion -> Connect to Ruuvitag and send commands
+
         if specific_mac != "":
             mac = [specific_mac]
         else:
             mac = self.mac
         for i in mac:
+
             print("Mac: " + str(i))
             print(command_string)
             try:
@@ -233,22 +242,24 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
     # Main Function for sensordatalogging
     async def connect_to_mac(self, i, readCommand):
         try:
-            print("Mac address:" + str(i))
-            async with BleakClient(i) as client:
-                # Send the command (Wait for Response must be True)
-                self.client = client
-                await client.start_notify(UART_RX, self.handle_data)
-                await client.write_gatt_char("6e400002-b5a3-f393-e0a9-e50e24dcca9e", bytearray.fromhex(readCommand),
+            with async_timeout.timeout(5):
+                print("Mac address:" + str(i))
+                async with BleakClient(i) as client:
+                    # Send the command (Wait for Response must be True)
+                    self.client = client
+                    await client.start_notify(UART_RX, self.handle_data)
+                    await client.write_gatt_char("6e400002-b5a3-f393-e0a9-e50e24dcca9e", bytearray.fromhex(readCommand),
                                              True)
-                self.logger.info('Message send to MAC: %s' % (i))
-                self.start_time = time.time()
-                # print(self.start_time)
-                # print(time.time())
-                self.start_time = time.time()
-                await self.stopEvent.wait()
-                await client.stop_notify(UART_RX)
-                self.stopEvent.clear()
-                self.logger.info('Stop notify: %s' % (i))
+                    self.logger.info('Message send to MAC: %s' % (i))
+                    self.my_loop.create_task(self.killswitch())
+                    self.start_time = time.time()
+                    # print(self.start_time)
+                    # print(time.time())
+                    self.start_time = time.time()
+                    await self.stopEvent.wait()
+                    await client.stop_notify(UART_RX)
+                    self.stopEvent.clear()
+                    self.logger.info('Stop notify: %s' % (i))
 
         except Exception as e:
             self.logger.error('Error occured on tag {} with errorcode: {}'.format(i, e))
@@ -262,6 +273,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         handle -- integer, characteristic read handle the data was received on
         value -- bytearray, the data returned in the notification
         """
+
         self.logger.info("handle_sensor_command called sender: {} and value {}".format(sender, value))
 
         if value[0] == 0x4A or value[0] == 0x21:
