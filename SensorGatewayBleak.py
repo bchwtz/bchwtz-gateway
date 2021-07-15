@@ -103,8 +103,10 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.delta = 'Time'
         self.start_time = 'Time'
         self.end_time = 'Time'
+        
         # Constructor of the class RuuviTagAccelerometerCommunicationBleak
         self.client = 'TestClient'
+        
         # Create a child of the previously created logger 'SensorGatewayBleak'
         self.logger = logging.getLogger('SensorGatewayBleak.ClassRuuvi')
         self.logger.info('Initialize child logger ClassRuuvi')
@@ -120,9 +122,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.start_time = time.time()
 
         # Auxiliary Variables
-        self.reading_done = False
         self.success = ""
-        # self.ConnectionError = False
 
         # Search for asyncio loops that are already running
         self.my_loop = asyncio.get_event_loop()
@@ -287,9 +287,6 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                     self.logger.info('Message send to MAC: %s' % (i))
                 #self.my_loop.create_task(self.killswitch())
                     self.start_time = time.time()
-                    # print(self.start_time)
-                    # print(time.time())
-                    self.start_time = time.time()
                     await self.stopEvent.wait()
                     await client.stop_notify(UART_RX)
                     self.stopEvent.clear()
@@ -408,32 +405,11 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
 
         """Read acceleration samples for each sensor"""
         for i in mac:
-            self.reading_done = False
             global sensordaten
             sensordaten = bytearray()
             taskobj = self.my_loop.create_task(self.connect_to_mac(i, readAllString))
             self.my_loop.run_until_complete(taskobj)
 
-            """Wait  until all reading is done. We can only read one sensor at the time"""
-            # while not self.reading_done:
-            #     time.sleep(1)
-
-        # try:
-        #     recieved_data = self.data
-        #     """Exit function if recieved data is empty"""
-        #     if (len(self.data[0][0]) == 0):
-        #         print("No data stored")
-        #         return
-        #     """Write data into csv file"""
-        #     for i in range(len(recieved_data)):
-        #         data = list(zip(recieved_data[i][0]))
-        #         current_mac = recieved_data[i][1]
-        #         for i in data:
-        #             with open("acceleration-{}.csv".format(data[0][0][3]), 'a') as f:
-        #                 f.write("{},{}".format(str(i[0])[1:-1], current_mac))
-        #                 f.write("\n")
-        # except Exception as e:
-        #     self.logger.error("Error: {}".format(e))
         return self.data
 
     # --------------------------------handle data--------------------------------
@@ -446,10 +422,13 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         value -- bytearray, the data returned in the notification
         """
         self.heartbeat=20
-        print(time.time())
-        if value[0] == 0x11:
+        if time.time()-self.start_time >2:
+            self.logger.warn("Timout while getting acceleration data")
+            self.stopEvent.set()
+        elif value[0] == 0x11:
             # Daten
             sensordaten.extend(value[1:])
+            self.start_time = time.time()
             print("Received data block: %s" % hexlify(value[1:]))
             # Marks end of data stream
         elif value[0] == 0x4a and value[3] == 0x00:
@@ -459,7 +438,6 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
 
             print('Bandwidth : {} Bytes/Second'.format(self.delta))
             self.stopEvent.set()
-            # await self.client.stop_notify(UART_RX)
             # Status
             print("Status: %s" % str(self.ri_error_to_string(value[3])))
 
@@ -474,24 +452,13 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             print("Received %d bytes" % len(sensordaten))
             print(hexlify(crc))
             if hexlify(crc) == bytearray():
-                print("No crc Received")
-                # device.disconnect
-                self.reading_done = True
-                self.taskrun = False
-                # adapter.reset()
+                self.logger.info("No crc received")
                 return None
 
             if int(hexlify(crc), 16) != ourcrc:
-                print("CRC are unequal")
-                # device.disconnect
-                self.reading_done = True
-                self.taskrun = False
-                # adapter.reset()
+                self.logger.warning("CRC are unequal")
                 return None
 
-                # device.disconnect()
-
-            self.taskrun = False
 
             timeStamp = hexlify(sensordaten[7::-1])
 
@@ -515,9 +482,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 self.data.append([list(map(list, zip(AccelorationData[0], AccelorationData[1], AccelorationData[2],
                                                      AccelorationData[3])))])
                 print(self.data)
-            self.reading_done = True
 
-    # device.subscribe(uuIdRead, callback=handle_data)
 
     ##%% region processdata
     def process_sensor_data_8(self, bytes, scale, rate):
