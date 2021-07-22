@@ -126,17 +126,10 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
 
         # Search for asyncio loops that are already running
         self.my_loop = asyncio.get_event_loop()
-        # self.my_loop = asyncio.get_running_loop()
+        
         self.logger.info('Searching for running loops completed')
         self.__handle_config_file(Mode="INIT")
 
-        # Create a task 
-        # taskobj = self.my_loop.create_task(self.find_tags())
-        # self.logger.info('Searching for tags completed')
-        #
-        # self.my_loop.run_until_complete(taskobj)
-
-        # Einige functionen müssen evtl. in eine __enter__-Funktion z.B. fand_tags
 
     # def __exit__(self):
 
@@ -145,14 +138,46 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
     #     self.mac = []
     #     self.logger.info('Reset self.mac')
     #     # Do we need a "Reset Tag"-Command to get the Tag in a safe state?
+    
+    def Handle_Config_File(self, Mode = ""):
+        # [[Tag1,MAC1],...,[TagN,MACN]]
+        ErrFlag = 0
+        if Mode == "Read" or Mode == "INIT":
+            try:
+                Read_Parser = configparser.ConfigParser()
+                Read_Parser.read('TagList.ini')
+                for tag in Read_Parser["Tags"]:
+                    self.TagList.append([tag, Read_Parser.get("Tag", tag)])
+            except:
+                ErrFlag = 1
+                print("Could not read TagList.ini")
+        elif Mode == "INIT" and ErrFlag ==1:
+            Write_Parser = configparser.ConfigParser()
+            Write_Parser.add_section("Tags")
+            cfgfile = open("TagList.ini","w")
+            Write_Parser.write(cfgfile)
+            cfgfile.close()
+            self.TagList=[]
+        elif Mode == "WRITE":
+            Write_Parser = configparser.ConfigParser()
+            Write_Parser.add_section("Tags")
+            for tag in self.TagList:
+                Write_Parser.set("Tags", tag[0] , tag[1])
+            cfgfile = open("TagList.ini","w")
+            Write_Parser.write(cfgfile)
+            cfgfile.close()
+            
     """    Check if mac address is a valid mac address    """
     async def killswitch(self):
-        print("killswitch")
-        await asyncio.sleep(10)
-        print("Taskkill")
-        self.taskobj.cancel()
-        print(self.taskobj)
-        raise asyncio.TimeoutError
+        self.logger.info("Call killswitch")
+        while time.time()-self.start_time < 2 :
+            self.logger.warn("Killswitch timer running...{}".format(self.start_time))
+            await asyncio.sleep(1)
+        try:
+            self.stopEvent.set()
+        except:
+            pass
+
 
     def __handle_config_file(self, Mode=""):
         # [[Tag1,MAC1],...,[TagN,MACN]]
@@ -287,7 +312,11 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                     self.logger.info('Message send to MAC: %s' % (i))
                 #self.my_loop.create_task(self.killswitch())
                     self.start_time = time.time()
+                    self.logger.info("Set Processtimer")
+                    await self.killswitch()
+                    self.logger.info("Killswitch starts monitoring")
                     await self.stopEvent.wait()
+                    print("Exit via Killswtch")
                     await client.stop_notify(UART_RX)
                     self.stopEvent.clear()
                     self.logger.info('Stop notify: %s' % (i))
@@ -421,17 +450,18 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         handle -- integer, characteristic read handle the data was received on
         value -- bytearray, the data returned in the notification
         """
-        self.heartbeat=20
-        if time.time()-self.start_time >2:
-            self.logger.warn("Timout while getting acceleration data")
-            self.stopEvent.set()
-        elif value[0] == 0x11:
+        # self.heartbeat=20
+        # if time.time()-self.start_time >20:
+        #     self.logger.warn("Timout while getting acceleration data")
+        #     self.stopEvent.set()
+        if value[0] == 0x11:
             # Daten
             sensordaten.extend(value[1:])
             self.start_time = time.time()
             print("Received data block: %s" % hexlify(value[1:]))
             # Marks end of data stream
         elif value[0] == 0x4a and value[3] == 0x00:
+            self.start_time = time.time()
             self.end_time = time.time()
             print(len(sensordaten))
             self.delta = len(sensordaten) / (self.end_time - self.start_time)
