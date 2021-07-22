@@ -20,10 +20,9 @@ import logging
 from enum import Enum
 import crcmod
 import struct
+import async_timeout
+import configparser
 
-# Timeout libraries
-#from interruptingcow import timeout
-import signal
 # %% Global variables
 readAllString = "FAFA030000000000000000"
 UART_SRV = '6E400001-B5A3-F393-E0A9-E50E24DCCA9E'
@@ -59,11 +58,6 @@ Log_SensorGatewayBleak.addHandler(console_handler)
 nest_asyncio.apply()
 Log_SensorGatewayBleak.info('Set nest_asyncio as global configuration')
 
-
-# %% TimeOutException
-
-class TimeOutException(Exception):
-    pass
 
 # %%region enums for sensor config
 
@@ -103,13 +97,16 @@ class Event_ts(asyncio.Event):
 # %% Class RuuviTagAccelerometerCommunicationBleak----------------------------
 class RuuviTagAccelerometerCommunicationBleak(Event_ts):
     def __init__(self):
+        self.heartbeat = 8
+        self.killTask=""
         self.stopEvent = Event_ts()
-        self.TIMEOUT = 2
         self.delta = 'Time'
         self.start_time = 'Time'
         self.end_time = 'Time'
+        
         # Constructor of the class RuuviTagAccelerometerCommunicationBleak
         self.client = 'TestClient'
+        
         # Create a child of the previously created logger 'SensorGatewayBleak'
         self.logger = logging.getLogger('SensorGatewayBleak.ClassRuuvi')
         self.logger.info('Initialize child logger ClassRuuvi')
@@ -125,37 +122,91 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.start_time = time.time()
 
         # Auxiliary Variables
-        self.reading_done = False
         self.success = ""
-        # self.ConnectionError = False
 
         # Search for asyncio loops that are already running
         self.my_loop = asyncio.get_event_loop()
-        # self.my_loop = asyncio.get_running_loop()
+        
         self.logger.info('Searching for running loops completed')
+        self.__handle_config_file(Mode="INIT")
 
-        # Create a task 
-        # taskobj = self.my_loop.create_task(self.find_tags())
-        # self.logger.info('Searching for tags completed')
-        #
-        # self.my_loop.run_until_complete(taskobj)
 
-        # Einige functionen müssen evtl. in eine __enter__-Funktion z.B. fand_tags
-        
-    def timeout_handler(self, signum, frame):
-        self.logger.error('Timeout on Funktion!')
-        raise TimeOutException()
-        
-    #def __exit__(self):
+    # def __exit__(self):
 
     #     self.data = []
     #     self.logger.info('Reset self.data !')
     #     self.mac = []
     #     self.logger.info('Reset self.mac')
     #     # Do we need a "Reset Tag"-Command to get the Tag in a safe state?
-
-
+    
+    def Handle_Config_File(self, Mode = ""):
+        # [[Tag1,MAC1],...,[TagN,MACN]]
+        ErrFlag = 0
+        if Mode == "Read" or Mode == "INIT":
+            try:
+                Read_Parser = configparser.ConfigParser()
+                Read_Parser.read('TagList.ini')
+                for tag in Read_Parser["Tags"]:
+                    self.TagList.append([tag, Read_Parser.get("Tag", tag)])
+            except:
+                ErrFlag = 1
+                print("Could not read TagList.ini")
+        elif Mode == "INIT" and ErrFlag ==1:
+            Write_Parser = configparser.ConfigParser()
+            Write_Parser.add_section("Tags")
+            cfgfile = open("TagList.ini","w")
+            Write_Parser.write(cfgfile)
+            cfgfile.close()
+            self.TagList=[]
+        elif Mode == "WRITE":
+            Write_Parser = configparser.ConfigParser()
+            Write_Parser.add_section("Tags")
+            for tag in self.TagList:
+                Write_Parser.set("Tags", tag[0] , tag[1])
+            cfgfile = open("TagList.ini","w")
+            Write_Parser.write(cfgfile)
+            cfgfile.close()
+            
     """    Check if mac address is a valid mac address    """
+    async def killswitch(self):
+        self.logger.info("Call killswitch")
+        while time.time()-self.start_time < 2 :
+            self.logger.warn("Killswitch timer running...{}".format(self.start_time))
+            await asyncio.sleep(1)
+        try:
+            self.stopEvent.set()
+        except:
+            pass
+
+
+    def __handle_config_file(self, Mode=""):
+        # [[Tag1,MAC1],...,[TagN,MACN]]
+        ErrFlag = 0
+        if Mode == "Read" or Mode == "INIT":
+            try:
+                Read_Parser = configparser.ConfigParser()
+                Read_Parser.read('TagList.ini')
+                for tag in Read_Parser["Tags"]:
+                    self.TagList.append([tag, Read_Parser.get("Tag", tag)])
+            except:
+                ErrFlag = 1
+                print("Could not read ini")
+                pass
+        if Mode == "INIT" and ErrFlag == 1:
+            Write_Parser = configparser.ConfigParser()
+            Write_Parser.add_section("Tags")
+            cfgfile = open("TagList.ini", "w")
+            Write_Parser.write(cfgfile)
+            cfgfile.close()
+            self.TagList = []
+        if Mode == "WRITE":
+            Write_Parser = configparser.ConfigParser()
+            Write_Parser.add_section("Tags")
+            for tag in self.TagList:
+                Write_Parser.set("Tags", tag[0], tag[1])
+            cfgfile = open("TagList.ini", "w")
+            Write_Parser.write(cfgfile)
+            cfgfile.close()
 
     def __check_mac_address(self, mac):
         if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", mac.lower()):
@@ -178,10 +229,10 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         tags_new = len(self.mac) - tags_so_far
         self.logger.info('%d new Ruuvi tags were found' % tags_new)
 
+
     def work_loop(self, macs="", command=""):
-        signal.signal(signal.SIGALRM, self.timeout_handler)
-        signal.alarm(3)
         print(macs)
+        # test=self.__killswitch(True)
         if not isinstance(macs, list):
             print("Search Mac")
             if macs != "":
@@ -192,18 +243,15 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 if not self.__check_mac_address(macs):
                     return
             else:
-                try:
-                    taskobj = self.my_loop.create_task(self.find_tags())
-                    self.my_loop.run_until_complete(taskobj)
-                except TimeOutException as e:
-                    print("Timeout {}".format(e))
+                #asyncio.wait_for(taskobj,2)
+                self.taskobj = self.my_loop.create_task(self.find_tags())
+                self.my_loop.run_until_complete(self.taskobj)
         try:
-            taskobj = self.my_loop.create_task(self.connect_to_mac_command(command_string=command, specific_mac=macs))
-            self.my_loop.run_until_complete(taskobj)
+            self.taskobj = self.my_loop.create_task(self.connect_to_mac_command(command_string=command, specific_mac=macs))
+            self.my_loop.run_until_complete(self.taskobj)
             # self.logger.info("Logging activated!")
         except Exception as e:
             self.logger.error("Error while activate logging: {}".format(e))
-        signal.alarm(0)
 
     # -------------Find -> Connect -> Listen-Functions---------------------
     async def find_tags(self, mac=""):
@@ -221,11 +269,13 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
 
     async def connect_to_mac_command(self, command_string, specific_mac=""):
         # Second Funktion -> Connect to Ruuvitag and send commands
+
         if specific_mac != "":
             mac = [specific_mac]
         else:
             mac = self.mac
         for i in mac:
+
             print("Mac: " + str(i))
             print(command_string)
             try:
@@ -244,33 +294,38 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 self.logger.error("Error: {}".format(e))
 
             self.logger.info("Task done connect_to_mac_command!")
-            #return
 
             # Reciving and Handling of Callbacks
 
     # Main Function for sensordatalogging
     async def connect_to_mac(self, i, readCommand):
         try:
-            print("Mac address:" + str(i))
-            async with BleakClient(i) as client:
+            """Timeout after 60 Seconds"""
+            with async_timeout.timeout(60):
+                print("Mac address:" + str(i))
+                async with BleakClient(i) as client:
                 # Send the command (Wait for Response must be True)
-                self.client = client
-                await client.start_notify(UART_RX, self.handle_data)
-                await client.write_gatt_char("6e400002-b5a3-f393-e0a9-e50e24dcca9e", bytearray.fromhex(readCommand),
+                    self.client = client
+                    await client.start_notify(UART_RX, self.handle_data)
+                    await client.write_gatt_char("6e400002-b5a3-f393-e0a9-e50e24dcca9e", bytearray.fromhex(readCommand),
                                              True)
-                self.logger.info('Message send to MAC: %s' % (i))
-                self.start_time = time.time()
-                # print(self.start_time)
-                # print(time.time())
-                self.start_time = time.time()
-                await self.stopEvent.wait()
-                await client.stop_notify(UART_RX)
-                self.stopEvent.clear()
-                self.logger.info('Stop notify: %s' % (i))
+                    self.logger.info('Message send to MAC: %s' % (i))
+                #self.my_loop.create_task(self.killswitch())
+                    self.start_time = time.time()
+                    self.logger.info("Set Processtimer")
+                    await self.killswitch()
+                    self.logger.info("Killswitch starts monitoring")
+                    await self.stopEvent.wait()
+                    print("Exit via Killswtch")
+                    await client.stop_notify(UART_RX)
+                    self.stopEvent.clear()
+                    self.logger.info('Stop notify: %s' % (i))
+
         except Exception as e:
             self.logger.error('Error occured on tag {} with errorcode: {}'.format(i, e))
             self.logger.warning('Connection to tag not available')
-        return None
+
+            return None
 
     # ----------------------Interprete Ruuvitag Callback-----------------------
     async def handle_sensor_commands(self, sender: int, value: bytearray):
@@ -278,6 +333,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         handle -- integer, characteristic read handle the data was received on
         value -- bytearray, the data returned in the notification
         """
+
         self.logger.info("handle_sensor_command called sender: {} and value {}".format(sender, value))
 
         if value[0] == 0x4A or value[0] == 0x21:
@@ -378,32 +434,11 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
 
         """Read acceleration samples for each sensor"""
         for i in mac:
-            self.reading_done = False
             global sensordaten
             sensordaten = bytearray()
             taskobj = self.my_loop.create_task(self.connect_to_mac(i, readAllString))
             self.my_loop.run_until_complete(taskobj)
 
-            """Wait  until all reading is done. We can only read one sensor at the time"""
-            # while not self.reading_done:
-            #     time.sleep(1)
-
-        # try:
-        #     recieved_data = self.data
-        #     """Exit function if recieved data is empty"""
-        #     if (len(self.data[0][0]) == 0):
-        #         print("No data stored")
-        #         return
-        #     """Write data into csv file"""
-        #     for i in range(len(recieved_data)):
-        #         data = list(zip(recieved_data[i][0]))
-        #         current_mac = recieved_data[i][1]
-        #         for i in data:
-        #             with open("acceleration-{}.csv".format(data[0][0][3]), 'a') as f:
-        #                 f.write("{},{}".format(str(i[0])[1:-1], current_mac))
-        #                 f.write("\n")
-        # except Exception as e:
-        #     self.logger.error("Error: {}".format(e))
         return self.data
 
     # --------------------------------handle data--------------------------------
@@ -415,24 +450,28 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         handle -- integer, characteristic read handle the data was received on
         value -- bytearray, the data returned in the notification
         """
-        print(time.time())
+        # self.heartbeat=20
+        # if time.time()-self.start_time >20:
+        #     self.logger.warn("Timout while getting acceleration data")
+        #     self.stopEvent.set()
         if value[0] == 0x11:
             # Daten
             sensordaten.extend(value[1:])
+            self.start_time = time.time()
             print("Received data block: %s" % hexlify(value[1:]))
             # Marks end of data stream
         elif value[0] == 0x4a and value[3] == 0x00:
+            self.start_time = time.time()
             self.end_time = time.time()
             print(len(sensordaten))
             self.delta = len(sensordaten) / (self.end_time - self.start_time)
 
             print('Bandwidth : {} Bytes/Second'.format(self.delta))
             self.stopEvent.set()
-            # await self.client.stop_notify(UART_RX)
             # Status
-            print("Status: %s" % str(self.ri_error_to_string(value[2])))
+            print("Status: %s" % str(self.ri_error_to_string(value[3])))
 
-            crc = value[11:13];
+            crc = value[12:14];
             print("Received CRC: %s" % hexlify(crc))
 
             # CRC validation
@@ -443,40 +482,29 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             print("Received %d bytes" % len(sensordaten))
             print(hexlify(crc))
             if hexlify(crc) == bytearray():
-                print("No crc Received")
-                # device.disconnect
-                self.reading_done = True
-                self.taskrun = False
-                # adapter.reset()
+                self.logger.info("No crc received")
                 return None
 
             if int(hexlify(crc), 16) != ourcrc:
-                print("CRC are unequal")
-                # device.disconnect
-                self.reading_done = True
-                self.taskrun = False
-                # adapter.reset()
+                self.logger.warning("CRC are unequal")
                 return None
 
-                # device.disconnect()
-
-            self.taskrun = False
 
             timeStamp = hexlify(sensordaten[7::-1])
 
             # Start data
-            if (value[4] == 12):
+            if (value[5] == 12):
                 # 12 Bit
                 self.logger.info("Start processing reveived data with process_sensor_data_12")
-                AccelorationData = self.process_sensor_data_12(sensordaten, value[5], value[3])
-            elif (value[4] == 10):
+                AccelorationData = self.process_sensor_data_12(sensordaten, value[6], value[4])
+            elif (value[5] == 10):
                 # 10 Bit
                 self.logger.info("Start processing reveived data with process_sensor_data_10")
-                AccelorationData = self.process_sensor_data_10(sensordaten, value[5], value[3])
-            elif (value[4] == 8):
+                AccelorationData = self.process_sensor_data_10(sensordaten, value[6], value[4])
+            elif (value[5] == 8):
                 # 8 Bit
                 self.logger.info("Start processing reveived data with process_sensor_data_10")
-                AccelorationData = self.process_sensor_data_8(sensordaten, value[5], value[3])
+                AccelorationData = self.process_sensor_data_8(sensordaten, value[6], value[4])
             else:
                 print("Unknown Resolution")
             if AccelorationData != None:
@@ -484,9 +512,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 self.data.append([list(map(list, zip(AccelorationData[0], AccelorationData[1], AccelorationData[2],
                                                      AccelorationData[3])))])
                 print(self.data)
-            self.reading_done = True
 
-    # device.subscribe(uuIdRead, callback=handle_data)
 
     ##%% region processdata
     def process_sensor_data_8(self, bytes, scale, rate):
