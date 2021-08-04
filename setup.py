@@ -18,7 +18,6 @@ setup(name='gateway',
                         'nest_asyncio',
                         'regex',
                         'bleak',
-                        'enum',
                         'crcmod',
                         'async_timeout',
                         'configparser' 
