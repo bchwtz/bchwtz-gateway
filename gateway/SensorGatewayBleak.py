@@ -128,8 +128,8 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.my_loop = asyncio.get_event_loop()
         
         self.logger.info('Searching for running loops completed')
-        self.__handle_config_file(Mode="INIT")
-
+        #self.__handle_config_file(Mode="INIT")
+        self.logger.info('Class object successfully initialized!')
 
     # def __exit__(self):
 
@@ -190,7 +190,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                     self.TagList.append([tag, Read_Parser.get("Tag", tag)])
             except:
                 ErrFlag = 1
-                print("Could not read ini")
+                self.logger.warning("Could not read ini")
                 pass
         if Mode == "INIT" and ErrFlag == 1:
             Write_Parser = configparser.ConfigParser()
@@ -231,10 +231,8 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
 
 
     def work_loop(self, macs="", command=""):
-        print(macs)
-        # test=self.__killswitch(True)
         if not isinstance(macs, list):
-            print("Search Mac")
+            self.logger.info("Search custom MAC-Adress {}".format(macs))
             if macs != "":
                 # self.__check_mac_address()
                 # taskobj = self.my_loop.create_task(self.__check_mac_address(macs))
@@ -243,13 +241,12 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 if not self.__check_mac_address(macs):
                     return
             else:
-                #asyncio.wait_for(taskobj,2)
                 self.taskobj = self.my_loop.create_task(self.find_tags())
                 self.my_loop.run_until_complete(self.taskobj)
         try:
             self.taskobj = self.my_loop.create_task(self.connect_to_mac_command(command_string=command, specific_mac=macs))
             self.my_loop.run_until_complete(self.taskobj)
-            # self.logger.info("Logging activated!")
+            #self.success = True
         except Exception as e:
             self.logger.error("Error while activate logging: {}".format(e))
 
@@ -276,8 +273,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             mac = self.mac
         for i in mac:
 
-            print("Mac: " + str(i))
-            print(command_string)
+            self.logger.info("Send {} to MAC {} ".format(command_string,i))
             try:
                 async with BleakClient(i) as client:
                     # Send the command (Wait for Response must be True)
@@ -302,7 +298,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         try:
             """Timeout after 60 Seconds"""
             with async_timeout.timeout(60):
-                print("Mac address:" + str(i))
+                self.logger.info("Send {} to MAC {} ".format(readCommand,i))
                 async with BleakClient(i) as client:
                 # Send the command (Wait for Response must be True)
                     self.client = client
@@ -316,7 +312,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                     await self.killswitch()
                     self.logger.info("Killswitch starts monitoring")
                     await self.stopEvent.wait()
-                    print("Exit via Killswtch")
+                    self.logger.warning("Abort workloop Task via Killswtch after timeout!")
                     await client.stop_notify(UART_RX)
                     self.stopEvent.clear()
                     self.logger.info('Stop notify: %s' % (i))
@@ -397,20 +393,18 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.success = False
         self.work_loop(macs=specific_mac, command=command_string)
         if self.success:
-            print("logging activated")
+            self.logger.info("Logging activated")
         else:
-            logging.error("Logging is not activated")
-            print("Logging is not activated")
+            self.logger.error("Logging is not activated")
 
     def deactivate_logging_at_sensor(self, specific_mac=""):
         self.success = False
         command_string = "4a4a080000000000000000"
         self.work_loop(macs=specific_mac, command=command_string)
         if self.success:
-            print("logging deactivated")
+            self.logger.info("Logging deactivated")
         else:
-            logging.error("Logging is not deactivated")
-            print("Logging is not deactivated")
+            self.logger.error("Logging not deactivated")
 
     # ----------------------------Acceleration Logging-------------------------
     def get_acceleration_data(self, specific_mac=""):
@@ -425,7 +419,6 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 mac = [specific_mac]
             else:
                 self.logger.error('Mac address is not valid' + specific_mac)
-                print("Mac is not valid")
                 return
         else:
             self.logger.info('Try to get acceleration data from tags')
@@ -458,7 +451,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             # Daten
             sensordaten.extend(value[1:])
             self.start_time = time.time()
-            print("Received data block: %s" % hexlify(value[1:]))
+            self.logger.debug("Received data block: %s" % hexlify(value[1:]))
             # Marks end of data stream
         elif value[0] == 0x4a and value[3] == 0x00:
             self.start_time = time.time()
@@ -466,21 +459,21 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             print(len(sensordaten))
             self.delta = len(sensordaten) / (self.end_time - self.start_time)
 
-            print('Bandwidth : {} Bytes/Second'.format(self.delta))
+            self.logger.debug('Bandwidth : {} Bytes/Second'.format(self.delta))
             self.stopEvent.set()
             # Status
-            print("Status: %s" % str(self.ri_error_to_string(value[3])))
+            self.logger.debug("Status: %s" % str(self.ri_error_to_string(value[3])))
 
             crc = value[12:14];
-            print("Received CRC: %s" % hexlify(crc))
+            self.logger.debug("Received CRC: %s" % hexlify(crc))
 
             # CRC validation
-            print(sensordaten)
+            #print(sensordaten)
             ourcrc = crcfun(sensordaten)
-            print("Recalculated CRC: %x" % ourcrc)
+            #print("Recalculated CRC: %x" % ourcrc)
 
             print("Received %d bytes" % len(sensordaten))
-            print(hexlify(crc))
+            #print(hexlify(crc))
             if hexlify(crc) == bytearray():
                 self.logger.info("No crc received")
                 return None
@@ -511,7 +504,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 self.logger.info("Run in Funktion AccelorationData != None")
                 self.data.append([list(map(list, zip(AccelorationData[0], AccelorationData[1], AccelorationData[2],
                                                      AccelorationData[3])))])
-                print(self.data)
+                #print(self.data)
 
 
     ##%% region processdata
