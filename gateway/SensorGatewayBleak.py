@@ -118,6 +118,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         # Data recieved by the bluetooth devices
         self.data = []
 
+        self.sensor_data=[]
         # Variable for bandwidth calculation
         self.start_time = time.time()
 
@@ -334,25 +335,40 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
 
         if value[0] == 0x4A or value[0] == 0x21:
             print("Received: %s" % hexlify(value))
-            print("Status: %s" % (str(self.ri_error_to_string(value[3]), )))
+            status_string=str(self.ri_error_to_string(value[3]), )
+            self.sensor_data={"Status":status_string}
+            print("Status: %s" % status_string)
             if len(value) == 4:
                 self.stopEvent.set()
             elif value[2] == 0x09:
                 print("Received time: %s" % hexlify(value[:-9:-1]))
-                print(time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(value[:-9:-1]), 16) / 1000)))
+                recieved_time=time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(value[:-9:-1]), 16) / 1000))
+                print(recieved_time)
+                self.sensor_data={"Received time": recieved_time}
                 self.stopEvent.set()
             elif value[0] == 0x4a and value[3] == 0x00:
+                sample_rate=""
                 if value[4] == 201:
                     print("Samplerate: 400 Hz")
+                    sample_rate=400
                 else:
                     print("Samplerate:    %d Hz" % value[4])
+                    sample_rate=int(value[4])
                 # print("Samplerate:    %d Hz" % value[4])
+                self.sensor_data={"Samplerate": sample_rate,
+                                  "Resolution":int(value[5]),
+                                  "Scale":int(value[6]),
+                                  "DSP function": int(value[7]),
+                                  "DSP parameter": int(value[8]),
+                                  "Mode":  "%x" % value[9]
+                                  }
                 print("Resolution:    %d Bits" % (int(value[5])))
                 print("Scale:         %d G" % value[6])
                 print("DSP function:  %x" % value[7])
                 print("DSP parameter: %x" % value[8])
                 print("Mode:          %x" % value[9])
                 if value[10] > 1:
+                    self.sensor_data={"Frequency divider": int(value[10])}
                     print("Frequency divider: %d" % value[10])
                 self.stopEvent.set()
 
@@ -369,6 +385,18 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             words_used = value[13] | (value[14] << 8)
             largest_contig = value[15] | (value[16] << 8)
             freeable_words = value[17] | (value[18] << 8)
+            self.sensor_data={"Message Status": "%s"%(self.ri_error_to_string(message_status)),
+                              "Last Status": "%s"%(self.ri_error_to_string(logging_status)),
+                              "Ringbuffer start": ringbuffer_start,
+                              "Ringbuffer end": ringbuffer_end,
+                              "Ringbuffer size": ringbuffer_size,
+                              "Valid records":valid_records,
+                              "Dirty records":dirty_records,
+                              "Words reserved":words_reserved,
+                              "Words used":words_used,
+                              "Largest continuos":largest_contig,
+                              "Freeable words":freeable_words
+                              }
             print("Message Status %s" % (str(self.ri_error_to_string(message_status)),))
             print("Last Status %s" % (str(self.ri_error_to_string(logging_status)),))
             print("Ringbuffer start %d" % (ringbuffer_start,))
@@ -839,6 +867,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.work_loop(macs=specific_mac, command=command_string)
         if self.success:
             print("Config read")
+            return self.sensor_data
         else:
             logging.error("Config not read")
             print("Config not read")
@@ -851,6 +880,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.work_loop(macs=specific_mac, command=command_string)
         if self.success:
             print("Time read")
+            return self.sensor_data
         else:
             logging.error("Time  read")
             print("Time  read")
@@ -884,6 +914,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.work_loop(macs=specific_mac, command=command_string)
         if self.success:
             print("flash statistics read")
+            return self.sensor_data
         else:
             logging.error("flash statistics is not read")
             print("flash statistics  is not read")
@@ -899,6 +930,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.work_loop(macs=specific_mac, command=command_string)
         if self.success:
             print("Logging status read")
+            return self.sensor_data
         else:
             logging.error("Logging status is not read")
             print("Logging status  is not read")
