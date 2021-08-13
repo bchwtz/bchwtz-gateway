@@ -20,7 +20,7 @@ import logging
 from enum import Enum
 import crcmod
 import struct
-import async_timeout
+# import async_timeout
 import configparser
 
 # %% Global variables
@@ -34,7 +34,7 @@ crcfun = crcmod.mkCrcFun(0x11021, rev=False, initCrc=0xffff, xorOut=0)
 # %% Configuration Logger------------------------------------------------------
 # Creat a named logger 'SensorGatewayBleak' and set it on INFO level
 Log_SensorGatewayBleak = logging.getLogger('SensorGatewayBleak')
-Log_SensorGatewayBleak.setLevel(logging.INFO)
+# Log_SensorGatewayBleak.setLevel(logging.INFO)
 
 # Create a file handler
 file_handler = logging.FileHandler('SensorGatewayBleak.log')
@@ -109,8 +109,8 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         
         # Create a child of the previously created logger 'SensorGatewayBleak'
         self.logger = logging.getLogger('SensorGatewayBleak.ClassRuuvi')
-        self.logger.info('Initialize child logger ClassRuuvi')
-        self.logger.info('Start constructor')
+        # self.logger.info('Initialize child logger ClassRuuvi')
+        # self.logger.info('Start constructor')
 
         # MAC - list of addresses of the bluetooth devices
         self.mac = []
@@ -128,11 +128,18 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         # Search for asyncio loops that are already running
         self.my_loop = asyncio.get_event_loop()
         
-        self.logger.info('Searching for running loops completed')
-        #self.__handle_config_file(Mode="INIT")
-        self.logger.info('Class object successfully initialized!')
+        # self.logger.info('Searching for running loops completed')
+        # #self.__handle_config_file(Mode="INIT")
+        # self.logger.info('Class object successfully initialized!')
 
     # def __exit__(self):
+    def activate_debug_logger(self):
+        Log_SensorGatewayBleak.setLevel(logging.INFO)
+        console_handler.setLevel(logging.INFO)
+
+    def deactivate_debug_logger(self):
+        Log_SensorGatewayBleak.setLevel(logging.WARNING)
+        console_handler.setLevel(logging.WARNING)
 
     #     self.data = []
     #     self.logger.info('Reset self.data !')
@@ -170,9 +177,9 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             
     """    Check if mac address is a valid mac address    """
     async def killswitch(self):
-        self.logger.info("Call killswitch")
+        self.logger.info("Start timeout function")
         while time.time()-self.start_time < 2 :
-            self.logger.warn("Killswitch timer running...{}".format(self.start_time))
+            self.logger.warning("Timeout timer running {}".format(time.strftime("%H:%M:%S",time.localtime(self.start_time))))
             await asyncio.sleep(1)
         try:
             self.stopEvent.set()
@@ -298,25 +305,25 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
     async def connect_to_mac(self, i, readCommand):
         try:
             """Timeout after 60 Seconds"""
-            with async_timeout.timeout(60):
-                self.logger.info("Send {} to MAC {} ".format(readCommand,i))
-                async with BleakClient(i) as client:
+            # with async_timeout.timeout(60):
+            self.logger.info("Send {} to MAC {} ".format(readCommand,i))
+            async with BleakClient(i) as client:
                 # Send the command (Wait for Response must be True)
-                    self.client = client
-                    await client.start_notify(UART_RX, self.handle_data)
-                    await client.write_gatt_char("6e400002-b5a3-f393-e0a9-e50e24dcca9e", bytearray.fromhex(readCommand),
+                self.client = client
+                await client.start_notify(UART_RX, self.handle_data)
+                await client.write_gatt_char("6e400002-b5a3-f393-e0a9-e50e24dcca9e", bytearray.fromhex(readCommand),
                                              True)
-                    self.logger.info('Message send to MAC: %s' % (i))
+                self.logger.info('Message send to MAC: %s' % (i))
                 #self.my_loop.create_task(self.killswitch())
-                    self.start_time = time.time()
-                    self.logger.info("Set Processtimer")
-                    await self.killswitch()
-                    self.logger.info("Killswitch starts monitoring")
-                    await self.stopEvent.wait()
-                    self.logger.warning("Abort workloop Task via Killswtch after timeout!")
-                    await client.stop_notify(UART_RX)
-                    self.stopEvent.clear()
-                    self.logger.info('Stop notify: %s' % (i))
+                self.start_time = time.time()
+                self.logger.info("Set Processtimer")
+                await self.killswitch()
+                self.logger.info("Killswitch starts monitoring")
+                await self.stopEvent.wait()
+                self.logger.warning("Abort workloop Task via Killswtch after timeout!")
+                await client.stop_notify(UART_RX)
+                self.stopEvent.clear()
+                self.logger.info('Stop notify: %s' % (i))
 
         except Exception as e:
             self.logger.error('Error occured on tag {} with errorcode: {}'.format(i, e))
@@ -334,25 +341,25 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.logger.info("handle_sensor_command called sender: {} and value {}".format(sender, value))
 
         if value[0] == 0x4A or value[0] == 0x21:
-            print("Received: %s" % hexlify(value))
+            self.logger.info("Received: %s" % hexlify(value))
             status_string=str(self.ri_error_to_string(value[3]), )
             self.sensor_data={"Status":status_string}
-            print("Status: %s" % status_string)
+            self.logger.info("Status: %s" % status_string)
             if len(value) == 4:
                 self.stopEvent.set()
             elif value[2] == 0x09:
-                print("Received time: %s" % hexlify(value[:-9:-1]))
+                self.logger.info("Received time: %s" % hexlify(value[:-9:-1]))
                 recieved_time=time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(value[:-9:-1]), 16) / 1000))
-                print(recieved_time)
+                self.logger.info(recieved_time)
                 self.sensor_data={"Received time": recieved_time}
                 self.stopEvent.set()
             elif value[0] == 0x4a and value[3] == 0x00:
                 sample_rate=""
                 if value[4] == 201:
-                    print("Samplerate: 400 Hz")
+                    self.logger.info("Samplerate: 400 Hz")
                     sample_rate=400
                 else:
-                    print("Samplerate:    %d Hz" % value[4])
+                    self.logger.info("Samplerate:    %d Hz" % value[4])
                     sample_rate=int(value[4])
                 # print("Samplerate:    %d Hz" % value[4])
                 self.sensor_data={"Samplerate": sample_rate,
@@ -362,18 +369,20 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                                   "DSP parameter": int(value[8]),
                                   "Mode":  "%x" % value[9]
                                   }
-                print("Resolution:    %d Bits" % (int(value[5])))
-                print("Scale:         %d G" % value[6])
-                print("DSP function:  %x" % value[7])
-                print("DSP parameter: %x" % value[8])
-                print("Mode:          %x" % value[9])
+                self.logger.info("Resolution:    %d Bits" % (int(value[5])))
+                self.logger.info("Scale:         %d G" % value[6])
+                self.logger.info("DSP function:  %x" % value[7])
+                self.logger.info("DSP parameter: %x" % value[8])
+                self.logger.info("Mode:          %x" % value[9])
+
                 if value[10] > 1:
                     self.sensor_data={"Frequency divider": int(value[10])}
-                    print("Frequency divider: %d" % value[10])
+                    self.logger.info("Frequency divider: %d" % value[10])
+
                 self.stopEvent.set()
 
         elif value[0] == 0xfb and value[1] == 0x0d:
-            print("Received: %s" % hexlify(value))
+            self.logger.info("Received: %s" % hexlify(value))
             message_status = value[2]
             logging_status = value[3]
             ringbuffer_start = value[4]
@@ -397,17 +406,17 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                               "Largest continuos":largest_contig,
                               "Freeable words":freeable_words
                               }
-            print("Message Status %s" % (str(self.ri_error_to_string(message_status)),))
-            print("Last Status %s" % (str(self.ri_error_to_string(logging_status)),))
-            print("Ringbuffer start %d" % (ringbuffer_start,))
-            print("Ringbuffer end %d" % (ringbuffer_end,))
-            print("Ringbuffer size %d" % (ringbuffer_size,))
-            print("Valid records %d" % (valid_records,))
-            print("Dirty records %d" % (dirty_records,))
-            print("Words reserved %d" % (words_reserved,))
-            print("Words used %d" % (words_used,))
-            print("Largest continuos %d" % (largest_contig,))
-            print("Freeable words %d\n" % (freeable_words,))
+            self.logger.info("Message Status %s" % (str(self.ri_error_to_string(message_status)),))
+            self.logger.info("Last Status %s" % (str(self.ri_error_to_string(logging_status)),))
+            self.logger.info("Ringbuffer start %d" % (ringbuffer_start,))
+            self.logger.info("Ringbuffer end %d" % (ringbuffer_end,))
+            self.logger.info("Ringbuffer size %d" % (ringbuffer_size,))
+            self.logger.info("Valid records %d" % (valid_records,))
+            self.logger.info("Dirty records %d" % (dirty_records,))
+            self.logger.info("Words reserved %d" % (words_reserved,))
+            self.logger.info("Words used %d" % (words_used,))
+            self.logger.info("Largest continuos %d" % (largest_contig,))
+            self.logger.info("Freeable words %d\n" % (freeable_words,))
             self.stopEvent.set()
 
     # ------------------------Activate/Deactivate Logging----------------------
@@ -547,16 +556,16 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         time_between_samples = 1 / rate
 
         if (scale == 2):
-            print("Scale: 2G")
+            self.logger.info("Scale: 2G")
             faktor = 16 / (256 * 1000)
         elif (scale == 4):
-            print("Scale: 4G")
+            self.logger.info("Scale: 4G")
             faktor = 32 / (256 * 1000)
         elif (scale == 8):
-            print("Scale: 8G")
+            self.logger.info("Scale: 8G")
             faktor = 64 / (256 * 1000)
         elif (scale == 16):
-            print("Scale: 16G")
+            self.logger.info("Scale: 16G")
             faktor = 192 / (256 * 1000)
 
         while (pos < len(bytes)):
@@ -581,7 +590,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                     value = -value
                 value *= faktor
 
-                print(timestamp)
+                self.logger.info(timestamp)
                 if j % 3 == 0:
                     x_vector.append(value)
                 if j % 3 == 1:
@@ -589,14 +598,14 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 if j % 3 == 2:
                     z_vector.append(value)
                     timestamp += time_between_samples
-                    print(datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
+                    self.logger.info(datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
                     timestamp_list.append(
                         datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
-                print("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                self.logger.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
 
-        print("%d Werte entpackt" % (j,))
-        print(len(x_vector))
+        self.logger.info("%d Werte entpackt" % (j,))
+        self.logger.info(len(x_vector))
         return x_vector, y_vector, z_vector, timestamp_list
 
     def process_sensor_data_10(self, bytes, scale, rate):
@@ -612,20 +621,20 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         time_between_samples = 1 / rate
 
         if (scale == 2):
-            print("Scale: 2G")
+            self.logger.info("Scale: 2G")
             faktor = 4 / (64 * 1000)
         elif (scale == 4):
-            print("Scale: 4G")
+            self.logger.info("Scale: 4G")
             faktor = 8 / (64 * 1000)
         elif (scale == 8):
-            print("Scale: 8G")
+            self.logger.info("Scale: 8G")
             faktor = 16 / (64 * 1000)
         elif (scale == 16):
-            print("Scale: 16G")
+            self.logger.info("Scale: 16G")
             faktor = 48 / (64 * 1000)
 
         while (pos < len(bytes)):
-            print("Timestamp: %s" % hexlify(bytes[pos + 7:pos:-1]))
+            self.logger.info("Timestamp: %s" % hexlify(bytes[pos + 7:pos:-1]))
             t = bytes[pos:pos + 8]
             inv_t = t[::-1]
             timestamp = int(hexlify(inv_t), 16) / 1000
@@ -654,7 +663,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                     timestamp_list.append(
                         datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
                     z_vector.append(value)
-                print("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                self.logger.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
                 value = (bytes[pos] & 0x30) << 2
                 value |= (bytes[pos] & 0x0f) << 12
@@ -677,7 +686,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                     timestamp_list.append(
                         datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
                     z_vector.append(value)
-                print("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                self.logger.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
                 value = (bytes[pos] & 0x0c) << 4
                 value |= (bytes[pos] & 0x03) << 14
@@ -700,7 +709,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                     timestamp_list.append(
                         datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
                     z_vector.append(value)
-                print("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                self.logger.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
                 value = (bytes[pos] & 0x03) << 6
                 pos += 1
@@ -724,11 +733,11 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                         datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
 
                     z_vector.append(value)
-                print("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                self.logger.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
-        print((j / runtime))
-        print("%d Werte entpackt" % (j,))
-        print(len(x_vector))
+        self.logger.info((j / runtime))
+        self.logger.info("%d Werte entpackt" % (j,))
+        self.logger.info(len(x_vector))
         return x_vector, y_vector, z_vector, timestamp_list
 
     def process_sensor_data_12(self, bytes, scale, rate):
@@ -742,20 +751,20 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         time_between_samples = 1 / rate
 
         if (scale == 2):
-            print("Scale: 2G")
+            self.logger.info("Scale: 2G")
             faktor = 1 / (16 * 1000)
         elif (scale == 4):
-            print("Scale: 4G")
+            self.logger.info("Scale: 4G")
             faktor = 2 / (16 * 1000)
         elif (scale == 8):
-            print("Scale: 8G")
+            self.logger.info("Scale: 8G")
             faktor = 4 / (16 * 1000)
         elif (scale == 16):
-            print("Scale: 16G")
+            self.logger.info("Scale: 16G")
             faktor = 12 / (16 * 1000)
 
         while (pos < len(bytes)):
-            print("Timestamp: %s" % hexlify(bytes[pos + 7:pos:-1]))
+            self.logger.info("Timestamp: %s" % hexlify(bytes[pos + 7:pos:-1]))
             t = bytes[pos:pos + 8]
             inv_t = t[::-1]
             timestamp = int(hexlify(inv_t), 16) / 1000
@@ -783,7 +792,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                         datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
                     timestamp += time_between_samples
                     z_vector.append(value)
-                print("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                self.logger.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
                 value = (bytes[pos] & 0x0f) << 4
                 pos += 1
@@ -806,10 +815,10 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                     timestamp_list.append(
                         datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
                     z_vector.append(value)
-                print("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                self.logger.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
 
-        print("%d Werte entpackt" % (j,))
+        self.logger.info("%d Werte entpackt" % (j,))
         return x_vector, y_vector, z_vector, timestamp_list
 
     ##%% Set configurations of the sensor
@@ -854,10 +863,10 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.work_loop(macs=specific_mac, command=command_string)
 
         if self.success:
-            print("Config set")
+            self.logger.info("Config set")
         else:
             logging.error("Config set")
-            print("Config set")
+
 
     """Get configuration from sensors"""
 
@@ -866,11 +875,11 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.success = False
         self.work_loop(macs=specific_mac, command=command_string)
         if self.success:
-            print("Config read")
+            self.logger.info("Config read")
             return self.sensor_data
         else:
             logging.error("Config not read")
-            print("Config not read")
+
 
     """Get time from sensors"""
 
@@ -879,61 +888,60 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.success = False
         self.work_loop(macs=specific_mac, command=command_string)
         if self.success:
-            print("Time read")
+            self.logger.info("Time read")
             return self.sensor_data
         else:
             logging.error("Time  read")
-            print("Time  read")
+
 
     """Set sensor time"""
 
     def set_sensor_time(self, specific_mac=""):
         """Time has to be little endian and 16 bit long"""
         timestamp = struct.pack("<Q", int(time.time() * 1000)).hex()
-        print(time.time())
-        print(timestamp)
+        self.logger.info(time.time())
+        self.logger.info(timestamp)
 
         command_string = "212108" + timestamp
-        print(command_string)
+        self.logger.info(command_string)
         self.success = False
         self.work_loop(macs=specific_mac, command=command_string)
         if self.success:
-            print("Time set")
+            self.logger.info("Time set")
         else:
             logging.error("Time  set")
-            print("Time  set")
+
 
     def get_flash_statistic(self, specific_mac=""):
         # """
         # Loop funktion zum aufrufen in eigene Funktion, die activate Logging aufruft.
         # Async
         # """
-        # command_string = "FAFA0a0100000000000000"
+
         command_string = "FAFA0d0000000000000000"
         self.success = False
         self.work_loop(macs=specific_mac, command=command_string)
         if self.success:
-            print("flash statistics read")
+            self.logger.info("flash statistics read")
             return self.sensor_data
         else:
             logging.error("flash statistics is not read")
-            print("flash statistics  is not read")
+
 
     def get_logging_status(self, specific_mac=""):
         # """
         # Loop funktion zum aufrufen in eigene Funktion, die activate Logging aufruft.
         # Async
         # """
-        # command_string = "FAFA0a0100000000000000"
+
         command_string = "4A4A090000000000000000"
         self.success = False
         self.work_loop(macs=specific_mac, command=command_string)
         if self.success:
-            print("Logging status read")
+            self.logger.info("Logging status read")
             return self.sensor_data
         else:
             logging.error("Logging status is not read")
-            print("Logging status  is not read")
 
     ##%% region error messages
 
