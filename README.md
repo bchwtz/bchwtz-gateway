@@ -2,18 +2,16 @@
 
 ## Installation
 
-Die Läuffihigkeit der Software kann lediglich unter Raspbian mit einem entsprechenden 
-RaspberryPi als Hardware garantiert werden. Die Software wird via Kommandozeile 
-installiert.
+The running capability of the software was tested and validated under Raspian on a RaspberryPi 4.
+The software can be installed via command line.
 
 ```{code-block} python
 pip install -e git+https://github.com/bchwtz-fhswf/gateway.git@develop#egg=gateway
 ```
 
-Die Durchführung der Installation erfordert `sudo` Berechtigungen. Bei Ausführung der
-Kommandozeile wird ein entsprechender Login mit den notwendigen Rechten gefordert.
-Bei erfolgreicher Ausführung werden nun abhängige Bibliotheken installiert und abschließend 
-das Hauptprogramm installiert.
+Performing the installation requires ’sudo' permissions. When executing the command line, 
+a corresponding login with the necessary rights is required. Dependent libraries and packages 
+are now installed. Feedback will be returned if the installation is successful.
 
 ```{code-block} python
 
@@ -49,9 +47,8 @@ Codezeile `sudo python Setup.py install` ausgeführt werden.
 
 ## Get Sersor Data
 
-Die Datei `SensorGatewayBleak.py` kann nun als Bibliothek in einer beliebigen PythonIDE
-importiert werden. Die Funktionen der Bibliothek können mit den nachfolgenden Codezeilen
-einzeln getestet werden.
+The file ’SensorGatewayBleak. py' can now be imported as a library in any PythonIDE. 
+The functions of the library can be tested with the following code lines.
 
 ```{code-block} python
 Ruuvi_Com_Obj = SensorGatewayBleak.RuuviTagAccelerometerCommunicationBleak() 
@@ -61,5 +58,5 @@ Ruuvi_Com_Obj.activate_logging_at_sensor()
 Test = Ruuvi_Com_Obj.get_acceleration_date()
 ```
 
-Das Logging der Accelorometerdaten wird reseted durch das deaktivieren/aktivieren.
-Die Daten werden als Liste zurückgegeben.
+The logging of the Accelorometer data is reseted by the disabling/activating function. 
+The data will be returned as a list.
