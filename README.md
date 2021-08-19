@@ -45,7 +45,7 @@ Die `Setup.py` kann auch offline ausgeführt werden. Dazu muss aus dem Projektve
 Codezeile `sudo python Setup.py install` ausgeführt werden.
 ```
 
-## Get Sersor Data
+## Get Sensor Data
 
 The file ’SensorGatewayBleak. py' can now be imported as a library in any PythonIDE. 
 The functions of the library can be tested with the following code lines.
@@ -55,7 +55,7 @@ Ruuvi_Com_Obj = SensorGatewayBleak.RuuviTagAccelerometerCommunicationBleak()
 
 Ruuvi_Com_Obj.deactivate_logging_at_sensor()
 Ruuvi_Com_Obj.activate_logging_at_sensor()
-Test = Ruuvi_Com_Obj.get_acceleration_date()
+Test = Ruuvi_Com_Obj.get_acceleration_data()
 ```
 
 The logging of the Accelorometer data is reseted by the disabling/activating function. 
