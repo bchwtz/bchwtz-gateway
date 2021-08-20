@@ -1,19 +1,42 @@
-import gateway.SensorGatewayBleak
-import time
+import asyncio
+from gateway import SensorGatewayBleak, AdvertisementLogging
 
-from gateway import SensorGatewayBleak
+loop = asyncio.get_event_loop()
+loop.run_until_complete(AdvertisementLogging.find_tags())
+
+
 
 test= SensorGatewayBleak.RuuviTagAccelerometerCommunicationBleak()
-print("--------------------------\n")
+# print("--------------------------\n")
+# test.activate_debug_logger()
+# test.set_config_sensor(sampling_rate=10,sampling_resolution=10, measuring_range=4)
+#
+# abc=test.get_config_from_sensor()
+# print(abc)
 
-abc=test.get_config_from_sensor()
-print(abc)
+# print("--------------------------\n")
+# test.activate_debug_logger()
+# test.set_config_sensor(sampling_rate=50,sampling_resolution=12, measuring_range=4)
+#
+# abc=test.get_config_from_sensor()
+# print(abc)
 
-abc=test.get_time_from_sensor()
-print(abc)
 
-abc=test.get_flash_statistic()
-print(abc)
+#
+#
+# abc=test.get_time_from_sensor()
+# print(abc)
+#
+# test.deactivate_debug_logger()
+# abc=test.get_flash_statistic()
+# print(abc)
+#
+# test.activate_logging_at_sensor()
+# time.sleep(5)
+# print("Sleep over")
+# test.activate_debug_logger()
+# abc=test.get_acceleration_data()
+
 
 # abc=test.get_logging_status()
 # print(abc)
