@@ -3,17 +3,22 @@ from gateway.AdvertisementDecoder import _get_data_format_5
 import gateway.AdvertisementDecoder
 from bleak import BleakClient
 from functools import partial
+from bleak import BleakScanner
+import nest_asyncio
+import asyncio
+
 
 #Channel where advertisements are collected
 UART_RX = '6E400001-B5A3-F393-E0A9-E50E24DCCA9E'
 
 
 
-import asyncio
-from bleak import BleakScanner
+
 
 mac = []
 adv_data=[]
+nest_asyncio.apply()
+my_loop = asyncio.get_event_loop()
 
 class Event_ts(asyncio.Event):
     def clear(self):
@@ -41,16 +46,6 @@ def detection_callback(client: BleakClient, sender: int,data:bytearray):
         print(adv_data)
 
 
-
-async def run():
-    scanner = BleakScanner(filters={"UUIDs": ["6E400001-B5A3-F393-E0A9-E50E24DCCA9E"]})
-    scanner.set_scanning_filter()
-    scanner.register_detection_callback(detection_callback)
-    await scanner.start()
-    await asyncio.sleep(80.0)
-    await scanner.stop()
-
-
 def validate_mac(devices):
     print("validate")
     for i in devices:
@@ -59,9 +54,13 @@ def validate_mac(devices):
             print("found")
             mac.append(i.address)
             print(mac)
+async def start_advertisement_logging():
+    my_loop.run_until_complete(advertisement_logging())
 
-
-async def find_tags():
+async def end__advertisement_logging():
+    stopEvent.set()
+    
+async def advertisement_logging():
     try:
         #find devices
         devices = await BleakScanner.discover(timeout=5.0)
@@ -71,11 +70,11 @@ async def find_tags():
             for i in mac:
                 async with BleakClient(i) as client:
                     #start notify advertisements
-                    await client.start_notify("6E400003-B5A3-F393-E0A9-E50E24DCCA9E",partial(detection_callback, client) )
+                    await client.start_notify(UART_RX,partial(detection_callback, client) )
                     await stopEvent.wait()
     except Exception as e:
         print("Error: {}".format(e))
-        client.stop_notify("6E400003-B5A3-F393-E0A9-E50E24DCCA9E")
+        client.stop_notify(UART_RX)
     # When Ctrl+C is pressed execution of the while loop is stopped
     except KeyboardInterrupt:
         client.stop_notify()
