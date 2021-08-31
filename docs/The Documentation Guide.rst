@@ -61,7 +61,7 @@ For more details please refer to the documentation of Sphinx.
 
 
 
-Konfiguration der Github pages
+Configuration of Github pages
 ******************************
 
 
