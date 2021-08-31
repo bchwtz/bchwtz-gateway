@@ -45,9 +45,10 @@ Installing collected packages: gateway
 Successfully installed gateway
 ```
 
-```{admonition} Hinweis
-Die `Setup.py` kann auch offline ausgeführt werden. Dazu muss aus dem Projektverzeichnis aus die 
-Codezeile `sudo python Setup.py install` ausgeführt werden.
+```{admonition} Note
+Übersetzen
+The ’Setup. py' can also be run offline. To do this, the code line `sudo python Setup. py install`
+ must be executed from the project directory.
 ```
 
 ## Get Sensor Data

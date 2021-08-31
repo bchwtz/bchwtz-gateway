@@ -12,9 +12,7 @@ Welcome to RuuviTag-Gateway's documentation!
    
    README.md
    The Documentation Guide.rst
-   SensorGatewayBleak.rst
    Gateway.rst
-
 
 Indices and tables
 ==================
