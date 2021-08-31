@@ -1,0 +1,10 @@
+async-generator==1.10
+asyncio
+bleak==0.12.1
+crcmod
+Markdown==3.3.4
+nest-asyncio
+regex
+Sphinx
+async_timeout
+configparser
