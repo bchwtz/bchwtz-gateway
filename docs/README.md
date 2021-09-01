@@ -1,5 +1,10 @@
 # Getting-Started Guide
 
+## Usefull Informations for Preperation
+
+There are some tricks to communicate with RaspberryPi and get Python Code run. The aim of this chapter is to give a brief 
+introduction to the installation and application of the packages.
+
 ## Installation
 
 The running capability of the software was tested and validated under Raspian on a RaspberryPi 4.
@@ -40,9 +45,10 @@ Installing collected packages: gateway
 Successfully installed gateway
 ```
 
-```{admonition} Hinweis
-Die `Setup.py` kann auch offline ausgeführt werden. Dazu muss aus dem Projektverzeichnis aus die 
-Codezeile `sudo python Setup.py install` ausgeführt werden.
+```{admonition} Note
+Übersetzen
+The ’Setup. py' can also be run offline. To do this, the code line `sudo python Setup. py install`
+ must be executed from the project directory.
 ```
 
 ## Get Sensor Data
