@@ -178,7 +178,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
     """    Check if mac address is a valid mac address    """
     async def killswitch(self):
         self.logger.info("Start timeout function")
-        while time.time()-self.start_time < 2 :
+        while time.time()-self.start_time < 10 :
             self.logger.warning("Timeout timer running {}".format(time.strftime("%H:%M:%S",time.localtime(self.start_time))))
             await asyncio.sleep(1)
         try:
