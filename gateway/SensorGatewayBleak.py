@@ -219,8 +219,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
     def __check_mac_address(self, mac):
         if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", mac.lower()):
             self.logger.info('MAC set to specific Mac-Address')
-
-            return self.find_tags(mac)
+            return True
         else:
             self.logger.error("Mac is not valid!")
             return False
