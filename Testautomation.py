@@ -14,9 +14,9 @@ class Testfunctions:
         from gateway import SensorGatewayBleak
         print("in start_logging")
         test = SensorGatewayBleak.RuuviTagAccelerometerCommunicationBleak()
-        test.deactivate_logging_at_sensor()
+        test.deactivate_debug_logger()
         time.sleep(15)
-        test.activate_logging_at_sensor(specific_mac)
+        test.activate_debug_logger()
         time.sleep(15)
         acceleration_samples = test.get_acceleration_data()
         anz_fail = self.get_acceleration_time_differences_32_val(acceleration_samples, test)
