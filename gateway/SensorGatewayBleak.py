@@ -227,7 +227,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
 
         """
         self.logger.info("Start timeout function")
-        while time.time()-self.start_time < 2 :
+        while time.time()-self.start_time < 10 :
             self.logger.warning("Timeout timer running {}".format(time.strftime("%H:%M:%S",time.localtime(self.start_time))))
             await asyncio.sleep(1)
         try:
@@ -284,8 +284,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         """
         if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", mac.lower()):
             self.logger.info('MAC set to specific Mac-Address')
-
-            return self.find_tags(mac)
+            return True
         else:
             self.logger.error("Mac is not valid!")
             return False
