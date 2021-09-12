@@ -19,7 +19,6 @@ a corresponding login with the necessary rights is required. Dependent libraries
 are now installed. Feedback will be returned if the installation is successful.
 
 ```{code-block} python
-
 Defaulting to user installation because normal site-packages is not writeable
 Looking in indexes: https://pypi.org/simple, https://www.piwheels.org/simple
 Obtaining gateway from git+https://github.com/bchwtz-fhswf/gateway.git@develop#egg=gateway
@@ -45,15 +44,14 @@ Installing collected packages: gateway
 Successfully installed gateway
 ```
 
-```{admonition} Note
-Übersetzen
-The ’Setup. py' can also be run offline. To do this, the code line `sudo python Setup. py install`
- must be executed from the project directory.
+```{admonition} Hinweis
+The Setup.py can also be run offline. To do this, the code line `sudo python Setup.py install` 
+must be executed from the project directory.
 ```
 
 ## Get Sensor Data
 
-The file ’SensorGatewayBleak. py' can now be imported as a library in any PythonIDE. 
+The file ’SensorGatewayBleak.py' can now be imported as a library in any PythonIDE. 
 The functions of the library can be tested with the following code lines.
 
 ```{code-block} python
