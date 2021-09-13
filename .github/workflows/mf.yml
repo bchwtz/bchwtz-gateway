@@ -57,4 +57,5 @@ jobs:
           done < ${{ env.env-file }}
         working-directory: ${{env.working-directory}}
       - name: docker up
+        working-directory: ${{env.working-directory}}
         run: /usr/local/bin/docker-compose up -d
