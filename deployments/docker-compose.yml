@@ -52,8 +52,8 @@ services:
       - ./ssl/certs/mainflux-server.key:/etc/ssl/private/mainflux-server.key
       - ./ssl/dhparam.pem:/etc/ssl/certs/dhparam.pem
     ports:
-      - ${MF_NGINX_HTTP_PORT}:${MF_NGINX_HTTP_PORT}
-      - ${MF_NGINX_SSL_PORT}:${MF_NGINX_SSL_PORT}
+      - ${MF_NGINX_HTTP_DEST_PORT}:${MF_NGINX_HTTP_PORT}
+      - ${MF_NGINX_SSL_DEST_PORT}:${MF_NGINX_SSL_PORT}
       - ${MF_NGINX_MQTT_PORT}:${MF_NGINX_MQTT_PORT}
       - ${MF_NGINX_MQTTS_PORT}:${MF_NGINX_MQTTS_PORT}
     networks:
