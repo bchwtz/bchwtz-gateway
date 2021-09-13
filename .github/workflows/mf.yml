@@ -39,6 +39,7 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
   deploy:
+    needs: build
     runs-on: deploy
     env:
       working-directory: ./deployments
