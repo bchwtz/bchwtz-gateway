@@ -44,6 +44,20 @@ jobs:
     env:
       working-directory: ./deployments
       env-file: .env
+      MF_AUTH_DB_PASS: ${{ secrets.MF_AUTH_DB_PASS }}
+      MF_USERS_DB_PASS: ${{ secrets.MF_USERS_DB_PASS }}
+      MF_USERS_ADMIN_PASSWORD: ${{ secrets.MF_USERS_ADMIN_PASSWORD }}
+      MF_EMAIL_PASSWORD: ${{ secrets.MF_EMAIL_PASSWORD }}
+      MF_THINGS_DB_PASS: ${{ secrets.MF_THINGS_DB_PASS }}
+      MF_THINGS_ES_PASS: ${{ secrets.MF_THINGS_ES_PASS }}
+      MF_MQTT_ADAPTER_ES_PASS: ${{ secrets.MF_MQTT_ADAPTER_ES_PASS }}
+      MF_BOOTSTRAP_DB_PASS: ${{ secrets.MF_BOOTSTRAP_DB_PASS }}
+      MF_PROVISION_PASS: ${{ secrets.MF_PROVISION_PASS }}
+      MF_OPCUA_ADAPTER_ROUTE_MAP_PASS: ${{ secrets.MF_OPCUA_ADAPTER_ROUTE_MAP_PASS }}
+      MF_INFLUX_WRITER_DB_PASS: ${{ secrets.MF_INFLUX_WRITER_DB_PASS }}
+      MF_INFLUX_READER_DB_PASS: ${{ secrets.MF_INFLUX_READER_DB_PASS }}
+      MF_TWINS_CACHE_PASS: ${{ secrets.MF_TWINS_CACHE_PASS }}
+
     steps:
       - uses: actions/checkout@v2
       - name: docker-pull
