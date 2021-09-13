@@ -42,6 +42,7 @@ jobs:
     runs-on: deploy
     env:
       working-directory: ./deployments
+      env-file: .env
     steps:
       - uses: actions/checkout@v2
       - name: docker-pull
@@ -53,7 +54,7 @@ jobs:
         run: |
           while read line; do
             echo "$line" >> $GITHUB_ENV
-          done < ${{ env.ENV_FILE }}
+          done < ${{ env.env-file }}
         working-directory: ${{env.working-directory}}
       - name: docker up
         run: /usr/local/bin/docker-compose up -d
