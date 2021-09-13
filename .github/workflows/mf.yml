@@ -45,7 +45,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: docker-pull
-        run: docker-compose pull
+        run: /usr/local/bin/docker-compose pull
         working-directory: ${{env.working-directory}}
 
       
@@ -56,4 +56,4 @@ jobs:
           done < ${{ env.ENV_FILE }}
         working-directory: ${{env.working-directory}}
       - name: docker up
-        run: docker-compose up -d
+        run: /usr/local/bin/docker-compose up -d
