@@ -20,6 +20,7 @@ import logging
 from enum import Enum
 import crcmod
 import struct
+from functools import partial
 # import async_timeout
 import configparser
 
@@ -121,6 +122,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.sensor_data=[]
         # Variable for bandwidth calculation
         self.start_time = time.time()
+        self.notification_done=True
 
         # Auxiliary Variables
         self.success = ""
@@ -175,12 +177,25 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             Write_Parser.write(cfgfile)
             cfgfile.close()
             
-    """    Check if mac address is a valid mac address    """
+
     async def killswitch(self):
         self.logger.info("Start timeout function")
         while time.time()-self.start_time < 2 :
             self.logger.warning("Timeout timer running {}".format(time.strftime("%H:%M:%S",time.localtime(self.start_time))))
             await asyncio.sleep(1)
+        try:
+            self.stopEvent.set()
+        except:
+            pass
+
+    async def killswitch_for_commands(self):
+        self.logger.info("Start timeout function")
+        while time.time()-self.start_time < 10 :
+            self.logger.warning("Timeout timer running {}".format(time.strftime("%H:%M:%S",time.localtime(self.start_time))))
+            await asyncio.sleep(1)
+            if self.notification_done:
+                self.notification_done=False
+                break
         try:
             self.stopEvent.set()
         except:
@@ -215,7 +230,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             cfgfile = open("TagList.ini", "w")
             Write_Parser.write(cfgfile)
             cfgfile.close()
-
+    """    Check if mac address is a valid mac address    """
     def __check_mac_address(self, mac):
         if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", mac.lower()):
             self.logger.info('MAC set to specific Mac-Address')
@@ -237,15 +252,13 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         tags_new = len(self.mac) - tags_so_far
         self.logger.info('%d new Ruuvi tags were found' % tags_new)
 
-
+    """
+    Creates a loop where the command task is sent to all or specific devices in the area.self.stopEvent.clear()
+    """
     def work_loop(self, macs="", command=""):
         if not isinstance(macs, list):
             self.logger.info("Search custom MAC-Adress {}".format(macs))
             if macs != "":
-                # self.__check_mac_address()
-                # taskobj = self.my_loop.create_task(self.__check_mac_address(macs))
-                # self.my_loop.run_until_complete(self.__check_mac_address())
-                # print(taskobj.result())
                 if not self.__check_mac_address(macs):
                     return
             else:
@@ -254,7 +267,6 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         try:
             self.taskobj = self.my_loop.create_task(self.connect_to_mac_command(command_string=command, specific_mac=macs))
             self.my_loop.run_until_complete(self.taskobj)
-            #self.success = True
         except Exception as e:
             self.logger.error("Error while activate logging: {}".format(e))
 
@@ -274,8 +286,10 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
 
     async def connect_to_mac_command(self, command_string, specific_mac=""):
         # Second Funktion -> Connect to Ruuvitag and send commands
-
-        if specific_mac != "":
+        if isinstance(specific_mac, list):
+            mac=specific_mac
+            print(mac)
+        elif specific_mac != "":
             mac = [specific_mac]
         else:
             mac = self.mac
@@ -285,14 +299,25 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             try:
                 async with BleakClient(i) as client:
                     # Send the command (Wait for Response must be True)
-                    await client.start_notify(UART_RX, self.handle_sensor_commands)
+                    await client.start_notify(UART_RX, partial(self.handle_sensor_commands, client))
                     await client.write_gatt_char(UART_TX,
                                                  bytearray.fromhex(command_string), True)
                     self.logger.info('Message send to MAC: %s' % (i))
+
+                    self.start_time = time.time()
+                    self.logger.info("Set Processtimer")
+                    await self.killswitch_for_commands()
+                    self.logger.info("Killswitch starts monitoring")
                     await self.stopEvent.wait()
+                    self.logger.warning("Abort workloop Task via Killswtch after timeout!")
                     await client.stop_notify(UART_RX)
                     self.stopEvent.clear()
                     self.logger.info('Stop notify: %s' % (i))
+
+                    # await self.stopEvent.wait()
+                    # await client.stop_notify(UART_RX)
+                    # self.stopEvent.clear()
+                    # self.logger.info('Stop notify: %s' % (i))
             except Exception as e:
                 self.logger.warning('Connection faild at MAC %s' % (i))
                 self.logger.error("Error: {}".format(e))
@@ -309,7 +334,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             self.logger.info("Send {} to MAC {} ".format(readCommand,i))
             async with BleakClient(i) as client:
                 # Send the command (Wait for Response must be True)
-                self.client = client
+                #self.client = client
                 await client.start_notify(UART_RX, self.handle_data)
                 await client.write_gatt_char("6e400002-b5a3-f393-e0a9-e50e24dcca9e", bytearray.fromhex(readCommand),
                                              True)
@@ -332,7 +357,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             return None
 
     # ----------------------Interprete Ruuvitag Callback-----------------------
-    async def handle_sensor_commands(self, sender: int, value: bytearray):
+    def handle_sensor_commands(self, client: BleakClient,sender: int, value: bytearray):
         """
         handle -- integer, characteristic read handle the data was received on
         value -- bytearray, the data returned in the notification
@@ -343,16 +368,18 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         if value[0] == 0x4A or value[0] == 0x21:
             self.logger.info("Received: %s" % hexlify(value))
             status_string=str(self.ri_error_to_string(value[3]), )
-            self.sensor_data={"Status":status_string}
+            #self.sensor_data.append({"Status":status_string})
             self.logger.info("Status: %s" % status_string)
             if len(value) == 4:
                 self.stopEvent.set()
+                self.notification_done = True
             elif value[2] == 0x09:
                 self.logger.info("Received time: %s" % hexlify(value[:-9:-1]))
                 recieved_time=time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(value[:-9:-1]), 16) / 1000))
                 self.logger.info(recieved_time)
-                self.sensor_data={"Received time": recieved_time}
+                self.sensor_data.append({"Received time": recieved_time, "MAC":client.address})
                 self.stopEvent.set()
+                self.notification_done = True
             elif value[0] == 0x4a and value[3] == 0x00:
                 sample_rate=""
                 if value[4] == 201:
@@ -362,13 +389,14 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                     self.logger.info("Samplerate:    %d Hz" % value[4])
                     sample_rate=int(value[4])
                 # print("Samplerate:    %d Hz" % value[4])
-                self.sensor_data={"Samplerate": sample_rate,
+                self.sensor_data.append({"Samplerate": sample_rate,
                                   "Resolution":int(value[5]),
                                   "Scale":int(value[6]),
                                   "DSP function": int(value[7]),
                                   "DSP parameter": int(value[8]),
-                                  "Mode":  "%x" % value[9]
-                                  }
+                                  "Mode":  "%x" % value[9],
+                                  "MAC": client.address
+                                  })
                 self.logger.info("Resolution:    %d Bits" % (int(value[5])))
                 self.logger.info("Scale:         %d G" % value[6])
                 self.logger.info("DSP function:  %x" % value[7])
@@ -376,9 +404,9 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 self.logger.info("Mode:          %x" % value[9])
 
                 if value[10] > 1:
-                    self.sensor_data={"Frequency divider": int(value[10])}
+                    self.sensor_data.append({"Frequency divider": int(value[10])})
                     self.logger.info("Frequency divider: %d" % value[10])
-
+                self.notification_done=True
                 self.stopEvent.set()
 
         elif value[0] == 0xfb and value[1] == 0x0d:
@@ -394,7 +422,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             words_used = value[13] | (value[14] << 8)
             largest_contig = value[15] | (value[16] << 8)
             freeable_words = value[17] | (value[18] << 8)
-            self.sensor_data={"Message Status": "%s"%(self.ri_error_to_string(message_status)),
+            self.sensor_data.append({"Message Status": "%s"%(self.ri_error_to_string(message_status)),
                               "Last Status": "%s"%(self.ri_error_to_string(logging_status)),
                               "Ringbuffer start": ringbuffer_start,
                               "Ringbuffer end": ringbuffer_end,
@@ -404,8 +432,9 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                               "Words reserved":words_reserved,
                               "Words used":words_used,
                               "Largest continuos":largest_contig,
-                              "Freeable words":freeable_words
-                              }
+                              "Freeable words":freeable_words,
+                                     "MAC": client.address
+                              })
             self.logger.info("Message Status %s" % (str(self.ri_error_to_string(message_status)),))
             self.logger.info("Last Status %s" % (str(self.ri_error_to_string(logging_status)),))
             self.logger.info("Ringbuffer start %d" % (ringbuffer_start,))
@@ -418,6 +447,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             self.logger.info("Largest continuos %d" % (largest_contig,))
             self.logger.info("Freeable words %d\n" % (freeable_words,))
             self.stopEvent.set()
+            self.notification_done = True
 
     # ------------------------Activate/Deactivate Logging----------------------
     def activate_logging_at_sensor(self, specific_mac=""):
