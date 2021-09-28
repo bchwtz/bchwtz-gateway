@@ -1,13 +1,16 @@
-# -*- coding: utf-8 -*-
 """
-TO-DOs:
-    1. init : self.find_tags gehört nicht in den Konstruktor
+The gateway has three different tasks:
 
+    Manipulate the state of one or more sensors via control messages
+    Receive acceleration data from one or more sensors, parse and store them
+    Logging Bluetooth advertisements from sensors
+
+For the first two tasks there is the “SensorGatewayBleak” library.
+Another module is used to log the advertisements. Both are written in python.
 """
 
 # %% libraries
 
-# import operator
 import asyncio
 import nest_asyncio
 import re
@@ -20,6 +23,7 @@ import logging
 from enum import Enum
 import crcmod
 import struct
+from functools import partial
 # import async_timeout
 import configparser
 
@@ -34,7 +38,6 @@ crcfun = crcmod.mkCrcFun(0x11021, rev=False, initCrc=0xffff, xorOut=0)
 # %% Configuration Logger------------------------------------------------------
 # Creat a named logger 'SensorGatewayBleak' and set it on INFO level
 Log_SensorGatewayBleak = logging.getLogger('SensorGatewayBleak')
-# Log_SensorGatewayBleak.setLevel(logging.INFO)
 
 # Create a file handler
 file_handler = logging.FileHandler('SensorGatewayBleak.log')
@@ -72,12 +75,18 @@ class SamplingRate(Enum):
 
 
 class SamplingResolution(Enum):
+    """
+    For validation of the arguments set in set_config_sensor.
+    """
     x08 = 8
     x0A = 10
     x0C = 12
 
 
 class MeasuringRange(Enum):
+    """
+    For validation of the arguments set in set_config_sensor.
+    """
     x02 = 2
     x04 = 4
     x08 = 8
@@ -87,6 +96,9 @@ class MeasuringRange(Enum):
 # %% Class Async-Events
 # Thread Safe Event Class
 class Event_ts(asyncio.Event):
+    """
+    Custom event loop class for the RuuviTagAccelerometerCommunicationBleak.
+    """
     def clear(self):
         self._loop.call_soon_threadsafe(super().clear)
 
@@ -96,7 +108,18 @@ class Event_ts(asyncio.Event):
 
 # %% Class RuuviTagAccelerometerCommunicationBleak----------------------------
 class RuuviTagAccelerometerCommunicationBleak(Event_ts):
+    """ This class represents the center of the sensor communication. It
+    sends commands to the RuuviTag and handles the incomming trafic. To
+    communicate with the sensors, the bleak and asyncio libraries are required.
+    """
     def __init__(self):
+        """
+        Constructor mesthod of the class RuuviTagAccelerometerCommunicationBleak.
+
+        :returns:
+            None.
+
+        """
         self.heartbeat = 8
         self.killTask=""
         self.stopEvent = Event_ts()
@@ -109,8 +132,6 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         
         # Create a child of the previously created logger 'SensorGatewayBleak'
         self.logger = logging.getLogger('SensorGatewayBleak.ClassRuuvi')
-        # self.logger.info('Initialize child logger ClassRuuvi')
-        # self.logger.info('Start constructor')
 
         # MAC - list of addresses of the bluetooth devices
         self.mac = []
@@ -121,62 +142,51 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.sensor_data=[]
         # Variable for bandwidth calculation
         self.start_time = time.time()
+        self.notification_done=True
 
         # Auxiliary Variables
         self.success = ""
 
         # Search for asyncio loops that are already running
         self.my_loop = asyncio.get_event_loop()
-        
-        # self.logger.info('Searching for running loops completed')
-        # #self.__handle_config_file(Mode="INIT")
-        # self.logger.info('Class object successfully initialized!')
 
-    # def __exit__(self):
+        # #self.__handle_config_file(Mode="INIT")
+
+
     def activate_debug_logger(self):
+        """
+        This function changes the level of the logger to level INFO.
+
+        :returns:
+            None
+
+        """
         Log_SensorGatewayBleak.setLevel(logging.INFO)
         console_handler.setLevel(logging.INFO)
 
+
     def deactivate_debug_logger(self):
+        """
+        This function changes the level of the logger to level WARNING.
+
+        :returns:
+            None
+
+        """
         Log_SensorGatewayBleak.setLevel(logging.WARNING)
         console_handler.setLevel(logging.WARNING)
 
-    #     self.data = []
-    #     self.logger.info('Reset self.data !')
-    #     self.mac = []
-    #     self.logger.info('Reset self.mac')
-    #     # Do we need a "Reset Tag"-Command to get the Tag in a safe state?
-    
-    def Handle_Config_File(self, Mode = ""):
-        # [[Tag1,MAC1],...,[TagN,MACN]]
-        ErrFlag = 0
-        if Mode == "Read" or Mode == "INIT":
-            try:
-                Read_Parser = configparser.ConfigParser()
-                Read_Parser.read('TagList.ini')
-                for tag in Read_Parser["Tags"]:
-                    self.TagList.append([tag, Read_Parser.get("Tag", tag)])
-            except:
-                ErrFlag = 1
-                print("Could not read TagList.ini")
-        elif Mode == "INIT" and ErrFlag ==1:
-            Write_Parser = configparser.ConfigParser()
-            Write_Parser.add_section("Tags")
-            cfgfile = open("TagList.ini","w")
-            Write_Parser.write(cfgfile)
-            cfgfile.close()
-            self.TagList=[]
-        elif Mode == "WRITE":
-            Write_Parser = configparser.ConfigParser()
-            Write_Parser.add_section("Tags")
-            for tag in self.TagList:
-                Write_Parser.set("Tags", tag[0] , tag[1])
-            cfgfile = open("TagList.ini","w")
-            Write_Parser.write(cfgfile)
-            cfgfile.close()
-            
-    """    Check if mac address is a valid mac address    """
+
     async def killswitch(self):
+        """
+        This funcion handels communication timeouts if a sensor gets out of
+        range while transfering the data. So far, this funktion is the safest way
+        to raise/handle a timeout error, while processing the code asyncronous.
+
+        :returns:
+            If an timout is raised, a log notification will appear in the kernel
+
+        """
         self.logger.info("Start timeout function")
         while time.time()-self.start_time < 2 :
             self.logger.warning("Timeout timer running {}".format(time.strftime("%H:%M:%S",time.localtime(self.start_time))))
@@ -185,10 +195,35 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             self.stopEvent.set()
         except:
             pass
+    async def killswitch_for_commands(self):
+            self.logger.info("Start timeout function")
+            while time.time() - self.start_time < 10:
+                self.logger.warning(
+                    "Timeout timer running {}".format(time.strftime("%H:%M:%S", time.localtime(self.start_time))))
+                await asyncio.sleep(1)
+                if self.notification_done:
+                    self.notification_done = False
+                    break
+            try:
+                self.stopEvent.set()
+            except:
+                pass
 
 
     def __handle_config_file(self, Mode=""):
-        # [[Tag1,MAC1],...,[TagN,MACN]]
+        """
+        This function will store some basic informations about the sensor such as
+        Name and MAC-Address in an config.ini file. A distinction is made between
+        three modes: 'READ', 'INIT' and 'WRITE'.
+
+        :param arg1:
+            Mode : keyword,str, optional
+            DESCRIPTION: The default is "".
+
+        :return:
+            A config.ini will be created or updated.
+
+        """
         ErrFlag = 0
         if Mode == "Read" or Mode == "INIT":
             try:
@@ -216,18 +251,41 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             Write_Parser.write(cfgfile)
             cfgfile.close()
 
+
     def __check_mac_address(self, mac):
+        """
+        This funcion uses a regular expression to compare the MAC address of
+        a bluetooth device with a valide variante of a RuuviTag MAC adress.
+
+        :parameters:
+            mac : str
+            This parameter contains a specific MAC-Address
+
+        :returns:
+            There are two possible return statements. If the mac address is valid
+            the funciton find_tags will be called with the mac address as parameter.
+            If the mac address is not valid, an error message will raised.
+
+        """
         if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", mac.lower()):
             self.logger.info('MAC set to specific Mac-Address')
-
-            return self.find_tags(mac)
+            return True
         else:
             self.logger.error("Mac is not valid!")
             return False
 
-    """    validate that found macs are ruuvi tags    """
 
     def __validate_mac(self, devices):
+        """
+        This funcion updates the internal mac_list. If a MAC address passed the
+        checked_mac_address process, it will extend the list 'mac'.
+
+        :parameters:
+            devices : dictionary {name, address}
+
+        :returns:
+            None.
+        """
         tags_so_far = len(self.mac)
         for i in devices:
             self.logger.info('Device: %s with Address %s found!' % (i.name, i.address))
@@ -239,13 +297,23 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
 
 
     def work_loop(self, macs="", command=""):
+        """
+        From this function, the command lines are transmitted to individual tags.
+        For example, configurations can be made or individual parameters can be obtained
+
+        :parameters:
+            macs : str, optional
+                DESCRIPTION. The default is "".
+            command : str, optional
+                DESCRIPTION. The default is "".
+
+        :returns:
+            None.
+
+        """
         if not isinstance(macs, list):
             self.logger.info("Search custom MAC-Adress {}".format(macs))
             if macs != "":
-                # self.__check_mac_address()
-                # taskobj = self.my_loop.create_task(self.__check_mac_address(macs))
-                # self.my_loop.run_until_complete(self.__check_mac_address())
-                # print(taskobj.result())
                 if not self.__check_mac_address(macs):
                     return
             else:
@@ -254,14 +322,26 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         try:
             self.taskobj = self.my_loop.create_task(self.connect_to_mac_command(command_string=command, specific_mac=macs))
             self.my_loop.run_until_complete(self.taskobj)
-            #self.success = True
         except Exception as e:
             self.logger.error("Error while activate logging: {}".format(e))
 
+
     # -------------Find -> Connect -> Listen-Functions---------------------
     async def find_tags(self, mac=""):
-        # First Funktion -> Find Ruuvitags
+        """
+        The function searches for bluetooth devices nearby and passes the
+        MAC addresses to the __validate_mac function.
 
+        :parameters:
+            mac : TYPE, optional
+                The default is "".
+
+        :returns:
+            bool
+                False : No Tags were found.
+                True : At least one Tag was found nearby.
+
+        """
         if mac != "":
             device = [await BleakScanner.find_device_by_address(mac)]
             self.__validate_mac(device)
@@ -269,13 +349,31 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             devices = await BleakScanner.discover(timeout=5.0)
             self.__validate_mac(devices)
         if len(self.mac) == 0:
+            self.logger.warning("No RuuviTags were found.")
             return False
         return True
 
-    async def connect_to_mac_command(self, command_string, specific_mac=""):
-        # Second Funktion -> Connect to Ruuvitag and send commands
 
-        if specific_mac != "":
+    async def connect_to_mac_command(self, command_string, specific_mac=""):
+
+        """
+        connect_to_mac_command gets called by the function work_loop. Its
+        used to get or chang the Tag configurations.
+
+        :parameters:
+            command_string : str
+                Specific comand for the bluetoothdevice.
+            specific_mac : str, optional
+                Specific MAC adress.
+
+        :returns:
+            Callbacks are passed to the handle_senson_comands.
+
+        """
+        if isinstance(specific_mac, list):
+            mac = specific_mac
+            print(mac)
+        elif specific_mac != "":
             mac = [specific_mac]
         else:
             mac = self.mac
@@ -285,27 +383,43 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             try:
                 async with BleakClient(i) as client:
                     # Send the command (Wait for Response must be True)
-                    await client.start_notify(UART_RX, self.handle_sensor_commands)
+                    await client.start_notify(UART_RX, partial(self.handle_sensor_commands, client))
                     await client.write_gatt_char(UART_TX,
                                                  bytearray.fromhex(command_string), True)
                     self.logger.info('Message send to MAC: %s' % (i))
+
+                    self.start_time = time.time()
+                    self.logger.info("Set Processtimer")
+                    await self.killswitch_for_commands()
+                    self.logger.info("Killswitch starts monitoring")
                     await self.stopEvent.wait()
+                    self.logger.warning("Abort workloop Task via Killswtch after timeout!")
                     await client.stop_notify(UART_RX)
                     self.stopEvent.clear()
                     self.logger.info('Stop notify: %s' % (i))
+                    self.logger.info("Task done connect_to_mac_command!")
             except Exception as e:
                 self.logger.warning('Connection faild at MAC %s' % (i))
                 self.logger.error("Error: {}".format(e))
 
-            self.logger.info("Task done connect_to_mac_command!")
-
-            # Reciving and Handling of Callbacks
 
     # Main Function for sensordatalogging
     async def connect_to_mac(self, i, readCommand):
+        """
+        Main function for sensor data logging.
+
+        :parameters:
+            i : list of mac adresses
+
+            readCommand : str
+                Specific comand for bluetoothdevice.
+
+        :returns:
+            None.
+
+        """
         try:
-            """Timeout after 60 Seconds"""
-            # with async_timeout.timeout(60):
+            #Timeout after 60 Seconds
             self.logger.info("Send {} to MAC {} ".format(readCommand,i))
             async with BleakClient(i) as client:
                 # Send the command (Wait for Response must be True)
@@ -314,7 +428,6 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 await client.write_gatt_char("6e400002-b5a3-f393-e0a9-e50e24dcca9e", bytearray.fromhex(readCommand),
                                              True)
                 self.logger.info('Message send to MAC: %s' % (i))
-                #self.my_loop.create_task(self.killswitch())
                 self.start_time = time.time()
                 self.logger.info("Set Processtimer")
                 await self.killswitch()
@@ -332,10 +445,20 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             return None
 
     # ----------------------Interprete Ruuvitag Callback-----------------------
-    async def handle_sensor_commands(self, sender: int, value: bytearray):
+    def handle_sensor_commands(self, client: BleakClient,sender: int, value: bytearray):
         """
-        handle -- integer, characteristic read handle the data was received on
-        value -- bytearray, the data returned in the notification
+        This function is called by the connect_to_mac_comand function.
+        It handles the the incomming callbacks and saves it as log messages.
+
+        :parameters:
+            sender : int
+
+            value : bytearray
+                The data returned by the callbacks.
+
+        :returns:
+            None.
+
         """
 
         self.logger.info("handle_sensor_command called sender: {} and value {}".format(sender, value))
@@ -343,16 +466,18 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         if value[0] == 0x4A or value[0] == 0x21:
             self.logger.info("Received: %s" % hexlify(value))
             status_string=str(self.ri_error_to_string(value[3]), )
-            self.sensor_data={"Status":status_string}
+            #self.sensor_data.append({"Status":status_string})
             self.logger.info("Status: %s" % status_string)
             if len(value) == 4:
                 self.stopEvent.set()
+                self.notification_done = True
             elif value[2] == 0x09:
                 self.logger.info("Received time: %s" % hexlify(value[:-9:-1]))
                 recieved_time=time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(value[:-9:-1]), 16) / 1000))
                 self.logger.info(recieved_time)
-                self.sensor_data={"Received time": recieved_time}
+                self.sensor_data.append({"Received time": recieved_time, "MAC":client.address})
                 self.stopEvent.set()
+                self.notification_done = True
             elif value[0] == 0x4a and value[3] == 0x00:
                 sample_rate=""
                 if value[4] == 201:
@@ -361,14 +486,14 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 else:
                     self.logger.info("Samplerate:    %d Hz" % value[4])
                     sample_rate=int(value[4])
-                # print("Samplerate:    %d Hz" % value[4])
-                self.sensor_data={"Samplerate": sample_rate,
+                self.sensor_data.append({"Samplerate": sample_rate,
                                   "Resolution":int(value[5]),
                                   "Scale":int(value[6]),
                                   "DSP function": int(value[7]),
                                   "DSP parameter": int(value[8]),
-                                  "Mode":  "%x" % value[9]
-                                  }
+                                  "Mode":  "%x" % value[9],
+                                  "MAC": client.address
+                                  })
                 self.logger.info("Resolution:    %d Bits" % (int(value[5])))
                 self.logger.info("Scale:         %d G" % value[6])
                 self.logger.info("DSP function:  %x" % value[7])
@@ -376,9 +501,9 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 self.logger.info("Mode:          %x" % value[9])
 
                 if value[10] > 1:
-                    self.sensor_data={"Frequency divider": int(value[10])}
+                    self.sensor_data.append({"Frequency divider": int(value[10])})
                     self.logger.info("Frequency divider: %d" % value[10])
-
+                self.notification_done=True
                 self.stopEvent.set()
 
         elif value[0] == 0xfb and value[1] == 0x0d:
@@ -394,7 +519,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             words_used = value[13] | (value[14] << 8)
             largest_contig = value[15] | (value[16] << 8)
             freeable_words = value[17] | (value[18] << 8)
-            self.sensor_data={"Message Status": "%s"%(self.ri_error_to_string(message_status)),
+            self.sensor_data.append({"Message Status": "%s"%(self.ri_error_to_string(message_status)),
                               "Last Status": "%s"%(self.ri_error_to_string(logging_status)),
                               "Ringbuffer start": ringbuffer_start,
                               "Ringbuffer end": ringbuffer_end,
@@ -404,8 +529,9 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                               "Words reserved":words_reserved,
                               "Words used":words_used,
                               "Largest continuos":largest_contig,
-                              "Freeable words":freeable_words
-                              }
+                              "Freeable words":freeable_words,
+                                     "MAC": client.address
+                              })
             self.logger.info("Message Status %s" % (str(self.ri_error_to_string(message_status)),))
             self.logger.info("Last Status %s" % (str(self.ri_error_to_string(logging_status)),))
             self.logger.info("Ringbuffer start %d" % (ringbuffer_start,))
@@ -418,13 +544,28 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             self.logger.info("Largest continuos %d" % (largest_contig,))
             self.logger.info("Freeable words %d\n" % (freeable_words,))
             self.stopEvent.set()
+            self.notification_done = True
 
     # ------------------------Activate/Deactivate Logging----------------------
     def activate_logging_at_sensor(self, specific_mac=""):
-        # """
-        # Loop funktion zum aufrufen in eigene Funktion, die activate Logging aufruft.
-        # Async
-        # """
+        """
+        The “activate_logging_at_sensor()” function activates logging at all
+        sensors in Bluetooth range of the gateway. It can also be used with a
+        mac address as argument to activate the logging at a specific sensor.
+        To activate the logging, the gateway sends a control acceleration logging
+        message to the target sensor.
+        The message content is `F0A 0xFA 0x0A 0x01`
+        If Logging is already activated an error message will be received.
+
+        :parameters:
+            specific_mac : TYPE, optional
+                The activate logging at sensor function can also be called to activate a
+                specific_mac. The The default is "".
+
+        :returns:
+            Log message to kernel.
+
+        """
         # command_string = "FAFA0a0100000000000000"
         command_string = "4a4a080100000000000000"
         self.success = False
@@ -435,6 +576,24 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             self.logger.error("Logging is not activated")
 
     def deactivate_logging_at_sensor(self, specific_mac=""):
+        """
+        The “deactivate_logging_at_sensor()” function deactivates logging at
+        all sensors in Bluetooth range. With a mac address as argument, a
+        specific sensor can be deactivated. To deactivate the logging, the
+        gateway sends a control acceleration logging message to the target sensor.
+        The message content is 0xFA 0xFA 0x0A 0x00. Stopping the logging cause
+        a deletion of all flash pages. If Logging is not activated an error
+        message will be received.
+
+        :parameters:
+            specific_mac : TYPE, optional
+                The `deactivate_logging_at_sensor` function can also be called to activate a
+                specific_mac. The The default is "".
+
+        :returns:
+            Log message to kernel.
+
+        """
         self.success = False
         command_string = "4a4a080000000000000000"
         self.work_loop(macs=specific_mac, command=command_string)
@@ -445,11 +604,25 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
 
     # ----------------------------Acceleration Logging-------------------------
     def get_acceleration_data(self, specific_mac=""):
-        # global readAllString #? Wofür ist dieser String
+        """
+        The `get_acceleration_data()` collects all samples from all sensors
+        in Bluetooth range, parse and stores them. To do this, the gateway
+        sends a “Start transmitting logged data” message to all targets and
+        receives the data which are followed by an “End of data message”
+
+        :parameters:
+            specific_mac : TYPE, optional
+                The `get_acceleration_data()` function can also be called to activate a
+                specific_mac. The The default is "".
+
+        :returns:
+            TYPE: list
+                DESCRIPTION.
+
+        """
         self.data = []
         self.ConnectionError = False
         readAllString = "4a4a110100000000000000"
-        # my_loop = asyncio.get_running_loop()
         # This is a DEBUG Funktion to Connect to a specific tag
         if specific_mac != "":
             if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", specific_mac.lower()):
@@ -460,7 +633,6 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         else:
             self.logger.info('Try to get acceleration data from tags')
             mac = self.mac
-            # mac = self.find_tags_mac()
 
         """Read acceleration samples for each sensor"""
         for i in mac:
@@ -473,17 +645,18 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
 
     # --------------------------------handle data--------------------------------
 
-    """Handle received data"""
-
     async def handle_data(self, handle, value):
         """
-        handle -- integer, characteristic read handle the data was received on
-        value -- bytearray, the data returned in the notification
+        Handles the callbacks and pass them to the process_data functions
+
+        :parameters:
+            value : bytearray
+                The callbacks returned by the tags.
+
+        :returns:
+            None.
+
         """
-        # self.heartbeat=20
-        # if time.time()-self.start_time >20:
-        #     self.logger.warn("Timout while getting acceleration data")
-        #     self.stopEvent.set()
         if value[0] == 0x11:
             # Daten
             sensordaten.extend(value[1:])
@@ -505,9 +678,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             self.logger.debug("Received CRC: %s" % hexlify(crc))
 
             # CRC validation
-            #print(sensordaten)
             ourcrc = crcfun(sensordaten)
-            #print("Recalculated CRC: %x" % ourcrc)
 
             print("Received %d bytes" % len(sensordaten))
             #print(hexlify(crc))
@@ -541,11 +712,30 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 self.logger.info("Run in Funktion AccelorationData != None")
                 self.data.append([list(map(list, zip(AccelorationData[0], AccelorationData[1], AccelorationData[2],
                                                      AccelorationData[3])))])
-                #print(self.data)
 
 
-    ##%% region processdata
+    #%% region processdata
     def process_sensor_data_8(self, bytes, scale, rate):
+        """
+        This function parses the sensor data based on its resolution.
+
+        :parameters:
+            scale : TYPE
+                Is needed to decode the acceleration data.
+            rate : TYPE
+                Rate of sampling in smaples per second.
+
+        :returns:
+            x_vector : int
+                Acceleration in x direction.
+            y_vector : int
+                Acceleration in y direction
+            z_vector : int
+                Acceleration in z direction.
+            timestamp_list : time
+                Timestamp
+
+        """
         j = 0
         pos = 0
         koords = ["\nx", "y", "z"]
@@ -573,9 +763,6 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             t = bytes[pos:pos + 8]
             inv_t = t[::-1]
             timestamp = int(hexlify(inv_t), 16) / 1000
-            #
-            # dt = datetime.datetime.utcfromtimestamp(int(hexlify(inv_t), 16) / 1000).strftime('%Y-%m-%d %H:%M:%S.%f')
-            # print(dt)
             pos += 8
             """Read values"""
             for i in range(96):
@@ -609,6 +796,26 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         return x_vector, y_vector, z_vector, timestamp_list
 
     def process_sensor_data_10(self, bytes, scale, rate):
+        """
+        This function parses the sensor data based on its resolution.
+
+        :parameters:
+            scale : TYPE
+                Is needed to decode the acceleration data.
+            rate : TYPE
+                Rate of sampling in smaples per second.
+
+        :returns:
+            x_vector : int
+                Acceleration in x direction.
+            y_vector : int
+                Acceleration in y direction
+            z_vector : int
+                Acceleration in z direction.
+            timestamp_list : time
+                Timestamp
+
+        """
         runtime = time.time() - self.start_time
         j = 0
         pos = 0
@@ -741,6 +948,26 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         return x_vector, y_vector, z_vector, timestamp_list
 
     def process_sensor_data_12(self, bytes, scale, rate):
+        """
+        This function parses the sensor data based on its resolution.
+
+        :parameters:
+            scale : TYPE
+                Is needed to decode the acceleration data.
+            rate : TYPE
+                Rate of sampling in smaples per second.
+
+        :returns:
+            x_vector : int
+                Acceleration in x direction.
+            y_vector : int
+                Acceleration in y direction
+            z_vector : int
+                Acceleration in z direction.
+            timestamp_list : time
+                Timestamp
+
+        """
         j = 0
         pos = 0
         koords = ["x", "y", "z"]
@@ -824,7 +1051,39 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
     ##%% Set configurations of the sensor
     def set_config_sensor(self, specific_mac="", sampling_rate='FF', sampling_resolution='FF', measuring_range='FF',
                           divider="FF"):
-        """Check if arguments are given and valid"""
+        """
+        With the “set_config_sensor()” function three sensor properties can be manipulated:
+
+            1. Sampling rate (sampling_rate): Measuring interval of the sensor. Allowed values can be found in Chapter.
+
+            2. Sampling resolution (sampling_resolution): Resolution of the measured values. Allowed values can be found in Chapter.
+
+            3. Measuring range(measuring_range): Measuring range. Allowed values can be found in Chapter.
+
+        The configuration will be sent via a “Set configuration of acceleration sensor” message to a specific sensors in Bluetooth range.
+        Only arguments with allowed values will be set. All others stay as they are.
+        After setting the configuration all flash pages will be deleted.
+        This can cause a loss of data. The Sensor send a status response message to the gateway if the configuration was set successful or not.
+
+        :parameters:
+            specific_mac : str, optional
+                Specific MAC adress. The default is "".
+            sampling_rate : str, optional
+                The default is 'FF'.
+            sampling_resolution : str, optional
+                The default is 'FF'.
+            measuring_range : str, optional
+                The default is 'FF'.
+            divider : str, optional
+                The default is "FF".
+
+        :return
+            bool
+                If the function ends without making any changes, it returns FALSE.
+
+        """
+
+        #Check if arguments are given and valid
         if sampling_rate == 'FF':
             hex_sampling_rate = 'FF'
         elif sampling_rate in SamplingRate._value2member_map_:
@@ -832,7 +1091,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         else:
             self.logger.warning("Wrong sampling rate")
             hex_sampling_rate = 'FF'
-        """Check if arguments are given and valid"""
+        #Check if arguments are given and valid
         if sampling_resolution == 'FF':
             hex_sampling_resolution = 'FF'
         elif sampling_resolution in SamplingResolution._value2member_map_:
@@ -840,7 +1099,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         else:
             self.logger.warning("Wrong sampling resolution")
             hex_sampling_resolution = 'FF'
-        """Check if arguments are given and valid"""
+        #Check if arguments are given and valid
         if measuring_range == 'FF':
             hex_measuring_range = 'FF'
         elif measuring_range in MeasuringRange._value2member_map_:
@@ -851,12 +1110,12 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             hex_divider = 'FF'
         else:
             hex_divider = str(divider)
-        """Exit function if no changes are made"""
+        #Exit function if no changes are made
         if (hex_sampling_rate == "FF") and (hex_sampling_resolution == "FF") and (hex_measuring_range == "FF") and (
                 hex_divider == "FF"):
             self.logger.warning("No changes are made. Try again with correct values")
             return False
-        """Create command string and send it to targets"""
+        #Create command string and send it to targets
         command_string = "4a4a02" + hex_sampling_rate + hex_sampling_resolution + hex_measuring_range + "FFFFFF" + hex_divider + "00"
 
         self.success = False
@@ -868,9 +1127,21 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             logging.error("Config set")
 
 
-    """Get configuration from sensors"""
-
     def get_config_from_sensor(self, specific_mac=""):
+        """
+        The “get_config_from_sensor()” send a “Read configuration of acceleration sensor”
+        message to the target sensor. The sensor returns with a “Configuration response”
+        message. The configuration will be displayed.
+        To see a specific sensor configuration, use its mac address as argument.
+
+        :parameters:
+            specific_mac : str, optional
+                Specific MAC adress. The default is "".
+
+        :returns:
+            sensor_data as list.
+
+        """
         command_string = "4a4a030000000000000000"
         self.success = False
         self.work_loop(macs=specific_mac, command=command_string)
@@ -881,9 +1152,20 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             logging.error("Config not read")
 
 
-    """Get time from sensors"""
-
     def get_time_from_sensor(self, specific_mac=""):
+        """
+        The “get_time_from_sensor()” function returns the current time from a
+        specific sensors in Bluetooth range. The function sends a “Read system time”
+        message to the targets and receives a “Timestamp response” message.
+
+        :parameters:
+            specific_mac : str, optional
+                Specific MAC adress. The default is "".
+
+        :returns:
+            sensor_data as list.
+
+        """
         command_string = "2121090000000000000000"
         self.success = False
         self.work_loop(macs=specific_mac, command=command_string)
@@ -894,9 +1176,25 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             logging.error("Time  read")
 
 
-    """Set sensor time"""
 
     def set_sensor_time(self, specific_mac=""):
+        """
+        With the “set_sensor_time() “ function all sensors in Bluetooth range
+        will be set to the current time in UTC.
+        Giving a specific mac address as argument will set the time at this sensor only.
+        To set the sensor time a “Set system time” message, with the current time, will be send.
+        After setting the sensor time all flash pages will be deleted.
+        This can cause a loss of data. The Sensor send a response message to the gateway
+        if the time was set successful or not.
+
+        :parameters:
+            specific_mac : str, optional
+                Specific MAC adress. The default is "".
+
+        :returns:
+            None.
+
+        """
         """Time has to be little endian and 16 bit long"""
         timestamp = struct.pack("<Q", int(time.time() * 1000)).hex()
         self.logger.info(time.time())
@@ -929,10 +1227,17 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
 
 
     def get_logging_status(self, specific_mac=""):
-        # """
-        # Loop funktion zum aufrufen in eigene Funktion, die activate Logging aufruft.
-        # Async
-        # """
+        """
+        Checks the logging status of a specific sensor.
+
+        :parameters:
+            specific_mac : str, optional
+                Specific MAC address. The default is "".
+
+        :returns:
+            list
+
+        """
 
         command_string = "4A4A090000000000000000"
         self.success = False
@@ -943,11 +1248,18 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         else:
             logging.error("Logging status is not read")
 
-    ##%% region error messages
+    #%% region error messages
 
     def ri_error_to_string(self, error):
+        """
+        Decodes the RuuviTag error, if it was raised.
+
+        :returns:
+            result : set
+                A set of occured errors.
+
+        """
         result = set()
-        # print(error)
         if error == 0:
             Log_SensorGatewayBleak.info("RD_SUCCESS")
             result.add("RD_SUCCESS")

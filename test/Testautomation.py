@@ -76,34 +76,15 @@ class Testfunctions:
                                 wrong_values += 1
         print("{} config values are not set correctly!".format(wrong_values))
 
-
+        
 ############## Helping functions #######################
     def get_acceleration_time_differences(self, acceleration_samples, test):
         print("in get_acceleration_time_differences")
         time_vorher = None
         anz_korrekt = 0
         anz_fail = 0
-        with patch('sys.stdout', new=StringIO()) as fake_out:
-            test.get_config_from_sensor()
-            # print('hallo',fake_out.getvalue())
-            sys.stdout = sys.__stdout__
-            # print('hallo', fake_out.getvalue())
-            captured = fake_out.getvalue().splitlines()
-            # print('captured',captured)
-            for line in captured:
-                # print('n', line)
-                if re.search('Samplerate', line):
-                    # print('drinnen')
-                    # print(line)
-                    # samplerate=(int(s) for s in line.split() if s.isdigit())
-
-                    for s in line.split():
-                        if s.isdigit():
-                            samplerate = int(s)
-
-                    print(samplerate)
-                # print([int(s) for s in line.split() if s.isdigit()])
-        # self.assertEqual(fake_out.getvalue(), expected_url)
+        config_datas = test.get_config_from_sensor()
+        samplerate=config_datas['Samplerate']
         for element in acceleration_samples[0][0]:
             print(element)
             anz_elemente = len(acceleration_samples[0][0])

@@ -20,7 +20,10 @@ setup(name='gateway',
                         'bleak',
                         'crcmod',
                         'async_timeout',
-                        'configparser' 
+                        'configparser',
+                        'async-generator',
+                        'Markdown',
+                        'Sphinx'
                         ],
       python_requires=">=3.6"
       )
