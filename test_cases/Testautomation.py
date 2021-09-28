@@ -3,9 +3,10 @@
 # %% libraries
 import re
 import time
+import sys
+sys.path.append("..")
 from unittest.mock import patch
 from io import StringIO
-import sys
 
 ############# Testcases ##########################
 
@@ -15,9 +16,9 @@ class Testfunctions:
         print("in start_logging")
         test = SensorGatewayBleak.RuuviTagAccelerometerCommunicationBleak()
         test.deactivate_debug_logger()
-        time.sleep(15)
+        time.sleep(5)
         test.activate_debug_logger()
-        time.sleep(15)
+        time.sleep(5)
         acceleration_samples = test.get_acceleration_data()
         anz_fail = self.get_acceleration_time_differences_32_val(acceleration_samples, test)
         print("anzahl gefailter tests {}".format(anz_fail))
