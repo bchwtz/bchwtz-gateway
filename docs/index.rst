@@ -10,9 +10,10 @@ Welcome to RuuviTag-Gateway's documentation!
    :maxdepth: 2
    :caption: Contents:
    
-   README.md
+   gateway_readme_link.rst
    The Documentation Guide.rst
    Gateway.rst
+   test_readme_link.rst
 
 Indices and tables
 ==================

@@ -1,16 +1,24 @@
 import asyncio
 from gateway import SensorGatewayBleak, AdvertisementLogging
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(AdvertisementLogging.find_tags())
+#AdvertisementLogging.start_advertisement_logging()
 
 
 
 test= SensorGatewayBleak.RuuviTagAccelerometerCommunicationBleak()
 # print("--------------------------\n")
-# test.activate_debug_logger()
+test.activate_debug_logger()
+#test.activate_logging_at_sensor()
+"""
+All command functions can take a mac address as string or as a list of strings.
+"""
+dfg=test.get_config_from_sensor()
+print(dfg)
+# abc=test.get_acceleration_data()
+# print(abc)
 # test.set_config_sensor(sampling_rate=10,sampling_resolution=10, measuring_range=4)
-#
+#["F8:D8:72:8F:83:0F","C2:0D:4D:C6:87:BE"]
+
 # abc=test.get_config_from_sensor()
 # print(abc)
 

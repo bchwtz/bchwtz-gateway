@@ -3,9 +3,10 @@
 # %% libraries
 import re
 import time
+import sys
+sys.path.append("..")
 from unittest.mock import patch
 from io import StringIO
-import sys
 
 ############# Testcases ##########################
 
@@ -14,10 +15,10 @@ class Testfunctions:
         from gateway import SensorGatewayBleak
         print("in start_logging")
         test = SensorGatewayBleak.RuuviTagAccelerometerCommunicationBleak()
-        test.deactivate_logging_at_sensor()
-        time.sleep(15)
-        test.activate_logging_at_sensor(specific_mac)
-        time.sleep(15)
+        test.deactivate_debug_logger()
+        time.sleep(5)
+        test.activate_debug_logger()
+        time.sleep(5)
         acceleration_samples = test.get_acceleration_data()
         anz_fail = self.get_acceleration_time_differences_32_val(acceleration_samples, test)
         print("anzahl gefailter tests {}".format(anz_fail))
@@ -76,34 +77,15 @@ class Testfunctions:
                                 wrong_values += 1
         print("{} config values are not set correctly!".format(wrong_values))
 
-
+        
 ############## Helping functions #######################
     def get_acceleration_time_differences(self, acceleration_samples, test):
         print("in get_acceleration_time_differences")
         time_vorher = None
         anz_korrekt = 0
         anz_fail = 0
-        with patch('sys.stdout', new=StringIO()) as fake_out:
-            test.get_config_from_sensor()
-            # print('hallo',fake_out.getvalue())
-            sys.stdout = sys.__stdout__
-            # print('hallo', fake_out.getvalue())
-            captured = fake_out.getvalue().splitlines()
-            # print('captured',captured)
-            for line in captured:
-                # print('n', line)
-                if re.search('Samplerate', line):
-                    # print('drinnen')
-                    # print(line)
-                    # samplerate=(int(s) for s in line.split() if s.isdigit())
-
-                    for s in line.split():
-                        if s.isdigit():
-                            samplerate = int(s)
-
-                    print(samplerate)
-                # print([int(s) for s in line.split() if s.isdigit()])
-        # self.assertEqual(fake_out.getvalue(), expected_url)
+        config_datas = test.get_config_from_sensor()
+        samplerate=config_datas['Samplerate']
         for element in acceleration_samples[0][0]:
             print(element)
             anz_elemente = len(acceleration_samples[0][0])
@@ -137,27 +119,8 @@ class Testfunctions:
         anz_korrekt = 0
         anz_fail = 0
         time_index = 0
-        with patch('sys.stdout', new=StringIO()) as fake_out:
-            test.get_config_from_sensor()
-            # print('hallo',fake_out.getvalue())
-            sys.stdout = sys.__stdout__
-            # print('hallo', fake_out.getvalue())
-            captured = fake_out.getvalue().splitlines()
-            # print('captured',captured)
-            for line in captured:
-                # print('n', line)
-                if re.search('Samplerate', line):
-                    # print('drinnen')
-                    # print(line)
-                    # samplerate=(int(s) for s in line.split() if s.isdigit())
-
-                    for s in line.split():
-                        if s.isdigit():
-                            samplerate = int(s)
-
-                    print(samplerate)
-                # print([int(s) for s in line.split() if s.isdigit()])
-        # self.assertEqual(fake_out.getvalue(), expected_url)
+        config_datas = test.get_config_from_sensor()
+        samplerate=config_datas['Samplerate']
         for element in acceleration_samples[0][0]:
             print(element)
             time_index = time_index + 1

@@ -1,12 +1,34 @@
 # Getting-Started Guide
 
+## Usefull Informations for Preperation
+
+There are some tricks to communicate with RaspberryPi and get Python Code run. The aim of this chapter is to give a brief 
+introduction to the installation and application of the packages.
+
 ## Installation
 
-The running capability of the software was tested and validated under Raspian on a RaspberryPi 4.
+Before installing, a few [settings](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token) 
+have to be made, so that the gateway gets access to the private repository.
+
+    1. Go to Github>Settings>Developer Settings>Personal Access tokens
+    2. Creat a new access token for the RaspberryPi
+    3. To acces to the repository via comand line, select `repo`
+    4. Copy the token
+
+```{admonition} Note
+The token is displayed by github only once for copy in plain text.
+If the token is lost, the process must be repeated.
+```
+
 The software can be installed via command line.
 
 ```{code-block} python
-pip install -e git+https://github.com/bchwtz-fhswf/gateway.git@develop#egg=gateway
+pip3 install -e git+https://<access token>@github.com/bchwtz-fhswf/gateway.git@develop#egg=gateway
+```
+
+```{admonition} Note
+We used to push the latest changes into the develop branche. If you want to install a specific version,
+the last comand segment has to be changed (e.g. ...@main#egg=gateway).
 ```
 
 Performing the installation requires ’sudo' permissions. When executing the command line, 
@@ -14,7 +36,6 @@ a corresponding login with the necessary rights is required. Dependent libraries
 are now installed. Feedback will be returned if the installation is successful.
 
 ```{code-block} python
-
 Defaulting to user installation because normal site-packages is not writeable
 Looking in indexes: https://pypi.org/simple, https://www.piwheels.org/simple
 Obtaining gateway from git+https://github.com/bchwtz-fhswf/gateway.git@develop#egg=gateway
@@ -40,14 +61,14 @@ Installing collected packages: gateway
 Successfully installed gateway
 ```
 
-```{admonition} Hinweis
-Die `Setup.py` kann auch offline ausgeführt werden. Dazu muss aus dem Projektverzeichnis aus die 
-Codezeile `sudo python Setup.py install` ausgeführt werden.
+```{admonition} Note
+The Setup.py can also be run offline. To do this, the code line `sudo python Setup.py install` 
+must be executed from the project directory.
 ```
 
 ## Get Sensor Data
 
-The file ’SensorGatewayBleak. py' can now be imported as a library in any PythonIDE. 
+The file ’SensorGatewayBleak.py' can now be imported as a library in any PythonIDE. 
 The functions of the library can be tested with the following code lines.
 
 ```{code-block} python

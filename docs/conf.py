@@ -34,7 +34,7 @@ extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest',
               'sphinx.ext.intersphinx', 'sphinx.ext.todo',
               'sphinx.ext.ifconfig', 'sphinx.ext.viewcode',
               'sphinx.ext.inheritance_diagram',
-              'sphinx.ext.autosummary', 'myst_parser']
+              'sphinx.ext.autosummary', 'myst_parser', 'myst_parser']
 
 autosummary_generate = True
 # Add any paths that contain templates here, relative to this directory.
