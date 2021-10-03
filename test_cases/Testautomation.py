@@ -8,9 +8,9 @@ sys.path.append("..")
 from unittest.mock import patch
 from io import StringIO
 
-############# Testcases ##########################
-
+# %% Testcases
 class Testfunctions:
+    # %% Testcase 01: Get acceleration data and check time stamps
     def TC01_GetDataAndCheckTime(self, specific_mac):
         from gateway import SensorGatewayBleak
         print("in start_logging")
@@ -23,6 +23,7 @@ class Testfunctions:
         anz_fail = self.get_acceleration_time_differences_32_val(acceleration_samples, test)
         print("anzahl gefailter tests {}".format(anz_fail))
 
+    # %% Testcase 02: Set configuration and verify
     def TC02_SetConfigAndCheckConfig(self, specific_mac, sampling_value, resolution_value, measuring_value):
         from gateway import SensorGatewayBleak
         print("Test start")
@@ -45,6 +46,7 @@ class Testfunctions:
         else:
             print("set measuring_range is not equal to the measuring_value: {} != {}".format(config_datas['Scale'], measuring_value))
 
+    # %% Testcase 03: Set all configurations and verify
     def TC03_SetAndCheckAllConfigValues(self, specific_mac):
         from gateway import SensorGatewayBleak
         print("Test start")
@@ -77,42 +79,8 @@ class Testfunctions:
                                 wrong_values += 1
         print("{} config values are not set correctly!".format(wrong_values))
 
-        
-############## Helping functions #######################
-    def get_acceleration_time_differences(self, acceleration_samples, test):
-        print("in get_acceleration_time_differences")
-        time_vorher = None
-        anz_korrekt = 0
-        anz_fail = 0
-        config_datas = test.get_config_from_sensor()
-        samplerate=config_datas['Samplerate']
-        for element in acceleration_samples[0][0]:
-            print(element)
-            anz_elemente = len(acceleration_samples[0][0])
-            time_ele = float(element[3].split(":")[2])
-            if time_vorher is None:
-                time_vorher = time_ele
-                continue
-            #            print("time_ele = {}".format(time_ele))
-            #            print("time_vorher = {}".format(time_vorher))
-            print("Diff = {}".format(time_ele - time_vorher))
-            print("Sampling_rate = {}".format(samplerate))
-            diff = round(time_ele - time_vorher, 4)
-            #            print(diff)
-            if (diff < 0):
-                diff = round(diff + 60, 4)
-                print("hier war diff negativ")
-                print("diff + 60s = {}".format(diff))
-            if (diff == 1 / samplerate):
-                #                print("korrekt")
-                anz_korrekt = anz_korrekt + 1
-            else:
-                print("fail")
-                anz_fail = anz_fail + 1
-            time_vorher = time_ele
-        print("Es wurde {0} mal die Zeit Falsch  und {1} mal die Zeit richtig gesetzt".format(anz_fail, anz_korrekt))
-        return anz_fail
 
+    # %% Calculate time differences and count
     def get_acceleration_time_differences_32_val(self, acceleration_samples, test):
         print("in get_acceleration_time_differences_32_val")
         time_vorher = None
@@ -144,7 +112,7 @@ class Testfunctions:
                     print("korrekt")
                     anz_korrekt = anz_korrekt + 1
                 else:
-                    print("fail")
+                    print("falsch")
                     anz_fail = anz_fail + 1
                 time_vorher = time_ele
         print("Es wurde {0} mal die Zeit Falsch  und {1} mal die Zeit richtig gesetzt".format(anz_fail, anz_korrekt))
