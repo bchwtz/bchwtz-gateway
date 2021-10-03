@@ -1,4 +1,12 @@
 # -*- coding: utf-8 -*-
+"""
+The Automation library includes part of the automated tests and all helping functions for testautomation
+
+    You can add tests with ascending numbering (TCxc)
+
+For all tests we usually require SensorGatewayBleak library which is included via sys path
+Author: Furkan Tombul
+"""
 
 # %% libraries
 import re
@@ -23,7 +31,7 @@ class Testfunctions:
         anz_fail = self.get_acceleration_time_differences_32_val(acceleration_samples, test)
         print("anzahl gefailter tests {}".format(anz_fail))
 
-    # %% Testcase 02: Set configuration and verify
+    # %% Testcase 02: Set configuration and verify application
     def TC02_SetConfigAndCheckConfig(self, specific_mac, sampling_value, resolution_value, measuring_value):
         from gateway import SensorGatewayBleak
         print("Test start")
@@ -46,7 +54,7 @@ class Testfunctions:
         else:
             print("set measuring_range is not equal to the measuring_value: {} != {}".format(config_datas['Scale'], measuring_value))
 
-    # %% Testcase 03: Set all configurations and verify
+    # %% Testcase 03: Set all configuration combinations and verify application
     def TC03_SetAndCheckAllConfigValues(self, specific_mac):
         from gateway import SensorGatewayBleak
         print("Test start")
@@ -79,8 +87,12 @@ class Testfunctions:
                                 wrong_values += 1
         print("{} config values are not set correctly!".format(wrong_values))
 
+    # %% Helping functions
+    """
+    include here all functions which are not explicitly Testcases, but are necessary test steps
+    """
 
-    # %% Calculate time differences and count
+    # %% Calculate time differences and count - used for TC01
     def get_acceleration_time_differences_32_val(self, acceleration_samples, test):
         print("in get_acceleration_time_differences_32_val")
         time_vorher = None
