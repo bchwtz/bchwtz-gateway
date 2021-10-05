@@ -1,10 +1,12 @@
 async-generator==1.10
-asyncio
+asyncio~=3.4.3
 bleak==0.12.1
-crcmod
+crcmod~=1.7
 Markdown==3.3.4
 nest-asyncio
 regex
 Sphinx
 async_timeout
-configparser
+configparser~=5.0.2
+paho-mqtt~=1.5.1
+setuptools~=56.2.0
