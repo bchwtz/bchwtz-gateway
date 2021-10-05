@@ -12,7 +12,7 @@ To be able to execute this tests you have to Setup JupyterHub on your raspberry 
 
 [Setup JupyterHub](https://towardsdatascience.com/setup-your-home-jupyterhub-on-a-raspberry-pi-7ad32e20eed)
 
-## Structure Overview
+## Overview
 The files for our tests are structured in the library Testautomation.py and the subfolder Testcases_ipynb.
 
 ### Testautomation.py
