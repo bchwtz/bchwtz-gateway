@@ -1,5 +1,5 @@
 import asyncio
-from gateway import SensorGatewayBleak, AdvertisementLogging
+from gateway import SensorGatewayBleak, AdvertisementLogging, MessageObjects
 
 #AdvertisementLogging.start_advertisement_logging()
 
@@ -8,11 +8,12 @@ from gateway import SensorGatewayBleak, AdvertisementLogging
 test= SensorGatewayBleak.RuuviTagAccelerometerCommunicationBleak()
 # print("--------------------------\n")
 test.activate_debug_logger()
+test.data
 #test.activate_logging_at_sensor()
 """
 All command functions can take a mac address as string or as a list of strings.
 """
-dfg=test.get_config_from_sensor()
+dfg=test.get_time_from_sensor()
 print(dfg)
 # abc=test.get_acceleration_data()
 # print(abc)

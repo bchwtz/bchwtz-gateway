@@ -26,6 +26,7 @@ import struct
 from functools import partial
 # import async_timeout
 import configparser
+from gateway.MessageObjects import return_values_from_sensor
 
 # %% Global variables
 readAllString = "FAFA030000000000000000"
@@ -464,6 +465,8 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.logger.info("handle_sensor_command called sender: {} and value {}".format(sender, value))
 
         if value[0] == 0x4A or value[0] == 0x21:
+            message_return_value = return_values_from_sensor()
+            print("init")
             self.logger.info("Received: %s" % hexlify(value))
             status_string=str(self.ri_error_to_string(value[3]), )
             #self.sensor_data.append({"Status":status_string})
@@ -472,12 +475,19 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 self.stopEvent.set()
                 self.notification_done = True
             elif value[2] == 0x09:
+                self.stopEvent.set()
+                self.notification_done = True
                 self.logger.info("Received time: %s" % hexlify(value[:-9:-1]))
                 recieved_time=time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(value[:-9:-1]), 16) / 1000))
                 self.logger.info(recieved_time)
-                self.sensor_data.append({"Received time": recieved_time, "MAC":client.address})
-                self.stopEvent.set()
-                self.notification_done = True
+               # message_return_value.value
+                message_return_value.from_get_time(status=status_string, recieved_time=recieved_time,
+                                                   mac=client.address)
+                #test=message_return_value.returnValue
+                print("after function")
+                print(message_return_value.returnValue)
+                self.sensor_data.append(message_return_value.returnValue)
+
             elif value[0] == 0x4a and value[3] == 0x00:
                 sample_rate=""
                 if value[4] == 201:
