@@ -20,6 +20,7 @@ import logging
 from enum import Enum
 import crcmod
 import struct
+import yaml
 # import async_timeout
 import configparser
 
@@ -131,7 +132,12 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         # self.logger.info('Searching for running loops completed')
         # #self.__handle_config_file(Mode="INIT")
         # self.logger.info('Class object successfully initialized!')
-
+        
+    def read_RuuviTag_conf(self, abs_path = "gateway/Ruuvi_commands.yml"):
+        with open(abs_path, "r") as ymlfile:
+            ruuvi_commands = yaml.load(ymlfile)
+        self.ruuvi_commands = ruuvi_commands
+    
     # def __exit__(self):
     def activate_debug_logger(self):
         Log_SensorGatewayBleak.setLevel(logging.INFO)

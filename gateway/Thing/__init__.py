@@ -27,6 +27,9 @@ class Thing:
         self.client = mqtt.Client(client_id='', clean_session=True, userdata=None, transport='tcp')
         self.client.username_pw_set(username=username, password=password)
         # self.client.on_connect = on_connect
+        self.client.on_disconnect = self.on_disconnect
+        self.client.on_message = self.on_message
+        self.address = ''
 
     def connect_to_broker(self, address: str):
         """Wrapper for the paho connect method.
@@ -37,6 +40,7 @@ class Thing:
         address: str
             Hostname or ip of the broker
         """
+        self.address = address
         self.client.connect(address)
         self.client.loop_start()
 
@@ -60,11 +64,34 @@ class Thing:
         """
         self.client.disconnect()
 
+    def on_disconnect(self, userdata, rc):
+        """Reconnects the thing to the broker if the disconnect happened on accident.
+        """
+        if rc != 0:
+            self.client.reconnect()
+            return "Unexpected disconnection."
+
+    def on_message(self, userdata, message):
+        """Wrapper for the paho on_message function.
+        TODO: Implement what ever you want to do with the messages.
+        """
+        if str(message.payload == 'get_config_from_sensor'):
+            # Do Stuff with the sensors
+            pass
+
+    def sub_to_channel(self, topic, qos):
+        """Wrapper for the paho subscribe method.
+
+            Subscribe the client to one or more topics.
+
+            Args
+                topic: The Topic to which to subscribe
+                qos: Quality of service level default = 0
+        """
+        return self.client.subscribe(topic, qos=0)
+
     def reset_to_factory(self):
         """Wrapper for the paho reinitialise method
 
         resets the client/Thing to its starting state i.e. as if it was freshly created."""
         self.client.reinitialise()
-    
-    def listen_to_channel(self):
-        return
