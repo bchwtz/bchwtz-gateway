@@ -9,7 +9,8 @@ import asyncio
 
 
 #Channel where advertisements are collected
-UART_RX = '6E400001-B5A3-F393-E0A9-E50E24DCCA9E'
+UART_RX = '6E400003-B5A3-F393-E0A9-E50E24DCCA9E'
+
 
 
 
@@ -18,9 +19,6 @@ mac = []
 adv_data=[]
 nest_asyncio.apply()
 my_loop = asyncio.get_event_loop()
-
-class No_Tags_Error(Exception):
-    pass
 
 class Event_ts(asyncio.Event):
     def clear(self):
@@ -56,13 +54,10 @@ def validate_mac(devices):
             print("found")
             mac.append(i.address)
             print(mac)
-        if bool(devices):
-            raise No_Tags_Error('No Tags were found')
-
-async def start_advertisement_logging():
+def start_advertisement_logging():
     my_loop.run_until_complete(advertisement_logging())
 
-async def end__advertisement_logging():
+def end__advertisement_logging():
     stopEvent.set()
     
 async def advertisement_logging():
@@ -70,12 +65,14 @@ async def advertisement_logging():
         #find devices
         devices = await BleakScanner.discover(timeout=5.0)
         validate_mac(devices)
-        while True:
+
+        if len(mac) > 0:
             for i in mac:
                 async with BleakClient(i) as client:
+                    print(client.address)
                     #start notify advertisements
                     await client.start_notify(UART_RX,partial(detection_callback, client) )
-                    #await stopEvent.wait()
+            await stopEvent.wait()
     except Exception as e:
         print("Error: {}".format(e))
         client.stop_notify(UART_RX)
