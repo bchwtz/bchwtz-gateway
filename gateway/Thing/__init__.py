@@ -65,3 +65,6 @@ class Thing:
 
         resets the client/Thing to its starting state i.e. as if it was freshly created."""
         self.client.reinitialise()
+    
+    def listen_to_channel(self):
+        return
