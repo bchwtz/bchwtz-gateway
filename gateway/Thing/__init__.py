@@ -44,7 +44,7 @@ class Thing:
         self.client.connect(address)
         self.client.loop_start()
 
-    def pub_to_channel(self, topic: str, payload: str):
+    def pub_to_channel(self, topic: str, payload: str, subtopic: str):
         """Wrapper for the paho publish method.
 
         Causes the message to be published to a broker and all from there to be send to all devices subscribed to it.
@@ -55,6 +55,8 @@ class Thing:
         payload: str
             The contents of the message
         """
+        if subtopic is not None:
+            topic += "/" + subtopic
         return self.client.publish(topic=topic, payload=payload)
 
     def disconnect_from_broker(self):
