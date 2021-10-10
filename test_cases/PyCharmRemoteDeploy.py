@@ -1,21 +1,25 @@
 import time
 
 import asyncio
-from gateway import SensorGatewayBleak, AdvertisementLogging, MessageObjects
+from gateway import SensorGatewayBleak, MessageObjects
+from gateway import AdvertisementLogging
+#
 
-#AdvertisementLogging.start_advertisement_logging()
-
-
-
+safasf=AdvertisementLogging.advertisementLogging()
+print(safasf.start_advertisement_logging())
+print("abs")
 test= SensorGatewayBleak.RuuviTagAccelerometerCommunicationBleak()
-# print("-------------------------di-\n")
-#test.activate_debug_logger()
-abc=test.set_config_sensor(sampling_rate=30,sampling_resolution=150, measuring_range=8)
+test.set_sensor_time()
+abc=test.get_time_from_sensor()
 print(abc)
-dcf=test.get_config_from_sensor()
-print(dcf
-      )
-time.sleep(3)
+# # print("-------------------------di-\n")
+# #test.activate_debug_logger()
+# abc=test.set_config_sensor(sampling_rate=30,sampling_resolution=150, measuring_range=8)
+# print(abc)
+# dcf=test.get_config_from_sensor()
+# print(dcf
+#       )
+# time.sleep(3)
 # abc=test.activate_logging_at_sensor()
 # print(abc)
 #test.activate_logging_at_sensor()

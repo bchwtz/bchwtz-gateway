@@ -5,9 +5,7 @@ import struct
 class return_values_from_sensor(object):
     def __init__(self,returnValue=None):
         if returnValue is not None:
-            print(returnValue.__dict__)
             self.returnValue=returnValue
-            print(self.returnValue)
         else:self.returnValue=""
 
 
@@ -41,6 +39,10 @@ class return_values_from_sensor(object):
     @classmethod
     def from_get_accelorationdata(cls,accelorationdata,mac):
         reval=acceloration_data_Object(accelorationdata,mac)
+        return cls(reval)
+    @classmethod
+    def from_get_advertisementdata(cls,advertisementData, mac, time):
+        reval=advertisement_data_Object(advertisementData,mac,time)
         return cls(reval)
 
 
@@ -97,6 +99,12 @@ class acceloration_data_Object(object):
         self.loggingData=list(map(list, zip(accelorationData[0], accelorationData[1], accelorationData[2],
                            accelorationData[3])))
         self.mac=mac
+
+class advertisement_data_Object(object):
+    def __init__(self, advertisementData,mac, time):
+        self.advertisementData=advertisementData
+        self.mac=mac
+        self.time=time
 
 
 
