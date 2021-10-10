@@ -1,3 +1,5 @@
+import time
+
 import asyncio
 from gateway import SensorGatewayBleak, AdvertisementLogging, MessageObjects
 
@@ -7,14 +9,21 @@ from gateway import SensorGatewayBleak, AdvertisementLogging, MessageObjects
 
 test= SensorGatewayBleak.RuuviTagAccelerometerCommunicationBleak()
 # print("-------------------------di-\n")
-test.activate_debug_logger()
-test.data
+#test.activate_debug_logger()
+abc=test.set_config_sensor(sampling_rate=30,sampling_resolution=150, measuring_range=8)
+print(abc)
+dcf=test.get_config_from_sensor()
+print(dcf
+      )
+time.sleep(3)
+# abc=test.activate_logging_at_sensor()
+# print(abc)
 #test.activate_logging_at_sensor()
 """
 All command functions can take a mac address as string or as a list of strings.
 """
-anc=test.get_logging_status()
-print(anc)
+# anc=test.get_logging_status()
+# print(anc)
 # dfg=test.get_time_from_sensor()
 # print(dfg)
 # abc=test.get_config_from_sensor()
@@ -48,12 +57,12 @@ print(anc)
 # time.sleep(5)
 # print("Sleep over")
 # test.activate_debug_logger()
-abc=test.get_acceleration_data()
-print(abc[0])
-print("")
-print("-----------------------------------------------------")
-print("")
-print(abc[1])
+# abc=test.get_acceleration_data()
+# print(abc[0])
+# print("")
+# print("-----------------------------------------------------")
+# print("")
+# print(abc[1])
 
 # abc=test.get_logging_status()
 # print(abc)

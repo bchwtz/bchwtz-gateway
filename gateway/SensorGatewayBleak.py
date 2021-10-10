@@ -472,7 +472,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             #self.sensor_data.append({"Status":status_string})
             self.logger.info("Status: %s" % status_string)
             if len(value) == 4:
-                test=message_return_value.form_get_logging_status(status=int(value[3]))
+                test=message_return_value.form_get_status(status=int(value[3]), mac=client.address)
                 self.sensor_data.append([test.returnValue.__dict__])
                 self.stopEvent.set()
                 self.notification_done = True
@@ -564,6 +564,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             self.logger.info("Logging activated")
         else:
             self.logger.error("Logging is not activated")
+        return self.sensor_data
 
     def deactivate_logging_at_sensor(self, specific_mac=""):
         """
@@ -591,6 +592,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             self.logger.info("Logging deactivated")
         else:
             self.logger.error("Logging not deactivated")
+        return self.sensor_data
 
     # ----------------------------Acceleration Logging-------------------------
     def get_acceleration_data(self, specific_mac=""):
@@ -1098,17 +1100,13 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         elif measuring_range in MeasuringRange._value2member_map_:
             hex_measuring_range = MeasuringRange(measuring_range).name[1:]
         else:
+            self.logger.warning("Wrong measuring range")
             hex_measuring_range = 'FF'
         if divider == 'FF':
             hex_divider = 'FF'
         else:
             hex_divider = str(divider)
-        #Exit function if no changes are made
-        if (hex_sampling_rate == "FF") and (hex_sampling_resolution == "FF") and (hex_measuring_range == "FF") and (
-                hex_divider == "FF"):
-            self.logger.warning("No changes are made. Try again with correct values")
-            return False
-        #Create command string and send it to targets
+        #Create command string and send it to targets. If some values aren't correct the defautl value "FF" is sent
         command_string = "4a4a02" + hex_sampling_rate + hex_sampling_resolution + hex_measuring_range + "FFFFFF" + hex_divider + "00"
 
         self.success = False
