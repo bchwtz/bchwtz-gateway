@@ -1,13 +1,13 @@
 import json
 
-
 class return_values_from_sensor(object):
     def __init__(self,returnValue=None):
         if returnValue is not None:
             print(returnValue)
             self.returnValue=returnValue
             print(self.returnValue)
-        else:self.returnValue=""
+        else:
+            self.returnValue=""
 
 
     @classmethod
