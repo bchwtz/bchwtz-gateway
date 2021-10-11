@@ -150,6 +150,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
 
         # Search for asyncio loops that are already running
         self.my_loop = asyncio.get_event_loop()
+        self.current_mac=""
 
         # #self.__handle_config_file(Mode="INIT")
 
@@ -466,27 +467,25 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
 
         if value[0] == 0x4A or value[0] == 0x21:
             message_return_value = return_values_from_sensor()
-            print("init")
             self.logger.info("Received: %s" % hexlify(value))
             status_string=str(self.ri_error_to_string(value[3]), )
             #self.sensor_data.append({"Status":status_string})
             self.logger.info("Status: %s" % status_string)
             if len(value) == 4:
+                test=message_return_value.form_get_status(status=int(value[3]), mac=client.address)
+                self.sensor_data.append([test.returnValue.__dict__])
                 self.stopEvent.set()
                 self.notification_done = True
+
             elif value[2] == 0x09:
-                self.stopEvent.set()
-                self.notification_done = True
+
                 self.logger.info("Received time: %s" % hexlify(value[:-9:-1]))
                 recieved_time=time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(value[:-9:-1]), 16) / 1000))
                 self.logger.info(recieved_time)
-               # message_return_value.value
-                message_return_value.from_get_time(status=status_string, recieved_time=recieved_time,
-                                                   mac=client.address)
-                #test=message_return_value.returnValue
-                print("after function")
-                print(message_return_value.returnValue)
-                self.sensor_data.append(message_return_value.returnValue)
+                self.sensor_data.append([message_return_value.from_get_time(status=status_string, recieved_time=recieved_time,
+                                                   mac=client.address).returnValue.__dict__])
+                self.stopEvent.set()
+                self.notification_done = True
 
             elif value[0] == 0x4a and value[3] == 0x00:
                 sample_rate=""
@@ -496,27 +495,15 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 else:
                     self.logger.info("Samplerate:    %d Hz" % value[4])
                     sample_rate=int(value[4])
-                self.sensor_data.append({"Samplerate": sample_rate,
-                                  "Resolution":int(value[5]),
-                                  "Scale":int(value[6]),
-                                  "DSP function": int(value[7]),
-                                  "DSP parameter": int(value[8]),
-                                  "Mode":  "%x" % value[9],
-                                  "MAC": client.address
-                                  })
-                self.logger.info("Resolution:    %d Bits" % (int(value[5])))
-                self.logger.info("Scale:         %d G" % value[6])
-                self.logger.info("DSP function:  %x" % value[7])
-                self.logger.info("DSP parameter: %x" % value[8])
-                self.logger.info("Mode:          %x" % value[9])
-
-                if value[10] > 1:
-                    self.sensor_data.append({"Frequency divider": int(value[10])})
-                    self.logger.info("Frequency divider: %d" % value[10])
+                recieved_config=message_return_value.from_get_config(status=status_string,sample_rate=sample_rate,resolution= int(value[5]),
+                                                    scale=int(value[6]),dsp_function=int(value[7]), dsp_parameter=int(value[8]),
+                                                    mode="%x"% value[9],divider=int(value[10]), mac=client.address)
+                self.sensor_data.append([recieved_config.returnValue.__dict__])
                 self.notification_done=True
                 self.stopEvent.set()
 
         elif value[0] == 0xfb and value[1] == 0x0d:
+            message_return_value = return_values_from_sensor()
             self.logger.info("Received: %s" % hexlify(value))
             message_status = value[2]
             logging_status = value[3]
@@ -529,19 +516,12 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             words_used = value[13] | (value[14] << 8)
             largest_contig = value[15] | (value[16] << 8)
             freeable_words = value[17] | (value[18] << 8)
-            self.sensor_data.append({"Message Status": "%s"%(self.ri_error_to_string(message_status)),
-                              "Last Status": "%s"%(self.ri_error_to_string(logging_status)),
-                              "Ringbuffer start": ringbuffer_start,
-                              "Ringbuffer end": ringbuffer_end,
-                              "Ringbuffer size": ringbuffer_size,
-                              "Valid records":valid_records,
-                              "Dirty records":dirty_records,
-                              "Words reserved":words_reserved,
-                              "Words used":words_used,
-                              "Largest continuos":largest_contig,
-                              "Freeable words":freeable_words,
-                                     "MAC": client.address
-                              })
+            recieved_flash_statistic=message_return_value.from_get_flash_statistics(
+            message_status=message_status,logging_status=logging_status, ringbuffer_start=ringbuffer_start,
+            ringbuffer_end=ringbuffer_end, ringbuffer_size=ringbuffer_size, valid_records=valid_records, dirty_records=dirty_records,
+            words_reserved=words_reserved, words_used= words_used, largest_contig=largest_contig, freeable_words=freeable_words,
+            mac=client.address)
+            self.sensor_data.append([recieved_flash_statistic.returnValue.__dict__])
             self.logger.info("Message Status %s" % (str(self.ri_error_to_string(message_status)),))
             self.logger.info("Last Status %s" % (str(self.ri_error_to_string(logging_status)),))
             self.logger.info("Ringbuffer start %d" % (ringbuffer_start,))
@@ -584,6 +564,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             self.logger.info("Logging activated")
         else:
             self.logger.error("Logging is not activated")
+        return self.sensor_data
 
     def deactivate_logging_at_sensor(self, specific_mac=""):
         """
@@ -611,6 +592,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             self.logger.info("Logging deactivated")
         else:
             self.logger.error("Logging not deactivated")
+        return self.sensor_data
 
     # ----------------------------Acceleration Logging-------------------------
     def get_acceleration_data(self, specific_mac=""):
@@ -648,6 +630,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         for i in mac:
             global sensordaten
             sensordaten = bytearray()
+            self.current_mac=i
             taskobj = self.my_loop.create_task(self.connect_to_mac(i, readAllString))
             self.my_loop.run_until_complete(taskobj)
 
@@ -674,6 +657,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             self.logger.debug("Received data block: %s" % hexlify(value[1:]))
             # Marks end of data stream
         elif value[0] == 0x4a and value[3] == 0x00:
+            message_return_value = return_values_from_sensor()
             self.start_time = time.time()
             self.end_time = time.time()
             print(len(sensordaten))
@@ -720,8 +704,9 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 print("Unknown Resolution")
             if AccelorationData != None:
                 self.logger.info("Run in Funktion AccelorationData != None")
-                self.data.append([list(map(list, zip(AccelorationData[0], AccelorationData[1], AccelorationData[2],
-                                                     AccelorationData[3])))])
+                dataList=message_return_value.from_get_accelorationdata(accelorationdata=AccelorationData,mac=self.current_mac)
+                self.data.append(dataList.returnValue.__dict__)
+
 
 
     #%% region processdata
@@ -1115,17 +1100,13 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         elif measuring_range in MeasuringRange._value2member_map_:
             hex_measuring_range = MeasuringRange(measuring_range).name[1:]
         else:
+            self.logger.warning("Wrong measuring range")
             hex_measuring_range = 'FF'
         if divider == 'FF':
             hex_divider = 'FF'
         else:
             hex_divider = str(divider)
-        #Exit function if no changes are made
-        if (hex_sampling_rate == "FF") and (hex_sampling_resolution == "FF") and (hex_measuring_range == "FF") and (
-                hex_divider == "FF"):
-            self.logger.warning("No changes are made. Try again with correct values")
-            return False
-        #Create command string and send it to targets
+        #Create command string and send it to targets. If some values aren't correct the defautl value "FF" is sent
         command_string = "4a4a02" + hex_sampling_rate + hex_sampling_resolution + hex_measuring_range + "FFFFFF" + hex_divider + "00"
 
         self.success = False
