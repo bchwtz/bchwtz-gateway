@@ -1,20 +1,24 @@
 import paho.mqtt.client as mqtt
-import time
+
 
 def on_message(client, userdata, message):
     """Wrapper for the paho on_message function.
-    TODO: Implement what ever you want to do with the messages.
+
+    This is an implementation of a callback which differentiates from which
+    channel the message came. In this case the callback differentiates between messages from the
+    channel "messages" and every other channel.
+    If the received message was published in the "messages"-Channel the call just prints a statement
+    into the console.
+    If the message was published in any other channel the message is printed into the console.
     """
-    print(message)
-    print(userdata)
-    print("received message =",str(message.payload.decode("utf-8")))
-    print("Received message '" + str(message.payload) + "' on topic '"
-        + message.topic + "' with QoS " + str(message.qos))
-    if str(message.payload == 'get_config_from_sensor'):
-        print('parse funktion')
     if str(message.topic == 'messages'):
         print('Höre Message Channel zu')
-    
+
+    else:
+        print("Received message '" + str(message.payload) + "' on topic '"
+              + message.topic + "' with QoS " + str(message.qos))
+
+
 def on_disconnect(client, userdata, rc):
     """Reconnects the thing to the broker if the disconnect happened on accident.
     """
@@ -22,16 +26,21 @@ def on_disconnect(client, userdata, rc):
         client.reconnect()
         return "Unexpected disconnection."
 
-def on_publish(client,userdata,result):            
+
+def on_publish(client, userdata, result):
+    """Prints out a statement, if the publishing of a message was successful."""
     print("data published \n")
-    
+
+
 def on_connect(client, userdata, flags, rc):
-    #client.subscribe("channels/d580cbe3-251b-4588-86d7-a446b8eee92b/messages", qos=0)
-    print("Connected with result code "+str(rc))
+    """Prints out the result code when a thing is connected to a broker."""
+    # client.subscribe("channels/d580cbe3-251b-4588-86d7-a446b8eee92b/messages", qos=0)
+    print("Connected with result code " + str(rc))
+
 
 def on_subscribe(client, userdata, mid, granted_qos):
+    """Prints the userdata and mid if the ting connects to a channel."""
     print(userdata, mid)
-
 
 
 class Thing:
@@ -59,6 +68,7 @@ class Thing:
         # self.thing_key = thing_key
         self.client = mqtt.Client(client_id='', clean_session=True, userdata=None, transport='tcp')
         self.client.username_pw_set(username=username, password=password)
+        # Setting my own callbacks.
         self.client.on_connect = on_connect
         self.client.on_disconnect = on_disconnect
         self.client.on_message = on_message
@@ -89,6 +99,8 @@ class Thing:
             The topic/channel the message should be published to
         payload: str
             The contents of the message
+        subtopic: str
+            Potential subtopic for a channel. Defaults to None.
         """
         if subtopic is not None:
             topic += "/" + subtopic
