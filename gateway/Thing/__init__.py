@@ -49,9 +49,9 @@ class Thing:
 
     The is a wrapper for certain functions of the phao.mqtt module regarding things.
     A thing in mqtt can be a sensor for example. This sensor need to publish its data
-    to a broker.
+    to a broker and subscribe to channels.
     This class aims to make it easy create a new client, and publish messages to the
-    broker.
+    broker and to subscribe to channels.
 
     Methods
     connect_to_broker(address)
