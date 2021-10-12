@@ -1,22 +1,25 @@
 import paho.mqtt.client as mqtt
+import settings
+import re
+import json
 
 
 def on_message(client, userdata, message):
     """Wrapper for the paho on_message function.
-
-    This is an implementation of a callback which differentiates from which
-    channel the message came. In this case the callback differentiates between messages from the
-    channel "messages" and every other channel.
-    If the received message was published in the "messages"-Channel the call just prints a statement
-    into the console.
-    If the message was published in any other channel the message is printed into the console.
+    The excpected format of an command payload is as follows:
+        payload = '[{"Time" : "%f","Command": "get_config_from_sensor", "MAC" : "F0:CB:45:2B:51:0B"}]'
+    Message will be converted as dictionary.
+    settings.Queue is a global queue to handle the incomming commands and share the commands with
+    other modules and threads.
     """
-    if str(message.topic == 'messages'):
-        print('Höre Message Channel zu')
-
-    else:
-        print("Received message '" + str(message.payload) + "' on topic '"
-              + message.topic + "' with QoS " + str(message.qos))
+    msg_decode = message.payload.decode("utf-8")
+    msg_decode = re.findall("\[(.*?)\]", msg_decode)[0]
+    msg_decode = json.loads(msg_decode)
+    try:
+        settings.ComQueue.put([msg_decode['Command'], msg_decode['MAC']])
+    except:
+        print(msg_decode)
+        print("Failure while decoding")
 
 
 def on_disconnect(client, userdata, rc):
