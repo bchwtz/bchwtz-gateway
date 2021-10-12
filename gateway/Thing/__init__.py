@@ -1,19 +1,24 @@
 import paho.mqtt.client as mqtt
-import time
+import settings
+import re
+import json
 
 def on_message(client, userdata, message):
     """Wrapper for the paho on_message function.
-    TODO: Implement what ever you want to do with the messages.
+    The excpected format of an command payload is as follows:
+        payload = '[{"Time" : "%f","Command": "get_config_from_sensor", "MAC" : "F0:CB:45:2B:51:0B"}]'
+    Message will be converted as dictionary.
+    settings.Queue is a global queue to handle the incomming commands and share the commands with
+    other modules and threads.
     """
-    print(message)
-    print(userdata)
-    print("received message =",str(message.payload.decode("utf-8")))
-    print("Received message '" + str(message.payload) + "' on topic '"
-        + message.topic + "' with QoS " + str(message.qos))
-    if str(message.payload == 'get_config_from_sensor'):
-        print('parse funktion')
-    if str(message.topic == 'messages'):
-        print('Höre Message Channel zu')
+    msg_decode = message.payload.decode("utf-8")
+    msg_decode = re.findall("\[(.*?)\]", msg_decode)[0]
+    msg_decode = json.loads(msg_decode)
+    try:
+        settings.ComQueue.put([msg_decode['Command'],msg_decode['MAC']])
+    except:
+        print(msg_decode)
+        print("Failure while decoding")
     
 def on_disconnect(client, userdata, rc):
     """Reconnects the thing to the broker if the disconnect happened on accident.
@@ -26,7 +31,6 @@ def on_publish(client,userdata,result):
     print("data published \n")
     
 def on_connect(client, userdata, flags, rc):
-    #client.subscribe("channels/d580cbe3-251b-4588-86d7-a446b8eee92b/messages", qos=0)
     print("Connected with result code "+str(rc))
 
 def on_subscribe(client, userdata, mid, granted_qos):
