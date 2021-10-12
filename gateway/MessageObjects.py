@@ -1,14 +1,13 @@
 import json
 import struct
 
-
 class return_values_from_sensor(object):
     def __init__(self,returnValue=None):
         if returnValue is not None:
-            print(returnValue)
             self.returnValue=returnValue
             print(self.returnValue)
-        else:self.returnValue=""
+        else:
+            self.returnValue=""
 
 
     @classmethod
@@ -33,8 +32,8 @@ class return_values_from_sensor(object):
                                   freeable_words)
         return cls(reval)
     @classmethod
-    def form_get_logging_status(cls, status):
-        reval=logging_status_object(status)
+    def form_get_status(cls, status,mac):
+        reval=status_object(status,mac)
         print(reval)
         return cls(reval)
 
@@ -42,10 +41,9 @@ class return_values_from_sensor(object):
     def from_get_accelorationdata(cls,accelorationdata,mac):
         reval=acceloration_data_Object(accelorationdata,mac)
         return cls(reval)
-    
     @classmethod
-    def from_get_advertisementdata(cls,advertisementdata,mac):
-        reval=acceloration_data_Object(accelorationdata,mac)
+    def from_get_advertisementdata(cls,advertisementData, mac, time):
+        reval=advertisement_data_Object(advertisementData,mac,time)
         return cls(reval)
 
 
@@ -85,14 +83,17 @@ class flash_statistics_Object(object):
         self.freeable_words = freeable_words
         self.mac = mac
 
-class logging_status_object(object):
-    def __init__(self, status):
+class status_object(object):
+    def __init__(self, status,mac):
         print("logging status")
+        self.mac=mac
         if status==0:
-            self.logging_is_active=1
+            self.status=1
         elif status==1:
-            self.logging_is_active=0
-        print(self.logging_is_active)
+            self.status=0
+        else:
+            self.status=-1
+        print(self.status)
 
 class acceloration_data_Object(object):
     def __init__(self, accelorationData, mac):
@@ -101,7 +102,12 @@ class acceloration_data_Object(object):
         self.mac=mac
 
 class advertisement_data_Object(object):
-    def __init__(self, data)
+    def __init__(self, advertisementData,mac, time):
+        self.advertisementData=advertisementData
+        self.mac=mac
+        self.time=time
+
+
 
 class send_msg_object(object):
     def __init__(self, command=None):
