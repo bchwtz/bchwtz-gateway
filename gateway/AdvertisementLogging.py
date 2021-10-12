@@ -7,6 +7,10 @@ import nest_asyncio
 import asyncio
 from gateway import MessageObjects
 
+"""
+Advertisement async idea
+https://stackoverflow.com/questions/37278647/fire-and-forget-python-async-await/37345564#37345564
+"""
 
 mac = []
 adv_data=[]
