@@ -1,4 +1,37 @@
 import paho.mqtt.client as mqtt
+import time
+
+def on_message(client, userdata, message):
+    """Wrapper for the paho on_message function.
+    TODO: Implement what ever you want to do with the messages.
+    """
+    print(message)
+    print(userdata)
+    print("received message =",str(message.payload.decode("utf-8")))
+    print("Received message '" + str(message.payload) + "' on topic '"
+        + message.topic + "' with QoS " + str(message.qos))
+    if str(message.payload == 'get_config_from_sensor'):
+        print('parse funktion')
+    if str(message.topic == 'messages'):
+        print('Höre Message Channel zu')
+    
+def on_disconnect(client, userdata, rc):
+    """Reconnects the thing to the broker if the disconnect happened on accident.
+    """
+    if rc != 0:
+        client.reconnect()
+        return "Unexpected disconnection."
+
+def on_publish(client,userdata,result):            
+    print("data published \n")
+    
+def on_connect(client, userdata, flags, rc):
+    #client.subscribe("channels/d580cbe3-251b-4588-86d7-a446b8eee92b/messages", qos=0)
+    print("Connected with result code "+str(rc))
+
+def on_subscribe(client, userdata, mid, granted_qos):
+    print(userdata, mid)
+
 
 
 class Thing:
@@ -26,9 +59,11 @@ class Thing:
         # self.thing_key = thing_key
         self.client = mqtt.Client(client_id='', clean_session=True, userdata=None, transport='tcp')
         self.client.username_pw_set(username=username, password=password)
-        # self.client.on_connect = on_connect
-        self.client.on_disconnect = self.on_disconnect
-        self.client.on_message = self.on_message
+        self.client.on_connect = on_connect
+        self.client.on_disconnect = on_disconnect
+        self.client.on_message = on_message
+        self.client.on_publish = on_publish
+        self.client.on_subscribe = on_subscribe
         self.address = ''
 
     def connect_to_broker(self, address: str):
@@ -65,21 +100,6 @@ class Thing:
         Disconnects the client/Thing from the broker.
         """
         self.client.disconnect()
-
-    def on_disconnect(self, userdata, rc):
-        """Reconnects the thing to the broker if the disconnect happened on accident.
-        """
-        if rc != 0:
-            self.client.reconnect()
-            return "Unexpected disconnection."
-
-    def on_message(self, userdata, message):
-        """Wrapper for the paho on_message function.
-        TODO: Implement what ever you want to do with the messages.
-        """
-        if str(message.payload == 'get_config_from_sensor'):
-            # Do Stuff with the sensors
-            pass
 
     def sub_to_channel(self, topic, qos):
         """Wrapper for the paho subscribe method.
