@@ -1073,7 +1073,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.work_loop(macs=specific_mac, command=self.ruuvi_commands['ruuvi_commands']['get_config_from_sensor'])
         if self.success:
             self.logger.info("Config read")
-            return self.sensor_data
+            return self.sensor_data[-1]
         else:
             logging.error("Config not read")
 
@@ -1093,7 +1093,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.work_loop(macs=specific_mac, command=self.ruuvi_commands['ruuvi_commands']['get_time_from_sensor'])
         if self.success:
             self.logger.info("Time read")
-            return self.sensor_data
+            return self.sensor_data[-1]
         else:
             logging.error("Time  read")
 
@@ -1134,7 +1134,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.work_loop(macs=specific_mac, command=self.ruuvi_commands['ruuvi_commands']['get_flash_statistic'])
         if self.success:
             self.logger.info("flash statistics read")
-            return self.sensor_data
+            return self.sensor_data[-1]
         else:
             logging.error("flash statistics is not read")
 
@@ -1152,7 +1152,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         self.work_loop(macs=specific_mac, command=self.ruuvi_commands['ruuvi_commands']['get_logging_status'])
         if self.success:
             self.logger.info("Logging status read")
-            return self.sensor_data
+            return self.sensor_data[-1]
         else:
             logging.error("Logging status is not read")
 
