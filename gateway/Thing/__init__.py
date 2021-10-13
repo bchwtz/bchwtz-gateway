@@ -22,7 +22,7 @@ def on_message(client, userdata, message):
         except:
             print(msg_decode)
             print("Failure while decoding")
-
+    print(message.payload)
 
 def on_disconnect(client, userdata, rc):
     """Reconnects the thing to the broker if the disconnect happened on accident.
