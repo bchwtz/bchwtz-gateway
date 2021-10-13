@@ -1,14 +1,5 @@
 """
-Multithread to handle the libraries
-
-1. Running the MQTT Bridge on a seperated thread
-2. Run the sensor connection on a seperated thread
-
-Open Topics:
-    - Comands should be defined in a seperate config file.
-    - Tags IDs should not be used.
-    - The job queue is probably wrong.
-    - Nothing is tested so far!
+Executable Skript to start the gateway-mqtt project.
 """
 import logging
 import threading
@@ -113,7 +104,7 @@ class thread_mqttlistener(threading.Thread):
         """
         mqtt_communicator = Thing(self.user, self.key)
         mqtt_communicator.connect_to_broker(self.host)
-        listen_topic = 'channel'+str('/') + self.channel + str('/') + 'messages'
+        listen_topic = 'channels'+str('/') + self.channel + str('/') + 'messages'
         mqtt_communicator.sub_to_channel(topic=listen_topic, qos = 0)
         self.logger.info("start listening...")
         while True:
@@ -127,7 +118,7 @@ class thread_mqttAdvertisements(threading.Thread):
     """
     This threadclass handels the Advertisements.
     """
-    def __init__(self, threadID, name, mf_conf_file):
+    def __init__(self, threadID, name):
         """
         Constructor
 
@@ -149,8 +140,6 @@ class thread_mqttAdvertisements(threading.Thread):
         self.name = name
         self.logger = logging.getLogger('ProcessHandlerMF.thrad_mqttAdvertisements')
         self.logger.info("mqttwriter mqttAdvertisements")
-        self.SensorObj = SensorGatewayBleak.RuuviTagAccelerometerCommunicationBleak()
-        self.conection_specs = mf_conf_file
         
     def run(self):
         """
@@ -161,14 +150,13 @@ class thread_mqttAdvertisements(threading.Thread):
             None.
 
         """
-        
+        AdvertisementLogging.advertisement_logging()
         while True:
-            if settings.ComQueue.empty():
-                self.logger.info('Start pushing advertisements')
-                AdvertisementLogging.advertisement_logging(self.conection_specs)
             if GentlyInterrupt.is_set():
                 self.logger.info('MQTT Listener thread closed')   
                 break
+            pass
+
             
 class thread_mqttwriter(threading.Thread):
     """
@@ -200,7 +188,7 @@ class thread_mqttwriter(threading.Thread):
         self.host = mf_conf_file['mf_login']['host_url']
         self.user = mf_conf_file['mf_login']['username']
         self.key = mf_conf_file['mf_login']['pwd']
-        self.com_feedback_chl = mf_conf_file['channel_specs']['com_feedback_chl']
+        self.channel = mf_conf_file['channel_specs']['command_chl']
         
         
     def run(self):
@@ -214,7 +202,7 @@ class thread_mqttwriter(threading.Thread):
         """
         mqtt_publisher = Thing(self.user, self.key)
         mqtt_publisher.connect_to_broker(self.host)   
-        com_feedback_topic = 'channel' + str('/') + self.com_feedback_chl + str('/') + 'messages' +str('/')+'feedback'    
+        com_feedback_topic = 'channel' + str('/') + self.channel + str('/') + 'messages' +str('/')+'feedback'    
         
         while True:
             if not settings.ComQueue.empty():
@@ -237,7 +225,6 @@ if __name__ == '__main__':
     """
     This Skript can be called via commandline and can by killd via keyboardinterrupt
     """
-    #UserIn = input("Press Enter to read specifications...")
     settings.init()
     Log_ProcessHandlerMF.info("Global command queue initialized")
     connection_specs = read_mainflux_conf()
@@ -246,7 +233,7 @@ if __name__ == '__main__':
     try:
         threadListener = thread_mqttlistener(1, "Listennerthread", connection_specs)
         threadWriter = thread_mqttwriter(2, "Writerthread", connection_specs)
-        threadAdv = thread_mqttAdvertisements(3, "AdvertisementsThread", connection_specs)
+        threadAdv = thread_mqttAdvertisements(3, "AdvertisementsThread")
         threadListener.start()
         Log_ProcessHandlerMF.info('Start MQTTListener successfull')
         threadWriter.start()
