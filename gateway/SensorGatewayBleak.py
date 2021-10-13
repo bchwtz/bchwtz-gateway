@@ -25,7 +25,7 @@ from functools import partial
 # import async_timeout
 import configparser
 import yaml
-from gateway.MessageObjects import return_values_from_sensor
+from MessageObjects import return_values_from_sensor
 
 # %% Global variables
 UART_SRV = '6E400001-B5A3-F393-E0A9-E50E24DCCA9E'
