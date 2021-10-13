@@ -1,17 +1,97 @@
+import json
 import time
-
-import asyncio
+from multiprocessing import Process, Event
+import sys
+import jsonpickle
+from json import JSONEncoder
 from gateway import SensorGatewayBleak, MessageObjects
 from gateway import AdvertisementLogging
-#
 
-safasf=AdvertisementLogging.advertisementLogging()
-print(safasf.start_advertisement_logging())
-print("abs")
+
+
+"""
+Uncomment the below code to test advertisement logging and sensor communication at the same time.
+This process needs multithreading to run the advertisement logging in background and not blocking the main thread.
+"""
+# def thr2(kill_event):
+#     #AdvertisementLogging.advertisement_logging()
+#     print("thread 2")
+#     currentLogging=False
+#     while True:
+#         if kill_event.is_set():
+#             print("kill2")
+#             sys.exit(0)
+#         if not currentLogging:
+#             print("advertisements")
+#             AdvertisementLogging.advertisement_logging()
+#             currentLogging=True
+#
+# if __name__ == "__main__":
+#     kill_event = Event()
+#     thread2 = Process(target=thr2, args=[kill_event])
+#     thread2.start()
+#     cnt=0
+#
+#     while True:
+#         if kill_event.is_set():
+#             print('kill')
+#             thread2.kill()
+#             sys.exit(0)
+#         cnt+=1
+#         if cnt>200:
+#             test = SensorGatewayBleak.RuuviTagAccelerometerCommunicationBleak()
+#             test.set_sensor_time()
+#             abc = test.get_time_from_sensor()
+#             print(abc)
+#             print("kill")
+#             kill_event.set()
+#         time.sleep(0.4)
+
+
+# test= SensorGatewayBleak.RuuviTagAccelerometerCommunicationBleak()
+# test.activate_debug_logger()
+# msg_object=MessageObjects.send_msg_object()
+# msg_object=msg_object.to_deactivate_logging()
+# ret_msg=test.deactivate_logging_at_sensor(msg_object.message)
+# print(ret_msg)
+# time.sleep(5)
+# msg_object=MessageObjects.send_msg_object()
+# msg_object=msg_object.to_get_logging_status()
+# ret_msg=test.get_logging_status(msg_object.message)
+# print(ret_msg)
 test= SensorGatewayBleak.RuuviTagAccelerometerCommunicationBleak()
-test.set_sensor_time()
-abc=test.get_time_from_sensor()
+
+
+msg_object=MessageObjects.send_msg_object()
+msg_object=msg_object.to_set_sensorConfig(sampling_rate=30,sampling_resolution=150, measuring_range=8)
+jsonStr = json.dumps(msg_object.message.__dict__)
+print("Json dump: ",jsonStr)
+studentJSON = jsonpickle.encode(msg_object.message)
+print("Encoded msg object:",studentJSON)
+studentObject = jsonpickle.decode(studentJSON)
+print("Object type is: ", type(studentObject))
+test.set_config_sensor(studentObject)
+
+time.sleep(10)
+msg_object=MessageObjects.send_msg_object()
+msg_object=msg_object.to_get_config()
+jsonStr = json.dumps(msg_object.message.__dict__)
+print("Json dump: ",jsonStr)
+studentJSON = jsonpickle.encode(msg_object.message)
+print("Encoded msg object:",studentJSON)
+studentObject = jsonpickle.decode(studentJSON)
+print("Object type is: ", type(studentObject))
+abc=test.get_config_from_sensor(studentObject)
 print(abc)
+# test=json.loads(jsonStr)
+# print(type(test))
+# safasf=AdvertisementLogging.advertisementLogging()
+# safasf.start_advertisement_logging()
+# print("abs")
+# test= SensorGatewayBleak.RuuviTagAccelerometerCommunicationBleak()
+# test.set_sensor_time()
+# abc=test.get_time_from_sensor()
+# print(abc)
 # # print("-------------------------di-\n")
 # #test.activate_debug_logger()
 # abc=test.set_config_sensor(sampling_rate=30,sampling_resolution=150, measuring_range=8)

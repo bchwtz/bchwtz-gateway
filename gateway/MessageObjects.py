@@ -1,7 +1,16 @@
 import json
 import struct
+import time
 
+from gateway.SensorConfigEnum import SamplingRate, SamplingResolution,MeasuringRange
+import logging
+from enum import Enum
 
+log=logging.getLogger("msg")
+"""
+This region is used to wrap the returned values of the sensor into an object
+"""
+# %% Recieved msg objects from sensor
 class return_values_from_sensor(object):
     def __init__(self,returnValue=None):
         if returnValue is not None:
@@ -21,11 +30,11 @@ class return_values_from_sensor(object):
         return cls(reval)
 
     @classmethod
-    def from_get_flash_statistics(cls, message_status, logging_status, ringbuffer_start, ringbuffer_end, mac,
+    def from_get_flash_statistics(cls,  logging_status, ringbuffer_start, ringbuffer_end, mac,
                                   ringbuffer_size, valid_records, dirty_records, words_reserved, words_used,
                                   largest_contig,
                                   freeable_words):
-        reval = flash_statistics_Object( message_status, logging_status, ringbuffer_start, ringbuffer_end, mac,
+        reval = flash_statistics_Object(  logging_status, ringbuffer_start, ringbuffer_end, mac,
                                   ringbuffer_size, valid_records, dirty_records, words_reserved, words_used,
                                   largest_contig,
                                   freeable_words)
@@ -65,11 +74,11 @@ class config_Object(object):
         self.mac = mac
 
 class flash_statistics_Object(object):
-    def __init__(self, message_status, logging_status, ringbuffer_start, ringbuffer_end, mac,
+    def __init__(self,  logging_status, ringbuffer_start, ringbuffer_end, mac,
                                   ringbuffer_size, valid_records, dirty_records, words_reserved, words_used,
                                   largest_contig,
                                   freeable_words):
-        self.message_status = message_status
+
         self.logging_status = logging_status
         self.ringbuffer_start = ringbuffer_start
         self.ringbuffer_end = ringbuffer_end
@@ -107,27 +116,172 @@ class advertisement_data_Object(object):
         self.time=time
 
 
-
+#%% Send msg objects to sensor
+"""
+All code below is used to send messages to the sensor.
+"""
 class send_msg_object(object):
-    def __init__(self, command=None):
-        if command is not None:
-            print(command)
-            self.command = command
-            print(self.command)
+    #add logger
+    log = log
+
+    def __init__(self, message=None):
+        if message is not None:
+            print(message)
+            self.message = message
+            print(self.message)
         else:
-            self.command = ""
+            self.message = ""
 
 
     @classmethod
-    def to_set_sensorTime(cls, time, mac):
-        if time is isinstance(float,time):
+    def to_set_sensorTime(cls,  mac=""):
+        # Need time as float. Use time.time() for current time.
+        now=time.time()
+        timestamp = struct.pack("<Q", int(now * 1000)).hex()
+        command="212108" + timestamp
+        reval = send_set_sensor_time_object(mac, command)
+        return cls(reval)
 
-            timestamp = struct.pack("<Q", int(time * 1000)).hex()
-            command="212108" + timestamp
-            reval = sensor_time_Object(mac, command)
-            return cls(reval)
+    @classmethod
+    def to_set_sensorConfig(cls, mac="", sampling_rate='FF', sampling_resolution='FF', measuring_range='FF',
+                          divider="FF"):
+        # Check if arguments are given and valid
+        if sampling_rate == 'FF':
+            hex_sampling_rate = 'FF'
+        elif sampling_rate in SamplingRate._value2member_map_:
+            hex_sampling_rate = SamplingRate(sampling_rate).name[1:]
+        else:
+            cls.log.warning("Wrong sampling rate")
+            hex_sampling_rate = 'FF'
+        # Check if arguments are given and valid
+        if sampling_resolution == 'FF':
+            hex_sampling_resolution = 'FF'
+        elif sampling_resolution in SamplingResolution._value2member_map_:
+            hex_sampling_resolution = SamplingResolution(sampling_resolution).name[1:]
+        else:
+            cls.log.warning("Wrong sampling resolution")
+            hex_sampling_resolution = 'FF'
+        # Check if arguments are given and valid
+        if measuring_range == 'FF':
+            hex_measuring_range = 'FF'
+        elif measuring_range in MeasuringRange._value2member_map_:
+            hex_measuring_range = MeasuringRange(measuring_range).name[1:]
+        else:
+            cls.log.warning("Wrong measuring range")
+            hex_measuring_range = 'FF'
+        if divider == 'FF':
+            hex_divider = 'FF'
+        else:
+            div=""
+            try:
+               div= int(divider)
+            except Exception as ex :
+                cls.log.error(str(ex))
+                cls.log.warning("Divider must be an int value")
+            if isinstance(div,int):
+                hex_divider =hex(div)[2:]
+            else:
+                hex_divider='FF'
+        # Create command string and send it to targets. If some values aren't correct the defautl value "FF" is sent
+        command_string = "4a4a02" + hex_sampling_rate + hex_sampling_resolution + hex_measuring_range + "FFFFFF" + hex_divider + "00"
+        reval=send_set_config_object(mac=mac, command=command_string)
+        return cls(reval)
 
-class sensor_time_Object(object):
+    @classmethod
+    def to_activate_logging(cls, mac=""):
+        command= "4a4a080100000000000000"
+        reval=send_activate_logging_object(mac=mac, command=command)
+        return cls(reval)
+    @classmethod
+    def to_deactivate_logging(cls, mac=""):
+        command = "4a4a080000000000000000"
+        reval = send_deactivate_logging_object(mac=mac, command=command)
+        return cls(reval)
+
+    @classmethod
+    def to_get_sensor_time(cls, mac=""):
+        command = "2121090000000000000000"
+        reval = send_get_senor_time_object(mac=mac, command=command)
+        return cls(reval)
+
+    @classmethod
+    def to_get_config(cls, mac=""):
+        command = "4a4a030000000000000000"
+        reval = send_get_config_object(mac=mac, command=command)
+        return cls(reval)
+
+    @classmethod
+    def to_get_flash_statistics(cls, mac=""):
+        command = "FAFA0d0000000000000000"
+        reval = send_get_flash_statistics_object(mac=mac, command=command)
+        return cls(reval)
+
+    @classmethod
+    def to_get_logging_status(cls, mac=""):
+        command = "4A4A090000000000000000"
+        reval = send_get_logging_status_object(mac=mac, command=command)
+        return cls(reval)
+    @classmethod
+    def to_get_acceleration_data(cls, mac=""):
+        command = "4a4a110100000000000000"
+        reval = send_get_acceleration_data_object(mac=mac, command=command)
+        return cls(reval)
+
+    @classmethod
+    def to_activate_advertisement_logging(cls, mac=""):
+        command = "4a4a110100000000000000"
+        reval = send_activate_advertisement_logging_object(mac=mac, command=command)
+        return cls(reval)
+
+
+class send_set_sensor_time_object(object):
         def __init__(self, mac, command):
             self.mac=mac
             self.command=command
+
+class send_set_config_object(object):
+        def __init__(self,mac,command):
+            self.mac=mac
+            self.command=command
+
+class send_activate_logging_object(object):
+        def __init__(self,mac, command):
+            self.mac=mac
+            self.command=command
+
+
+class send_deactivate_logging_object(object):
+    def __init__(self, mac, command):
+        self.mac = mac
+        self.command = command
+
+class send_get_config_object(object):
+    def __init__(self, mac, command):
+        self.mac = mac
+        self.command = command
+
+class send_get_senor_time_object(object):
+    def __init__(self, mac, command):
+        self.mac = mac
+        self.command = command
+
+
+class send_get_flash_statistics_object(object):
+    def __init__(self, mac, command):
+        self.mac = mac
+        self.command = command
+
+class send_get_logging_status_object(object):
+    def __init__(self, mac, command):
+        self.mac = mac
+        self.command = command
+
+class send_get_acceleration_data_object(object):
+    def __init__(self, mac, command):
+        self.mac = mac
+        self.command = command
+
+class send_activate_advertisement_logging_object(object):
+    def __init__(self, mac, command):
+        self.mac = mac
+        self.command = command
