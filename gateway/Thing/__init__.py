@@ -12,16 +12,16 @@ def on_message(client, userdata, message):
     settings.Queue is a global queue to handle the incomming commands and share the commands with
     other modules and threads.
     """
+    if str(message.topic == "command_chl"):
+        msg_decode = message.payload.decode("utf-8")
+        try:
+            msg_decode = re.findall("\[(.*?)\]", msg_decode)[0]
+            msg_decode = json.loads(msg_decode)
 
-    msg_decode = message.payload.decode("utf-8")
-    try:
-        msg_decode = re.findall("\[(.*?)\]", msg_decode)[0]
-        msg_decode = json.loads(msg_decode)
-
-        settings.ComQueue.put([msg_decode['Command'], msg_decode['MAC']])
-    except:
-        print(msg_decode)
-        print("Failure while decoding")
+            settings.ComQueue.put([msg_decode['Command'], msg_decode['MAC']])
+        except:
+            print(msg_decode)
+            print("Failure while decoding")
 
 
 def on_disconnect(client, userdata, rc):
