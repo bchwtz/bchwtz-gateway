@@ -12,10 +12,12 @@ def on_message(client, userdata, message):
     settings.Queue is a global queue to handle the incomming commands and share the commands with
     other modules and threads.
     """
+
     msg_decode = message.payload.decode("utf-8")
-    msg_decode = re.findall("\[(.*?)\]", msg_decode)[0]
-    msg_decode = json.loads(msg_decode)
     try:
+        msg_decode = re.findall("\[(.*?)\]", msg_decode)[0]
+        msg_decode = json.loads(msg_decode)
+
         settings.ComQueue.put([msg_decode['Command'], msg_decode['MAC']])
     except:
         print(msg_decode)
