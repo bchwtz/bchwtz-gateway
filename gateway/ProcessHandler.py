@@ -202,7 +202,7 @@ class thread_mqttwriter(threading.Thread):
         """
         mqtt_publisher = Thing(self.user, self.key)
         mqtt_publisher.connect_to_broker(self.host)   
-        com_feedback_topic = 'channel' + str('/') + self.channel + str('/') + 'messages' +str('/')+'feedback'    
+        com_feedback_topic = 'channels' + str('/') + self.channel + str('/') + 'messages' +str('/')+'feedback'    
         
         while True:
             if not settings.ComQueue.empty():
@@ -219,6 +219,7 @@ class thread_mqttwriter(threading.Thread):
                 elif com[0] == 'get_logging_status':
                     fb = self.SensorObj.get_logging_status(specific_mac=com[1])
                 mqtt_publisher.pub_to_channel(topic= com_feedback_topic, payload = json.dumps(fb)) 
+                #print('published')
                 time.sleep(5)
 
 if __name__ == '__main__':

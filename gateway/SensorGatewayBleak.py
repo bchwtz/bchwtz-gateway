@@ -145,10 +145,10 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         # Search for asyncio loops that are already running
         self.my_loop = asyncio.get_event_loop()
         self.current_mac=""
-
+        self.read_RuuviTag_conf()
         # #self.__handle_config_file(Mode="INIT")
 
-    def read_RuuviTag_conf(self, abs_path = "gateway/Ruuvi_commands.yml"):
+    def read_RuuviTag_conf(self, abs_path = "Ruuvi_commands.yml"):
         with open(abs_path, "r") as ymlfile:
             ruuvi_commands = yaml.load(ymlfile)
         self.ruuvi_commands = ruuvi_commands
