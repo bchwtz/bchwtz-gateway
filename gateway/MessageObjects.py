@@ -15,7 +15,9 @@ class return_values_from_sensor(object):
     def __init__(self,returnValue=None):
         if returnValue is not None:
             self.returnValue=returnValue
-        else:self.returnValue=""
+            print(self.returnValue)
+        else:
+            self.returnValue=""
 
 
     @classmethod

@@ -5,6 +5,10 @@ import datetime
 import time
 from gateway import MessageObjects
 
+"""
+Advertisement async idea
+https://stackoverflow.com/questions/37278647/fire-and-forget-python-async-await/37345564#37345564
+"""
 
 
 
