@@ -13,7 +13,9 @@ Welcome to RuuviTag-Gateway's documentation!
    gateway_readme_link.rst
    The Documentation Guide.rst
    Gateway.rst
-   test_readme_link.rst
+   rest_readme_link.rst
+   TC_M01_Hard_Reset_Tag.ipynb
+   TC_M02_Set_Time_longtime.ipynb
 
 Indices and tables
 ==================
