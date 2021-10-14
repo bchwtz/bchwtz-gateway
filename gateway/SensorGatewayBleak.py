@@ -1242,85 +1242,82 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
     def ri_error_to_string(self, error):
         """
         Decodes the RuuviTag error, if it was raised.
-
         :returns:
             result : set
                 A set of occured errors.
-
         """
         result = set()
         if error == 0:
             Log_SensorGatewayBleak.info("RD_SUCCESS")
             result.add("RD_SUCCESS")
             self.success = True
-        else:
-            if error & (1 << 0):
-                Log_SensorGatewayBleak.error("RD_ERROR_INTERNAL")
-                result.add("RD_ERROR_INTERNAL")
-            if error & (1 << 1):
-                Log_SensorGatewayBleak.error("RD_ERROR_NO_MEM")
-                result.add("RD_ERROR_NO_MEM")
-            if error & (1 << 2):
-                Log_SensorGatewayBleak.error("RD_ERROR_NOT_FOUND")
-                result.add("RD_ERROR_NOT_FOUND")
-            if error & (1 << 3):
-                Log_SensorGatewayBleak.error("RD_ERROR_NOT_SUPPORTED")
-                result.add("RD_ERROR_NOT_SUPPORTED")
-            if error & (1 << 4):
-                Log_SensorGatewayBleak.error("RD_ERROR_INVALID_PARAM")
-                result.add("RD_ERROR_INVALID_PARAM")
-            if error & (1 << 5):
-                Log_SensorGatewayBleak.error("RD_ERROR_INVALID_STATE")
-                result.add("RD_ERROR_INVALID_STATE")
-            if error & (1 << 6):
-                Log_SensorGatewayBleak.error("RD_ERROR_INVALID_LENGTH")
-                result.add("RD_ERROR_INVALID_LENGTH")
-            if error & (1 << 7):
-                Log_SensorGatewayBleak.error("RD_ERROR_INVALID_FLAGS")
-                result.add("RD_ERROR_INVALID_FLAGS")
-            if error & (1 << 8):
-                Log_SensorGatewayBleak.error("RD_ERROR_INVALID_DATA")
-                result.add("RD_ERROR_INVALID_DATA")
-            if error & (1 << 9):
-                Log_SensorGatewayBleak.error("RD_ERROR_DATA_SIZE")
-                result.add("RD_ERROR_DATA_SIZE")
-            if error & (1 << 10):
-                Log_SensorGatewayBleak.error("RD_ERROR_TIMEOUT")
-                result.add("RD_ERROR_TIMEOUT")
-            if error & (1 << 11):
-                Log_SensorGatewayBleak.error("RD_ERROR_NULL")
-                result.add("RD_ERROR_NULL")
-            if error & (1 << 12):
-                Log_SensorGatewayBleak.error("RD_ERROR_FORBIDDEN")
-                result.add("RD_ERROR_FORBIDDEN")
-            if error & (1 << 13):
-                Log_SensorGatewayBleak.error("RD_ERROR_INVALID_ADDR")
-                result.add("RD_ERROR_INVALID_ADDR")
-            if error & (1 << 14):
-                Log_SensorGatewayBleak.error("RD_ERROR_BUSY")
-                result.add("RD_ERROR_BUSY")
-            if error & (1 << 15):
-                Log_SensorGatewayBleak.error("RD_ERROR_RESOURCES")
-                result.add("RD_ERROR_RESOURCES")
-            if error & (1 << 16):
-                Log_SensorGatewayBleak.error("RD_ERROR_NOT_IMPLEMENTED")
-                result.add("RD_ERROR_NOT_IMPLEMENTED")
-            if error & (1 << 16):
-                Log_SensorGatewayBleak.error("RD_ERROR_SELFTEST")
-                result.add("RD_ERROR_SELFTEST")
-            if error & (1 << 18):
-                Log_SensorGatewayBleak.error("RD_STATUS_MORE_AVAILABLE")
-                result.add("RD_STATUS_MORE_AVAILABLE")
-            if error & (1 << 19):
-                Log_SensorGatewayBleak.error("RD_ERROR_NOT_INITIALIZED")
-                result.add("RD_ERROR_NOT_INITIALIZED")
-            if error & (1 << 20):
-                Log_SensorGatewayBleak.error("RD_ERROR_NOT_ACKNOWLEDGED")
-                result.add("RD_ERROR_NOT_ACKNOWLEDGED")
-            if error & (1 << 21):
-                Log_SensorGatewayBleak.error("RD_ERROR_NOT_ENABLED")
-                result.add("RD_ERROR_NOT_ENABLED")
-            if error & (1 << 31):
-                Log_SensorGatewayBleak.error("RD_ERROR_FATAL")
-                result.add("RD_ERROR_FATAL")
+        elif(error==1):
+            Log_SensorGatewayBleak.error("RD_ERROR_INTERNAL")
+            result.add("RD_ERROR_INTERNAL")
+        elif(error==2):
+            Log_SensorGatewayBleak.error("RD_ERROR_NO_MEM")
+            result.add("RD_ERROR_NO_MEM")
+        elif(error==3):
+            Log_SensorGatewayBleak.error("RD_ERROR_NOT_FOUND")
+            result.add("RD_ERROR_NOT_FOUND")
+        elif(error==4):
+            Log_SensorGatewayBleak.error("RD_ERROR_NOT_SUPPORTED")
+            result.add("RD_ERROR_NOT_SUPPORTED")
+        elif(error==5):
+            Log_SensorGatewayBleak.error("RD_ERROR_INVALID_PARAM")
+            result.add("RD_ERROR_INVALID_PARAM")
+        elif(error==6):
+            Log_SensorGatewayBleak.error("RD_ERROR_INVALID_STATE")
+            result.add("RD_ERROR_INVALID_STATE")
+        elif(error==7):
+            Log_SensorGatewayBleak.error("RD_ERROR_INVALID_LENGTH")
+            result.add("RD_ERROR_INVALID_LENGTH")
+        elif(error==8):
+            Log_SensorGatewayBleak.error("RD_ERROR_INVALID_FLAGS")
+            result.add("RD_ERROR_INVALID_FLAGS")
+        elif(error==9):
+            Log_SensorGatewayBleak.error("RD_ERROR_INVALID_DATA")
+            result.add("RD_ERROR_INVALID_DATA")
+        elif(error==10):
+            Log_SensorGatewayBleak.error("RD_ERROR_DATA_SIZE")
+            result.add("RD_ERROR_DATA_SIZE")
+        elif(error==11):
+            Log_SensorGatewayBleak.error("RD_ERROR_TIMEOUT")
+            result.add("RD_ERROR_TIMEOUT")
+        elif(error==12):
+            Log_SensorGatewayBleak.error("RD_ERROR_NULL")
+            result.add("RD_ERROR_NULL")
+        elif(error==13):
+            Log_SensorGatewayBleak.error("RD_ERROR_FORBIDDEN")
+            result.add("RD_ERROR_FORBIDDEN")
+        elif(error==14):
+            Log_SensorGatewayBleak.error("RD_ERROR_INVALID_ADDR")
+            result.add("RD_ERROR_INVALID_ADDR")
+        elif(error==15):
+            Log_SensorGatewayBleak.error("RD_ERROR_BUSY")
+            result.add("RD_ERROR_BUSY")
+        elif(error==16):
+            Log_SensorGatewayBleak.error("RD_ERROR_RESOURCES")
+            result.add("RD_ERROR_RESOURCES")
+        elif(error==17):
+            Log_SensorGatewayBleak.error("RD_ERROR_NOT_IMPLEMENTED")
+            result.add("RD_ERROR_NOT_IMPLEMENTED")
+        elif(error==18):
+            Log_SensorGatewayBleak.error("RD_ERROR_SELFTEST")
+            result.add("RD_ERROR_SELFTEST")
+        elif(error==19):
+            Log_SensorGatewayBleak.error("RD_STATUS_MORE_AVAILABLE")
+            result.add("RD_STATUS_MORE_AVAILABLE")
+        elif(error==20):
+            Log_SensorGatewayBleak.error("RD_ERROR_NOT_INITIALIZED")
+            result.add("RD_ERROR_NOT_INITIALIZED")
+        elif(error==21):
+            Log_SensorGatewayBleak.error("RD_ERROR_NOT_ACKNOWLEDGED")
+            result.add("RD_ERROR_NOT_ACKNOWLEDGED")
+        elif(error==22):
+            Log_SensorGatewayBleak.error("RD_ERROR_NOT_ENABLED")
+            result.add("RD_ERROR_NOT_ENABLED")
+        elif(error==31):
+            Log_SensorGatewayBleak.error("RD_ERROR_FATAL")
+            result.add("RD_ERROR_FATAL")
         return result
