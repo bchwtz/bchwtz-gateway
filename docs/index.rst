@@ -10,12 +10,11 @@ Welcome to RuuviTag-Gateway's documentation!
    :maxdepth: 2
    :caption: Contents:
    
-   gateway_readme_link.rst
-   The Documentation Guide.rst
+   ReadmeLink.md
+   DocumentationGuide.rst
    Gateway.rst
-   rest_readme_link.rst
-   TC_M01_Hard_Reset_Tag.ipynb
-   TC_M02_Set_Time_longtime.ipynb
+   test_readme_link.md
+
 
 Indices and tables
 ==================

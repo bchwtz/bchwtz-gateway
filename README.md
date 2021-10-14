@@ -1,5 +1,3 @@
-# Getting-Started Guide
-
 ## Usefull Informations for Preperation
 
 There are some tricks to communicate with RaspberryPi and get Python Code run. The aim of this chapter is to give a brief 
