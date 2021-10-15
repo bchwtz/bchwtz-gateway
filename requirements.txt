@@ -14,3 +14,4 @@ paho-mqtt
 json
 ruuvitag-sensor
 threading
+myst_nb
