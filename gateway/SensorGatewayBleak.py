@@ -1242,12 +1242,13 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
     def ri_error_to_string(self, error):
         """
         Decodes the RuuviTag error, if it was raised.
+        
         :returns:
             result : set
                 A set of occured errors.
         """
         result = set()
-        if error == 0:
+        if (error == 0):
             Log_SensorGatewayBleak.info("RD_SUCCESS")
             result.add("RD_SUCCESS")
             self.success = True
@@ -1317,7 +1318,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         elif(error==22):
             Log_SensorGatewayBleak.error("RD_ERROR_NOT_ENABLED")
             result.add("RD_ERROR_NOT_ENABLED")
-        elif(error==31):
+        else:
             Log_SensorGatewayBleak.error("RD_ERROR_FATAL")
             result.add("RD_ERROR_FATAL")
         return result

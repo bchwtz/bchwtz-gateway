@@ -5,17 +5,18 @@ import datetime
 import time
 from gateway import MessageObjects
 
-"""
-Advertisement async idea
-https://stackoverflow.com/questions/37278647/fire-and-forget-python-async-await/37345564#37345564
-"""
-
-
-
 ble = BleCommunicationNix()
 
 
 def advertisement_logging():
+    """
+    
+
+    Returns
+    -------
+    None.
+
+    """
             return_value_object=MessageObjects.return_values_from_sensor()
             last_measurement_number = {}
 
