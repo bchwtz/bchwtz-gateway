@@ -11,8 +11,12 @@ Follow the [official documentation](https://docs.docker.com/compose/install/).
 
 ## Usage
 
-Run following commands from project root directory.
+Run following commands from the deployments directory.
 
 ```
 docker-compose -f docker/docker-compose.yml up
 ```
+
+## Github Actions Pipeline
+
+Usually the Github Actions Pipeline (can be found in .gihtub/workflows) will manage deployment and execution of the mainflux-cluster. It may be triggered using the github UI or by commiting to the main or mf-deployment branches.
