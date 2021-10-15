@@ -1,4 +1,3 @@
-# Getting-Started Testautomation
 Author: Furkan Tombul
 
 This section will handle all topics regarding integration tests and testautomation. 
