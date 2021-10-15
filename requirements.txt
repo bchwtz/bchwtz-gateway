@@ -10,3 +10,7 @@ async_timeout
 configparser
 ruuvitag_sensor
 pyyaml
+paho-mqtt
+json
+ruuvitag-sensor
+threading

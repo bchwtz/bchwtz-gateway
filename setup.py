@@ -1,5 +1,10 @@
+import os
 from setuptools import find_packages
 from setuptools import setup
+
+
+with open('requirements.txt') as f:
+    required = f.read().splitlines()
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
@@ -13,20 +18,8 @@ setup(name='gateway',
       long_description = long_description,
       long_description_content_type = "text/markdown",
       url = 'https://github.com/bchwtz-fhswf/gateway.git',
-      packages=['gateway'],      
-      install_requires=['asyncio',
-                        'nest_asyncio',
-                        'regex',
-                        'bleak',
-                        'crcmod',
-                        'async_timeout',
-                        'configparser',
-                        'async-generator',
-                        'Markdown',
-                        'Sphinx',
-                        'ruuvitag_sensor',
-                        'pyyaml'
-                        ],
+      packages = find_packages(),      
+      install_requires= required,
       python_requires=">=3.6"
       )
 #https://github.com/navdeep-G/samplemod
