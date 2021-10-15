@@ -23,7 +23,9 @@ setup(name='gateway',
                         'configparser',
                         'async-generator',
                         'Markdown',
-                        'Sphinx'
+                        'Sphinx',
+                        'ruuvitag_sensor',
+                        'pyyaml'
                         ],
       python_requires=">=3.6"
       )
