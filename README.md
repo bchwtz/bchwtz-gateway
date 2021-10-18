@@ -68,7 +68,7 @@ The `mqttMainfluxComm`-branche includes new sub-modules to...
 2. use predefined mqtt channels to trigger a sensor and get data,
 3. run this modules continuously in the background.
 
-Before you start, please have a look at the jupyter notebooks `Client` and `MQTTprojectEYE` inside the gateway subdirectory.
+Before you start, please have a look at the jupyter notebooks `Client` and `MQTTprojectEXE` inside the gateway subdirectory.
 
 > #### Note
 > Please dont use the `setup.py` to install the sub-modules. Please use `pip install -r requirements.txt` to install required packages.
