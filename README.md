@@ -60,3 +60,15 @@ Test = Ruuvi_Com_Obj.get_acceleration_data()
 
 The logging of the Accelorometer data is reseted by the disabling/activating function. 
 The data will be returned as a list.
+
+## mqttMainfluxComm (beta)
+
+The `mqttMainfluxComm`-branche includes new sub-modules to...
+1. connect the gateway to a mqtt broker,
+2. use predefined mqtt channels to trigger a sensor and get data,
+3. run this modules continuously in the background.
+
+Before you start, please have a look at the jupyter notebooks `Client` and `MQTTprojectEYE` inside the gateway subdirectory.
+
+> #### Note
+> Please dont use the `setup.py` to install the sub-modules. Please use `pip install -r requirements.txt` to install required packages.
