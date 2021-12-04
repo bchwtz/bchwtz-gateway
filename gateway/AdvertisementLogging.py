@@ -5,62 +5,58 @@ import datetime
 import time
 from gateway import MessageObjects
 
-"""
-Advertisement async idea
-https://stackoverflow.com/questions/37278647/fire-and-forget-python-async-await/37345564#37345564
-"""
-
-
-
 ble = BleCommunicationNix()
 
 
 def advertisement_logging():
-            return_value_object=MessageObjects.return_values_from_sensor()
-            last_measurement_number = {}
-
-            try:
-                for ble_data in ble.get_datas():
+    """
 
 
-                    current_time=time.time()
-                    mac = ble_data[0]
-                    data = ble_data[1]
+    Returns
+    -------
+    None.
 
-                    (data_format, data) = DataFormats.convert_data(ble_data[1])
-                    if data is not None:
-                        decoded = get_decoder(data).decode_data(data)
-                        if decoded is not None:
-                            del decoded["mac"]
-                        # print(decoded)
-                            if mac in last_measurement_number:
-                                if decoded["measurement_sequence_number"] != last_measurement_number[mac]:
-                                    last_measurement_number[mac] = decoded["measurement_sequence_number"]
-                                else:
-                                    continue
-                            else:
-                                last_measurement_number[mac]=decoded["measurement_sequence_number"]
-                            msg_obj = return_value_object.from_get_advertisementdata(decoded, mac,
-                                                                                     current_time).returnValue
-                            """
-                             Add push to mainflux here. Use msg_obj from above
-                            """
+    """
+    return_value_object=MessageObjects.return_values_from_sensor()
+    last_measurement_number = {}
 
-                            print([mac,current_time,decoded])
-                            keyList = list(decoded.keys())
-                        #print(keyList)
-                            valueList = list(decoded.values())
-                        #print(valueList)
-                            s = "".join([str(x) + "," for x in valueList])
-                        # print(s)
-                            date = datetime.date.today()
-                            with open("advertisment-{}.csv".format(date), 'a') as f:
-                                f.write("{}{},{}".format(s, mac, current_time))
-                                f.write("\n")
+    try:
+        for ble_data in ble.get_datas():
 
 
+            current_time=time.time()
+            mac = ble_data[0]
+            data = ble_data[1]
 
-            except KeyboardInterrupt:
-            #     # When Ctrl+C is pressed execution of the while loop is stopped
-            #     stopEvent.set()
-                print('Exit')
+            (data_format, data) = DataFormats.convert_data(ble_data[1])
+            if data is not None:
+                decoded = get_decoder(data).decode_data(data)
+                if decoded is not None:
+                    del decoded["mac"]
+                # print(decoded)
+                    if mac in last_measurement_number:
+                        if decoded["measurement_sequence_number"] != last_measurement_number[mac]:
+                            last_measurement_number[mac] = decoded["measurement_sequence_number"]
+                        else:
+                            continue
+                    else:
+                        last_measurement_number[mac]=decoded["measurement_sequence_number"]
+                    msg_obj = return_value_object.from_get_advertisementdata(decoded, mac,
+                                                                             current_time).returnValue
+                   #Add push to mainflux here. Use msg_obj from above
+                    print([mac,current_time,decoded])
+                    keyList = list(decoded.keys())
+                #print(keyList)
+                    valueList = list(decoded.values())
+                #print(valueList)
+                    s = "".join([str(x) + "," for x in valueList])
+                # print(s)
+                    date = datetime.date.today()
+                    with open("advertisment-{}.csv".format(date), 'a') as f:
+                        f.write("{}{},{}".format(s, mac, current_time))
+                        f.write("\n")
+
+
+
+    except KeyboardInterrupt:
+        print('Exit')
