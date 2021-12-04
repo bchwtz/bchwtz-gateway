@@ -1193,10 +1193,6 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
 
 
     def get_flash_statistic(self, msg_object):
-        # """
-        # Loop funktion zum aufrufen in eigene Funktion, die activate Logging aufruft.
-        # Async
-        # """
         if(isinstance(msg_object, send_get_flash_statistics_object )):
             self.success = False
             self.work_loop(macs=msg_object.mac, command=msg_object.command)
@@ -1237,8 +1233,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             logging.error("%s is the wrong message object. "
                           "Use gateway.MessageObjects.send_get_logging_status instead." % type(msg_object))
 
-    #%% region error messages
-
+    #%% error messages
     def ri_error_to_string(self, error):
         """
         Decodes the RuuviTag error, if it was raised.
@@ -1318,7 +1313,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         elif(error==22):
             Log_SensorGatewayBleak.error("RD_ERROR_NOT_ENABLED")
             result.add("RD_ERROR_NOT_ENABLED")
-        else:
+        elif(error==31):
             Log_SensorGatewayBleak.error("RD_ERROR_FATAL")
             result.add("RD_ERROR_FATAL")
         return result
