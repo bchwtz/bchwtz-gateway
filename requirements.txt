@@ -10,6 +10,6 @@ async_timeout
 configparser
 ruuvitag_sensor
 pyyaml
-paho-mqrr
+paho-mqtt
 ruuvitag_sensor
 myst_nb
