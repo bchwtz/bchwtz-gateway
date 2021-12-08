@@ -10,6 +10,7 @@ Welcome to RuuviTag-Gateway's documentation!
    :maxdepth: 2
    :caption: Contents:
    
+   git_installation_on_raspberry.md
    ReadmeLink.md
    DocumentationGuide.rst
    Gateway.rst

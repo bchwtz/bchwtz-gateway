@@ -3,14 +3,20 @@ import time
 from gateway.SensorConfigEnum import SamplingRate, SamplingResolution,MeasuringRange
 import logging
 import yaml
+#import os
+# Look to the path of your current working directory
+#working_directory = os.getcwd()
 
 log=logging.getLogger("msg")
 """
 This region is used to wrap the returned values of the sensor into an object
 """
-   
-with open("communication_interface.yml", "r") as ymlfile:
-    sensor_interface = yaml.load(ymlfile)
+#try:
+with open("gateway/communication_interface.yml", "r") as ymlfile:
+    sensor_interface = yaml.safe_load(ymlfile)
+#except Exception:
+#    print(working_directory)
+#    print("error")
 
 # %% Recieved msg objects from sensor
 class return_values_from_sensor(object):
