@@ -8,7 +8,6 @@ regex
 Sphinx
 async_timeout
 configparser
-ruuvitag_sensor
 pyyaml
 paho-mqtt
 ruuvitag_sensor
