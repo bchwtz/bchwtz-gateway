@@ -10,6 +10,6 @@ configparser
 pyyaml
 paho-mqtt
 ruuvitag_sensor
- nest-asyncio
+nest-asyncio
 # myst-nb
 
