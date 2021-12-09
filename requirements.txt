@@ -3,7 +3,6 @@ asyncio
 bleak==0.12.1
 crcmod
 Markdown==3.3.4
-nest-asyncio
 regex
 Sphinx
 async_timeout
@@ -11,5 +10,6 @@ configparser
 pyyaml
 paho-mqtt
 ruuvitag_sensor
-myst_nb
+ nest-asyncio
+# myst-nb
 
