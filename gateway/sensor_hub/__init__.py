@@ -1,5 +1,5 @@
-import AdvertisementLogging
-from sensor import sensor
+from gateway.sensor_hub import AdvertisementLogging
+from gateway.sensor import sensor
 from bleak import BleakScanner
 #import re
 import logging
@@ -13,17 +13,28 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 console_handler.setFormatter(formatter)
 Log_sensor_hub.addHandler(console_handler)
 
+class Event_ts(asyncio.Event):
+    """Custom event loop class for sensorhub
+    """
+    def clear(self):
+        self._loop.call_soon_threadsafe(super().clear)
+
+    def set(self):
+        self._loop.call_soon_threadsafe(super().set)  
+
 class sensor_hub(object):
     def __init__(self):
+        #asyncio.Event = Event_ts
         self.main_loop = asyncio.get_event_loop()
+        self.logger = logging.getLogger('sensor_hub.sensor_hub')
         self.sensorlist = list()
         return
     
     def discover_neighborhood(self):
         self.sensorlist = list()
-        #taskobj = self.main_loop.create_task(self.find_tags())
-        #self.sensorlist.append(self.main_loop.run_until_complete(taskobj))
-        self.sensorlist.append(asyncio.run(self.find_tags()))
+        taskobj = self.main_loop.create_task(self.find_tags())
+        self.sensorlist.append(self.main_loop.run_until_complete(taskobj))
+        #self.sensorlist.append(asyncio.run(self.find_tags()))
     
     def __validate_mac(self, devices):
         """
@@ -37,10 +48,12 @@ class sensor_hub(object):
             None.
         """
         for i in devices:
+            print(i.name, i.address)
             self.logger.info('Device: %s with Address %s found!' % (i.name, i.address))
-            if ("Ruuvi" in i.name) & (i.address not in self.mac):
+            if ("Ruuvi" in i.name):
                 self.logger.info('Device: %s with Address %s saved in MAC list!' % (i.name, i.address))
-                return (i.name, i.address)
+                return (True, i.name, i.address)
+            return(False,0,0)
     
     async def find_tags(self):
         """
@@ -56,17 +69,13 @@ class sensor_hub(object):
                 False : No Tags were found.
                 True : At least one Tag was found nearby.
 
-        """
+        """    
         devices = await BleakScanner.discover(timeout=5.0)
-        self.__validate_mac(devices)
-        
-        if len(self.mac) == 0:
-            self.logger.warning("No RuuviTags were found.")
-            return False
-        return True
-        devices = await BleakScanner.discover(timeout=5.0)
-        name, adress = self.__validate_mac(devices)
-        return sensor(name=name, mac=adress)
+        Bool, name, adress = self.__validate_mac(devices)
+        print(Bool, name, adress)
+        if Bool:
+            return sensor(name=name, mac=adress)
+        return
         
     def listen_advertisements():
         """
@@ -81,16 +90,7 @@ class sensor_hub(object):
         input("Press any key to confirm!")
         AdvertisementLogging.advertisement_logging()
 
-
-
-class Event_ts(asyncio.Event):
-    """Custom event loop class for sensorhub
-    """
-    def clear(self):
-        self._loop.call_soon_threadsafe(super().clear)
-
-    def set(self):
-        self._loop.call_soon_threadsafe(super().set)    
+  
     
     """Configure the interface between the sensorhub and other services
     """

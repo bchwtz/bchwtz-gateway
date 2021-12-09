@@ -63,38 +63,6 @@ Log_SensorGatewayBleak.addHandler(console_handler)
 nest_asyncio.apply()
 Log_SensorGatewayBleak.info('Set nest_asyncio as global configuration')
 
-
-# # %%region enums for sensor config
-#
-# class SamplingRate(Enum):
-#     x01 = 1
-#     x0A = 10
-#     x19 = 25
-#     x32 = 50
-#     x64 = 100
-#     xC8 = 200
-#     xC9 = 400
-#
-#
-# class SamplingResolution(Enum):
-#     """
-#     For validation of the arguments set in set_config_sensor.
-#     """
-#     x08 = 8
-#     x0A = 10
-#     x0C = 12
-#
-#
-# class MeasuringRange(Enum):
-#     """
-#     For validation of the arguments set in set_config_sensor.
-#     """
-#     x02 = 2
-#     x04 = 4
-#     x08 = 8
-#     x10 = 16
-
-
 # %% Class Async-Events
 # Thread Safe Event Class
 class Event_ts(asyncio.Event):
@@ -1130,7 +1098,6 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             logging.error("%s is the wrong message object. "
                           "Use gateway.MessageObjects.send_get_config_object instead." % type(msg_object))
 
-
     def get_time_from_sensor(self, msg_object):
         """
         The “get_time_from_sensor()” function returns the current time from a
@@ -1156,9 +1123,6 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         else:
             logging.error("%s is the wrong message object. "
                       "Use gateway.MessageObjects.send_get_senor_time_object instead." % type(msg_object))
-
-
-
 
     def set_sensor_time(self,msg_object):
         """
@@ -1191,7 +1155,6 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
             logging.error("%s is the wrong message object. "
                           "Use gateway.MessageObjects.send_set_sensor_time_object instead." % type(msg_object))
 
-
     def get_flash_statistic(self, msg_object):
         if(isinstance(msg_object, send_get_flash_statistics_object )):
             self.success = False
@@ -1204,10 +1167,6 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
         else:
             logging.error("%s is the wrong message object. "
                           "Use gateway.MessageObjects.send_get_flash_statistics instead." % type(msg_object))
-
-
-
-
 
     def get_logging_status(self, msg_object):
         """
