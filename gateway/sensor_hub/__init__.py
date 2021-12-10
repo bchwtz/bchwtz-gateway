@@ -7,6 +7,7 @@ import asyncio
 
 #Logger
 Log_sensor_hub = logging.getLogger('sensor_hub')
+Log_sensor_hub.setLevel("DEBUG")
 console_handler = logging.StreamHandler()
 console_handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -33,7 +34,7 @@ class sensor_hub(object):
     def discover_neighborhood(self):
         self.sensorlist = list()
         taskobj = self.main_loop.create_task(self.find_tags())
-        self.sensorlist.append(self.main_loop.run_until_complete(taskobj))
+        self.main_loop.run_until_complete(taskobj)
         #self.sensorlist.append(asyncio.run(self.find_tags()))
     
     def __validate_mac(self, devices):
@@ -52,8 +53,9 @@ class sensor_hub(object):
             self.logger.info('Device: %s with Address %s found!' % (i.name, i.address))
             if ("Ruuvi" in i.name):
                 self.logger.info('Device: %s with Address %s saved in MAC list!' % (i.name, i.address))
-                return (True, i.name, i.address)
-            return(False,0,0)
+                return (i.name, i.address)
+            else:
+                return
     
     async def find_tags(self):
         """
@@ -74,7 +76,7 @@ class sensor_hub(object):
         Bool, name, adress = self.__validate_mac(devices)
         print(Bool, name, adress)
         if Bool:
-            return sensor(name=name, mac=adress)
+            return self.sensorlist.append(sensor(name=name, mac=adress))
         return
         
     def listen_advertisements():

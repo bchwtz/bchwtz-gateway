@@ -1,20 +1,22 @@
 """
 An object of type sensor is an digital twin of a hardware sensor.
 """
-import struct
+import struct#built-in module
 import logging
 import os.path
-import yaml
+from functools import partial
+from binascii import hexlify #Ist das notwendig
+import datetime
+import yaml #third-party modules
 import asyncio
 from bleak import BleakClient
 import time
-from functools import partial #Ist das notwendig
-from gateway.sensor import SensorConfigEnum
-from functools import hexlify
-import datetime
+import crcmod
+
+from gateway.sensor import SensorConfigEnum #internal project modules
 from gateway.SensorConfigEnum import SamplingRate, SamplingResolution,MeasuringRange
 from gateway.MessageObjects import return_values_from_sensor
-import crcmod
+
 
 with open(os.path.dirname(__file__)+ '/../communication_interface.yml') as ymlfile:
     sensor_interface = yaml.safe_load(ymlfile)
@@ -74,9 +76,9 @@ class sensor(object):
                 pass
     
     def work_loop(self, command):
-        self.taskobj = self.my_loop.create_task(self.connect_to_mac_command(command))
+        self.taskobj = self.main_loop.create_task(self.connect_to_mac_command(command))
         try:
-            self.my_loop.run_until_complete(self.taskobj)
+            self.main_loop.run_until_complete(self.taskobj)
         except Exception as e:
             Log_sensor.error("Exception occured: {}".format(e))
         return
@@ -189,8 +191,8 @@ class sensor(object):
     def get_acceleration_data(self):
         global sensordaten
         Log_sensor.info('Try to get acceleration data from {}'.format(self.mac))
-        taskobj = self.my_loop.create_task(self.connect_to_mac(self.mac, sensor_interface["ruuvi_commands"]["get_acceleration_data"] ))
-        self.my_loop.run_until_complete(taskobj)        
+        taskobj = self.main_loop.create_task(self.connect_to_mac(self.mac, sensor_interface["ruuvi_commands"]["get_acceleration_data"] ))
+        self.main_loop.run_until_complete(taskobj)        
         return
     
     async def handle_data(self,value):
