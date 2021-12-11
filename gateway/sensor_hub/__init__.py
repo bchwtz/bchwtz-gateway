@@ -49,13 +49,11 @@ class sensor_hub(object):
             None.
         """
         for i in devices:
-            print(i.name, i.address)
             self.logger.info('Device: %s with Address %s found!' % (i.name, i.address))
             if ("Ruuvi" in i.name):
                 self.logger.info('Device: %s with Address %s saved in MAC list!' % (i.name, i.address))
-                return (i.name, i.address)
-            else:
-                return
+                return self.sensorlist.append(sensor(i.name, i.address))
+        return
     
     async def find_tags(self):
         """
@@ -72,14 +70,12 @@ class sensor_hub(object):
                 True : At least one Tag was found nearby.
 
         """    
+        self.sensorlist = list()
         devices = await BleakScanner.discover(timeout=5.0)
-        Bool, name, adress = self.__validate_mac(devices)
-        print(Bool, name, adress)
-        if Bool:
-            return self.sensorlist.append(sensor(name=name, mac=adress))
-        return
+        self.__validate_mac(devices)
+
         
-    def listen_advertisements():
+    def listen_advertisements(self):
         """
         Start listening to advertisements
 

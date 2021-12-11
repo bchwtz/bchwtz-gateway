@@ -76,7 +76,7 @@ class sensor(object):
                 pass
     
     def work_loop(self, command):
-        self.taskobj = self.main_loop.create_task(self.connect_to_mac_command(command))
+        self.taskobj = self.main_loop.create_task(self.connect_ble_sensor(command))
         try:
             self.main_loop.run_until_complete(self.taskobj)
         except Exception as e:
