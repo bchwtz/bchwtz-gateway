@@ -3,25 +3,11 @@ import os
 import subprocess
 import sys
 import time
-import abc
+
+from gateway.sensor_hub.nix_hci_dummy import BleCommunication
 
 
-log = logging.getLogger(__name__)
-
-class BleCommunication(object):
-    """Bluetooth LE communication"""
-    __metaclass__ = abc.ABCMeta
-
-    @staticmethod
-    @abc.abstractmethod
-    def get_data(mac, bt_device=''):
-        pass
-
-    @staticmethod
-    @abc.abstractmethod
-    def get_datas(blacklist=[], bt_device=''):
-        pass
-
+log = logging.getLogger('nix_hci_logger')
 
 class BleCommunicationNix(BleCommunication):
     """Bluetooth LE communication for Linux"""

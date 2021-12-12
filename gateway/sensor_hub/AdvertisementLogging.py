@@ -7,7 +7,6 @@ from gateway.sensor import MessageObjects
 
 ble = BleCommunicationNix()
 
-
 def advertisement_logging():
     """
 
@@ -19,15 +18,11 @@ def advertisement_logging():
     """
     return_value_object=MessageObjects.return_values_from_sensor()
     last_measurement_number = {}
-
     try:
         for ble_data in ble.get_datas():
-
-
             current_time=time.time()
             mac = ble_data[0]
             data = ble_data[1]
-
             (data_format, data) = DataFormats.convert_data(ble_data[1])
             if data is not None:
                 decoded = get_decoder(data).decode_data(data)
@@ -55,8 +50,5 @@ def advertisement_logging():
                     with open("advertisment-{}.csv".format(date), 'a') as f:
                         f.write("{}{},{}".format(s, mac, current_time))
                         f.write("\n")
-
-
-
-    except KeyboardInterrupt:
-        print('Exit')
+    except Exception as e:
+        print('{}'.format(e))
