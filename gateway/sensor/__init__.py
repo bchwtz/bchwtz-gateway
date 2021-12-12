@@ -14,8 +14,8 @@ import time
 import crcmod
 
 from gateway.sensor import SensorConfigEnum #internal project modules
-from gateway.SensorConfigEnum import SamplingRate, SamplingResolution,MeasuringRange
-from gateway.MessageObjects import return_values_from_sensor
+from gateway.sensor.SensorConfigEnum import SamplingRate, SamplingResolution,MeasuringRange
+from gateway.sensor.MessageObjects import return_values_from_sensor
 
 
 with open(os.path.dirname(__file__)+ '/../communication_interface.yml') as ymlfile:
@@ -49,12 +49,14 @@ class sensor(object):
         self.mac = mac
         self.name = name      
         self.main_loop = asyncio.get_event_loop()
-        self.Event_ts = Event_ts()
+        self.stopEvent = Event_ts()
+        self.notification_done = False
+        self.sensor_data = list()
         return
     
     async def killswitch(self):
         Log_sensor.info("Start timeout function")
-        while time.time()-self.start_time < 2 :
+        while time.time()-self.start_time < 5 :
             Log_sensor.warning("Timeout timer running {}".format(time.strftime("%H:%M:%S",time.localtime(self.start_time))))
             await asyncio.sleep(1)
         try:
@@ -75,21 +77,21 @@ class sensor(object):
             except:
                 pass
     
-    def work_loop(self, command):
-        self.taskobj = self.main_loop.create_task(self.connect_ble_sensor(command))
+    def work_loop(self, command, write_channel):
+        self.taskobj = self.main_loop.create_task(self.connect_ble_sensor(command, write_channel))
         try:
             self.main_loop.run_until_complete(self.taskobj)
         except Exception as e:
             Log_sensor.error("Exception occured: {}".format(e))
         return
     
-    async def connect_ble_sensor(self, command_string): #Vll muss hier noch der channel und die callback funktion rein
+    async def connect_ble_sensor(self, command_string, write_channel): #Vll muss hier noch der channel und die callback funktion rein
         Log_sensor.info("Send {} to MAC {} ".format(self.mac,command_string))
         try:
             async with BleakClient(self.mac) as client:
                 # Send the command (Wait for Response must be True)
                 await client.start_notify(sensor_interface["communication_channels"]["UART_RX"] , partial(self.handle_ble_callback , client))
-                await client.write_gatt_char(sensor_interface["communication_channels"]["UART_RX"],
+                await client.write_gatt_char(write_channel,
                                              bytearray.fromhex(command_string), True)
                 Log_sensor.info('Message send to MAC: %s' % (self.mac))
 
@@ -112,9 +114,9 @@ class sensor(object):
     def handle_ble_callback(self, client: BleakClient,sender: int, value: bytearray):
         if value[0] == 0x4A or value[0] == 0x21:
             message_return_value = return_values_from_sensor()
-            self.logger.info("Received: %s" % hexlify(value))
+            Log_sensor.info("Received: %s" % hexlify(value))
             status_string=str(self.ri_error_to_string(value[3]), )
-            self.logger.info("Status: %s" % status_string)
+            Log_sensor.info("Status: %s" % status_string)
             if len(value) == 4:
                 test=message_return_value.form_get_status(status=int(value[3]), mac=client.address)
                 self.sensor_data.append([test.returnValue.__dict__])
@@ -123,9 +125,9 @@ class sensor(object):
 
             elif value[2] == 0x09:
 
-                self.logger.info("Received time: %s" % hexlify(value[:-9:-1]))
+                Log_sensor.info("Received time: %s" % hexlify(value[:-9:-1]))
                 recieved_time=time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(value[:-9:-1]), 16) / 1000))
-                self.logger.info(recieved_time)
+                Log_sensor.info(recieved_time)
                 self.sensor_data.append([message_return_value.from_get_time(status=status_string, recieved_time=recieved_time,
                                                    mac=client.address).returnValue.__dict__])
                 self.stopEvent.set()
@@ -134,10 +136,10 @@ class sensor(object):
             elif value[0] == 0x4a and value[3] == 0x00:
                 sample_rate=""
                 if value[4] == 201:
-                    self.logger.info("Samplerate: 400 Hz")
+                    Log_sensor.info("Samplerate: 400 Hz")
                     sample_rate=400
                 else:
-                    self.logger.info("Samplerate:    %d Hz" % value[4])
+                    Log_sensor.info("Samplerate:    %d Hz" % value[4])
                     sample_rate=int(value[4])
                 recieved_config=message_return_value.from_get_config(status=status_string,sample_rate=sample_rate,resolution= int(value[5]),
                                                     scale=int(value[6]),dsp_function=int(value[7]), dsp_parameter=int(value[8]),
@@ -148,7 +150,7 @@ class sensor(object):
 
         elif value[0] == 0xfb and value[1] == 0x0d:
             message_return_value = return_values_from_sensor()
-            self.logger.info("Received: %s" % hexlify(value))
+            Log_sensor.info("Received: %s" % hexlify(value))
             logging_status = value[3]
             ringbuffer_start = value[4]
             ringbuffer_end = value[5]
@@ -165,27 +167,27 @@ class sensor(object):
             words_reserved=words_reserved, words_used= words_used, largest_contig=largest_contig, freeable_words=freeable_words,
             mac=client.address)
             self.sensor_data.append([recieved_flash_statistic.returnValue.__dict__])
-            self.logger.info("Last Status %s" % (str(self.ri_error_to_string(logging_status)),))
-            self.logger.info("Ringbuffer start %d" % (ringbuffer_start,))
-            self.logger.info("Ringbuffer end %d" % (ringbuffer_end,))
-            self.logger.info("Ringbuffer size %d" % (ringbuffer_size,))
-            self.logger.info("Valid records %d" % (valid_records,))
-            self.logger.info("Dirty records %d" % (dirty_records,))
-            self.logger.info("Words reserved %d" % (words_reserved,))
-            self.logger.info("Words used %d" % (words_used,))
-            self.logger.info("Largest continuos %d" % (largest_contig,))
-            self.logger.info("Freeable words %d\n" % (freeable_words,))
+            Log_sensor.info("Last Status %s" % (str(self.ri_error_to_string(logging_status)),))
+            Log_sensor.info("Ringbuffer start %d" % (ringbuffer_start,))
+            Log_sensor.info("Ringbuffer end %d" % (ringbuffer_end,))
+            Log_sensor.info("Ringbuffer size %d" % (ringbuffer_size,))
+            Log_sensor.info("Valid records %d" % (valid_records,))
+            Log_sensor.info("Dirty records %d" % (dirty_records,))
+            Log_sensor.info("Words reserved %d" % (words_reserved,))
+            Log_sensor.info("Words used %d" % (words_used,))
+            Log_sensor.info("Largest continuos %d" % (largest_contig,))
+            Log_sensor.info("Freeable words %d\n" % (freeable_words,))
             self.stopEvent.set()
             self.notification_done = True
     
     def activate_acceleromerter_logging(self):
         Log_sensor.info('Try activate accelerometer logging at {}'.format(self.mac))
-        self.work_loop(sensor_interface["ruuvi_commands"]["activate_logging_at_sensor"])
+        self.work_loop(sensor_interface["ruuvi_commands"]["activate_logging_at_sensor"],sensor_interface["communication_channels"]["UART_TX"])
         return
 
     def deactivate_acceleromerter_logging(self):
         Log_sensor.info('Try deactivate accelerometer logging at {}'.format(self.mac))
-        self.work_loop(sensor_interface["ruuvi_commands"]["deactivate_logging_at_sensor"])
+        self.work_loop(sensor_interface["ruuvi_commands"]["deactivate_logging_at_sensor"],sensor_interface["communication_channels"]["UART_TX"])
         return 
     
     def get_acceleration_data(self):
@@ -209,13 +211,13 @@ class sensor(object):
             print(len(sensordaten))
             self.delta = len(sensordaten) / (self.end_time - self.start_time)
 
-            self.logger.debug('Bandwidth : {} Bytes/Second'.format(self.delta))
+            Log_sensor.debug('Bandwidth : {} Bytes/Second'.format(self.delta))
             self.stopEvent.set()
             # Status
-            self.logger.debug("Status: %s" % str(self.ri_error_to_string(value[3])))
+            Log_sensor.debug("Status: %s" % str(self.ri_error_to_string(value[3])))
 
             crc = value[12:14];
-            self.logger.debug("Received CRC: %s" % hexlify(crc))
+            Log_sensor.debug("Received CRC: %s" % hexlify(crc))
 
             # CRC validation
             ourcrc = crcfun(sensordaten)
@@ -223,11 +225,11 @@ class sensor(object):
             print("Received %d bytes" % len(sensordaten))
             #print(hexlify(crc))
             if hexlify(crc) == bytearray():
-                self.logger.info("No crc received")
+                Log_sensor.info("No crc received")
                 return None
 
             if int(hexlify(crc), 16) != ourcrc:
-                self.logger.warning("CRC are unequal")
+                Log_sensor.warning("CRC are unequal")
                 return None
 
 
@@ -236,20 +238,20 @@ class sensor(object):
             # Start data
             if (value[5] == 12):
                 # 12 Bit
-                self.logger.info("Start processing reveived data with process_sensor_data_12")
+                Log_sensor.info("Start processing reveived data with process_sensor_data_12")
                 AccelorationData = self.process_sensor_data_12(sensordaten, value[6], value[4])
             elif (value[5] == 10):
                 # 10 Bit
-                self.logger.info("Start processing reveived data with process_sensor_data_10")
+                Log_sensor.info("Start processing reveived data with process_sensor_data_10")
                 AccelorationData = self.process_sensor_data_10(sensordaten, value[6], value[4])
             elif (value[5] == 8):
                 # 8 Bit
-                self.logger.info("Start processing reveived data with process_sensor_data_10")
+                Log_sensor.info("Start processing reveived data with process_sensor_data_10")
                 AccelorationData = self.process_sensor_data_8(sensordaten, value[6], value[4])
             else:
                 print("Unknown Resolution")
             if AccelorationData != None:
-                self.logger.info("Run in Funktion AccelorationData != None")
+                Log_sensor.info("Run in Funktion AccelorationData != None")
                 dataList=message_return_value.from_get_accelorationdata(accelorationdata=AccelorationData,mac=self.current_mac)
                 self.data.append(dataList.returnValue.__dict__)
         return
@@ -265,16 +267,16 @@ class sensor(object):
         time_between_samples = 1 / rate
 
         if (scale == 2):
-            self.logger.info("Scale: 2G")
+            Log_sensor.info("Scale: 2G")
             faktor = 16 / (256 * 1000)
         elif (scale == 4):
-            self.logger.info("Scale: 4G")
+            Log_sensor.info("Scale: 4G")
             faktor = 32 / (256 * 1000)
         elif (scale == 8):
-            self.logger.info("Scale: 8G")
+            Log_sensor.info("Scale: 8G")
             faktor = 64 / (256 * 1000)
         elif (scale == 16):
-            self.logger.info("Scale: 16G")
+            Log_sensor.info("Scale: 16G")
             faktor = 192 / (256 * 1000)
 
         while (pos < len(bytes)):
@@ -296,7 +298,7 @@ class sensor(object):
                     value = -value
                 value *= faktor
 
-                self.logger.info(timestamp)
+                Log_sensor.info(timestamp)
                 if j % 3 == 0:
                     x_vector.append(value)
                 if j % 3 == 1:
@@ -307,11 +309,11 @@ class sensor(object):
                     Log_sensor.info(datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
                     timestamp_list.append(
                         datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
-                self.logger.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
 
-        self.logger.info("%d Werte entpackt" % (j,))
-        self.logger.info(len(x_vector))
+        Log_sensor.info("%d Werte entpackt" % (j,))
+        Log_sensor.info(len(x_vector))
         return x_vector, y_vector, z_vector, timestamp_list
 
     def process_data_10(self, bytes, scale, rate):
@@ -327,20 +329,20 @@ class sensor(object):
         time_between_samples = 1 / rate
 
         if (scale == 2):
-            self.logger.info("Scale: 2G")
+            Log_sensor.info("Scale: 2G")
             faktor = 4 / (64 * 1000)
         elif (scale == 4):
-            self.logger.info("Scale: 4G")
+            Log_sensor.info("Scale: 4G")
             faktor = 8 / (64 * 1000)
         elif (scale == 8):
-            self.logger.info("Scale: 8G")
+            Log_sensor.info("Scale: 8G")
             faktor = 16 / (64 * 1000)
         elif (scale == 16):
-            self.logger.info("Scale: 16G")
+            Log_sensor.info("Scale: 16G")
             faktor = 48 / (64 * 1000)
 
         while (pos < len(bytes)):
-            self.logger.info("Timestamp: %s" % hexlify(bytes[pos + 7:pos:-1]))
+            Log_sensor.info("Timestamp: %s" % hexlify(bytes[pos + 7:pos:-1]))
             t = bytes[pos:pos + 8]
             inv_t = t[::-1]
             timestamp = int(hexlify(inv_t), 16) / 1000
@@ -369,7 +371,7 @@ class sensor(object):
                     timestamp_list.append(
                         datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
                     z_vector.append(value)
-                self.logger.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
                 value = (bytes[pos] & 0x30) << 2
                 value |= (bytes[pos] & 0x0f) << 12
@@ -392,7 +394,7 @@ class sensor(object):
                     timestamp_list.append(
                         datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
                     z_vector.append(value)
-                self.logger.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
                 value = (bytes[pos] & 0x0c) << 4
                 value |= (bytes[pos] & 0x03) << 14
@@ -415,7 +417,7 @@ class sensor(object):
                     timestamp_list.append(
                         datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
                     z_vector.append(value)
-                self.logger.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
                 value = (bytes[pos] & 0x03) << 6
                 pos += 1
@@ -439,11 +441,11 @@ class sensor(object):
                         datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
 
                     z_vector.append(value)
-                self.logger.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
-        self.logger.info((j / runtime))
-        self.logger.info("%d Werte entpackt" % (j,))
-        self.logger.info(len(x_vector))
+        Log_sensor.info((j / runtime))
+        Log_sensor.info("%d Werte entpackt" % (j,))
+        Log_sensor.info(len(x_vector))
         return x_vector, y_vector, z_vector, timestamp_list
 
     def process_data_12(self, bytes, scale, rate):
@@ -457,20 +459,20 @@ class sensor(object):
         time_between_samples = 1 / rate
 
         if (scale == 2):
-            self.logger.info("Scale: 2G")
+            Log_sensor.info("Scale: 2G")
             faktor = 1 / (16 * 1000)
         elif (scale == 4):
-            self.logger.info("Scale: 4G")
+            Log_sensor.info("Scale: 4G")
             faktor = 2 / (16 * 1000)
         elif (scale == 8):
-            self.logger.info("Scale: 8G")
+            Log_sensor.info("Scale: 8G")
             faktor = 4 / (16 * 1000)
         elif (scale == 16):
-            self.logger.info("Scale: 16G")
+            Log_sensor.info("Scale: 16G")
             faktor = 12 / (16 * 1000)
 
         while (pos < len(bytes)):
-            self.logger.info("Timestamp: %s" % hexlify(bytes[pos + 7:pos:-1]))
+            Log_sensor.info("Timestamp: %s" % hexlify(bytes[pos + 7:pos:-1]))
             t = bytes[pos:pos + 8]
             inv_t = t[::-1]
             timestamp = int(hexlify(inv_t), 16) / 1000
@@ -498,7 +500,7 @@ class sensor(object):
                         datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
                     timestamp += time_between_samples
                     z_vector.append(value)
-                self.logger.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
                 value = (bytes[pos] & 0x0f) << 4
                 pos += 1
@@ -521,10 +523,10 @@ class sensor(object):
                     timestamp_list.append(
                         datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
                     z_vector.append(value)
-                self.logger.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
 
-        self.logger.info("%d Werte entpackt" % (j,))
+        Log_sensor.info("%d Werte entpackt" % (j,))
         return x_vector, y_vector, z_vector, timestamp_list
 
         
@@ -568,34 +570,34 @@ class sensor(object):
                 hex_divider='FF'
         Log_sensor.info("Set sensor configuration {}".format(self.mac))
         command_string = sensor_interface['ruuvi_commands']['substring_set_config_sensor'] + hex_sampling_rate + hex_sampling_resolution + hex_measuring_range + "FFFFFF" + hex_divider + "00"
-        self.work_loop(command_string)
+        self.work_loop(command_string,sensor_interface["communication_channels"]["UART_TX"])
         return
     
     def set_sensor_time(self):
         now = struct.pack("<Q", int(time.time() * 1000)).hex()
         command=sensor_interface['ruuvi_commands']['substring_set_sensor_time'] + now
         Log_sensor.info("Reading flash statistic from {}".format(self.mac))
-        self.work_loop(command)
+        self.work_loop(command,sensor_interface["communication_channels"]["UART_TX"])
         return
     
     def get_flash_statistic(self):
         Log_sensor.info("Reading flash statistic from {}".format(self.mac))
-        self.work_loop(command=sensor_interface["ruuvi_commands"]["get_flash_statistic"])
+        self.work_loop(sensor_interface["ruuvi_commands"]["get_flash_statistic"],sensor_interface["communication_channels"]["UART_TX"])
         return
     
     def get_acceleration_status(self):
         Log_sensor.info("Reading acceleration statistic from {}".format(self.mac))
-        self.work_loop(command=sensor_interface["ruuvi_commands"]["get_logging_status"])
+        self.work_loop(sensor_interface["ruuvi_commands"]["get_logging_status"],sensor_interface["communication_channels"]["UART_TX"])
         return
     
     def get_sensor_config(self):
         Log_sensor.info("Reading config from {}".format(self.mac))
-        self.work_loop(command=sensor_interface["ruuvi_commands"]["get_time_from_sensor"])
+        self.work_loop(sensor_interface["ruuvi_commands"]["get_config_from_sensor"],sensor_interface["communication_channels"]["UART_TX"])
         return    
     
     def get_sensor_time(self):
         Log_sensor.info("Reading time from {}".format(self.mac))
-        self.work_loop(command=sensor_interface["ruuvi_commands"]["get_time_from_sensor"])
+        self.work_loop(sensor_interface["ruuvi_commands"]["get_time_from_sensor"],sensor_interface["communication_channels"]["UART_TX"])
         return
     
     def ri_error_to_string(self, error):
