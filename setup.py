@@ -17,7 +17,8 @@ setup(name='gateway',
       long_description = long_description,
       long_description_content_type = "text/markdown",
       url = 'https://github.com/bchwtz-fhswf/gateway.git',
-      packages=find_packages() ,      
+      packages=find_packages() ,
+      include_package_data=True,
       install_requires=required,
       python_requires=">=3.6"
       )
