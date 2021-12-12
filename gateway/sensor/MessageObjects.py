@@ -1,8 +1,9 @@
 import struct
 import time
-from gateway.SensorConfigEnum import SamplingRate, SamplingResolution,MeasuringRange
+from gateway.sensor.SensorConfigEnum import SamplingRate, SamplingResolution,MeasuringRange
 import logging
 import yaml
+import os.path
 #import os
 # Look to the path of your current working directory
 #working_directory = os.getcwd()
@@ -12,7 +13,7 @@ log=logging.getLogger("msg")
 This region is used to wrap the returned values of the sensor into an object
 """
 #try:
-with open("gateway/communication_interface.yml", "r") as ymlfile:
+with open(os.path.dirname(__file__)+ '/../communication_interface.yml') as ymlfile:
     sensor_interface = yaml.safe_load(ymlfile)
 #except Exception:
 #    print(working_directory)
