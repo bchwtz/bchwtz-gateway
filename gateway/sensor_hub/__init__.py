@@ -52,7 +52,7 @@ class sensor_hub(object):
             self.logger.info('Device: %s with Address %s found!' % (i.name, i.address))
             if ("Ruuvi" in i.name):
                 self.logger.info('Device: %s with Address %s saved in MAC list!' % (i.name, i.address))
-                return self.sensorlist.append(sensor(i.name, i.address))
+                self.sensorlist.append(sensor(i.name, i.address))
         return
     
     async def find_tags(self):
