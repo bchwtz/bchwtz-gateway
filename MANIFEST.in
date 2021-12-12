@@ -1,1 +1,1 @@
-include /gateway/communication_interface.yml
+global-include communication_interface.yml
