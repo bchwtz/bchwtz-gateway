@@ -1,45 +1,24 @@
-## Getting-Started with gateway-Preperation
+## Getting started with gateway preparation
 
 Before you start to run the first codelines follow the steps below:
   1. Make sure your RaspberryOS is up to date
     - `sudo apt-get update` + `sudo apt-get upgrade`
-  2. Install BlueZ in order to use the advertisement functions of the gatway
+  2. Install BlueZ in order to use the advertisement functions of the gateway
     - `sudo apt-get install bluez bluez-hcidump`
   3. Follow the instructions of the `docs\git_installation_on_raspberrypy.md`
 
 ## Installation
 
-To install the project on your RaspberryPi switch to the direcory where the git-clone lays.
+To install the project on your Raspberry Pi switch to the direcory where you find git-clone.
 
-`cd /path/to/gatewy-main`
+`cd /path/to/gateway-main`
 
 Install this project as python package.
 
-`python3 setup.py install`
+`sudo python3 setup.py install`
 
-If the installation was successful, the following output should be seen:
-
-```{code-block} bash
-Using /usr/lib/python3/dist-packages
-Searching for Jinja2==2.11.3
-Best match: Jinja2 2.11.3
-Adding Jinja2 2.11.3 to easy-install.pth file
-
-Using /usr/lib/python3/dist-packages
-Searching for pyparsing==3.0.6
-Best match: pyparsing 3.0.6
-Processing pyparsing-3.0.6-py3.9.egg
-pyparsing 3.0.6 is already the active version in easy-install.pth
-
-Using /usr/local/lib/python3.9/dist-packages/pyparsing-3.0.6-py3.9.egg
-Searching for pytz==2021.3
-Best match: pytz 2021.3
-Processing pytz-2021.3-py3.9.egg
-pytz 2021.3 is already the active version in easy-install.pth
-
-Using /usr/local/lib/python3.9/dist-packages/pytz-2021.3-py3.9.egg
-Finished processing dependencies for gateway==1.2.0
-```
+If the installation was successful, a large output follows. The last line should start with: 
+`Finished processing dependencies ...`
 
 The software can be installed via command line.
 
@@ -51,21 +30,44 @@ The token is displayed by github only once for copy in plain text.
 If the token is lost, the process must be repeated.
 ```
 
-## Get Sensor Data
+## Get sensor data
 
-The gateway library consists of three main modules (`sensor_hub`, `sensor` and `experimental`).
-Primary tasks of the sensorhub are:
- - Find `Tags`
- - Create digital twins
- - listen to advertisements
+1. Use your git bash or any terminal you'd like to use and make sure you are working on your Raspberry Pi. 
 
-```{code-block} python
-from gateway import sensor_hub
-myHub = sensor_hub.sensor_hub()
-myHub.discover_neighborhood()
-# If a Tag was found, the sensor_hub generates an object sensor and stores it in myHub.sensorlist
-#print(myHub.sensorlist[0], type(myHub.sensorlist[0])
-sensor1 = myHub.sensorlist[0]
-sensor1.get_sensor_time()
+2. If not already done, update setup.py with
+`sudo python3 setup.py install`
+
+3. If not done before, please type
+`sudo apt-get install bluez bluez-hcidump`
+
+4. Exectue the following python file
+`python3 demo_advertisement_logging.py`
+
+5. You will get a message like this:
+```2021-12-12 19:10:00,523 - SensorGatewayBleak - WARNING - Abort workloop task via timeout()!
+2021-12-12 19:10:01,002 - sensor_hub - WARNING - Warning: To stop the advertisementlogging, you need to interrupt the kernel!
+Press any key to confirm!
 ```
+As written, please press any key to continue, for example "enter". 
 
+6. If a sensor was found, the sensor_hub generates an object sensor and stores it in myHub.sensorlist. The last collected sensor date will come up on your screen. You can exit it by pressing the keys: STRG-C
+
+7. The data will be stored automatically in a CSV file on your Raspberry. To open the file, write the following code line with your correct date.
+`nano advertisement-2021-12-13`
+If you are not sure what the correct date is, type
+`ls`
+to find on the top left side the correct name of the CSV file.
+It will open a file, inwhich you see your collected data. 
+
+optional: 
+8. If you like to check whether your time is correct on your Raspberry, type
+`date`
+
+9. If you found the timestamp of your data is incorrect, you can correct the time by doing the following.
+` sudo apt install ntp`
+Installs a protocol that is used to synchronize all system clocks in a network. 
+
+10. Next type
+`sudo raspi-config`
+It will open a window. Go to "localisations options" using arrow keys and press enter. Choose timezone. Europe. Berlin. Finish.
+Your date is correct! 
