@@ -53,7 +53,7 @@ Press any key to confirm!
 ```
   As written, please press any key to continue, for example "enter". 
 
-6. If a sensor was found, the sensor_hub generates an object sensor and stores it in myHub.sensorlist. The last collected sensor date will come up on your screen. You can exit it by pressing the keys: STRG-C
+6. If a sensor was found, the sensor_hub generates an object sensor and stores it in myHub.sensorlist. The last collected sensor date will come up on your screen. You can exit it by pressing the keys: CTRL-C
 
 7. The data will be stored automatically in a CSV file on your Raspberry. To open the file, write the following code line with your correct date.
 
@@ -76,7 +76,7 @@ optional:
 
 ` sudo apt install ntp`
 
-Installs a protocol that is used to synchronize all system clocks in a network. 
+It installs a protocol that is used to synchronize all system clocks in a network. 
 
 10. Next type
 
