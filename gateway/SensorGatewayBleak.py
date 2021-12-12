@@ -396,13 +396,13 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                     await self.killswitch_for_commands()
                     self.logger.info("Killswitch starts monitoring")
                     await self.stopEvent.wait()
-                    self.logger.warning("Abort workloop Task via Killswtch after timeout!")
+                    self.logger.warning("Abort workloop Task via Killswitch after timeout!")
                     await client.stop_notify(UART_RX)
                     self.stopEvent.clear()
                     self.logger.info('Stop notify: %s' % (i))
                     self.logger.info("Task done connect_to_mac_command!")
             except Exception as e:
-                self.logger.warning('Connection faild at MAC %s' % (i))
+                self.logger.warning('Connection failed at MAC %s' % (i))
                 self.logger.error("Error: {}".format(e))
 
 
@@ -436,7 +436,7 @@ class RuuviTagAccelerometerCommunicationBleak(Event_ts):
                 await self.killswitch()
                 self.logger.info("Killswitch starts monitoring")
                 await self.stopEvent.wait()
-                self.logger.warning("Abort workloop Task via Killswtch after timeout!")
+                self.logger.warning("Abort workloop Task via Killswitch after timeout!")
                 await client.stop_notify(UART_RX)
                 self.stopEvent.clear()
                 self.logger.info('Stop notify: %s' % (i))
