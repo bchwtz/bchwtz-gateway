@@ -52,9 +52,8 @@ class sensor(object):
         self.main_loop = asyncio.get_event_loop()
         self.stopEvent = Event_ts()
         self.notification_done = False
-        self.sensor_data = list()
-        self.data = list()
-        self.sensordaten = list()
+        self.sensor_data = list() #command callbacks
+        self.data = list() #accelerometer
         return
     
     async def timeout_for_commands(self):
@@ -177,12 +176,12 @@ class sensor(object):
             self.stopEvent.set()
             self.notification_done = True
     
-    def activate_acceleromerter_logging(self):
+    def activate_accelerometer_logging(self):
         Log_sensor.info('Try activate accelerometer logging at {}'.format(self.mac))
         self.work_loop(sensor_interface["ruuvi_commands"]["activate_logging_at_sensor"],sensor_interface["communication_channels"]["UART_TX"])
         return
 
-    def deactivate_acceleromerter_logging(self):
+    def deactivate_accelerometer_logging(self):
         Log_sensor.info('Try deactivate accelerometer logging at {}'.format(self.mac))
         self.work_loop(sensor_interface["ruuvi_commands"]["deactivate_logging_at_sensor"],sensor_interface["communication_channels"]["UART_TX"])
         return 
