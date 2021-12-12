@@ -67,6 +67,7 @@ to find on the top left side the correct name of the CSV file.
 It will open a file, inwhich you see your collected data. 
 
 optional: 
+
 8. If you like to check whether your time is correct on your Raspberry, type
 
 `date`
