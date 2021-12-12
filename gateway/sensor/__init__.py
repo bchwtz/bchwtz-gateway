@@ -17,7 +17,7 @@ from gateway.sensor import SensorConfigEnum #internal project modules
 from gateway.sensor.SensorConfigEnum import SamplingRate, SamplingResolution,MeasuringRange
 from gateway.sensor.MessageObjects import return_values_from_sensor
 
-sensordate = bytearray()
+sensordaten = bytearray()
 
 with open(os.path.dirname(__file__)+ '/../communication_interface.yml') as ymlfile:
     sensor_interface = yaml.safe_load(ymlfile)
@@ -54,6 +54,7 @@ class sensor(object):
         self.notification_done = False
         self.sensor_data = list()
         self.data = list()
+        self.sensordaten = list()
         return
     
     async def timeout_for_commands(self):
@@ -246,7 +247,7 @@ class sensor(object):
                 print("Unknown Resolution")
             if AccelorationData != None:
                 Log_sensor.info("Run in Funktion AccelorationData != None")
-                dataList=message_return_value.from_get_accelorationdata(accelorationdata=AccelorationData,mac=self.current_mac)
+                dataList=message_return_value.from_get_accelorationdata(accelorationdata=AccelorationData,mac=self.mac)
                 self.data.append(dataList.returnValue.__dict__)
         return
     
@@ -570,7 +571,7 @@ class sensor(object):
     def set_sensor_time(self):
         now = struct.pack("<Q", int(time.time() * 1000)).hex()
         command=sensor_interface['ruuvi_commands']['substring_set_sensor_time'] + now
-        Log_sensor.info("Reading flash statistic from {}".format(self.mac))
+        Log_sensor.info("Set sensor time {}".format(self.mac))
         self.work_loop(command,sensor_interface["communication_channels"]["UART_TX"])
         return
     
