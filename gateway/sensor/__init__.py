@@ -17,6 +17,7 @@ from gateway.sensor import SensorConfigEnum #internal project modules
 from gateway.sensor.SensorConfigEnum import SamplingRate, SamplingResolution,MeasuringRange
 from gateway.sensor.MessageObjects import return_values_from_sensor
 
+sensordate = bytearray()
 
 with open(os.path.dirname(__file__)+ '/../communication_interface.yml') as ymlfile:
     sensor_interface = yaml.safe_load(ymlfile)
@@ -52,18 +53,10 @@ class sensor(object):
         self.stopEvent = Event_ts()
         self.notification_done = False
         self.sensor_data = list()
+        self.data = list()
         return
     
-    async def killswitch(self):
-        Log_sensor.info("Start timeout function")
-        while time.time()-self.start_time < 5 :
-            Log_sensor.warning("Timeout timer running {}".format(time.strftime("%H:%M:%S",time.localtime(self.start_time))))
-            await asyncio.sleep(1)
-        try:
-            self.stopEvent.set()
-        except:
-            pass
-    async def killswitch_for_commands(self):
+    async def timeout_for_commands(self):
             Log_sensor.info("Start timeout function")
             while time.time() - self.start_time < 10:
                 Log_sensor.warning(
@@ -77,30 +70,33 @@ class sensor(object):
             except:
                 pass
     
-    def work_loop(self, command, write_channel):
-        self.taskobj = self.main_loop.create_task(self.connect_ble_sensor(command, write_channel))
+    def work_loop(self, command, write_channel, accelerom = False):
+        self.taskobj = self.main_loop.create_task(self.connect_ble_sensor(command, write_channel, accelerom))
         try:
             self.main_loop.run_until_complete(self.taskobj)
         except Exception as e:
             Log_sensor.error("Exception occured: {}".format(e))
         return
     
-    async def connect_ble_sensor(self, command_string, write_channel): #Vll muss hier noch der channel und die callback funktion rein
+    async def connect_ble_sensor(self, command_string, write_channel, accelerom):
         Log_sensor.info("Send {} to MAC {} ".format(self.mac,command_string))
         try:
             async with BleakClient(self.mac) as client:
+                if accelerom == True:
+                    await client.start_notify(sensor_interface["communication_channels"]["UART_RX"] , self.handle_data)
+                    await client.write_gatt_char(write_channel, bytearray.fromhex(command_string), True)                    
+                else:
                 # Send the command (Wait for Response must be True)
-                await client.start_notify(sensor_interface["communication_channels"]["UART_RX"] , partial(self.handle_ble_callback , client))
-                await client.write_gatt_char(write_channel,
-                                             bytearray.fromhex(command_string), True)
+                    await client.start_notify(sensor_interface["communication_channels"]["UART_RX"] , partial(self.handle_ble_callback , client))
+                    await client.write_gatt_char(write_channel, bytearray.fromhex(command_string), True)
                 Log_sensor.info('Message send to MAC: %s' % (self.mac))
 
                 self.start_time = time.time()
                 Log_sensor.info("Set Processtimer")
-                await self.killswitch_for_commands()
-                Log_sensor.info("Killswitch starts monitoring")
+                await self.timeout_for_commands()
+                Log_sensor.info("timeout starts monitoring")
                 await self.stopEvent.wait()
-                Log_sensor.warning("Abort workloop Task via Killswtch after timeout!")
+                Log_sensor.warning("Abort workloop task via timeout()!")
                 await client.stop_notify(sensor_interface["communication_channels"]["UART_RX"])
                 self.stopEvent.clear()
                 Log_sensor.info('Stop notify: %s' % (self.mac))
@@ -193,11 +189,10 @@ class sensor(object):
     def get_acceleration_data(self):
         global sensordaten
         Log_sensor.info('Try to get acceleration data from {}'.format(self.mac))
-        taskobj = self.main_loop.create_task(self.connect_to_mac(self.mac, sensor_interface["ruuvi_commands"]["get_acceleration_data"] ))
-        self.main_loop.run_until_complete(taskobj)        
+        self.work_loop(sensor_interface["ruuvi_commands"]["get_acceleration_data"] , sensor_interface["communication_channels"]["UART_TX"], True )        
         return
     
-    async def handle_data(self,value):
+    async def handle_data(self,handle, value):
         if value[0] == 0x11:
             # Daten
             sensordaten.extend(value[1:])
@@ -232,22 +227,21 @@ class sensor(object):
                 Log_sensor.warning("CRC are unequal")
                 return None
 
-
-            timeStamp = hexlify(sensordaten[7::-1])
+            #timeStamp = hexlify(sensordaten[7::-1])
 
             # Start data
             if (value[5] == 12):
                 # 12 Bit
                 Log_sensor.info("Start processing reveived data with process_sensor_data_12")
-                AccelorationData = self.process_sensor_data_12(sensordaten, value[6], value[4])
+                AccelorationData = self.process_data_12(sensordaten, value[6], value[4])
             elif (value[5] == 10):
                 # 10 Bit
                 Log_sensor.info("Start processing reveived data with process_sensor_data_10")
-                AccelorationData = self.process_sensor_data_10(sensordaten, value[6], value[4])
+                AccelorationData = self.process_data_10(sensordaten, value[6], value[4])
             elif (value[5] == 8):
                 # 8 Bit
                 Log_sensor.info("Start processing reveived data with process_sensor_data_10")
-                AccelorationData = self.process_sensor_data_8(sensordaten, value[6], value[4])
+                AccelorationData = self.process_data_8(sensordaten, value[6], value[4])
             else:
                 print("Unknown Resolution")
             if AccelorationData != None:
