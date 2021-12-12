@@ -4,6 +4,7 @@ from gateway.sensor_hub.DataFormats import DataFormats
 import datetime
 import time
 from gateway.sensor import MessageObjects
+from os.path import exists
 
 ble = BleCommunicationNix()
 
@@ -45,10 +46,19 @@ def advertisement_logging():
                     valueList = list(decoded.values())
                 #print(valueList)
                     s = "".join([str(x) + "," for x in valueList])
+                    keys = "".join([str(key) + "," for key in keyList])
                 # print(s)
+                    preamble = ""
                     date = datetime.date.today()
-                    with open("advertisment-{}.csv".format(date), 'a') as f:
-                        f.write("{}{},{}".format(s, mac, current_time))
+                    logfilename = "advertisment-{}.csv".format(date)
+                    if not exists("advertisment-{}.csv".format(date)):
+                        preamble = "{}{},{}".format(keys, "mac", "date")
+
+                    with open(logfilename, 'a') as f:
+                        if preamble != "":
+                            f.write(preamble)
+                            f.write("\n")
+                        f.write("{}{},{}".format(s, mac, time.asctime(time.localtime(current_time))))
                         f.write("\n")
     except Exception as e:
         print('{}'.format(e))
