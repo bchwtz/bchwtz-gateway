@@ -1,21 +1,20 @@
-from gateway.sensor_hub import AdvertisementLogging
+from gateway.hub import AdvertisementLogging
 from gateway.sensor import sensor
 from bleak import BleakScanner
-#import re
 import logging
 import asyncio
 
 #Logger
-Log_sensor_hub = logging.getLogger('sensor_hub')
-Log_sensor_hub.setLevel("DEBUG")
+Log_hub = logging.getLogger('hub')
+Log_hub.setLevel("DEBUG")
 console_handler = logging.StreamHandler()
 console_handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 console_handler.setFormatter(formatter)
-Log_sensor_hub.addHandler(console_handler)
+Log_hub.addHandler(console_handler)
 
 class Event_ts(asyncio.Event):
-    """Custom event loop class for sensorhub
+    """Custom event loop class for hub
     """
     def clear(self):
         self._loop.call_soon_threadsafe(super().clear)
@@ -23,19 +22,24 @@ class Event_ts(asyncio.Event):
     def set(self):
         self._loop.call_soon_threadsafe(super().set)  
 
-class sensor_hub(object):
+class hub(object):
     def __init__(self):
-        #asyncio.Event = Event_ts
         self.main_loop = asyncio.get_event_loop()
-        self.logger = logging.getLogger('sensor_hub.sensor_hub')
+        self.logger = logging.getLogger('hub.hub')
         self.sensorlist = list()
         return
     
-    def discover_neighborhood(self):
+    def discover(self):
+        """
+        Calls the find_tags function in async workloop.
+
+        :returns:
+            None.
+
+        """
         self.sensorlist = list()
         taskobj = self.main_loop.create_task(self.find_tags())
         self.main_loop.run_until_complete(taskobj)
-        #self.sensorlist.append(asyncio.run(self.find_tags()))
     
     def __validate_mac(self, devices):
         """
@@ -58,18 +62,13 @@ class sensor_hub(object):
     async def find_tags(self):
         """
         The function searches for bluetooth devices nearby and passes the
-        MAC addresses to the __validate_mac function.
+        MAC addresses to the __validate_mac function.        
 
-        :parameters:
-            mac : TYPE, optional
-                The default is "".
+        Returns
+        -------
+        None.
 
-        :returns:
-            bool
-                False : No Tags were found.
-                True : At least one Tag was found nearby.
-
-        """    
+        """   
         self.sensorlist = list()
         devices = await BleakScanner.discover(timeout=5.0)
         self.__validate_mac(devices)
@@ -77,14 +76,14 @@ class sensor_hub(object):
         
     def listen_advertisements(self):
         """
-        Start listening to advertisements
+        Start logging advertisement.
 
         Returns
         -------
         None.
 
         """
-        Log_sensor_hub.warn("Warning: To stop the advertisementlogging, you need to interrupt the kernel!")
+        Log_hub.warn("Warning: To stop the advertisementlogging, you need to interrupt the kernel!")
         input("Press any key to confirm!")
         AdvertisementLogging.advertisement_logging()
 

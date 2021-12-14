@@ -1,6 +1,6 @@
-from gateway.sensor_hub.nix_hci import BleCommunicationNix
-from gateway.sensor_hub.decoder import get_decoder
-from gateway.sensor_hub.DataFormats import DataFormats
+from gateway.hub.nix_hci import BleCommunicationNix
+from gateway.hub.decoder import get_decoder
+from gateway.hub.DataFormats import DataFormats
 import datetime
 import time
 from gateway.sensor import MessageObjects

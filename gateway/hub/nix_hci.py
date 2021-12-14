@@ -4,7 +4,7 @@ import subprocess
 import sys
 import time
 
-from gateway.sensor_hub.nix_hci_dummy import BleCommunication
+from gateway.hub.nix_hci_dummy import BleCommunication
 
 
 log = logging.getLogger('nix_hci_logger')

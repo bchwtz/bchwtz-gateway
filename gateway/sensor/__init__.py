@@ -13,7 +13,6 @@ from bleak import BleakClient
 import time
 import crcmod
 
-from gateway.sensor import SensorConfigEnum #internal project modules
 from gateway.sensor.SensorConfigEnum import SamplingRate, SamplingResolution,MeasuringRange
 from gateway.sensor.MessageObjects import return_values_from_sensor
 
@@ -51,7 +50,7 @@ class sensor(object):
         self.name = name      
         self.main_loop = asyncio.get_event_loop()
         self.stopEvent = Event_ts()
-        self.notification_done = False
+        self.notification_done = False #improvement wanted
         self.sensor_data = list() #command callbacks
         self.data = list() #accelerometer
         return
@@ -524,7 +523,7 @@ class sensor(object):
         return x_vector, y_vector, z_vector, timestamp_list
 
         
-    def set_sensor_config(self, sampling_rate='FF', sampling_resolution='FF', measuring_range='FF',
+    def set_config(self, sampling_rate='FF', sampling_resolution='FF', measuring_range='FF',
                           divider="FF"):
         if sampling_rate == 'FF':
             hex_sampling_rate = 'FF'
@@ -567,7 +566,7 @@ class sensor(object):
         self.work_loop(command_string,sensor_interface["communication_channels"]["UART_TX"])
         return
     
-    def set_sensor_time(self):
+    def set_time(self):
         now = struct.pack("<Q", int(time.time() * 1000)).hex()
         command=sensor_interface['ruuvi_commands']['substring_set_sensor_time'] + now
         Log_sensor.info("Set sensor time {}".format(self.mac))
@@ -579,17 +578,17 @@ class sensor(object):
         self.work_loop(sensor_interface["ruuvi_commands"]["get_flash_statistic"],sensor_interface["communication_channels"]["UART_TX"])
         return
     
-    def get_acceleration_status(self):
+    def get_logging_status(self):
         Log_sensor.info("Reading acceleration statistic from {}".format(self.mac))
         self.work_loop(sensor_interface["ruuvi_commands"]["get_logging_status"],sensor_interface["communication_channels"]["UART_TX"])
         return
     
-    def get_sensor_config(self):
+    def get_config(self):
         Log_sensor.info("Reading config from {}".format(self.mac))
         self.work_loop(sensor_interface["ruuvi_commands"]["get_config_from_sensor"],sensor_interface["communication_channels"]["UART_TX"])
         return    
     
-    def get_sensor_time(self):
+    def get_time(self):
         Log_sensor.info("Reading time from {}".format(self.mac))
         self.work_loop(sensor_interface["ruuvi_commands"]["get_time_from_sensor"],sensor_interface["communication_channels"]["UART_TX"])
         return
