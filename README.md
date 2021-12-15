@@ -1,81 +1,61 @@
-## Usefull Informations for Preperation
+## Getting started with gateway preparation
 
-There are some tricks to communicate with RaspberryPi and get Python Code run. The aim of this chapter is to give a brief 
-introduction to the installation and application of the packages.
+Before you start to run the first codelines follow the steps below:
+  1. Make sure your RaspberryOS is up to date
+    - `sudo apt-get update` + `sudo apt-get upgrade`
+  2. Install BlueZ in order to use the advertisement functions of the gateway
+    - `sudo apt-get install bluez bluez-hcidump`
+  3. Follow the instructions of the `docs\git_installation_on_raspberrypy.md`
 
 ## Installation
 
-Before installing, a few [settings](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token) 
-have to be made, so that the gateway gets access to the private repository.
+To install the project on your Raspberry Pi switch to the direcory where you find git-clone.
 
-    1. Go to Github>Settings>Developer Settings>Personal Access tokens
-    2. Creat a new access token for the RaspberryPi
-    3. To acces to the repository via comand line, select `repo`
-    4. Copy the token
+`cd /path/to/gateway-main`
 
-```{admonition} Note
-The token is displayed by github only once for copy in plain text.
-If the token is lost, the process must be repeated.
-```
+Install this project as python package.
+
+`sudo python3 setup.py install`
+
+If the installation was successful, a large output follows. The last line should start with: 
+`Finished processing dependencies ...`
 
 The software can be installed via command line.
 
 ```{code-block} python
 pip3 install -e git+https://<access token>@github.com/bchwtz-fhswf/gateway.git@develop#egg=gateway
 ```
-
 ```{admonition} Note
-We used to push the latest changes into the develop branche. If you want to install a specific version,
-the last comand segment has to be changed (e.g. ...@main#egg=gateway).
+The token is displayed by github only once for copy in plain text.
+If the token is lost, the process must be repeated.
 ```
+## Set time on sensor
 
-Performing the installation requires ’sudo' permissions. When executing the command line, 
-a corresponding login with the necessary rights is required. Dependent libraries and packages 
-are now installed. Feedback will be returned if the installation is successful.
 
-```{code-block} python
-Defaulting to user installation because normal site-packages is not writeable
-Looking in indexes: https://pypi.org/simple, https://www.piwheels.org/simple
-Obtaining gateway from git+https://github.com/bchwtz-fhswf/gateway.git@develop#egg=gateway
-  Updating ./src/gateway clone (to revision develop)
-  Running command git fetch -q --tags
-Username for 'https://github.com': <username>
-Password for 'https://<username>@github.com':
-  Running command git reset --hard -q 38b0e0af30a41759ebcfd8be822870358268d75b
-Requirement already satisfied: asyncio in ./.local/lib/python3.7/site-packages (from gateway) (3.4.3)
-Requirement already satisfied: nest_asyncio in /usr/local/lib/python3.7/dist-packages (from gateway) (1.5.1)
-Requirement already satisfied: regex in ./.local/lib/python3.7/site-packages (from gateway) (2021.8.3)
-Requirement already satisfied: bleak in ./.local/lib/python3.7/site-packages (from gateway) (0.11.0)
-Requirement already satisfied: crcmod in ./.local/lib/python3.7/site-packages (from gateway) (1.7)
-Requirement already satisfied: async_timeout in ./.local/lib/python3.7/site-packages (from gateway) (3.0.1)
-Requirement already satisfied: configparser in ./.local/lib/python3.7/site-packages (from gateway) (5.0.2)
-Requirement already satisfied: dbus-next in ./.local/lib/python3.7/site-packages (from bleak->gateway) (0.2.2)
-Installing collected packages: gateway
-  Attempting uninstall: gateway
-    Found existing installation: gateway 1.2.0
-    Uninstalling gateway-1.2.0:
-      Successfully uninstalled gateway-1.2.0
-  Running setup.py develop for gateway
-Successfully installed gateway
+## Get sensor data
+
+1. Use your git bash or any terminal you'd like to use and make sure you are working on your Raspberry Pi. 
+
+2. Exectue the following python file
+
+`python3 demo_advertisement_logging.py`
+
+3. You will get a message like this:
+```2021-12-12 19:10:00,523 - SensorGatewayBleak - WARNING - Abort workloop task via timeout()!
+2021-12-12 19:10:01,002 - sensor_hub - WARNING - Warning: To stop the advertisementlogging, you need to interrupt the kernel!
+Press any key to confirm!
 ```
+  As written, please press any key to continue, for example "enter". 
 
-```{admonition} Note
-The Setup.py can also be run offline. To do this, the code line `sudo python Setup.py install` 
-must be executed from the project directory.
-```
+4. If a sensor was found, the sensor_hub generates an object sensor and stores it in myHub.sensorlist. The last collected sensor date will come up on your screen. You can exit it by pressing the keys: CTRL-C
 
-## Get Sensor Data
+5. The data will be stored automatically in a CSV file on your Raspberry. To open the file, write the following code line with your correct date.
 
-The file ’SensorGatewayBleak.py' can now be imported as a library in any PythonIDE. 
-The functions of the library can be tested with the following code lines.
+`nano advertisement-2021-12-13`
 
-```{code-block} python
-Ruuvi_Com_Obj = SensorGatewayBleak.RuuviTagAccelerometerCommunicationBleak() 
+If you are not sure what the correct date is, type
 
-Ruuvi_Com_Obj.deactivate_logging_at_sensor()
-Ruuvi_Com_Obj.activate_logging_at_sensor()
-Test = Ruuvi_Com_Obj.get_acceleration_data()
-```
+`ls`
 
-The logging of the Accelorometer data is reseted by the disabling/activating function. 
-The data will be returned as a list.
+to find on the top left side the correct name of the CSV file.
+It will open a file, inwhich you see your collected data. 
