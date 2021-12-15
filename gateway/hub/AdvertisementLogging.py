@@ -1,12 +1,12 @@
-from ruuvitag_sensor.adapters.nix_hci import BleCommunicationNix
-from ruuvitag_sensor.decoder import get_decoder
-from ruuvitag_sensor.data_formats import DataFormats
+from gateway.hub.nix_hci import BleCommunicationNix
+from gateway.hub.decoder import get_decoder
+from gateway.hub.DataFormats import DataFormats
 import datetime
 import time
-from gateway import MessageObjects
+from gateway.sensor import MessageObjects
+from os.path import exists
 
 ble = BleCommunicationNix()
-
 
 def advertisement_logging():
     """
@@ -19,15 +19,11 @@ def advertisement_logging():
     """
     return_value_object=MessageObjects.return_values_from_sensor()
     last_measurement_number = {}
-
     try:
         for ble_data in ble.get_datas():
-
-
             current_time=time.time()
             mac = ble_data[0]
             data = ble_data[1]
-
             (data_format, data) = DataFormats.convert_data(ble_data[1])
             if data is not None:
                 decoded = get_decoder(data).decode_data(data)
@@ -50,13 +46,19 @@ def advertisement_logging():
                     valueList = list(decoded.values())
                 #print(valueList)
                     s = "".join([str(x) + "," for x in valueList])
+                    keys = "".join([str(key) + "," for key in keyList])
                 # print(s)
+                    preamble = ""
                     date = datetime.date.today()
-                    with open("advertisment-{}.csv".format(date), 'a') as f:
-                        f.write("{}{},{}".format(s, mac, current_time))
+                    logfilename = "advertisment-{}.csv".format(date)
+                    if not exists("advertisment-{}.csv".format(date)):
+                        preamble = "{}{},{}".format(keys, "mac", "date")
+
+                    with open(logfilename, 'a') as f:
+                        if preamble != "":
+                            f.write(preamble)
+                            f.write("\n")
+                        f.write("{}{},{}".format(s, mac, time.asctime(time.localtime(current_time))))
                         f.write("\n")
-
-
-
-    except KeyboardInterrupt:
-        print('Exit')
+    except Exception as e:
+        print('{}'.format(e))
