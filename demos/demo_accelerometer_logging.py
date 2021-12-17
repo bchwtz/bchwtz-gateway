@@ -33,4 +33,9 @@ sensor1.get_acceleration_data()
 time.sleep(2)
 
 print(sensor1.data)
+
+# Deactivate logging again
+sensor1.deactivate_accelerometer_logging()
+time.sleep(5)
+
 print("Exit")
