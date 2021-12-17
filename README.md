@@ -32,7 +32,7 @@ If the token is lost, the process must be repeated.
 ## Set time on sensor
 
 
-## Get sensor data
+## Get sensor advertisments
 
 1. Use your git bash or any terminal you'd like to use and make sure you are working on your Raspberry Pi. 
 
@@ -45,7 +45,7 @@ If the token is lost, the process must be repeated.
 2021-12-12 19:10:01,002 - sensor_hub - WARNING - Warning: To stop the advertisementlogging, you need to interrupt the kernel!
 Press any key to confirm!
 ```
-  As written, please press any key to continue, for example "enter". 
+  As written, please press "enter" to continue. 
 
 4. If a sensor was found, the sensor_hub generates an object sensor and stores it in myHub.sensorlist. The last collected sensor date will come up on your screen. You can exit it by pressing the keys: CTRL-C
 
@@ -59,3 +59,10 @@ If you are not sure what the correct date is, type
 
 to find on the top left side the correct name of the CSV file.
 It will open a file, inwhich you see your collected data. 
+
+
+## Get sensor accelerations
+
+1. Exectue the following python file
+
+`python3 demo_accelerator_logging.py`
