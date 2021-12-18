@@ -562,7 +562,7 @@ class sensor(object):
             else:
                 hex_divider='FF'
         Log_sensor.info("Set sensor configuration {}".format(self.mac))
-        command_string = sensor_interface['ruuvi_commands']['substring_set_config_sensor'] + hex_sampling_rate + hex_sampling_resolution + hex_measuring_range + "FFFFFF" + hex_divider + "00"
+        command_string = sensor_interface['ruuvi_commands']['substring_set_config_sensor'] + hex_sampling_rate + hex_sampling_resolution + hex_measuring_range + "FFFF" + hex_divider + "00"
         self.work_loop(command_string,sensor_interface["communication_channels"]["UART_TX"])
         return
     
