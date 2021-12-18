@@ -63,6 +63,49 @@ It will open a file, inwhich you see your collected data.
 
 ## Get sensor accelerations
 
-1. Exectue the following python file
+Exectue the following python file
 
 `python3 demo_accelerator_logging.py`
+
+
+## Set acceleration parameter
+
+For setting the parameter, use the demo_advertisement_logging.py file with the following instructions and notice the possible parameter options in next section.Type 
+
+`python3 demo_advertisement_logging.py`
+
+and before pressing enter, add the parameter you would like to change:
+
+`-srate` for sampling rate
+`-reso` for sampling resolution
+`-mrange` for measuring range
+
+plus the number. 
+
+For example if you would like to change the sampling rate to 100, type:
+
+`python3 demo_advertisement_logging.py -srate 100`
+
+### Parameter options
+
+In the following, you will find the possible options:
+
+Sampling rate: 
+  1
+  10
+  25
+  50
+  100
+  200
+  400
+
+Sampling resolution:
+  8  
+  10
+  12
+  
+Measuring Range:
+  2
+  4
+  8
+  16
