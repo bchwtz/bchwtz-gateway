@@ -5,11 +5,12 @@ from enum import Enum
 
 # define command line arguments with flags
 parser = argparse.ArgumentParser()
-parser.add_argument("-srate", "--sample-rate", dest = "samplerate", default = 1, help="defines sample rate")
-parser.add_argument("-reso", "--sample-resolution", dest = "resolution", default = 8, help="defines sample resolution")
-parser.add_argument("-mrange", "--measuring_range", dest = "measurerange", default = 4, help="defines measure range/scale")
+parser.add_argument("-srate", "--sample-rate", dest = "samplerate", default = 1, help="defines sample rate, accepted values are: 1, 10, 25, 50, 100, 200, 400", type = int)
+parser.add_argument("-reso", "--sample-resolution", dest = "resolution", default = 8, help="defines sample resolution, accepted values are: 8, 10, 12", type = int)
+parser.add_argument("-mrange", "--measuring_range", dest = "measurerange", default = 4, help="defines measure range/scale, accepted values are: 2, 4, 8, 16", type = int)
 
 args = parser.parse_args()
+print(args)
 
 # find tags
 myhub = hub.hub()

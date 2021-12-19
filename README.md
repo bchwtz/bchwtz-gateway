@@ -82,9 +82,13 @@ and before pressing enter, add the parameter you would like to change:
 
 plus the number. 
 
-For example if you would like to change the sampling rate to 100, type:
+For example if you would like to change all three values, type:
 
-`python3 demo_advertisement_logging.py -srate 100`
+`python3 demo_advertisement_logging.py -srate 100 -reso 10 -mrange 16`
+
+You can open the help menu, where you find all accepted parameters with
+
+`python3 demo_advertisement_logging.py --help`
 
 ### Parameter options
 
