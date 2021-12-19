@@ -76,9 +76,9 @@ For setting the parameter, use the demo_advertisement_logging.py file with the f
 
 and before pressing enter, add the parameter you would like to change:
 
-`-srate` for sampling rate
-`-reso` for sampling resolution
-`-mrange` for measuring range
+`-srate` for sampling rate  
+`-reso` for sampling resolution  
+`-mrange` for measuring range  
 
 plus the number. 
 
