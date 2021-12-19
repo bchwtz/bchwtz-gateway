@@ -94,22 +94,8 @@ You can open the help menu, where you find all accepted parameters with
 
 In the following, you will find the possible options:
 
-Sampling rate: 
-  1
-  10
-  25
-  50
-  100
-  200
-  400
+Sampling rate: 1, 10, 25, 50, 100, 200, 400
 
-Sampling resolution:
-  8  
-  10
-  12
+Sampling resolution: 8, 10, 12
   
-Measuring Range:
-  2
-  4
-  8
-  16
+Measuring Range: 2, 4, 8, 16
