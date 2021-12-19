@@ -70,17 +70,17 @@ Exectue the following python file
 
 ## Set acceleration parameter
 
-For setting the parameter, use the demo_advertisement_logging.py file with the following instructions and notice the possible parameter options in next section.Type 
+For setting the parameter, use the demo_advertisement_logging.py file with the following instructions and notice the possible parameter options in next section. Type 
 
 `python3 demo_advertisement_logging.py`
 
-and before pressing enter, add the parameter you would like to change:
+and before pressing enter, add the parameters you would like to change:
 
 `-srate` for sampling rate  
 `-reso` for sampling resolution  
 `-mrange` for measuring range  
 
-plus the number. 
+plus the parameter number. 
 
 For example if you would like to change all three values, type:
 
