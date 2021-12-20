@@ -310,7 +310,6 @@ class sensor(object):
         return x_vector, y_vector, z_vector, timestamp_list
 
     def process_data_10(self, bytes, scale, rate):
-        runtime = time.time() - self.start_time
         j = 0
         pos = 0
         koords = ["\nx", "y", "z"]
@@ -436,7 +435,6 @@ class sensor(object):
                     z_vector.append(value)
                 Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
-        Log_sensor.info((j / runtime))
         Log_sensor.info("%d Werte entpackt" % (j,))
         Log_sensor.info(len(x_vector))
         return x_vector, y_vector, z_vector, timestamp_list
