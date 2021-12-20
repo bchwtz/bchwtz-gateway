@@ -34,7 +34,7 @@ If the token is lost, the process must be repeated.
 
 ## Get sensor advertisments
 
-1. Use your git bash or any terminal you'd like to use and make sure you are working on your Raspberry Pi. 
+1. Use your git bash or any terminal you'd like to use and make sure you are working on your Raspberry Pi on demos/ directory. 
 
 2. Exectue the following python file
 
@@ -63,39 +63,54 @@ It will open a file, inwhich you see your collected data.
 
 ## Get sensor accelerations
 
-Exectue the following python file
+1. Change to demos/ directory
 
-`python3 demo_accelerator_logging.py`
+2. Exectue the following python file
+
+`python3 demo_accelerometer_logging.py`
 
 
 ## Set acceleration parameter
 
-For setting the parameter, use the demo_advertisement_logging.py file with the following instructions and notice the possible parameter options in next section. Type 
+If you like to understand how the configurations can be set, use in demo/ directory 
 
-`python3 demo_advertisement_logging.py`
+`python3 demo_set_acceleration_config.py`
 
-and before pressing enter, add the parameters you would like to change:
+If you like to set the config parameters easily, follow the instructions:
 
-`-srate` for sampling rate  
-`-reso` for sampling resolution  
-`-mrange` for measuring range  
+1. Switch to directory tools/
+
+2. Type 
+
+`python3 set_acceleration_config.py`
+
+and before pressing enter, 
+
+3. add the parameters you would like to change:
+
+`-s` for sampling rate  
+`-r` for sampling resolution  
+`-m` for measuring range  
+`-d` for divider  
 
 plus the parameter number. 
 
-For example if you would like to change all three values, type:
+4. For example if you would like to change all three values, type:
 
-`python3 demo_advertisement_logging.py -srate 100 -reso 10 -mrange 16`
+`python3 demo_set_acceleration_config.py -s 100 -r 10 -m 16 -d 4`
 
-You can open the help menu, where you find all accepted parameters with
+5. You can open the help menu, where you find all accepted parameters with
 
-`python3 demo_advertisement_logging.py --help`
+`python3 demo_set_acceleration_config.py --help`
 
 ### Parameter options
 
-In the following, you will find the possible options:
+In the following paragraph, you will find the possible options:
 
 Sampling rate: 1, 10, 25, 50, 100, 200, 400
 
 Sampling resolution: 8, 10, 12
   
 Measuring Range: 2, 4, 8, 16
+
+Divider: Every decimal number allowed
