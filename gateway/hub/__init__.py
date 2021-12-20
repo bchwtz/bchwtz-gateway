@@ -26,7 +26,7 @@ class hub(object):
     def __init__(self):
         self.main_loop = asyncio.get_event_loop()
         self.logger = logging.getLogger('hub.hub')
-        self.sensorlist = list()
+        self.sensorlist: list[sensor] = list()
         return
     
     def discover(self):
