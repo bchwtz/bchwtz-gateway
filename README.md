@@ -88,10 +88,10 @@ and before pressing enter,
 
 3. add the parameters you would like to change:
 
-`-s` for sampling rate  
-`-r` for sampling resolution  
-`-m` for measuring range  
-`-d` for divider  
+`-s` or `--sampling_rate` for sampling rate  
+`-r` or `--sampling_resolution` for sampling resolution  
+`-m` or `--measuring range` for measuring range  
+`-d` or `--divider` for divider  
 
 plus the parameter number. 
 
