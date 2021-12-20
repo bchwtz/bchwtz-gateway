@@ -90,7 +90,7 @@ and before pressing enter,
 
 `-s` or `--sampling_rate` for sampling rate  
 `-r` or `--sampling_resolution` for sampling resolution  
-`-m` or `--measuring range` for measuring range  
+`-m` or `--measuring_range` for measuring range  
 `-d` or `--divider` for divider  
 
 plus the parameter number. 
