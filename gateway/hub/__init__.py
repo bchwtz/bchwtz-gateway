@@ -1,10 +1,12 @@
+# %% Libraries
 from gateway.hub import AdvertisementLogging
 from gateway.sensor import sensor
 from bleak import BleakScanner
 import logging
 import asyncio
 
-#Logger
+
+# %% Logger
 Log_hub = logging.getLogger('hub')
 Log_hub.setLevel("DEBUG")
 console_handler = logging.StreamHandler()
@@ -13,6 +15,7 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 console_handler.setFormatter(formatter)
 Log_hub.addHandler(console_handler)
 
+# %% Event_ts
 class Event_ts(asyncio.Event):
     """Custom event loop class for hub
     """
@@ -22,6 +25,7 @@ class Event_ts(asyncio.Event):
     def set(self):
         self._loop.call_soon_threadsafe(super().set)  
 
+# %% hub
 class hub(object):
     def __init__(self):
         self.main_loop = asyncio.get_event_loop()

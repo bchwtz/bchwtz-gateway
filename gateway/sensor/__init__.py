@@ -298,11 +298,10 @@ class sensor(object):
                     y_vector.append(value)
                 if j % 3 == 2:
                     z_vector.append(value)
+                    timestamp_list.append(timestamp)
                     timestamp += time_between_samples
                     Log_sensor.info(datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
-                    timestamp_list.append(
-                        datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
-                Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                    Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
 
         Log_sensor.info("%d Werte entpackt" % (j,))
@@ -359,9 +358,8 @@ class sensor(object):
                 if j % 3 == 1:
                     y_vector.append(value)
                 if j % 3 == 2:
+                    timestamp_list.append(timestamp)
                     timestamp += time_between_samples
-                    timestamp_list.append(
-                        datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
                     z_vector.append(value)
                 Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
@@ -382,9 +380,8 @@ class sensor(object):
                 if j % 3 == 1:
                     y_vector.append(value)
                 if j % 3 == 2:
+                    timestamp_list.append(timestamp)
                     timestamp += time_between_samples
-                    timestamp_list.append(
-                        datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
                     z_vector.append(value)
                 Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
@@ -405,9 +402,8 @@ class sensor(object):
                 if j % 3 == 1:
                     y_vector.append(value)
                 if j % 3 == 2:
+                    timestamp_list.append(timestamp)
                     timestamp += time_between_samples
-                    timestamp_list.append(
-                        datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
                     z_vector.append(value)
                 Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
@@ -428,10 +424,8 @@ class sensor(object):
                 if j % 3 == 1:
                     y_vector.append(value)
                 if j % 3 == 2:
+                    timestamp_list.append(timestamp)
                     timestamp += time_between_samples
-                    timestamp_list.append(
-                        datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
-
                     z_vector.append(value)
                 Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
@@ -487,8 +481,7 @@ class sensor(object):
                 if j % 3 == 1:
                     y_vector.append(value)
                 if j % 3 == 2:
-                    timestamp_list.append(
-                        datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
+                    timestamp_list.append(timestamp)
                     timestamp += time_between_samples
                     z_vector.append(value)
                 Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
@@ -510,9 +503,8 @@ class sensor(object):
                 if j % 3 == 1:
                     y_vector.append(value)
                 if j % 3 == 2:
+                    timestamp_list.append(timestamp)
                     timestamp += time_between_samples
-                    timestamp_list.append(
-                        datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
                     z_vector.append(value)
                 Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
