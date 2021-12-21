@@ -298,11 +298,10 @@ class sensor(object):
                     y_vector.append(value)
                 if j % 3 == 2:
                     z_vector.append(value)
+                    timestamp_list.append(timestamp)
                     timestamp += time_between_samples
                     Log_sensor.info(datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
-                    timestamp_list.append(
-                        datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
-                Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
+                    Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
 
         Log_sensor.info("%d Werte entpackt" % (j,))
@@ -310,7 +309,6 @@ class sensor(object):
         return x_vector, y_vector, z_vector, timestamp_list
 
     def process_data_10(self, bytes, scale, rate):
-        runtime = time.time() - self.start_time
         j = 0
         pos = 0
         koords = ["\nx", "y", "z"]
@@ -360,9 +358,8 @@ class sensor(object):
                 if j % 3 == 1:
                     y_vector.append(value)
                 if j % 3 == 2:
+                    timestamp_list.append(timestamp)
                     timestamp += time_between_samples
-                    timestamp_list.append(
-                        datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
                     z_vector.append(value)
                 Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
@@ -383,9 +380,8 @@ class sensor(object):
                 if j % 3 == 1:
                     y_vector.append(value)
                 if j % 3 == 2:
+                    timestamp_list.append(timestamp)
                     timestamp += time_between_samples
-                    timestamp_list.append(
-                        datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
                     z_vector.append(value)
                 Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
@@ -406,9 +402,8 @@ class sensor(object):
                 if j % 3 == 1:
                     y_vector.append(value)
                 if j % 3 == 2:
+                    timestamp_list.append(timestamp)
                     timestamp += time_between_samples
-                    timestamp_list.append(
-                        datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
                     z_vector.append(value)
                 Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
@@ -429,14 +424,11 @@ class sensor(object):
                 if j % 3 == 1:
                     y_vector.append(value)
                 if j % 3 == 2:
+                    timestamp_list.append(timestamp)
                     timestamp += time_between_samples
-                    timestamp_list.append(
-                        datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
-
                     z_vector.append(value)
                 Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
-        Log_sensor.info((j / runtime))
         Log_sensor.info("%d Werte entpackt" % (j,))
         Log_sensor.info(len(x_vector))
         return x_vector, y_vector, z_vector, timestamp_list
@@ -489,8 +481,7 @@ class sensor(object):
                 if j % 3 == 1:
                     y_vector.append(value)
                 if j % 3 == 2:
-                    timestamp_list.append(
-                        datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
+                    timestamp_list.append(timestamp)
                     timestamp += time_between_samples
                     z_vector.append(value)
                 Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
@@ -512,9 +503,8 @@ class sensor(object):
                 if j % 3 == 1:
                     y_vector.append(value)
                 if j % 3 == 2:
+                    timestamp_list.append(timestamp)
                     timestamp += time_between_samples
-                    timestamp_list.append(
-                        datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S.%f'))
                     z_vector.append(value)
                 Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
@@ -523,12 +513,16 @@ class sensor(object):
         return x_vector, y_vector, z_vector, timestamp_list
 
         
-    def set_config(self, sampling_rate='FF', sampling_resolution='FF', measuring_range='FF',
-                          divider="FF"):
+    def set_config(self, sampling_rate='FF', sampling_resolution='FF', measuring_range='FF', divider="FF"):
+        print("setting new config")
         if sampling_rate == 'FF':
             hex_sampling_rate = 'FF'
         elif sampling_rate in SamplingRate._value2member_map_:
             hex_sampling_rate = SamplingRate(sampling_rate).name[1:]
+            print("decimal sampling rate is:")
+            print(sampling_rate)
+            print("hex sampling rate is:")
+            print(hex_sampling_rate)
         else:
             Log_sensor.warning("Wrong sampling rate")
             hex_sampling_rate = 'FF'
@@ -537,6 +531,10 @@ class sensor(object):
             hex_sampling_resolution = 'FF'
         elif sampling_resolution in SamplingResolution._value2member_map_:
             hex_sampling_resolution = SamplingResolution(sampling_resolution).name[1:]
+            print("decimal sampling resolution is:")
+            print(sampling_resolution)
+            print("hex sampling resolution is:")
+            print(hex_sampling_resolution)
         else:
             Log_sensor.warning("Wrong sampling resolution")
             hex_sampling_resolution = 'FF'
@@ -545,24 +543,36 @@ class sensor(object):
             hex_measuring_range = 'FF'
         elif measuring_range in MeasuringRange._value2member_map_:
             hex_measuring_range = MeasuringRange(measuring_range).name[1:]
+            print("decimal measuring range is:")
+            print(measuring_range)
+            print("hex measuring range is:")
+            print(hex_measuring_range)
         else:
             Log_sensor.warning("Wrong measuring range")
             hex_measuring_range = 'FF'
         if divider == 'FF':
             hex_divider = 'FF'
+            print("divider is:")
+            print(hex_divider)
         else:
             div=""
             try:
                div= int(divider)
+               print("decimal divider is:")
+               print(div)
             except Exception as ex :
                 Log_sensor.error(str(ex))
                 Log_sensor.warning("Divider must be an int value")
             if isinstance(div,int):
                 hex_divider =hex(div)[2:]
+                if len(hex_divider) < 2:
+                    hex_divider = '0' + hex_divider
+                print("hex divider is:")
+                print(hex_divider)
             else:
                 hex_divider='FF'
         Log_sensor.info("Set sensor configuration {}".format(self.mac))
-        command_string = sensor_interface['ruuvi_commands']['substring_set_config_sensor'] + hex_sampling_rate + hex_sampling_resolution + hex_measuring_range + "FFFF" + hex_divider + "00"
+        command_string = sensor_interface['ruuvi_commands']['substring_set_config_sensor'] + hex_sampling_rate + hex_sampling_resolution + hex_measuring_range + "FFFFFF" + hex_divider + "00"
         self.work_loop(command_string,sensor_interface["communication_channels"]["UART_TX"])
         return
     
