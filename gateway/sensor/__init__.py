@@ -227,7 +227,8 @@ class sensor(object):
                 return None
 
             #timeStamp = hexlify(sensordaten[7::-1])
-
+            print('Divider: {}'.format(value[10]))
+            
             # Start data
             if (value[5] == 12):
                 # 12 Bit
@@ -519,56 +520,50 @@ class sensor(object):
             hex_sampling_rate = 'FF'
         elif sampling_rate in SamplingRate._value2member_map_:
             hex_sampling_rate = SamplingRate(sampling_rate).name[1:]
-            print("decimal sampling rate is:")
-            print(sampling_rate)
-            print("hex sampling rate is:")
-            print(hex_sampling_rate)
+            Log_sensor.debug("decimal sampling rate is: {}".format(sampling_rate))
+            Log_sensor.debug("hex sampling rate is: {}".format(hex_sampling_rate))
         else:
-            Log_sensor.warning("Wrong sampling rate")
+            Log_sensor.warning("Wrong sampling rate! Sampling rate set to 'FF'!")
             hex_sampling_rate = 'FF'
         # Check if arguments are given and valid
         if sampling_resolution == 'FF':
             hex_sampling_resolution = 'FF'
         elif sampling_resolution in SamplingResolution._value2member_map_:
             hex_sampling_resolution = SamplingResolution(sampling_resolution).name[1:]
-            print("decimal sampling resolution is:")
-            print(sampling_resolution)
-            print("hex sampling resolution is:")
-            print(hex_sampling_resolution)
+            Log_sensor.debug("decimal sampling resolution is: {}".format(sampling_resolution))
+            Log_sensor.debug("hex sampling resolution is: {}".format(hex_sampling_resolution))
         else:
-            Log_sensor.warning("Wrong sampling resolution")
+            Log_sensor.warning("Wrong sampling resolution! Sampling resolution set to 'FF'!")
             hex_sampling_resolution = 'FF'
         # Check if arguments are given and valid
         if measuring_range == 'FF':
             hex_measuring_range = 'FF'
         elif measuring_range in MeasuringRange._value2member_map_:
             hex_measuring_range = MeasuringRange(measuring_range).name[1:]
-            print("decimal measuring range is:")
-            print(measuring_range)
-            print("hex measuring range is:")
-            print(hex_measuring_range)
+            Log_sensor.debug("decimal measuring range is: {}".format(measuring_range))
+            Log_sensor.debug("hex measuring range is: {}".format(hex_measuring_range))
         else:
-            Log_sensor.warning("Wrong measuring range")
+            Log_sensor.warning("Wrong measuring range! Measuring range set to 'FF'!")
             hex_measuring_range = 'FF'
         if divider == 'FF':
             hex_divider = 'FF'
-            print("divider is:")
-            print(hex_divider)
+            Log_sensor.debug("divider is: {}".format(hex_divider))
+        elif int(divider) > 254:
+           Log_sensor.error("Divider value too high! (max. 254)") 
+           hex_divider = 'FF'
         else:
             div=""
             try:
                div= int(divider)
-               print("decimal divider is:")
-               print(div)
+               Log_sensor.debug("decimal divider is: {}".format(div))
             except Exception as ex :
                 Log_sensor.error(str(ex))
-                Log_sensor.warning("Divider must be an int value")
+                Log_sensor.error("Divider must be an int value")
             if isinstance(div,int):
                 hex_divider =hex(div)[2:]
                 if len(hex_divider) < 2:
                     hex_divider = '0' + hex_divider
-                print("hex divider is:")
-                print(hex_divider)
+                Log_sensor.debug("hex divider is: {}".format(hex_divider))
             else:
                 hex_divider='FF'
         Log_sensor.info("Set sensor configuration {}".format(self.mac))
