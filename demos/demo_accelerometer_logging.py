@@ -21,16 +21,21 @@ time.sleep(5)
 sensor1.get_logging_status()
 time.sleep(5)
 
-input("Press any key to continue...")
+input("Press enter to continue...")
 
 # Get basic sensor configurations
 sensor1.get_config()
 print(sensor1.sensor_data)
-input("Press any key to continue...")
+input("Press enter to continue...")
 
 #Get acceleration data
 sensor1.get_acceleration_data()
 time.sleep(2)
 
 print(sensor1.data)
+
+# Deactivate logging again
+sensor1.deactivate_accelerometer_logging()
+time.sleep(5)
+
 print("Exit")

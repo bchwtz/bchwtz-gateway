@@ -10,5 +10,7 @@ print(type(sensor1))
 
 sensor1.get_time()
 
-myhub.listen_advertisements() # press any key to confirm
+myhub.listen_advertisements() # press enter to confirm
+
+print("Exit")
 
