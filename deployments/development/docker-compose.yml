@@ -1,0 +1,32 @@
+version: "3.7"
+services:
+  influx:
+    image: arm32v7/influxdb:latest
+    container_name: gateway-development-influxdb
+    environment:
+      DOCKER_INFLUXDB_INIT_USERNAME: changeme
+      DOCKER_INFLUXDB_INIT_PASSWORD: changeme
+      DOCKER_INFLUXDB_INIT_ORG: acme
+      DOCKER_INFLUXDB_INIT_BUCKET: default
+    volumes:
+      - influxdb:/var/lib/influxdb
+    ports:
+      - 8086:8086
+  
+  grafana:
+    image: grafana/grafana:latest
+    container_name: gateway-development-grafana
+    volumes:
+      - grafana-config:/etc/grafana
+      - grafana-lib:/var/lib/grafana
+      - grafana-data:/usr/share/grafana
+    ports:
+      - 3000:3000
+
+
+volumes:
+  influxdb:
+  grafana-config:
+  grafana-lib:
+  grafana-data:
+
