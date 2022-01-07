@@ -16,8 +16,6 @@ import crcmod
 from gateway.sensor.SensorConfigEnum import SamplingRate, SamplingResolution,MeasuringRange
 from gateway.sensor.MessageObjects import return_values_from_sensor
 
-sensordaten = bytearray()
-
 with open(os.path.dirname(__file__)+ '/../communication_interface.yml') as ymlfile:
     sensor_interface = yaml.safe_load(ymlfile)
 
@@ -54,12 +52,16 @@ class sensor(object):
         self.sensor_data = list() #command callbacks
         self.data = list() #accelerometer
         return
+
+    def clear(self):
+        self.sensor_data = list()
+        self.data = list()
+        Log_sensor.info('sensor variables have been cleared!')
     
     async def timeout_for_commands(self):
             Log_sensor.info("Start timeout function")
             while time.time() - self.start_time < 10:
-                Log_sensor.warning(
-                    "Timeout timer running {}".format(time.strftime("%H:%M:%S", time.localtime(self.start_time))))
+                Log_sensor.warning("Timeout timer running {}".format(time.strftime("%H:%M:%S", time.localtime(self.start_time))))
                 await asyncio.sleep(1)
                 if self.notification_done:
                     self.notification_done = False
@@ -186,12 +188,12 @@ class sensor(object):
         return 
     
     def get_acceleration_data(self):
-        global sensordaten
         Log_sensor.info('Try to get acceleration data from {}'.format(self.mac))
         self.work_loop(sensor_interface["ruuvi_commands"]["get_acceleration_data"] , sensor_interface["communication_channels"]["UART_TX"], True )        
         return
     
     async def handle_data(self,handle, value):
+        sensordaten = bytearray()
         if value[0] == 0x11:
             # Daten
             sensordaten.extend(value[1:])
@@ -216,8 +218,6 @@ class sensor(object):
             # CRC validation
             ourcrc = crcfun(sensordaten)
 
-            print("Received %d bytes" % len(sensordaten))
-            #print(hexlify(crc))
             if hexlify(crc) == bytearray():
                 Log_sensor.info("No crc received")
                 return None
@@ -226,7 +226,6 @@ class sensor(object):
                 Log_sensor.warning("CRC are unequal")
                 return None
 
-            #timeStamp = hexlify(sensordaten[7::-1])
             print('Divider: {}'.format(value[10]))
             
             # Start data
@@ -243,7 +242,7 @@ class sensor(object):
                 Log_sensor.info("Start processing reveived data with process_sensor_data_10")
                 AccelorationData = self.process_data_8(sensordaten, value[6], value[4])
             else:
-                print("Unknown Resolution")
+                Log_sensor.error('Cant process bytearray! Unknwon sensor resolution!')
             if AccelorationData != None:
                 Log_sensor.info("Run in Funktion AccelorationData != None")
                 dataList=message_return_value.from_get_accelorationdata(accelorationdata=AccelorationData,mac=self.mac)
