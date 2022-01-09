@@ -18,7 +18,7 @@ def test_function_discover():
     myhub = hub.hub()
     try:
         myhub.discover()
-    except BleakDBusError:
+    except Exception as e:
         warnings.warn(UserWarning("""Can't use discover() without bleak!"""))
 
 #def test_debug_test():
