@@ -8,3 +8,4 @@ Sphinx
 async_timeout
 pyyaml
 paho-mqtt
+pytest
