@@ -22,5 +22,3 @@ setup(name='gateway',
       install_requires=required,
       python_requires=">=3.6"
       )
-#https://github.com/navdeep-G/samplemod
-#https://towardsdatascience.com/create-your-custom-python-package-that-you-can-pip-install-from-your-git-repository-f90465867893
