@@ -48,8 +48,17 @@ def test_sensor_interface_config_channels():
     assert conf['Adv_UART_RX'] == '6E400001-B5A3-F393-E0A9-E50E24DCCA9E'
 
 def test_sensor_interface_config_commands():
-    print("Lorem Ipsum")
+    from gateway import sensor
+    conf = sensor.sensor_interface['ruuvi_commands']
+    assert len(conf.keys())== 10
+    assert conf['readAllString']== '4a4a110100000000000000'
+    assert conf['activate_logging_at_sensor']== '4a4a080100000000000000'
+    assert conf['deactivate_logging_at_sensor']== '4a4a080000000000000000'
+    assert conf['get_acceleration_data']== '4a4a110100000000000000'
+    assert conf['substring_set_config_sensor']== '4a4a02'
+    assert conf['get_config_from_sensor']== '4a4a030000000000000000'
+    assert conf['get_time_from_sensor']== '2121090000000000000000'
+    assert conf['substring_set_sensor_time']== '212108'
+    assert conf['get_flash_statistic']== 'FAFA0d0000000000000000'
+    assert conf['get_logging_status']== '4A4A090000000000000000'
 
-
-#def test_debug_test():
-#    assert(2==2)
