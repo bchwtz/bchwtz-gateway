@@ -36,19 +36,16 @@ def dfu_file_loader(target_directory):
     for f_name in os.listdir(target_directory):
         if f_name.endswith('.dat'):
             path_to_dat = target_directory + "//" + f_name
+            log.info("try load dat")
+            with open(path_to_dat, "rb") as f:
+                dat_file = f.read()
         elif f_name.endswith('.bin'):
             path_to_bin = target_directory + "//" +f_name
+            log.info("try load bin")
+            with open(path_to_bin, "rb") as f:
+                bin_file = f.read()
         else:
-            log.error('no files found')
-    
-    log.info("try load dat")
-    with open(path_to_dat, "rb") as f:
-        dat_file = f.read()
-
-    log.info("try load bin")
-    with open(path_to_bin, "rb") as f:
-        bin_file = f.read()
-    
+            log.warning('{} was found in directory'.format(f_name))
     return dat_file, bin_file
     
 
