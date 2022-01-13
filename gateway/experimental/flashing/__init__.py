@@ -1,12 +1,11 @@
 import asyncio
 from binascii import hexlify, crc32
-from bleak import BleakScanner
 from bleak import BleakClient
 import time
 from gateway import sensor
-import logging
-
-loop = asyncio.get_event_loop()
+import logging 
+import zipfile # python standard library
+import os # python standard library
 
 # Creat a named logger 'log' and set it on INFO level
 log = logging.getLogger('SensorGatewayBleak')
@@ -16,9 +15,39 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 console_handler.setFormatter(formatter)
 log.addHandler(console_handler)
 
-interface = sensor.sensor_interface
-
+loop = asyncio.get_event_loop()
 fh = FutureHolder()
+
+interface = sensor.sensor_interface
+DFU_CONTROL_POINT = sensor.sensor_interface["communication_channels"]["DFU_CONTROL_POINT"]
+DFU_DATA_POINT = sensor.sensor_interface["communication_channels"]["DFU_DATA_POINT"]
+
+def unzip_dfu_file(source_path, target_directory):
+    try:
+        with zipfile.ZipFile(source_path, "r") as zip_ref:
+            zip_ref.extractall(target_directory)
+            zip_ref.close()
+    except Exception as e:
+        log.error(e)
+        raise Exception
+    return
+
+def dfu_file_loader(target_directory):
+    for f_name in os.listdir(target_directory):
+        if f_name.endswith('.dat'):
+            path_to_dat = target_directory + "//" + f_name
+            log.info("try load dat")
+            with open(path_to_dat, "rb") as f:
+                dat_file = f.read()
+        elif f_name.endswith('.bin'):
+            path_to_bin = target_directory + "//" +f_name
+            log.info("try load bin")
+            with open(path_to_bin, "rb") as f:
+                bin_file = f.read()
+        else:
+            log.warning('{} was found in directory'.format(f_name))
+    return dat_file, bin_file
+    
 
 class ErrorBootloaderModus(Exception):
     """Raised when the sensor is not in bootloader modus
@@ -27,6 +56,7 @@ class ErrorBootloaderModus(Exception):
         Exception (Custom): "sensor is not in bootloader modus"
     """    
     pass
+
 
 class FutureHolder:
     furure = None
@@ -49,9 +79,13 @@ class FutureHolder:
     def result(self):
         return self.furure.result()
 
-class device_firmware_upgrade(s1 = sensor.sensor):
+
+class device_firmware_upgrade(path_to_dfu_zip, destination_path_to_unzip, s= sensor.sensor("DEFAULT", "DEFAULT")):
     def __init__(self):
-        self.sensor = s1
+        self.sensor = s
+        self.check_boot_loader()
+        unzip_dfu_file(path_to_dfu_zip, destination_path_to_unzip)
+        self.bin_file, self.dat_file = dfu_file_loader(destination_path_to_unzip)
 
     def check_boot_loader(self):
         if "RuuviBoot" in self.sensor.name:
@@ -61,7 +95,27 @@ class device_firmware_upgrade(s1 = sensor.sensor):
             raise AttributeError("device_firmware_upgrade can't run with 'default' name")
         else:
             raise ErrorBootloaderModus("sensor is not in bootloader modus")
-    
+
+    def start_flashing_sensor(self):
+        loop.run_until_complete(updateProcedure(self.sensor.mac))
+
+    async def updateProcedure(self, adress):
+        async with BleakClient(address) as client:
+            await client.start_notify(DFU_CONTROL_POINT, self.callback)
+            
+            log.info("set crc intervall to 0")
+            result = await sendPaket(client, DFU_CONTROL_POINT, bytearray.fromhex("0200000000"))
+            
+            log.info("send dat file...")
+            await self.sendData(client, 1, self.dat_file)
+
+            log.info("send bin file...")
+            await self.sendData(client, 2, self.bin_file)
+
+            await client.stop_notify(DFU_CONTROL_POINT)
+        log.info("task done and return")
+        return
+  
     async def sendPaket(self, client, c, data):
         fh.reset()
         await client.write_gatt_char(c, data)
@@ -70,7 +124,7 @@ class device_firmware_upgrade(s1 = sensor.sensor):
     
     async def sendData(self, client, obj, data):
         log.info("excecute select...")
-        result = await self.sendPaket(client, DFU_CONTROL_POINT, bytearray.fromhex("06%02x"%(obj))) #DFU_CONTROL aus interface!
+        result = await self.sendPaket(client, DFU_CONTROL_POINT, bytearray.fromhex("06%02x"%(obj)))
         offset = result["offset"]
         crc = result["crc32"]
         max_size = result["max_size"]
@@ -119,20 +173,7 @@ class device_firmware_upgrade(s1 = sensor.sensor):
         msg = bytearray.fromhex("04")
         result = await self.sendPaket(client, DFU_CONTROL_POINT , msg)
 
-    async def updateProcedure(self):
-        async with BleakClient(self.sensor.mac) as client:
-            await client.start_notify(DFU_CONTROL_POINT,self.callback)
-            log.info("set crc intervall to 0")
-            result = await self.sendPaket(client, DFU_CONTROL_POINT, bytearray.fromhex("0200000000"))
-            log.info("try open DAT data file")
-            with open("buildpath", "rb") as f:
-                dat_file = f.read()
-            with open("buildpath", "rb") as f:
-                bin_file.
-    
-
-
-    def callback(sender : int, value: bytearray):
+    def callback(self, sender : int, value: bytearray):
         value = value[1:]
         if value[1]==0x01:
             if value[0]==0x06:
