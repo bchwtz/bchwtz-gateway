@@ -27,3 +27,19 @@ SensorGatewayBleak module
    :members:
    :undoc-members:
    :show-inheritance:
+   
+MessageObjects module
+---------------------------------
+
+.. automodule:: MessageObjects
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   
+SensorConfigEnum module
+---------------------------------
+
+.. automodule:: SensorConfigEnum
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -680,4 +680,3 @@ class sensor(object):
             Log_sensor.error("RD_ERROR_FATAL")
             result.add("RD_ERROR_FATAL")
         return result    
-        
