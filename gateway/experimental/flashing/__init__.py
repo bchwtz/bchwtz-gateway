@@ -16,7 +16,7 @@ console_handler.setFormatter(formatter)
 log.addHandler(console_handler)
 
 loop = asyncio.get_event_loop()
-fh = FutureHolder()
+
 
 interface = sensor.sensor_interface
 DFU_CONTROL_POINT = sensor.sensor_interface["communication_channels"]["DFU_CONTROL_POINT"]
@@ -58,7 +58,7 @@ class ErrorBootloaderModus(Exception):
     pass
 
 
-class FutureHolder:
+class FutureHolder():
     furure = None
 
     def __init__(self):
@@ -79,13 +79,15 @@ class FutureHolder:
     def result(self):
         return self.furure.result()
 
+fh = FutureHolder()
 
-class device_firmware_upgrade(path_to_dfu_zip, destination_path_to_unzip, s= sensor.sensor("DEFAULT", "DEFAULT")):
-    def __init__(self):
+
+class device_firmware_upgrade():
+    def __init__(self,path_to_dfu_zip, destination_path_to_unzip, s= sensor.sensor("DEFAULT", "DEFAULT")):
         self.sensor = s
-        self.check_boot_loader()
         unzip_dfu_file(path_to_dfu_zip, destination_path_to_unzip)
         self.bin_file, self.dat_file = dfu_file_loader(destination_path_to_unzip)
+        self.check_boot_loader()
 
     def check_boot_loader(self):
         if "RuuviBoot" in self.sensor.name:
