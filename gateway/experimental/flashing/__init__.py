@@ -62,7 +62,7 @@ class device_firmware_upgrade(s1 = sensor.sensor):
         else:
             raise ErrorBootloaderModus("sensor is not in bootloader modus")
     
-    async def sendPaket(client, c, data):
+    async def sendPaket(self, client, c, data):
         fh.reset()
         await client.write_gatt_char(c, data)
         await fh.wait()
@@ -119,8 +119,16 @@ class device_firmware_upgrade(s1 = sensor.sensor):
         msg = bytearray.fromhex("04")
         result = await self.sendPaket(client, DFU_CONTROL_POINT , msg)
 
-    async def updateProcedure(adress):
-        print("lorem ipsum")
+    async def updateProcedure(self):
+        async with BleakClient(self.sensor.mac) as client:
+            await client.start_notify(DFU_CONTROL_POINT,self.callback)
+            log.info("set crc intervall to 0")
+            result = await self.sendPaket(client, DFU_CONTROL_POINT, bytearray.fromhex("0200000000"))
+            log.info("try open DAT data file")
+            with open("buildpath", "rb") as f:
+                dat_file = f.read()
+            with open("buildpath", "rb") as f:
+                bin_file.
     
 
 
