@@ -2,6 +2,7 @@ from gateway import hub
 import time
 import argparse
 from enum import Enum
+import asyncio
 
 # define command line arguments with flags
 parser = argparse.ArgumentParser()
@@ -30,8 +31,12 @@ sensor1.set_config(sampling_rate = args.samplerate, sampling_resolution = args.r
 
 # get config - did it work?
 sensor1.get_config()
-print(sensor1.sensor_data)
+print(sensor1.config.mac)
 
+loop = sensor1.stopevent
+asyncio.run(sensor1.setup_for_streaming())
+print("test")
+# asyncio.ensure_future(sensor1.activate_streaming())
 print("Exit")
 
 

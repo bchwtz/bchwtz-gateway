@@ -42,6 +42,25 @@ class Event_ts(asyncio.Event):
     def set(self):
         self._loop.call_soon_threadsafe(super().set)
 
+class SensorConfig():
+    def __init__(self, sample_rate=None, resolution=None, scale=None, dsp_function=None, dsp_parameter=None, mode=None, divider=None, mac=None):
+        self.sample_rate = sample_rate
+        self.resolution = resolution
+        self.scale = scale
+        self.dsp_funtion = dsp_function
+        self.dsp_parameter = dsp_parameter
+        self.mode = mode
+        self.divider = divider
+        self.mac = mac
+
+    def from_dict(dct):
+        self = SensorConfig()
+        for key in dct:
+            setattr(self, key, dct[key])
+        print("set new config")
+        return self
+    def __repr__(self) -> str:
+        return str(self.__dict__)
 
 class sensor(object):
     
@@ -53,7 +72,11 @@ class sensor(object):
         self.notification_done = False #improvement wanted
         self.sensor_data = list() #command callbacks
         self.data = list() #accelerometer
+        self.config = SensorConfig()
+        self.stopevent = Event_ts()
+
         return
+
     
     async def timeout_for_commands(self):
             Log_sensor.info("Start timeout function")
@@ -121,10 +144,10 @@ class sensor(object):
             elif value[2] == 0x09:
 
                 Log_sensor.info("Received time: %s" % hexlify(value[:-9:-1]))
-                recieved_time=time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(value[:-9:-1]), 16) / 1000))
-                Log_sensor.info(recieved_time)
-                self.sensor_data.append([message_return_value.from_get_time(status=status_string, recieved_time=recieved_time,
-                                                   mac=client.address).returnValue.__dict__])
+                received_time=time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(value[:-9:-1]), 16) / 1000))
+                Log_sensor.info(received_time)
+                self.sensor_data.append(message_return_value.from_get_time(status=status_string, received_time=received_time,
+                                                   mac=client.address).returnValue.__dict__)
                 self.stopEvent.set()
                 self.notification_done = True
 
@@ -136,10 +159,11 @@ class sensor(object):
                 else:
                     Log_sensor.info("Samplerate:    %d Hz" % value[4])
                     sample_rate=int(value[4])
-                recieved_config=message_return_value.from_get_config(status=status_string,sample_rate=sample_rate,resolution= int(value[5]),
+                received_config=message_return_value.from_get_config(status=status_string,sample_rate=sample_rate,resolution= int(value[5]),
                                                     scale=int(value[6]),dsp_function=int(value[7]), dsp_parameter=int(value[8]),
                                                     mode="%x"% value[9],divider=int(value[10]), mac=client.address)
-                self.sensor_data.append([recieved_config.returnValue.__dict__])
+                self.sensor_data.append(received_config.returnValue.__dict__)
+                self.config = SensorConfig.from_dict(received_config.returnValue.__dict__)
                 self.notification_done=True
                 self.stopEvent.set()
 
@@ -156,12 +180,12 @@ class sensor(object):
             words_used = value[13] | (value[14] << 8)
             largest_contig = value[15] | (value[16] << 8)
             freeable_words = value[17] | (value[18] << 8)
-            recieved_flash_statistic=message_return_value.from_get_flash_statistics(
+            received_flash_statistic=message_return_value.from_get_flash_statistics(
             logging_status=logging_status, ringbuffer_start=ringbuffer_start,
             ringbuffer_end=ringbuffer_end, ringbuffer_size=ringbuffer_size, valid_records=valid_records, dirty_records=dirty_records,
             words_reserved=words_reserved, words_used= words_used, largest_contig=largest_contig, freeable_words=freeable_words,
             mac=client.address)
-            self.sensor_data.append([recieved_flash_statistic.returnValue.__dict__])
+            self.sensor_data.append([received_flash_statistic.returnValue.__dict__])
             Log_sensor.info("Last Status %s" % (str(self.ri_error_to_string(logging_status)),))
             Log_sensor.info("Ringbuffer start %d" % (ringbuffer_start,))
             Log_sensor.info("Ringbuffer end %d" % (ringbuffer_end,))
@@ -591,7 +615,7 @@ class sensor(object):
     def get_config(self):
         Log_sensor.info("Reading config from {}".format(self.mac))
         self.work_loop(sensor_interface["ruuvi_commands"]["get_config_from_sensor"],sensor_interface["communication_channels"]["UART_TX"])
-        return    
+        return
     
     def get_time(self):
         Log_sensor.info("Reading time from {}".format(self.mac))
@@ -682,3 +706,40 @@ class sensor(object):
             result.add("RD_ERROR_FATAL")
         return result    
         
+    def callback(self, sender: int, value: bytearray):
+        # self.process_data_12(sensordaten, value[6], value[4])
+        print("Received: %s" % hexlify(value))
+        if value[0] == 0x4A:
+            print("Sender: %s" % sender)
+            print("Status: %s" % (str(self.ri_error_to_string(value[3]),)))
+            self.stopevent.set()
+        elif value[0] == 0x11:
+            # self.sensor_data
+            if self.config.resolution == 8:
+                self.process_data_8(value[1:], self.config.scale, self.config.sample_rate)
+            elif self.config.resolution == 10:
+                self.process_data_10(value[1:], self.config.scale, self.config.sample_rate)
+            elif self.config.resolution == 12:
+                self.process_data_12(value[1:], self.config.scale, self.config.sample_rate)
+
+    async def setup_for_streaming(self):
+        UART_RX = sensor_interface["communication_channels"]["UART_RX"]
+        UART_TX = sensor_interface["communication_channels"]["UART_TX"]
+        async with BleakClient(self.config.mac) as client:
+            await client.start_notify(UART_RX, self.callback)
+            await client.write_gatt_char(UART_TX, bytearray.fromhex("4a4a02%02x%02x%02xFFFFFF0000" % (self.config.sample_rate, self.config.resolution, self.config.scale)))
+            await self.stopevent.wait()
+            print("Samplerate set")
+            await client.stop_notify(UART_RX)
+            self.stopevent.clear()
+
+
+    async def activate_streaming(self):
+        UART_RX = sensor_interface["communication_channels"]["UART_RX"]
+        UART_TX = sensor_interface["communication_channels"]["UART_TX"]
+        async with BleakClient(self.config.mac) as client:
+            await client.start_notify(UART_RX, self.callback)
+            await client.write_gatt_char(UART_TX, bytearray.fromhex(sensor_interface["ruuvi_commands"]["activate_streaming"]))
+            print("Streaming activated")
+            await self.stopevent.wait()
+            await client.stop_notify(UART_RX)
