@@ -78,6 +78,7 @@ It will open a file, inwhich you see your collected data.
 
 `python3 demo_accelerometer_logging.py`
 
+Please note, acceleration logging status 1 means "is active" and -1 means "is inactive". 
 
 ## Set acceleration parameter
 
