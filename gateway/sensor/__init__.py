@@ -712,7 +712,7 @@ class sensor(object):
         if value[0] == 0x4A:
             print("Sender: %s" % sender)
             print("Status: %s" % (str(self.ri_error_to_string(value[3]),)))
-            self.stopevent.set()
+            # self.stopevent.set()
         elif value[0] == 0x11:
             # self.sensor_data
             if self.config.resolution == 8:
