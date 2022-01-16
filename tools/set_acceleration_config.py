@@ -33,10 +33,10 @@ sensor1.set_config(sampling_rate = args.samplerate, sampling_resolution = args.r
 sensor1.get_config()
 print(sensor1.config.mac)
 
-loop = sensor1.stopevent
-asyncio.run(sensor1.setup_for_streaming())
+loop = sensor1.main_loop
+loop.run_until_complete(sensor1.setup_for_streaming())
 print("test")
-# asyncio.ensure_future(sensor1.activate_streaming())
+loop.run_until_complete(sensor1.activate_streaming())
 print("Exit")
 
 
