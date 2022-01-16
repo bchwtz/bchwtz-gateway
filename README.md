@@ -107,11 +107,11 @@ plus the parameter number.
 
 4. For example if you would like to change all three values, type:
 
-`python3 demo_set_acceleration_config.py -s 100 -r 10 -m 16 -d 4`
+`python3 set_acceleration_config.py -s 100 -r 10 -m 16 -d 4`
 
 5. You can open the help menu, where you find all accepted parameters with
 
-`python3 demo_set_acceleration_config.py --help`
+`python3 set_acceleration_config.py --help`
 
 ### Parameter options
 
