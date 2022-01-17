@@ -58,7 +58,7 @@ def test_call_callback_data_list():
     assert isinstance(s1.sensor_data, list)
 
 def test_sensor_interface_config_channels():
-    """This function checks, if the the communications_interface.yml was successfully imported and compares the communication channels.
+    """This function checks, if the communications_interface.yml was successfully imported and compares the communication channels.
     """    
     from gateway import sensor
     conf = sensor.sensor_interface['communication_channels']
@@ -69,7 +69,7 @@ def test_sensor_interface_config_channels():
     assert conf['Adv_UART_RX'] == '6E400001-B5A3-F393-E0A9-E50E24DCCA9E'
 
 def test_sensor_interface_config_commands():
-    """This function checks, if the the communications_interface.yml was successfully imported and compares the ruuvi_commands.
+    """This function checks, if the communications_interface.yml was successfully imported and compares the ruuvi_commands.
     """    
     from gateway import sensor
     conf = sensor.sensor_interface['ruuvi_commands']
