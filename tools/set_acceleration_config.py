@@ -24,19 +24,20 @@ print(type(sensor1))
 
 # Get basic sensor configurations
 sensor1.get_config()
-print(sensor1.sensor_data)
+# print(sensor1.sensor_data)
 
 # set config 
 sensor1.set_config(sampling_rate = args.samplerate, sampling_resolution = args.resolution, measuring_range = args.measurerange, divider = args.divider)
 
 # get config - did it work?
 sensor1.get_config()
-print(sensor1.config.mac)
 
 loop = sensor1.main_loop
 loop.run_until_complete(sensor1.setup_for_streaming())
-print("test")
+print("setup completed")
 loop.run_until_complete(sensor1.activate_streaming())
+print("listening for incoming data")
+loop.run_until_complete(sensor1.listen_for_data(10*60))
 print("Exit")
 
 

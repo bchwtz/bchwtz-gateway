@@ -1,6 +1,7 @@
 """
 An object of type sensor is an digital twin of a hardware sensor.
 """
+import binascii
 import struct#built-in module
 import logging
 import os.path
@@ -704,24 +705,224 @@ class sensor(object):
         elif(error==31):
             Log_sensor.error("RD_ERROR_FATAL")
             result.add("RD_ERROR_FATAL")
-        return result    
+        return result
+
+    
+    def unpack8(self, bytes, samplingrate, scale):
+        j = 0
+        pos = 0
+        accvalues = [0, 0, 0]
+        timestamp = 0
+        timeBetweenSamples = 1000/samplingrate
+
+        if(scale == 2):
+            faktor = 16/(256*1000)
+        elif(scale == 4):
+            faktor = 32/(256*1000)
+        elif(scale == 8):
+            faktor = 64/(256*1000)
+        elif(scale == 16):
+            faktor = 192/(256*1000)
+
+        while(pos < len(bytes)):
+            # Ein Datenblock bei 8 Bit Auflösung ist 104 Bytes lang
+            # Jeder Datenblock beginnt mit einem Zeitstempel
+            if pos % 104 == 0:
+                timestamp = int.from_bytes(
+                    bytes[pos:pos+7], byteorder='little', signed=False)
+                pos += 8
+                j = 0
+
+            value = bytes[pos] << 8
+            pos += 1
+            if(value & 0x8000 == 0x8000):
+                # negative Zahl
+                # 16Bit Zweierkomplement zurückrechnen
+                value = value ^ 0xffff
+                value += 1
+                # negieren
+                value = -value
+
+            # save value
+            accvalues[j] = value * faktor
+
+            # Write to CSV
+            if(filepointer.csvfile != None and j % 3 == 2):
+                if(filepointer.csvfile != None):
+                    filepointer.csvfile.write("%d;%f;%f;%f\n" % (
+                        timestamp, accvalues[0], accvalues[1], accvalues[1]))
+                else:
+                    print("%d;%f;%f;%f\n" %
+                        (timestamp, accvalues[0], accvalues[1], accvalues[1]))
+                timestamp += timeBetweenSamples
+                j = 0
+            else:
+                j += 1
+
+    def unpack10(self, bytes, samplingrate, scale):
+        i = 0
+        j = 0
+        pos = 0
+        accvalues = [0, 0, 0]
+        timestamp = 0
+        timeBetweenSamples = 1000/samplingrate
+
+        if(scale == 2):
+            faktor = 4/(64*1000)
+        elif(scale == 4):
+            faktor = 8/(64*1000)
+        elif(scale == 8):
+            faktor = 16/(64*1000)
+        elif(scale == 16):
+            faktor = 48/(64*1000)
+
+        while(pos < len(bytes)-1):
+            # Ein Datenblock bei 10 Bit Auflösung ist 128 Bytes lang
+            # Jeder Datenblock beginnt mit einem Zeitstempel
+            if pos % 128 == 0:
+                timestamp = int.from_bytes(
+                    bytes[pos:pos+7], byteorder='little', signed=False)
+                pos += 8
+                i = 0
+                j = 0
+
+            else:
+                if i == 0:
+                    value = bytes[pos] & 0xc0
+                    value |= (bytes[pos] & 0x3f) << 10
+                    pos += 1
+                    value |= (bytes[pos] & 0xc0) << 2
+                    i += 1
+
+                elif i == 1:
+                    value = (bytes[pos] & 0x30) << 2
+                    value |= (bytes[pos] & 0x0f) << 12
+                    pos += 1
+                    value |= (bytes[pos] & 0xf0) << 4
+                    i += 1
+
+                elif i == 2:
+                    value = (bytes[pos] & 0x0c) << 4
+                    value |= (bytes[pos] & 0x03) << 14
+                    pos += 1
+                    value |= (bytes[pos] & 0xfc) << 6
+                    i += 1
+
+                elif i == 3:
+                    value = (bytes[pos] & 0x03) << 6
+                    pos += 1
+                    value |= (bytes[pos]) << 8
+                    pos += 1
+                    i = 0
+
+                if(value & 0x8000 == 0x8000):
+                    # negative Zahl
+                    # 16Bit Zweierkomplement zurückrechnen
+                    value = value ^ 0xffff
+                    value += 1
+                    # negieren
+                    value = -value
+
+                # save value
+                accvalues[j] = value * faktor
+
+                j += 1
+
+                # Write to CSV
+                if(j == 3):
+                    if(filepointer.csvfile != None):
+                        filepointer.csvfile.write("%d;%f;%f;%f\n" % (
+                            timestamp, accvalues[0], accvalues[1], accvalues[2]))
+                    else:
+                        print("%d;%f;%f;%f" %
+                            (timestamp, accvalues[0], accvalues[1], accvalues[2]))
+                    timestamp += timeBetweenSamples
+                    j = 0
+
+
+    def unpack12(self, bytes, samplingrate, scale):
+        i = 0
+        j = 0
+        pos = 0
+        accvalues = [0, 0, 0]
+        timestamp = 0
+        timeBetweenSamples = 1000/samplingrate
+
+        if(scale == 2):
+            faktor = 1/(16*1000)
+        elif(scale == 4):
+            faktor = 2/(16*1000)
+        elif(scale == 8):
+            faktor = 4/(16*1000)
+        elif(scale == 16):
+            faktor = 12/(16*1000)
+
+        while(pos < len(bytes)-1):
+            # Ein Datenblock bei 12 Bit Auflösung ist 152 Bytes lang
+            # Jeder Datenblock beginnt mit einem Zeitstempel
+            if pos % 152 == 0:
+                timestamp = int.from_bytes(
+                    bytes[pos:pos+7], byteorder='little', signed=False)
+                pos += 8
+                i = 0
+                j = 0
+
+            else:
+                if i == 0:
+                    value = bytes[pos] & 0xf0
+                    value |= (bytes[pos] & 0x0f) << 12
+                    pos += 1
+                    value |= (bytes[pos] & 0xf0) << 4
+                    i += 1
+
+                elif i == 1:
+                    value = (bytes[pos] & 0x0f) << 4
+                    pos += 1
+                    value |= bytes[pos] << 8
+                    pos += 1
+                    i = 0
+
+                if(value & 0x8000 == 0x8000):
+                    # negative Zahl
+                    # 16Bit Zweierkomplement zurückrechnen
+                    value = value ^ 0xffff
+                    value += 1
+                    # negieren
+                    value = -value
+
+                # save value
+                accvalues[j] = value * faktor
+
+                j += 1
+
+                # Write to CSV
+                if(j == 3):
+                    if(filepointer.csvfile != None):
+                        filepointer.csvfile.write("%d;%f;%f;%f\n" % (
+                            timestamp, accvalues[0], accvalues[1], accvalues[2]))
+                    else:
+                        print("%d;%f;%f;%f" %
+                            (timestamp, accvalues[0], accvalues[1], accvalues[2]))
+                    timestamp += timeBetweenSamples
+                    j = 0
+
         
     def callback(self, sender: int, value: bytearray):
         # self.process_data_12(sensordaten, value[6], value[4])
-        print("Received: %s" % hexlify(value))
+        print("Received: %s" % binascii.hexlify(value, "-"))
         if value[0] == 0x4A:
             print("Sender: %s" % sender)
             print("Status: %s" % (str(self.ri_error_to_string(value[3]),)))
-            # self.stopevent.set()
+            self.stopevent.set()
         elif value[0] == 0x11:
             # self.sensor_data
             if self.config.resolution == 8:
-                self.process_data_8(value[1:], self.config.scale, self.config.sample_rate)
+                self.unpack8(value[1:], self.config.sample_rate, self.config.scale)
             elif self.config.resolution == 10:
-                self.process_data_10(value[1:], self.config.scale, self.config.sample_rate)
+                self.unpack10(value[1:], self.config.sample_rate, self.config.scale)
             elif self.config.resolution == 12:
-                self.process_data_12(value[1:], self.config.scale, self.config.sample_rate)
-
+                self.unpack12(value[1:], self.config.sample_rate, self.config.scale)
+                
     async def setup_for_streaming(self):
         UART_RX = sensor_interface["communication_channels"]["UART_RX"]
         UART_TX = sensor_interface["communication_channels"]["UART_TX"]
@@ -744,3 +945,18 @@ class sensor(object):
             print("Streaming activated")
             await self.stopevent.wait()
             await client.stop_notify(UART_RX)
+
+    async def listen_for_data(self, samplingtime=10*60, filename = str(int(time.time()))+".csv"):
+        UART_RX = sensor_interface["communication_channels"]["UART_RX"]
+        UART_TX = sensor_interface["communication_channels"]["UART_TX"]
+        filepointer.csvfile = open(filename, "w")
+        async with BleakClient(self.config.mac) as client:
+            await client.start_notify(UART_RX, self.callback)
+            await asyncio.sleep(samplingtime)
+            await client.stop_notify(UART_RX)
+        filepointer.csvfile.close()
+        filepointer.csvfile = None
+
+# Pointer to file which receives data
+class filepointer:
+    csvfile = None
