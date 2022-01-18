@@ -8,7 +8,7 @@ import zipfile # python standard library
 import os # python standard library
 
 # Creat a named logger 'log' and set it on INFO level
-log = logging.getLogger('SensorGatewayBleak')
+log = logging.getLogger('dfu_flashing')
 console_handler = logging.StreamHandler()
 console_handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
