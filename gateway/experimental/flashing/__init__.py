@@ -22,7 +22,16 @@ interface = sensor.sensor_interface
 DFU_CONTROL_POINT = sensor.sensor_interface["communication_channels"]["DFU_CONTROL_POINT"]
 DFU_DATA_POINT = sensor.sensor_interface["communication_channels"]["DFU_DATA_POINT"]
 
-def unzip_dfu_file(source_path, target_directory):
+def unzip_dfu_file(source_path : str, target_directory : str):
+    """Unzip the device firmware update to a given target_directory.
+
+    Args:
+        source_path (str): C:\\Path\\to\\your\\zip
+        target_directory (str): C:\\destination\\path
+
+    Raises:
+        Exception: If an exception occures, will be logged and raised.
+    """    
     try:
         with zipfile.ZipFile(source_path, "r") as zip_ref:
             zip_ref.extractall(target_directory)
@@ -32,7 +41,15 @@ def unzip_dfu_file(source_path, target_directory):
         raise Exception
     return
 
-def dfu_file_loader(target_directory):
+def dfu_file_loader(target_directory : str):
+    """Load the necessary files from the target directory.
+
+    Args:
+        target_directory (str): C:\\dest\\path
+
+    Returns:
+        dat_file, bin_file: necessary files
+    """    
     for f_name in os.listdir(target_directory):
         if f_name.endswith('.dat'):
             path_to_dat = target_directory + "//" + f_name
@@ -50,7 +67,7 @@ def dfu_file_loader(target_directory):
     
 
 class ErrorBootloaderModus(Exception):
-    """Raised when the sensor is not in bootloader modus
+    """Raised when the sensor is not in bootloader modus.
 
     Args:
         Exception (Custom): "sensor is not in bootloader modus"
@@ -59,6 +76,11 @@ class ErrorBootloaderModus(Exception):
 
 
 class FutureHolder():
+    """Eventhandler to communicate between sensor and gateway asynchron.
+
+    Returns:
+        None
+    """    
     furure = None
 
     def __init__(self):
@@ -83,13 +105,27 @@ fh = FutureHolder()
 
 
 class device_firmware_upgrade():
-    def __init__(self,path_to_dfu_zip, destination_path_to_unzip, s= sensor.sensor("DEFAULT", "DEFAULT")):
+    def __init__(self,path_to_dfu_zip : str, destination_path_to_unzip : str, s= sensor.sensor("DEFAULT", "DEFAULT")):
+        """Initialize the class object device_firmware_upgrade. This class do not search for bluetooth devices. It needs a specific device
+        which can be found by the `gateway.hub` module.
+
+        Args:
+            path_to_dfu_zip (str): C:\\Path\\to\\your\\zip
+            destination_path_to_unzip (str): C:\\Path\\to\\destination
+            s (sensor object, optional): The firmware update needs a specific sensor for the connection workflow. Defaults to sensor.sensor("DEFAULT", "DEFAULT").
+        """          
         self.sensor = s
         unzip_dfu_file(path_to_dfu_zip, destination_path_to_unzip)
         self.bin_file, self.dat_file = dfu_file_loader(destination_path_to_unzip)
         self.check_boot_loader()
 
     def check_boot_loader(self):
+        """This function checks if the state of a given sensor is 'Bootloader'. If the state does not match, an exception will raised.
+
+        Raises:
+            AttributeError: Will be raised if an user tries to initialize an class object with the default sensor object.
+            ErrorBootloaderModus: Will be raised if the sensor is not in Bootloader state.
+        """        
         if "RuuviBoot" in self.sensor.name:
             log.info("sensor is in bootloader modus")
             return
@@ -99,9 +135,16 @@ class device_firmware_upgrade():
             raise ErrorBootloaderModus("sensor is not in bootloader modus")
 
     def start_flashing_sensor(self):
+        """Starts the flashing workflow.
+        """        
         loop.run_until_complete(updateProcedure(self.sensor.mac))
 
-    async def updateProcedure(self, adress):
+    async def updateProcedure(self, adress : str):
+        """Update handler.
+
+        Args:
+            adress (str): The mac adress of a sensor.
+        """        
         async with BleakClient(address) as client:
             await client.start_notify(DFU_CONTROL_POINT, self.callback)
             
@@ -118,13 +161,33 @@ class device_firmware_upgrade():
         log.info("task done and return")
         return
   
-    async def sendPaket(self, client, c, data):
+    async def sendPaket(self, client, c , data):
+        """Preparing the sensor for the firmware update.
+
+        Args:
+            client (BleakClient(<address>)): Bleak client
+            c ([type]): Interface between sensor and gateway
+            data ([type]): data
+
+        Returns:
+            [type]: Callbacks
+        """        
         fh.reset()
         await client.write_gatt_char(c, data)
         await fh.wait()
         return fh.result()
     
     async def sendData(self, client, obj, data):
+        """Main function to send the dfu files
+
+        Args:
+            client (BleakClient(<address>)): Bleak client
+            obj ([type]): [description]
+            data ([type]): .bin- or .dat-file
+
+        Raises:
+            Exception: if the crcs do not match to each other, this exception will be raised.
+        """        
         log.info("excecute select...")
         result = await self.sendPaket(client, DFU_CONTROL_POINT, bytearray.fromhex("06%02x"%(obj)))
         offset = result["offset"]
@@ -176,6 +239,12 @@ class device_firmware_upgrade():
         result = await self.sendPaket(client, DFU_CONTROL_POINT , msg)
 
     def callback(self, sender : int, value: bytearray):
+        """Handles incoming callbacks from the sensor
+
+        Args:
+            sender (int): [description]
+            value (bytearray): Incoming messages
+        """        
         value = value[1:]
         if value[1]==0x01:
             if value[0]==0x06:
