@@ -62,11 +62,13 @@ def test_sensor_interface_config_channels():
     """    
     from gateway import sensor
     conf = sensor.sensor_interface['communication_channels']
-    assert len(conf.keys()) == 4
+    assert len(conf.keys()) == 6
     assert conf['UART_SRV'] == '6E400001-B5A3-F393-E0A9-E50E24DCCA9E'
     assert conf['UART_TX'] ==  '6E400002-B5A3-F393-E0A9-E50E24DCCA9E'
     assert conf['UART_RX'] ==  '6E400003-B5A3-F393-E0A9-E50E24DCCA9E' 
     assert conf['Adv_UART_RX'] == '6E400001-B5A3-F393-E0A9-E50E24DCCA9E'
+    assert conf['DFU_CONTROL_POINT'] ==  "8EC90001-F315-4F60-9FB8-838830DAEA50"
+    assert conf['DFU_DATA_POINT'] == "8EC90002-F315-4F60-9FB8-838830DAEA50"
 
 def test_sensor_interface_config_commands():
     """This function checks, if the communications_interface.yml was successfully imported and compares the ruuvi_commands.
