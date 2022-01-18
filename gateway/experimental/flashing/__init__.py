@@ -81,13 +81,13 @@ class FutureHolder():
     Returns:
         None
     """    
-    furure = None
+    future = None
 
     def __init__(self):
         self.reset()
     
     async def wait(self):
-        await self.furure
+        await self.future
 
     def reset(self):
         self.future=loop.create_future()
@@ -99,7 +99,7 @@ class FutureHolder():
         self.future.set_exception(exception)
 
     def result(self):
-        return self.furure.result()
+        return self.future.result()
 
 fh = FutureHolder()
 
@@ -137,9 +137,9 @@ class device_firmware_upgrade():
     def start_flashing_sensor(self):
         """Starts the flashing workflow.
         """        
-        loop.run_until_complete(updateProcedure(self.sensor.mac))
+        loop.run_until_complete(self.updateProcedure(self.sensor.mac))
 
-    async def updateProcedure(self, adress : str):
+    async def updateProcedure(self, address : str):
         """Update handler.
 
         Args:
@@ -149,7 +149,7 @@ class device_firmware_upgrade():
             await client.start_notify(DFU_CONTROL_POINT, self.callback)
             
             log.info("set crc intervall to 0")
-            result = await sendPaket(client, DFU_CONTROL_POINT, bytearray.fromhex("0200000000"))
+            result = await self.sendPaket(client, DFU_CONTROL_POINT, bytearray.fromhex("0200000000"))
             
             log.info("send dat file...")
             await self.sendData(client, 1, self.dat_file)
