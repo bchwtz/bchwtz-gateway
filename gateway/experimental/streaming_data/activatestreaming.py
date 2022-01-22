@@ -10,6 +10,7 @@
 # loop.run_until_complete() erzeugt im Jupyter Notebook einen Fehler
 # siehe https://pypi.org/project/nest-asyncio/
 import time
+from datetime import datetime
 from bleak import BleakClient
 from bleak import BleakScanner
 from binascii import hexlify
@@ -142,10 +143,10 @@ def unpack8(bytes, samplingrate, scale):
         if(filepointer.csvfile != None and j % 3 == 2):
             if(filepointer.csvfile != None):
                 filepointer.csvfile.write("%d;%f;%f;%f\n" % (
-                    timestamp, accvalues[0], accvalues[1], accvalues[1]))
+                    datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S'), accvalues[0], accvalues[1], accvalues[1]))
             else:
                 print("%d;%f;%f;%f\n" %
-                      (timestamp, accvalues[0], accvalues[1], accvalues[1]))
+                    (datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S'), accvalues[0], accvalues[1], accvalues[1]))
             timestamp += timeBetweenSamples
             j = 0
         else:
@@ -227,7 +228,7 @@ def unpack10(bytes, samplingrate, scale):
                         timestamp, accvalues[0], accvalues[1], accvalues[2]))
                 else:
                     print("%d;%f;%f;%f" %
-                          (timestamp, accvalues[0], accvalues[1], accvalues[2]))
+                        (datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S'), accvalues[0], accvalues[1], accvalues[2]))
                 timestamp += timeBetweenSamples
                 j = 0
 
@@ -294,11 +295,11 @@ def unpack12(bytes, samplingrate, scale):
                         timestamp, accvalues[0], accvalues[1], accvalues[2]))
                 else:
                     print("%d;%f;%f;%f" %
-                          (timestamp, accvalues[0], accvalues[1], accvalues[2]))
+                        (datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S'), accvalues[0], accvalues[1], accvalues[2]))
                 timestamp += timeBetweenSamples
                 j = 0
 
-# Einstellungen
+# configurations
 samplerate = 10
 resolution = 10
 scale = 2
