@@ -107,6 +107,13 @@ class sensor(object):
         return
     
     def handle_ble_callback(self, client: BleakClient,sender: int, value: bytearray):
+        if value[0] == 0x50 and value[2] == 0x13:
+            Log_sensor.info("Received heartbeat: %s" % hexlify(value[4:5:-1]))
+            status_string = str(self.ri_error_to_string(value[3]), )
+            Log_sensor.info("Status: %s" % status_string)
+            self.notification_done=True
+            self.stopEvent.set()
+
         if value[0] == 0x4A or value[0] == 0x21:
             message_return_value = return_values_from_sensor()
             Log_sensor.info("Received: %s" % hexlify(value))
@@ -577,6 +584,21 @@ class sensor(object):
         Log_sensor.info("Set sensor time {}".format(self.mac))
         self.work_loop(command,sensor_interface["communication_channels"]["UART_TX"])
         return
+
+    def set_heartbeat(self, heartbeat : int):
+        """Change the frequency in which advertisements will be sent.
+        The unit of the heartbeet is millisecond [ms]. Just values between 100 ms and
+        65.000 ms are permitted.
+
+        Args:
+            heartbeat (int): Frequency of the advertisements in milliseconds.
+        """        
+        Log_sensor.info("set heartbeat to: {}".format(heartbeat))
+        hex_beat = hex(heartbeat)[2:]
+        hex_msg = f"500012{'0000'[:4 - len(heartbeat_hex)]}{heartbeat_hex}000000000000"
+        self.work_loop(hex_msg, sensor_interface["communication_channels"]["UART_TX"])
+
+
     
     def get_flash_statistic(self):
         Log_sensor.info("Reading flash statistic from {}".format(self.mac))
@@ -596,6 +618,13 @@ class sensor(object):
     def get_time(self):
         Log_sensor.info("Reading time from {}".format(self.mac))
         self.work_loop(sensor_interface["ruuvi_commands"]["get_time_from_sensor"],sensor_interface["communication_channels"]["UART_TX"])
+        return
+
+    def get_heartbeat(self):
+        """Get the actuell heartbeat for the sensor in milliseconds.
+        """        
+        Log_sensor.info("get heartbeat...")
+        self.work_loop(sensor_interface["ruuvi_commands"]["get_heartbeat"], sensor_interface["communication_channels"]["UART_TX"])
         return
     
     def ri_error_to_string(self, error):
