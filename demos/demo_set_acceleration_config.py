@@ -20,9 +20,8 @@ sensor1.set_config(sampling_rate = 100, sampling_resolution = 12, measuring_rang
 
 # get config - did it work?
 sensor1.get_config()
-print(sensor1.sensor_data)
-# last_val = sensor1.sensor_data[0][len(sensor1.sensor_data[0]) - 1]
-# print(last_val)
+print(sensor1.sensor_data[-2:])
+
 print("Exit")
 
 

@@ -9,7 +9,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-s", "--sampling_rate", dest = "samplerate", default = 1, help="defines sample rate, accepted values are: 1, 10, 25, 50, 100, 200, 400", type = int)
 parser.add_argument("-r", "--sampling_resolution", dest = "resolution", default = 8, help="defines sample resolution, accepted values are: 8, 10, 12", type = int)
 parser.add_argument("-m", "--measuring_range", dest = "measurerange", default = 4, help="defines measure range/scale, accepted values are: 2, 4, 8, 16", type = int)
-parser.add_argument("-d", "--divider", dest = "divider", default = 1, help="defines divider, all decimal values accepted", type = int)
+parser.add_argument("-d", "--divider", dest = "divider", default = 1, help="defines divider, any positive integer accepted", type = int)
 
 args = parser.parse_args()
 print(args)
