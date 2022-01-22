@@ -116,7 +116,7 @@ class device_firmware_upgrade():
         """          
         self.sensor = s
         unzip_dfu_file(path_to_dfu_zip, destination_path_to_unzip)
-        self.bin_file, self.dat_file = dfu_file_loader(destination_path_to_unzip)
+        self.dat_file, self.bin_file = dfu_file_loader(destination_path_to_unzip)
         self.check_boot_loader()
 
     def check_boot_loader(self):
@@ -193,6 +193,7 @@ class device_firmware_upgrade():
         offset = result["offset"]
         crc = result["crc32"]
         max_size = result["max_size"]
+        
         if offset<len(data):
             log.info("create sending...")
             blocklen = len(data)
@@ -210,7 +211,7 @@ class device_firmware_upgrade():
                 if ende > len(data):
                     ende= len(data)
                 msg = data[i:ende]
-                await client.write_gatt_char(DFU_DATA, msg)
+                await client.write_gatt_char(DFU_DATA_POINT, msg)
                 crc = crc32(msg, crc)
                 bytecount += len(msg)
 
@@ -229,7 +230,7 @@ class device_firmware_upgrade():
                     result = await self.sendPaket(client, DFU_CONTROL_POINT, msg)
         log.info("request crc")
         msg = bytearray.fromhex("03")
-        result = await self.sendPaket(client, DFU_CONTROL_POIN, msg)
+        result = await self.sendPaket(client, DFU_CONTROL_POINT, msg)
         if result["crc32"]!=crc32(data):
             raise Exception("crc values don't match to each other!")
         else:
