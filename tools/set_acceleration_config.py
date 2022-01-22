@@ -32,10 +32,12 @@ else:
 
 # Get basic sensor configurations
 sensor1.get_config()
-# print(sensor1.sensor_data)
+print(sensor1.sensor_data)
 
 # set config 
 sensor1.set_config(sampling_rate = args.samplerate, sampling_resolution = args.resolution, measuring_range = args.measurerange, divider = args.divider)
 
 # get config - did it work?
 sensor1.get_config()
+print(sensor1.sensor_data[-2:])
+

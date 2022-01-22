@@ -125,7 +125,7 @@ class sensor(object):
                 Log_sensor.info('Stop notify: %s' % (self.mac))
                 Log_sensor.info("Task done connect_to_mac_command!")
         except Exception as e:
-            Log_sensor.warning('Connection faild at MAC %s' % (self.mac))
+            Log_sensor.warning('Connection failed at MAC %s' % (self.mac))
             Log_sensor.error("Error: {}".format(e))
 
         return
@@ -928,7 +928,7 @@ class sensor(object):
         UART_TX = sensor_interface["communication_channels"]["UART_TX"]
         async with BleakClient(self.config.mac) as client:
             await client.start_notify(UART_RX, self.callback)
-            await client.write_gatt_char(UART_TX, bytearray.fromhex("4a4a02%02x%02x%02xFFFFFF0000" % (self.config.sample_rate, self.config.resolution, self.config.scale)))
+            await client.write_gatt_char(UART_TX, bytearray.fromhex("4a4a03%02x%02x%02xFFFFFF0000" % (self.config.sample_rate, self.config.resolution, self.config.scale)))
             await asyncio.sleep(10)
             await self.stopevent.wait()
             print("Samplerate set")

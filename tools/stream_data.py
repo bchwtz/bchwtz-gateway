@@ -4,6 +4,11 @@ import time
 import argparse
 from enum import Enum
 import asyncio
+import os
+import sys
+import signal
+import time
+
 
 # define command line arguments with flags
 parser = argparse.ArgumentParser()
@@ -27,8 +32,9 @@ else:
     print(type(sensor1))
 
 # Get basic sensor configurations
+print(sensor1.mac)
 sensor1.get_config()
-print(sensor1.sensor_data[-2:])
+print(sensor1.sensor_data)
 
 # initialize streamdata loop
 loop = sensor1.main_loop
@@ -38,6 +44,13 @@ print("setup completed")
 # start receiving streamdata
 loop.run_until_complete(sensor1.activate_streaming())
 print("listening for incoming data")
+def sigint_handler(signal, frame):
+    print ('KeyboardInterrupt is caught - exiting gracefully')
+    sensor1.stopevent.set()
+    time.sleep(2)
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, sigint_handler)
 
 # write csv and wait for all data, then finish and exit 
 loop.run_until_complete(sensor1.listen_for_data(10*60))
