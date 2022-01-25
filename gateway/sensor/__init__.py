@@ -53,6 +53,7 @@ class sensor(object):
         self.sensor_data = list() #command callbacks
         self.data = list() #accelerometer
         self.crcfun = crcmod.mkCrcFun(0x11021, rev=False, initCrc=0xffff, xorOut=0)
+        self.sensordaten = bytearray()
         return
 
     def clear(self):
@@ -191,14 +192,14 @@ class sensor(object):
     
     def get_acceleration_data(self):
         Log_sensor.info('Try to get acceleration data from {}'.format(self.mac))
-        self.work_loop(sensor_interface["ruuvi_commands"]["get_acceleration_data"] , sensor_interface["communication_channels"]["UART_TX"], True )        
+        self.work_loop(sensor_interface["ruuvi_commands"]["get_acceleration_data"] , sensor_interface["communication_channels"]["UART_TX"], True )  
+        self.sensordaten = bytearray()      
         return
     
     async def handle_data(self,handle, value):
-        sensordaten = bytearray()
         if value[0] == 0x11:
             # Daten
-            sensordaten.extend(value[1:])
+            self.sensordaten.extend(value[1:])
             self.start_time = time.time()
             Log_sensor.debug("Received data block: %s" % hexlify(value[1:]))
             # Marks end of data stream
@@ -206,19 +207,19 @@ class sensor(object):
             message_return_value = return_values_from_sensor()
             self.start_time = time.time()
             self.end_time = time.time()
-            print(len(sensordaten))
-            self.delta = len(sensordaten) / (self.end_time - self.start_time)
+            print(len(self.sensordaten))
+            self.delta = len(self.sensordaten) / (self.end_time - self.start_time)
 
             Log_sensor.debug('Bandwidth : {} Bytes/Second'.format(self.delta))
             self.stopEvent.set()
             # Status
             Log_sensor.debug("Status: %s" % str(self.ri_error_to_string(value[3])))
 
-            crc = value[12:14];
+            crc = value[12:14]
             Log_sensor.debug("Received CRC: %s" % hexlify(crc))
 
             # CRC validation
-            ourcrc = self.crcfun(sensordaten)
+            ourcrc = self.crcfun(self.sensordaten)
 
             if hexlify(crc) == bytearray():
                 Log_sensor.info("No crc received")
@@ -234,15 +235,15 @@ class sensor(object):
             if (value[5] == 12):
                 # 12 Bit
                 Log_sensor.info("Start processing reveived data with process_sensor_data_12")
-                AccelorationData = self.process_data_12(sensordaten, value[6], value[4])
+                AccelorationData = self.process_data_12(self.sensordaten, value[6], value[4])
             elif (value[5] == 10):
                 # 10 Bit
                 Log_sensor.info("Start processing reveived data with process_sensor_data_10")
-                AccelorationData = self.process_data_10(sensordaten, value[6], value[4])
+                AccelorationData = self.process_data_10(self.sensordaten, value[6], value[4])
             elif (value[5] == 8):
                 # 8 Bit
                 Log_sensor.info("Start processing reveived data with process_sensor_data_10")
-                AccelorationData = self.process_data_8(sensordaten, value[6], value[4])
+                AccelorationData = self.process_data_8(self.sensordaten, value[6], value[4])
             else:
                 Log_sensor.error('Cant process bytearray! Unknwon sensor resolution!')
             if AccelorationData != None:
