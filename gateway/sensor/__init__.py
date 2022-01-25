@@ -28,7 +28,8 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 console_handler.setFormatter(formatter)
 Log_sensor.addHandler(console_handler)
 
-crcfun = crcmod.mkCrcFun(0x11021, rev=False, initCrc=0xffff, xorOut=0)
+
+
 
 class Event_ts(asyncio.Event):
     """
@@ -51,6 +52,7 @@ class sensor(object):
         self.notification_done = False #improvement wanted
         self.sensor_data = list() #command callbacks
         self.data = list() #accelerometer
+        self.crcfun = crcmod.mkCrcFun(0x11021, rev=False, initCrc=0xffff, xorOut=0)
         return
 
     def clear(self):
@@ -216,7 +218,7 @@ class sensor(object):
             Log_sensor.debug("Received CRC: %s" % hexlify(crc))
 
             # CRC validation
-            ourcrc = crcfun(sensordaten)
+            ourcrc = self.crcfun(sensordaten)
 
             if hexlify(crc) == bytearray():
                 Log_sensor.info("No crc received")
