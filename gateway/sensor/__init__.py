@@ -107,8 +107,15 @@ class sensor(object):
         return
     
     def handle_ble_callback(self, client: BleakClient,sender: int, value: bytearray):
-        if value[0] == 0x50 and value[2] == 0x13:
-            Log_sensor.info("Received heartbeat: %s" % hexlify(value[4:5:-1]))
+        if value[0] == 0x22 and value[2] == 0xF2:
+            status_string = str(self.ri_error_to_string(value[3]), )
+            Log_sensor.info("Status: %s" % status_string)
+            self.notification_done=True
+            self.stopEvent.set()
+
+        if value[0] == 0x22 and value[2] == 0xF3:
+            # print("Received heartbeat: %s" % hexlify(value[4:5]))
+            # print("Received heartbeat: %s" % hexlify(value[4:5:-1]))
             status_string = str(self.ri_error_to_string(value[3]), )
             Log_sensor.info("Status: %s" % status_string)
             self.notification_done=True
@@ -595,7 +602,7 @@ class sensor(object):
         """        
         Log_sensor.info("set heartbeat to: {}".format(heartbeat))
         hex_beat = hex(heartbeat)[2:]
-        hex_msg = f"500012{'0000'[:4 - len(heartbeat_hex)]}{heartbeat_hex}000000000000"
+        hex_msg = f"2200F2{'0000'[:4 - len(hex_beat)]}{hex_beat}000000000000"
         self.work_loop(hex_msg, sensor_interface["communication_channels"]["UART_TX"])
 
 
