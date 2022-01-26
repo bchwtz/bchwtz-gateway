@@ -1,3 +1,5 @@
+[![gateway unittest](https://github.com/bchwtz-fhswf/gateway/actions/workflows/gateway_unittest.yml/badge.svg?branch=main)](https://github.com/bchwtz-fhswf/gateway/actions/workflows/gateway_unittest.yml)
+
 # Gateway-Library
 
 The gateway library serves as an interface between a `Bluetooth Low Energy` device (e.g. sensor like RuuviTag) and any backend. The library offers basic functionalities, such as searching for BLE devices, mutual communication and includes one-sided communication (`listen_advertisements`). The `gateway` contains the classes `hub`, `sensor` and `experimental`. The high-level idea behind this division is to create a twin of the hardware sensor with all possible functionalities and manage it via a hub. Thus the `hub` serves the search for possible sensors and the generation of the twin, as well as the recording of the cyclical advertisements. The `hub` saves a found sensor as an object of the class `sensor`. Via the `sensor object`, the functions described in the following, can be called as methods of `sensor object` and can be called by e.g. `sensor1.get_config()`.
@@ -76,6 +78,7 @@ It will open a file, inwhich you see your collected data.
 
 `python3 demo_accelerometer_logging.py`
 
+Please note, acceleration logging status 1 means "is active" and -1 means "is inactive". 
 
 ## Set acceleration parameter
 
@@ -104,11 +107,11 @@ plus the parameter number.
 
 4. For example if you would like to change all three values, type:
 
-`python3 demo_set_acceleration_config.py -s 100 -r 10 -m 16 -d 4`
+`python3 set_acceleration_config.py -s 100 -r 10 -m 16 -d 4`
 
 5. You can open the help menu, where you find all accepted parameters with
 
-`python3 demo_set_acceleration_config.py --help`
+`python3 set_acceleration_config.py --help`
 
 ### Parameter options
 
