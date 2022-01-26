@@ -5,7 +5,7 @@ import struct#built-in module
 import logging
 import os.path
 from functools import partial
-from binascii import hexlify #Ist das notwendig
+from binascii import hexlify 
 import datetime
 import yaml #third-party modules
 import asyncio
@@ -114,8 +114,7 @@ class sensor(object):
             self.stopEvent.set()
 
         if value[0] == 0x22 and value[2] == 0xF3:
-            # print("Received heartbeat: %s" % hexlify(value[4:5]))
-            # print("Received heartbeat: %s" % hexlify(value[4:5:-1]))
+            print("Received heartbeat: {}".format(int.from_bytes(value[4:6], byteorder='big', signed=False)))
             status_string = str(self.ri_error_to_string(value[3]), )
             Log_sensor.info("Status: %s" % status_string)
             self.notification_done=True
