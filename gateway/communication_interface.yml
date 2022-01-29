@@ -7,7 +7,7 @@ communication_channels:
     DFU_DATA_POINT: "8EC90002-F315-4F60-9FB8-838830DAEA50"
 #Adv_UART_RX > Bidirektional
       
-commands:
+ruuvi_commands:
     readAllString: '4a4a110100000000000000'
     activate_logging_at_sensor: '4a4a080100000000000000'
     deactivate_logging_at_sensor: '4a4a080000000000000000'
