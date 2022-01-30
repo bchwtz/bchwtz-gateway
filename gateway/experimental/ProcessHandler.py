@@ -1,5 +1,7 @@
 """
 Executable Skript to start the gateway-mqtt project.
+This file functioning since the restructuring of the gateway repository.
+Trademarks and product names have been replaced by Sensor.
 """
 import logging
 import threading
@@ -184,7 +186,7 @@ class thread_mqttwriter(threading.Thread):
         self.name = name
         self.logger = logging.getLogger('ProcessHandlerMF.thread_mqttwriter')
         self.logger.info("mqttwriter initialized")
-        self.SensorObj = SensorGatewayBleak.RuuviTagAccelerometerCommunicationBleak()
+        self.SensorObj = SensorGatewayBleak.SensorTagAccelerometerCommunicationBleak()
         self.host = mf_conf_file['mf_login']['host_url']
         self.user = mf_conf_file['mf_login']['username']
         self.key = mf_conf_file['mf_login']['pwd']

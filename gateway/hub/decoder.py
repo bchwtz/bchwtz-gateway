@@ -44,7 +44,7 @@ def parse_mac(data_format, payload_mac):
 
 class UrlDecoder(object):
     """
-    Decodes data from RuuviTag url
+    Decodes data from Tag url
     Protocol specification:
     https://github.com/ruuvi/ruuvi-sensor-protocols
     Decoder operations are ported from:
@@ -102,7 +102,7 @@ class UrlDecoder(object):
 
 class Df3Decoder(object):
     """
-    Decodes data from RuuviTag with Data Format 3
+    Decodes data from Tag with Data Format 3
     Protocol specification:
     https://github.com/ruuvi/ruuvi-sensor-protocols
     """
@@ -169,7 +169,7 @@ class Df3Decoder(object):
 
 class Df5Decoder(object):
     """
-    Decodes data from RuuviTag with Data Format 5
+    Decodes data from Tag with Data Format 5
     Protocol specification:
     https://github.com/ruuvi/ruuvi-sensor-protocols
     """

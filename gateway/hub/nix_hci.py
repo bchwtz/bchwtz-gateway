@@ -103,7 +103,7 @@ class BleCommunicationNix(BleCommunication):
             try:
                 # Make sure we're in upper case
                 line = line.upper()
-                # We're interested in LE meta events, sent by Ruuvitags.
+                # We're interested in LE meta events, sent by Tags.
                 # Those start with "043E", followed by a length byte.
 
                 if not line.startswith("043E"):

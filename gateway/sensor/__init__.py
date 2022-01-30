@@ -1,22 +1,27 @@
 """
 An object of type sensor is an digital twin of a hardware sensor.
+For this module to work properly, all dependencies must be installed 
+and the `communication_interface. yml` must be recorded during the installation process.
+Hint: The logging level can be changed with sensor.Log_sensor.setLevel(logging.warning)
 """
-import struct#built-in module
-import logging
-import os.path
-from functools import partial
-from binascii import hexlify 
-import datetime
-import yaml #third-party modules
-import asyncio
-from bleak import BleakClient
-import time
-import crcmod
+import struct # built-in
+import logging # built-in
+import os.path # built-in
+from functools import partial # built-in
+from binascii import hexlify # built-in
+import datetime # built-in
+import yaml # third-party
+import asyncio # third-pary
+from bleak import BleakClient # third-party
+import time # built-in
+import crcmod # third-party
 
-from gateway.sensor.SensorConfigEnum import SamplingRate, SamplingResolution,MeasuringRange
-from gateway.sensor.MessageObjects import return_values_from_sensor
+from gateway.sensor.SensorConfigEnum import SamplingRate, SamplingResolution, \
+     MeasuringRange # internal
+from gateway.sensor.MessageObjects import return_values_from_sensor # internal
 
-with open(os.path.dirname(__file__)+ '/../communication_interface.yml') as ymlfile:
+with open(os.path.dirname(__file__) + '/../communication_interface.yml') as ymlfile:
+    # load interface specifications
     sensor_interface = yaml.safe_load(ymlfile)
 
 
@@ -29,53 +34,86 @@ console_handler.setFormatter(formatter)
 Log_sensor.addHandler(console_handler)
 
 
-
-
 class Event_ts(asyncio.Event):
-    """
-    Custom event loop class for the RuuviTagAccelerometerCommunicationBleak.
-    """
+    """Custom event loop class for for the sensor object.
+
+    Args:
+        asyncio (asyncio.Event): Event_ts inherit asyncio.Event functions.
+    """    
     def clear(self):
+        """Threadsafe clear of eventloop.
+        """        
         self._loop.call_soon_threadsafe(super().clear)
 
     def set(self):
+        """Threadsafe set of eventloop.
+        """        
         self._loop.call_soon_threadsafe(super().set)
 
 
 class sensor(object):
-    
-    def __init__(self,name, mac):
+    """An object of this class creates a digital twin of a sensor. Every 
+    sensor has its own mac and name.
+
+    Args:
+        object : Twin of an heardware sensor.
+    """
+    def __init__(self, name : str, mac : str):
+        """Initialization of a sensor
+
+        Args:
+            name (str): Sensor name.
+            mac (str): Sensor mac
+        """        
         self.mac = mac
-        self.name = name      
+        self.name = name
         self.main_loop = asyncio.get_event_loop()
         self.stopEvent = Event_ts()
-        self.notification_done = False #improvement wanted
-        self.sensor_data = list() #command callbacks
-        self.data = list() #accelerometer
-        self.crcfun = crcmod.mkCrcFun(0x11021, rev=False, initCrc=0xffff, xorOut=0)
+        self.notification_done = False  # improvement wanted
+        self.sensor_data = list()  # command callbacks
+        self.data = list()  # accelerometer
+        self.crcfun = crcmod.mkCrcFun(0x11021, rev=False, 
+                                        initCrc=0xffff, xorOut=0)
         self.sensordaten = bytearray()
         return
 
     def clear(self):
+        """Function to manually creating the 
+        sensor_data and data variable.
+        """
         self.sensor_data = list()
         self.data = list()
         Log_sensor.info('sensor variables have been cleared!')
-    
+        return
+
     async def timeout_for_commands(self):
-            Log_sensor.info("Start timeout function")
-            while time.time() - self.start_time < 10:
-                Log_sensor.warning("Timeout timer running {}".format(time.strftime("%H:%M:%S", time.localtime(self.start_time))))
-                await asyncio.sleep(1)
-                if self.notification_done:
-                    self.notification_done = False
-                    break
-            try:
-                self.stopEvent.set()
-            except:
-                pass
+        """Timeout function to prevent endless loops
+        """        
+        Log_sensor.info("Start timeout function")
+        while time.time() - self.start_time < 10:
+            Log_sensor.warning("Timeout timer running {}".format(
+                time.strftime("%H:%M:%S", time.localtime(self.start_time)))
+                )
+            await asyncio.sleep(1)
+            if self.notification_done:
+                self.notification_done = False
+                break
+        try:
+            self.stopEvent.set()
+        except:
+            pass
     
-    def work_loop(self, command, write_channel, accelerom = False):
-        self.taskobj = self.main_loop.create_task(self.connect_ble_sensor(command, write_channel, accelerom))
+    def work_loop(self, command, write_channel, accelerom=False):
+        """Initialize and start workloops for specific tasks.
+
+        Args:
+            command (str): Command from sensor_interface
+            write_channel ([type]): Channel from sensor_interface
+            accelerom (bool, optional): Indicate which callback function
+            has to be used. Defaults to False.
+        """        
+        self.taskobj = self.main_loop.create_task(self.connect_ble_sensor(command, 
+                                                    write_channel, accelerom))
         try:
             self.main_loop.run_until_complete(self.taskobj)
         except Exception as e:
@@ -83,16 +121,33 @@ class sensor(object):
         return
     
     async def connect_ble_sensor(self, command_string, write_channel, accelerom):
-        Log_sensor.info("Send {} to MAC {} ".format(self.mac,command_string))
+        """Start GATT connection. Listen to callbacks and send commands.
+
+        Args:
+            ccommand_string (str): Command from sensor_interface
+            write_channel ([type]): Channel from sensor_interface
+            accelerom (bool, optional): Indicate which callback function
+            has to be used. Defaults to False.
+        """        
+        Log_sensor.info("Send {} to MAC {} ".format(self.mac, command_string))
         try:
             async with BleakClient(self.mac) as client:
-                if accelerom == True:
-                    await client.start_notify(sensor_interface["communication_channels"]["UART_RX"] , self.handle_data)
-                    await client.write_gatt_char(write_channel, bytearray.fromhex(command_string), True)                    
+                if accelerom:
+                    await client.start_notify(
+                        sensor_interface["communication_channels"]["UART_RX"], self.handle_data
+                        )
+                    await client.write_gatt_char(
+                        write_channel, bytearray.fromhex(command_string), True
+                        )                    
                 else:
-                # Send the command (Wait for Response must be True)
-                    await client.start_notify(sensor_interface["communication_channels"]["UART_RX"] , partial(self.handle_ble_callback , client))
-                    await client.write_gatt_char(write_channel, bytearray.fromhex(command_string), True)
+                    # Send the command (Wait for Response must be True)
+                    await client.start_notify(
+                        sensor_interface["communication_channels"]["UART_RX"], 
+                        partial(self.handle_ble_callback, client)
+                        )
+                    await client.write_gatt_char(
+                        write_channel, bytearray.fromhex(command_string), True
+                        )
                 Log_sensor.info('Message send to MAC: %s' % (self.mac))
 
                 self.start_time = time.time()
@@ -101,17 +156,26 @@ class sensor(object):
                 Log_sensor.info("timeout starts monitoring")
                 await self.stopEvent.wait()
                 Log_sensor.warning("Abort workloop task via timeout()!")
-                await client.stop_notify(sensor_interface["communication_channels"]["UART_RX"])
+                await client.stop_notify(
+                    sensor_interface["communication_channels"]["UART_RX"]
+                    )
                 self.stopEvent.clear()
                 Log_sensor.info('Stop notify: %s' % (self.mac))
                 Log_sensor.info("Task done connect_to_mac_command!")
         except Exception as e:
             Log_sensor.warning('Connection faild at MAC %s' % (self.mac))
             Log_sensor.error("Error: {}".format(e))
-
         return
     
-    def handle_ble_callback(self, client: BleakClient,sender: int, value: bytearray):
+    def handle_ble_callback(self, client: BleakClient, sender: int, value: bytearray):
+        """Parse incomming messages and save it into sensor_data
+
+        Args:
+            client (BleakClient): Object with connection specifications to a specific 
+            sensor and channel
+            sender (int): [description]
+            value (bytearray): Callbacks
+        """        
         if value[0] == 0x22 and value[2] == 0xF2:
             status_string = str(self.ri_error_to_string(value[3]), )
             Log_sensor.info("Status: %s" % status_string)
@@ -119,19 +183,21 @@ class sensor(object):
             self.stopEvent.set()
 
         if value[0] == 0x22 and value[2] == 0xF3:
-            print("Received heartbeat: {}".format(int.from_bytes(value[4:6], byteorder='big', signed=False)))
+            print("Received heartbeat: {}".format(
+                int.from_bytes(value[4:6], byteorder='big', signed=False))
+                )
             status_string = str(self.ri_error_to_string(value[3]), )
             Log_sensor.info("Status: %s" % status_string)
-            self.notification_done=True
+            self.notification_done = True
             self.stopEvent.set()
 
         if value[0] == 0x4A or value[0] == 0x21:
             message_return_value = return_values_from_sensor()
             Log_sensor.info("Received: %s" % hexlify(value))
-            status_string=str(self.ri_error_to_string(value[3]), )
+            status_string = str(self.ri_error_to_string(value[3]), )
             Log_sensor.info("Status: %s" % status_string)
             if len(value) == 4:
-                test=message_return_value.form_get_status(status=int(value[3]), mac=client.address)
+                test = message_return_value.form_get_status(status=int(value[3]), mac=client.address)
                 self.sensor_data.append([test.returnValue.__dict__])
                 self.stopEvent.set()
                 self.notification_done = True
@@ -139,7 +205,7 @@ class sensor(object):
             elif value[2] == 0x09:
 
                 Log_sensor.info("Received time: %s" % hexlify(value[:-9:-1]))
-                recieved_time=time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(value[:-9:-1]), 16) / 1000))
+                recieved_time = time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(value[:-9:-1]), 16) / 1000))
                 Log_sensor.info(recieved_time)
                 self.sensor_data.append([message_return_value.from_get_time(status=status_string, recieved_time=recieved_time,
                                                    mac=client.address).returnValue.__dict__])
@@ -147,16 +213,16 @@ class sensor(object):
                 self.notification_done = True
 
             elif value[0] == 0x4a and value[3] == 0x00:
-                sample_rate=""
+                sample_rate = ""
                 if value[4] == 201:
                     Log_sensor.info("Samplerate: 400 Hz")
-                    sample_rate=400
+                    sample_rate = 400
                 else:
                     Log_sensor.info("Samplerate:    %d Hz" % value[4])
-                    sample_rate=int(value[4])
-                recieved_config=message_return_value.from_get_config(status=status_string,sample_rate=sample_rate,resolution= int(value[5]),
-                                                    scale=int(value[6]),dsp_function=int(value[7]), dsp_parameter=int(value[8]),
-                                                    mode="%x"% value[9],divider=int(value[10]), mac=client.address)
+                    sample_rate = int(value[4])
+                recieved_config = message_return_value.from_get_config(status = status_string,sample_rate = sample_rate,resolution = int(value[5]),
+                                                    scale = int(value[6]), dsp_function=int(value[7]), dsp_parameter=int(value[8]),
+                                                    mode="%x"% value[9],divider = int(value[10]), mac = client.address)
                 self.sensor_data.append([recieved_config.returnValue.__dict__])
                 self.notification_done=True
                 self.stopEvent.set()
@@ -194,22 +260,37 @@ class sensor(object):
             self.notification_done = True
     
     def activate_accelerometer_logging(self):
+        """Activate accelerometer logging at sensor.
+        """        
         Log_sensor.info('Try activate accelerometer logging at {}'.format(self.mac))
-        self.work_loop(sensor_interface["ruuvi_commands"]["activate_logging_at_sensor"],sensor_interface["communication_channels"]["UART_TX"])
+        self.work_loop(sensor_interface["commands"]["activate_logging_at_sensor"], sensor_interface["communication_channels"]["UART_TX"])
         return
 
     def deactivate_accelerometer_logging(self):
+        """Deactivate accelerometer logging at sensor.
+        """        
         Log_sensor.info('Try deactivate accelerometer logging at {}'.format(self.mac))
-        self.work_loop(sensor_interface["ruuvi_commands"]["deactivate_logging_at_sensor"],sensor_interface["communication_channels"]["UART_TX"])
+        self.work_loop(sensor_interface["commands"]["deactivate_logging_at_sensor"], sensor_interface["communication_channels"]["UART_TX"])
         return 
     
     def get_acceleration_data(self):
+        """Get accelerometer data from sensor.
+        """         
         Log_sensor.info('Try to get acceleration data from {}'.format(self.mac))
-        self.work_loop(sensor_interface["ruuvi_commands"]["get_acceleration_data"] , sensor_interface["communication_channels"]["UART_TX"], True )  
+        self.work_loop(sensor_interface["commands"]["get_acceleration_data"] , sensor_interface["communication_channels"]["UART_TX"], True )  
         self.sensordaten = bytearray()      
         return
     
     async def handle_data(self,handle, value):
+        """Special callback function to handle incomming accelerometer data.
+
+        Args:
+            handle ([type]): [description]
+            value ([type]): Callback as bytearray.
+
+        Returns:
+            x,y,z,timestamp: Return timestamps and acceleration data as vector.
+        """        
         if value[0] == 0x11:
             # Daten
             self.sensordaten.extend(value[1:])
@@ -582,13 +663,15 @@ class sensor(object):
             else:
                 hex_divider='FF'
         Log_sensor.info("Set sensor configuration {}".format(self.mac))
-        command_string = sensor_interface['ruuvi_commands']['substring_set_config_sensor'] + hex_sampling_rate + hex_sampling_resolution + hex_measuring_range + "FFFFFF" + hex_divider + "00"
+        command_string = sensor_interface['commands']['substring_set_config_sensor'] + hex_sampling_rate + hex_sampling_resolution + hex_measuring_range + "FFFFFF" + hex_divider + "00"
         self.work_loop(command_string,sensor_interface["communication_channels"]["UART_TX"])
         return
     
     def set_time(self):
+        """Set sensor time.
+        """        
         now = struct.pack("<Q", int(time.time() * 1000)).hex()
-        command=sensor_interface['ruuvi_commands']['substring_set_sensor_time'] + now
+        command=sensor_interface['commands']['substring_set_sensor_time'] + now
         Log_sensor.info("Set sensor time {}".format(self.mac))
         self.work_loop(command,sensor_interface["communication_channels"]["UART_TX"])
         return
@@ -609,35 +692,43 @@ class sensor(object):
 
     
     def get_flash_statistic(self):
+        """Get flash statistic from sensor.
+        """        
         Log_sensor.info("Reading flash statistic from {}".format(self.mac))
-        self.work_loop(sensor_interface["ruuvi_commands"]["get_flash_statistic"],sensor_interface["communication_channels"]["UART_TX"])
+        self.work_loop(sensor_interface["commands"]["get_flash_statistic"],sensor_interface["communication_channels"]["UART_TX"])
         return
     
     def get_logging_status(self):
+        """Get the status of the accelerometer logging.
+        """        
         Log_sensor.info("Reading acceleration statistic from {}".format(self.mac))
-        self.work_loop(sensor_interface["ruuvi_commands"]["get_logging_status"],sensor_interface["communication_channels"]["UART_TX"])
+        self.work_loop(sensor_interface["commands"]["get_logging_status"],sensor_interface["communication_channels"]["UART_TX"])
         return
     
     def get_config(self):
+        """Get sensor configurations.
+        """        
         Log_sensor.info("Reading config from {}".format(self.mac))
-        self.work_loop(sensor_interface["ruuvi_commands"]["get_config_from_sensor"],sensor_interface["communication_channels"]["UART_TX"])
+        self.work_loop(sensor_interface["commands"]["get_config_from_sensor"],sensor_interface["communication_channels"]["UART_TX"])
         return    
     
     def get_time(self):
+        """Get time from sensor
+        """        
         Log_sensor.info("Reading time from {}".format(self.mac))
-        self.work_loop(sensor_interface["ruuvi_commands"]["get_time_from_sensor"],sensor_interface["communication_channels"]["UART_TX"])
+        self.work_loop(sensor_interface["commands"]["get_time_from_sensor"],sensor_interface["communication_channels"]["UART_TX"])
         return
 
     def get_heartbeat(self):
-        """Get the actuell heartbeat for the sensor in milliseconds.
+        """Get the actuall frequency in which the sensor sends advertisements.
         """        
         Log_sensor.info("get heartbeat...")
-        self.work_loop(sensor_interface["ruuvi_commands"]["get_heartbeat"], sensor_interface["communication_channels"]["UART_TX"])
+        self.work_loop(sensor_interface["commands"]["get_heartbeat"], sensor_interface["communication_channels"]["UART_TX"])
         return
     
     def ri_error_to_string(self, error):
         """
-        Decodes the RuuviTag error, if it was raised.
+        Decodes the Tag error, if it was raised.
         
         :returns:
             result : set
@@ -648,73 +739,73 @@ class sensor(object):
             Log_sensor.info("RD_SUCCESS")
             result.add("RD_SUCCESS")
             self.success = True
-        elif(error==1):
+        elif(error == 1):
             Log_sensor.error("RD_ERROR_INTERNAL")
             result.add("RD_ERROR_INTERNAL")
-        elif(error==2):
+        elif(error == 2):
             Log_sensor.error("RD_ERROR_NO_MEM")
             result.add("RD_ERROR_NO_MEM")
-        elif(error==3):
+        elif(error == 3):
             Log_sensor.error("RD_ERROR_NOT_FOUND")
             result.add("RD_ERROR_NOT_FOUND")
-        elif(error==4):
+        elif(error == 4):
             Log_sensor.error("RD_ERROR_NOT_SUPPORTED")
             result.add("RD_ERROR_NOT_SUPPORTED")
-        elif(error==5):
+        elif(error == 5):
             Log_sensor.error("RD_ERROR_INVALID_PARAM")
             result.add("RD_ERROR_INVALID_PARAM")
-        elif(error==6):
+        elif(error == 6):
             Log_sensor.error("RD_ERROR_INVALID_STATE")
             result.add("RD_ERROR_INVALID_STATE")
-        elif(error==7):
+        elif(error == 7):
             Log_sensor.error("RD_ERROR_INVALID_LENGTH")
             result.add("RD_ERROR_INVALID_LENGTH")
-        elif(error==8):
+        elif(error == 8):
             Log_sensor.error("RD_ERROR_INVALID_FLAGS")
             result.add("RD_ERROR_INVALID_FLAGS")
-        elif(error==9):
+        elif(error == 9):
             Log_sensor.error("RD_ERROR_INVALID_DATA")
             result.add("RD_ERROR_INVALID_DATA")
-        elif(error==10):
+        elif(error == 10):
             Log_sensor.error("RD_ERROR_DATA_SIZE")
             result.add("RD_ERROR_DATA_SIZE")
-        elif(error==11):
+        elif(error == 11):
             Log_sensor.error("RD_ERROR_TIMEOUT")
             result.add("RD_ERROR_TIMEOUT")
-        elif(error==12):
+        elif(error == 12):
             Log_sensor.error("RD_ERROR_NULL")
             result.add("RD_ERROR_NULL")
-        elif(error==13):
+        elif(error == 13):
             Log_sensor.error("RD_ERROR_FORBIDDEN")
             result.add("RD_ERROR_FORBIDDEN")
-        elif(error==14):
+        elif(error == 14):
             Log_sensor.error("RD_ERROR_INVALID_ADDR")
             result.add("RD_ERROR_INVALID_ADDR")
-        elif(error==15):
+        elif(error == 15):
             Log_sensor.error("RD_ERROR_BUSY")
             result.add("RD_ERROR_BUSY")
-        elif(error==16):
+        elif(error == 16):
             Log_sensor.error("RD_ERROR_RESOURCES")
             result.add("RD_ERROR_RESOURCES")
-        elif(error==17):
+        elif(error == 17):
             Log_sensor.error("RD_ERROR_NOT_IMPLEMENTED")
             result.add("RD_ERROR_NOT_IMPLEMENTED")
-        elif(error==18):
+        elif(error == 18):
             Log_sensor.error("RD_ERROR_SELFTEST")
             result.add("RD_ERROR_SELFTEST")
-        elif(error==19):
+        elif(error == 19):
             Log_sensor.error("RD_STATUS_MORE_AVAILABLE")
             result.add("RD_STATUS_MORE_AVAILABLE")
-        elif(error==20):
+        elif(error == 20):
             Log_sensor.error("RD_ERROR_NOT_INITIALIZED")
             result.add("RD_ERROR_NOT_INITIALIZED")
-        elif(error==21):
+        elif(error == 21):
             Log_sensor.error("RD_ERROR_NOT_ACKNOWLEDGED")
             result.add("RD_ERROR_NOT_ACKNOWLEDGED")
-        elif(error==22):
+        elif(error == 22):
             Log_sensor.error("RD_ERROR_NOT_ENABLED")
             result.add("RD_ERROR_NOT_ENABLED")
-        elif(error==31):
+        elif(error == 31):
             Log_sensor.error("RD_ERROR_FATAL")
             result.add("RD_ERROR_FATAL")
         return result    

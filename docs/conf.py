@@ -17,12 +17,12 @@ sys.path.insert(0, os.path.abspath('../Gateway/'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'RuuviTag-Gateway'
+project = 'gateway'
 copyright = '2021, Project team gateway'
 author = 'Project team gateway'
 
 # The full version, including alpha/beta/rc tags
-release = '1.1.0'
+release = '1.2.0'
 
 
 # -- General configuration ---------------------------------------------------

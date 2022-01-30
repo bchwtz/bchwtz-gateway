@@ -23,16 +23,16 @@ def _dechunk(raw):
 
 class DataFormats(object):
     """
-    RuuviTag broadcasted raw data handling for each data format
+    Tag broadcasted raw data handling for each data format
     """
 
     @staticmethod
     def convert_data(raw):
         """
-        Validate that data is from RuuviTag and get correct data part.
+        Validate that data is from Tag and get correct data part.
         There is a special case where this function will return
         None for the data format, and '' for the data. This indicates
-        that we just heard an advertisement from a Ruuvi tag that
+        that we just heard an advertisement from a tag that
         doesn't contain any data, but was sent for discovery purposes
         (firmware 3.x does this).
         Returns:
@@ -92,11 +92,11 @@ class DataFormats(object):
                 return (2, data)
 
         elif candidate.startswith("095275757669"):
-            # This is a Ruuvitag, but this advertisement does not
+            # This is a tag, but this advertisement does not
             # contain any data.
             #
             # Set the format to None, and data to '', this allows the
-            # caller to determine that we did indeed see a Ruuvitag.
+            # caller to determine that we did indeed see a tag.
             return (None, '')
 
         return (None, None)
@@ -108,7 +108,7 @@ class DataFormats(object):
     @staticmethod
     def _get_data_format_2and4(raw):
         """
-        Validate that data is from RuuviTag and is Data Format 2 or 4.
+        Validate that data is from Tag and is Data Format 2 or 4.
         Convert hexadcimal data to string.
         Encoded data part is after ruu.vi/#
         Returns:
@@ -132,7 +132,7 @@ class DataFormats(object):
     @staticmethod
     def _get_data_format_3(raw):
         """
-        Validate that data is from RuuviTag and is Data Format 3
+        Validate that data is from Tag and is Data Format 3
         Returns:
             string: Sensor data
         """
@@ -150,7 +150,7 @@ class DataFormats(object):
     @staticmethod
     def _get_data_format_5(raw):
         """
-        Validate that data is from RuuviTag and is Data Format 5
+        Validate that data is from Tag and is Data Format 5
         Returns:
             string: Sensor data
         """
