@@ -71,10 +71,10 @@ def test_sensor_interface_config_channels():
     assert conf['DFU_DATA_POINT'] == "8EC90002-F315-4F60-9FB8-838830DAEA50"
 
 def test_sensor_interface_config_commands():
-    """This function checks, if the communications_interface.yml was successfully imported and compares the ruuvi_commands.
+    """This function checks, if the communications_interface.yml was successfully imported and compares the commands.
     """    
     from gateway import sensor
-    conf = sensor.sensor_interface['ruuvi_commands']
+    conf = sensor.sensor_interface['commands']
     assert len(conf.keys())== 10
     assert conf['readAllString']== '4a4a110100000000000000'
     assert conf['activate_logging_at_sensor']== '4a4a080100000000000000'
