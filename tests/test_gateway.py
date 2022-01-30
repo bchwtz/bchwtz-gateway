@@ -75,7 +75,7 @@ def test_sensor_interface_config_commands():
     """    
     from gateway import sensor
     conf = sensor.sensor_interface['commands']
-    assert len(conf.keys())== 10
+    assert len(conf.keys())== 11
     assert conf['readAllString']== '4a4a110100000000000000'
     assert conf['activate_logging_at_sensor']== '4a4a080100000000000000'
     assert conf['deactivate_logging_at_sensor']== '4a4a080000000000000000'
