@@ -50,7 +50,8 @@ The Advertisements of the sensor contain values like humidity, temperature, pres
 `python3 demo_advertisement_logging.py`
 
 3. You will get a message like this:
-```2021-12-12 19:10:00,523 - SensorGatewayBleak - WARNING - Abort workloop task via timeout()!
+```
+2021-12-12 19:10:00,523 - SensorGatewayBleak - WARNING - Abort workloop task via timeout()!
 2021-12-12 19:10:01,002 - sensor_hub - WARNING - Warning: To stop the advertisementlogging, you need to interrupt the kernel!
 Press any key to confirm!
 ```

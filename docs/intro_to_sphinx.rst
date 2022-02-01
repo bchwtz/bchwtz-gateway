@@ -154,6 +154,15 @@ For more details please refer to the documentation of Sphinx.
 			set_acceleration_config.py
 
 
+Uses spinx-apidoc to extract docstrings from code
+*************************************************
+
+For now we have to generate the autodoc files manually. The create this file, use the `sphinx-apidoc` function from python terminal.
+
+* `sphinx-apidoc - o <abs output path> <abs path to gateway>`
+
+
+
 Configuration of Github pages
 ******************************
 
