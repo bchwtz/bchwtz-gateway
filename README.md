@@ -1,4 +1,5 @@
 [![gateway unittest](https://github.com/bchwtz-fhswf/gateway/actions/workflows/gateway_unittest.yml/badge.svg?branch=main)](https://github.com/bchwtz-fhswf/gateway/actions/workflows/gateway_unittest.yml)
+[![docs](https://github.com/bchwtz-fhswf/gateway/actions/workflows/docs.yml/badge.svg)](https://github.com/bchwtz-fhswf/gateway/actions/workflows/docs.yml)
 
 # Gateway-Library
 
