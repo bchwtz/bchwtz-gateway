@@ -39,26 +39,119 @@ Primarily we use the file format `Restructured Text <https://docutils.sourceforg
 Further references are made in the footnotes to further sources [1] for a better understanding of the syntax. 
 However, `Markdown-Files <https://myst-parser.readthedocs.io/en/latest/sphinx/intro.html>`_ can also be interpreted. 
 For more details please refer to the documentation of Sphinx.
+
 ::
 
 	gateway
-	├── docs
-	├    ├── build
-	├    ├── make.bat
-	├    ├── Makefile
-	├    └── source
-	├        ├── conf.py
-	├        ├── index.rst
-	├        ├── _static
-	├        └── _templates 
-	├── gateway
-	├      ├── __Init__.py
-	├      └── SensorGatewayBleak.py
-	├── setup.py 
-	├── config.ini
-	├── Sensor.log
-	├── Makefile
-
+	│   .gitignore
+	│   make.bat
+	│   Makefile
+	│   MANIFEST.in
+	│   README.md
+	│   requirements.txt
+	│   setup.py
+	│
+	├───.github
+	│   └───workflows
+	│           gateway_unittest.yml
+	│           mf.yml
+	│
+	├───.idea
+	│   │   ...
+	│
+	├───.spyproject
+	│   └───config
+	│       │   ...
+	│
+	├───demos
+	│       demo_accelerometer_logging.py
+	│       demo_advertisement_logging.py
+	│       demo_get_heartbeat.py
+	│       demo_set_acceleration_config.py
+	│
+	├───deployments
+	│   │   ...
+	│   │
+	│   ├───configs
+	│   │
+	│   ├───nats
+	│   │       nats.conf
+	│   │
+	│   ├───nginx
+	│   │   │   ...
+	│   │   └───snippets
+	│   │
+	│   └───ssl
+	│       │   ...
+	│       │
+	│       └───certs
+	│               ...
+	│
+	├───docs
+	│   │   conf.py
+	│   │   index.rst
+	│   │   intro_to_sphinx.rst
+	│   │
+	│   ├───_build
+	│   ├───_static
+	│   └───_templates
+	|
+	├───gateway
+	│   │   communication_interface.yml
+	│   │   __init__.py
+	│   │
+	│   ├───experimental
+	│   │   │   Client.ipynb
+	│   │   │   mfconf.yml
+	│   │   │   MQTTprojectEXE.ipynb
+	│   │   │   ProcessHandler.py
+	│   │   │   settings.py
+	│   │   │   __init__.py
+	│   │   │
+	│   │   ├───flashing
+	│   │   │       __init__.py
+	│   │   │
+	│   │   ├───influxConnector
+	│   │   └───mqttThing
+	│   │           __init__.py
+	│   │
+	│   ├───hub
+	│   │       AdvertisementDecoder.py
+	│   │       AdvertisementLogging.py
+	│   │       DataFormats.py
+	│   │       decoder.py
+	│   │       nix_hci.py
+	│   │       nix_hci_dummy.py
+	│   │       __init__.py 
+	│   │
+	│   └───sensor
+	│           MessageObjects.py
+	│           SensorConfigEnum.py
+	│           __init__.py
+	│
+	├───tests
+	│      README.md
+	│      test_gateway.py
+	│
+	├───test_cases
+	│   │   README.md
+	│   │   Testautomation.py
+	│   │
+	│   └───Testcases_ipynb
+	│           README.MD
+	│           RuuviTag_Tests_Documentation.ipynb
+	│           TC01_Check_Acceleration_Data.ipynb
+	│           TC02_Set_Config_valid.ipynb
+	│           TC03_Set_Config_All_valid.ipynb
+	│           TC04_Set_Config_invalid.ipynb
+	│           TC05_get_flash_statistics.ipynb
+	│           TC06_change_logging_state.ipynb
+	│           TC_M01_Hard_Reset_Tag.ipynb
+	│           TC_M02_Set_Time_longtime.ipynb
+	│           TC_M03_Get_Acceleration_Data_drop_connection.ipynb
+	│
+	└───tools
+			set_acceleration_config.py
 
 
 Configuration of Github pages

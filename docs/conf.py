@@ -12,17 +12,17 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../Gateway/'))
+sys.path.insert(0, os.path.abspath('..'))
 
 
 # -- Project information -----------------------------------------------------
 
 project = 'gateway'
 copyright = '2021, Project team gateway'
-author = 'Project team gateway'
+author = 'gateway-team'
 
 # The full version, including alpha/beta/rc tags
-release = '1.2.0'
+release = '2.0.o'
 
 
 # -- General configuration ---------------------------------------------------
@@ -34,9 +34,9 @@ extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest',
               'sphinx.ext.intersphinx', 'sphinx.ext.todo',
               'sphinx.ext.ifconfig', 'sphinx.ext.viewcode',
               'sphinx.ext.inheritance_diagram',
-              'sphinx.ext.autosummary', "myst_nb" ]# 'myst_parser', 'myst_parser',
+              'sphinx.ext.autosummary', 'myst_parser', 'myst_parser']
 
-nbsphinx_execute = 'never'
+autoclass_content = 'both'
 
 autosummary_generate = True
 # Add any paths that contain templates here, relative to this directory.
