@@ -37,8 +37,6 @@ pip3 install -e git+https://<access token>@github.com/bchwtz-fhswf/gateway.git@d
 The token is displayed by github only once for copy in plain text.
 If the token is lost, the process must be repeated.
 ```
-## Set time on sensor
-
 
 ## Get sensor advertisments
 The Advertisements of the sensor contain values like humidity, temperature, pressure as well as acceleration data, battery and movement information. 
