@@ -38,6 +38,31 @@ The token is displayed by github only once for copy in plain text.
 If the token is lost, the process must be repeated.
 ```
 
+## Get the docs
+
+To get detailed informations about functions and classes its recommanded to read the 
+full documentation. To do so you can run the following command after you have installed the 
+package as explained above:
+
+```{code-block} python
+make html
+```
+This command should trigger the sphinx framework and it should generate an outpult like below:
+
+```{code-block} python
+phinx v4.4.0 in Verwendung
+making output directory... erledigt
+WARNING: html_static_path entry '_static' does not exist
+[autosummary] generating autosummary for: gateway.experimental.flashing.rst, gateway.experimental.mqttThing.rst, gateway.experimental.rst, gateway.hub.rst, gateway.sensor.rst, git_installation_on_raspberry.md, index.rst, intro_to_sphinx.rst, link_to_readme.md
+Failed to import gateway.experimental.mqttThing.
+...
+
+```{admonition} Note
+If yout run the `make html` command, before you run the installation process, the make file will probably not work
+or the autodoc-funktions will raise multiple error caused by import and ModuleNotFound errors. 
+```
+
+
 ## Get sensor advertisments
 The Advertisements of the sensor contain values like humidity, temperature, pressure as well as acceleration data, battery and movement information. 
 
@@ -123,3 +148,25 @@ Sampling resolution: 8, 10, 12
 Measuring Range: 2, 4, 8, 16
 
 Divider: Every decimal number allowed
+
+## Device Firmware Update with `gateway.experimental.flashing`
+
+To update the firmware of an tag, you can use the flashing module, which can be 
+found under `gateway.experimental`. The main class class to handle the update procedure
+is the class `device_firmwar_upgrade`. To initialize an object of this class, you need to pass
+the following arguments:
+  - `path_to_dfu_zip`: Absolut path to the compressed firmware file (e.g. /home/pi/Downloads/firmwar.zip)
+  - `destination_path_to_unzip`: Absolute path to unpack the zip file (e.g /home/pi/Desktop/)
+  - `sensor.sensor`: Sensor object
+The flashing procedure may take some minute to complete.
+A demo skript can be found in the `demos/` subdirectory.
+
+## Set_ and Get_Heartbeat
+
+The heartbeat discribes the intervall in which advertisements are sent.
+It is also the time in which a connection can be established.
+The heartbeat can be set between 200 [ms] and ~65.000 [ms].
+The value will be encoded in two bytes.
+
+200 = 00 C8
+65.000 = FD E8
