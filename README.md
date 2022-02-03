@@ -55,7 +55,7 @@ making output directory... erledigt
 WARNING: html_static_path entry '_static' does not exist
 [autosummary] generating autosummary for: gateway.experimental.flashing.rst, gateway.experimental.mqttThing.rst, gateway.experimental.rst, gateway.hub.rst, gateway.sensor.rst, git_installation_on_raspberry.md, index.rst, intro_to_sphinx.rst, link_to_readme.md
 Failed to import gateway.experimental.mqttThing.
-...
+```
 
 ```{admonition} Note
 If yout run the `make html` command, before you run the installation process, the make file will probably not work
