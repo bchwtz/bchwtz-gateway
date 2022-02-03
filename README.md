@@ -1,5 +1,7 @@
 [![gateway unittest](https://github.com/bchwtz-fhswf/gateway/actions/workflows/gateway_unittest.yml/badge.svg?branch=main)](https://github.com/bchwtz-fhswf/gateway/actions/workflows/gateway_unittest.yml)
 
+[![docs](https://github.com/bchwtz-fhswf/gateway/actions/workflows/docs.yml/badge.svg)](https://github.com/bchwtz-fhswf/gateway/actions/workflows/docs.yml)
+
 # Gateway-Library
 
 The gateway library serves as an interface between a `Bluetooth Low Energy` device (e.g. sensor like RuuviTag) and any backend. The library offers basic functionalities, such as searching for BLE devices, mutual communication and includes one-sided communication (`listen_advertisements`). The `gateway` contains the classes `hub`, `sensor` and `experimental`. The high-level idea behind this division is to create a twin of the hardware sensor with all possible functionalities and manage it via a hub. Thus the `hub` serves the search for possible sensors and the generation of the twin, as well as the recording of the cyclical advertisements. The `hub` saves a found sensor as an object of the class `sensor`. Via the `sensor object`, the functions described in the following, can be called as methods of `sensor object` and can be called by e.g. `sensor1.get_config()`.
@@ -61,7 +63,8 @@ Failed to import gateway.experimental.mqttThing.
 If yout run the `make html` command, before you run the installation process, the make file will probably not work
 or the autodoc-funktions will raise multiple error caused by import and ModuleNotFound errors. 
 ```
-
+The documentation will be stored under `docs/_build` as html files.
+To remove this file you can simply run `make clean` in terminal.
 
 ## Get sensor advertisments
 The Advertisements of the sensor contain values like humidity, temperature, pressure as well as acceleration data, battery and movement information. 
