@@ -8,7 +8,7 @@ log=logging.getLogger("msg")
 """
 This region is used to wrap the returned values of the sensor into an object
 """
-# %% Recieved msg objects from sensor
+# %% received msg objects from sensor
 class return_values_from_sensor(object):
     def __init__(self,returnValue=None):
         if returnValue is not None:
@@ -22,8 +22,8 @@ class return_values_from_sensor(object):
         return cls(reval)
 
     @classmethod
-    def from_get_time(cls, status, recieved_time, mac):
-        reval=time_Object(status, recieved_time,mac)
+    def from_get_time(cls, status, received_time, mac):
+        reval=time_Object(status, received_time,mac)
         print("got Time")
         return cls(reval)
 
@@ -54,9 +54,9 @@ class return_values_from_sensor(object):
 
 
 class time_Object(object):
-    def __init__(self,status, recieved_time,mac):
+    def __init__(self,status, received_time,mac):
         self.status = status
-        self.recieved_time = recieved_time
+        self.received_time = received_time
         self.mac = mac
 
 class config_Object(object):

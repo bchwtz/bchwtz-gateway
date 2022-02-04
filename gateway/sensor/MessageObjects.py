@@ -19,7 +19,7 @@ with open(os.path.dirname(__file__)+ '/../communication_interface.yml') as ymlfi
 #    print(working_directory)
 #    print("error")
 
-# %% Recieved msg objects from sensor
+# %% received msg objects from sensor
 class return_values_from_sensor(object):
     def __init__(self,returnValue=None):
         """
@@ -80,7 +80,7 @@ class return_values_from_sensor(object):
         return cls(reval)
 
     @classmethod
-    def from_get_time(cls, status, recieved_time, mac):
+    def from_get_time(cls, status, received_time, mac):
         """
         
 
@@ -90,7 +90,7 @@ class return_values_from_sensor(object):
             DESCRIPTION.
         status : TYPE
             DESCRIPTION.
-        recieved_time : TYPE
+        received_time : TYPE
             DESCRIPTION.
         mac : TYPE
             DESCRIPTION.
@@ -101,7 +101,7 @@ class return_values_from_sensor(object):
             DESCRIPTION.
 
         """
-        reval=time_Object(status, recieved_time,mac)
+        reval=time_Object(status, received_time,mac)
         print("got Time")
         return cls(reval)
 
@@ -224,7 +224,7 @@ class return_values_from_sensor(object):
 
 
 class time_Object(object):
-    def __init__(self,status, recieved_time,mac):
+    def __init__(self,status, received_time,mac):
         """
         
 
@@ -232,7 +232,7 @@ class time_Object(object):
         ----------
         status : TYPE
             DESCRIPTION.
-        recieved_time : TYPE
+        received_time : TYPE
             DESCRIPTION.
         mac : TYPE
             DESCRIPTION.
@@ -243,7 +243,7 @@ class time_Object(object):
 
         """
         self.status = status
-        self.recieved_time = recieved_time
+        self.received_time = received_time
         self.mac = mac
 
 class config_Object(object):

@@ -15,3 +15,4 @@ ruuvi_commands:
     substring_set_sensor_time: '212108'
     get_flash_statistic: 'FAFA0d0000000000000000'
     get_logging_status: '4A4A090000000000000000'
+    activate_streaming: "4a4a080200000000000000"

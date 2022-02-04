@@ -4,13 +4,14 @@ import time
 import argparse
 from enum import Enum
 import asyncio
+import os
+import sys
+import signal
+import time
+
 
 # define command line arguments with flags
 parser = argparse.ArgumentParser()
-parser.add_argument("-s", "--sampling_rate", dest = "samplerate", default = 1, help="defines sample rate, accepted values are: 1, 10, 25, 50, 100, 200, 400", type = int)
-parser.add_argument("-r", "--sampling_resolution", dest = "resolution", default = 8, help="defines sample resolution, accepted values are: 8, 10, 12", type = int)
-parser.add_argument("-m", "--measuring_range", dest = "measurerange", default = 4, help="defines measure range/scale, accepted values are: 2, 4, 8, 16", type = int)
-parser.add_argument("-d", "--divider", dest = "divider", default = 1, help = "defines divider, any positive integer accepted", type = int)
 parser.add_argument("-a", "--address", dest = "address", default = None, help = "defines specific MAC address for a sensor", type = str)
 parser.add_argument("-t", "--timeout", dest = "timeout", default = 5.0, help = "defines sensor discovery timeout", type = float)
 
@@ -31,13 +32,28 @@ else:
     print(type(sensor1))
 
 # Get basic sensor configurations
+print(sensor1.mac)
 sensor1.get_config()
 print(sensor1.sensor_data)
 
-# set config 
-sensor1.set_config(sampling_rate = args.samplerate, sampling_resolution = args.resolution, measuring_range = args.measurerange, divider = args.divider)
+# initialize streamdata loop
+loop = sensor1.main_loop
+loop.run_until_complete(sensor1.setup_for_streaming())
+print("setup completed")
 
-# get config - did it work?
-sensor1.get_config()
-print(sensor1.sensor_data[-2:])
+# start receiving streamdata
+loop.run_until_complete(sensor1.activate_streaming())
+print("listening for incoming data")
+def sigint_handler(signal, frame):
+    print ('KeyboardInterrupt is caught - exiting gracefully')
+    sensor1.stopevent.set()
+    time.sleep(2)
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, sigint_handler)
+
+# write csv and wait for all data, then finish and exit 
+loop.run_until_complete(sensor1.listen_for_data(10*60))
+print("Exit")
+
 

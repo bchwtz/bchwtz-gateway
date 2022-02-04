@@ -33,7 +33,7 @@ class hub(object):
         self.sensorlist: list[sensor] = list()
         return
     
-    def discover(self):
+    def discover(self, timeout = 5.0):
         """
         Calls the find_tags function in async workloop.
 
@@ -42,7 +42,7 @@ class hub(object):
 
         """
         self.sensorlist = list()
-        taskobj = self.main_loop.create_task(self.find_tags())
+        taskobj = self.main_loop.create_task(self.find_tags(timeout))
         self.main_loop.run_until_complete(taskobj)
     
     def __validate_mac(self, devices):
@@ -63,7 +63,7 @@ class hub(object):
                 self.sensorlist.append(sensor(i.name, i.address))
         return
     
-    async def find_tags(self):
+    async def find_tags(self, timeout = 5.0):
         """
         The function searches for bluetooth devices nearby and passes the
         MAC addresses to the __validate_mac function.        
@@ -74,7 +74,7 @@ class hub(object):
 
         """   
         self.sensorlist = list()
-        devices = await BleakScanner.discover(timeout=5.0)
+        devices = await BleakScanner.discover(timeout=timeout)
         self.__validate_mac(devices)
 
         
@@ -95,3 +95,11 @@ class hub(object):
     
     """Configure the interface between the sensorhub and other services
     """
+
+    def get_sensor_by_mac(self, mac = None) -> sensor:
+        if mac is not None:
+            for sensor in self.sensorlist:
+                if sensor.mac == mac:
+                    return sensor
+        else:
+            return None
