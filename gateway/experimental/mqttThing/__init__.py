@@ -1,5 +1,5 @@
 import paho.mqtt.client as mqtt
-import settings
+#import settings
 import re
 import json
 
