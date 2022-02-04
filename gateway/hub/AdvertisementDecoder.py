@@ -3,14 +3,14 @@ import math
 import logging
 log = logging.getLogger(__name__)
 """
-We need only need the decoder come. 
+We only need the decoder come. 
 So we copied it from https://github.com/ttu/ruuvitag-sensor 
 """
 
 
 def _get_data_format_5(raw):
     """
-    Validate that data is from RuuviTag and is Data Format 5
+    Validate that data is from Sensor and is Data Format 5
 
     Returns:
         string: Sensor data
@@ -62,7 +62,7 @@ def get_decoder(data_type):
 
 class Df5Decoder(object):
     """
-    Decodes data from RuuviTag with Data Format 5
+    Decodes data from Tag with Data Format 5
     Protocol specification:
     https://github.com/ruuvi/ruuvi-sensor-protocols
     """

@@ -77,7 +77,7 @@ The target of this test is to verify that a hard reset of the tag resets all fla
 2. Time is reseted to 1/1/1970.
 
 ## Testcase M02: Set time and recheck after long time
-The target of this test is to verify that the time on the RuuviTag is running parallel to the gateway time in a set time.
+The target of this test is to verify that the time on the Tag is running parallel to the gateway time in a set time.
 
 ## Testcase M03: Get acceleration data and drop connection
 The target of this test is to verify that when the connection to the Tag is lost, the test is interrupted correctly.
