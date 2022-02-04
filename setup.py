@@ -10,10 +10,10 @@ with open("README.md", "r", encoding="utf-8") as fh:
     
     
 setup(name='gateway',
-      version='v1.2.0',
+      version='v2.0.0',
       author='Team_Gateway',
       author_email = 'example@adress.com',
-      description = "Tool to communicate and listen to RuuviTag devices",
+      description = "Tool to communicate with BLE Devices",
       long_description = long_description,
       long_description_content_type = "text/markdown",
       url = 'https://github.com/bchwtz-fhswf/gateway.git',
@@ -22,5 +22,3 @@ setup(name='gateway',
       install_requires=required,
       python_requires=">=3.6"
       )
-#https://github.com/navdeep-G/samplemod
-#https://towardsdatascience.com/create-your-custom-python-package-that-you-can-pip-install-from-your-git-repository-f90465867893

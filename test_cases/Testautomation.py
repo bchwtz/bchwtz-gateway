@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 """
+# ! This file is not functioning any more. Trademarks and product names has been removed. 
+
+
 The Automation library includes part of the automated tests and all helping functions for testautomation
 
     You can add tests with ascending numbering (TCxc)
@@ -22,7 +25,7 @@ class Testfunctions:
     def TC01_GetDataAndCheckTime(self, specific_mac):
         from gateway import SensorGatewayBleak
         print("in start_logging")
-        test = SensorGatewayBleak.RuuviTagAccelerometerCommunicationBleak()
+        test = SensorGatewayBleak.TagAccelerometerCommunicationBleak()
         test.deactivate_debug_logger()
         time.sleep(5)
         test.activate_debug_logger()
@@ -35,7 +38,7 @@ class Testfunctions:
     def TC02_SetConfigAndCheckConfig(self, specific_mac, sampling_value, resolution_value, measuring_value):
         from gateway import SensorGatewayBleak
         print("Test start")
-        test = SensorGatewayBleak.RuuviTagAccelerometerCommunicationBleak()
+        test = SensorGatewayBleak.TagAccelerometerCommunicationBleak()
         test.activate_debug_logger()
         test.set_config_sensor(sampling_rate=sampling_value, sampling_resolution=resolution_value, measuring_range=measuring_value)
         config_datas = test.get_config_from_sensor()
@@ -62,7 +65,7 @@ class Testfunctions:
         resolution_values = [8, 10, 12]
         measuring_values = [2, 4, 8, 16]
         wrong_values = 0
-        test = SensorGatewayBleak.RuuviTagAccelerometerCommunicationBleak()
+        test = SensorGatewayBleak.TagAccelerometerCommunicationBleak()
 #        test.activate_debug_logger()
         for sampling_value in sampling_values:
                 for resolution_value in resolution_values:

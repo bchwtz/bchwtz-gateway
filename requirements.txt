@@ -9,3 +9,4 @@ async_timeout
 pyyaml
 paho-mqtt
 pytest
+myst-parser

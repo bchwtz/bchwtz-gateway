@@ -461,7 +461,7 @@ class send_msg_object(object):
         # Need time as float. Use time.time() for current time.
         now=time.time()
         timestamp = struct.pack("<Q", int(now * 1000)).hex()
-        command=sensor_interface['ruuvi_commands']['substring_set_sensor_time'] + timestamp 
+        command=sensor_interface['commands']['substring_set_sensor_time'] + timestamp 
         reval = send_set_sensor_time_object(mac, command)
         return cls(reval)
 
@@ -530,53 +530,53 @@ class send_msg_object(object):
             else:
                 hex_divider='FF'
         # Create command string and send it to targets. If some values aren't correct the defautl value "FF" is sent
-        command_string = sensor_interface['ruuvi_commands']['substring_set_config_sensor'] + hex_sampling_rate + hex_sampling_resolution + hex_measuring_range + "FFFFFF" + hex_divider + "00"
+        command_string = sensor_interface['commands']['substring_set_config_sensor'] + hex_sampling_rate + hex_sampling_resolution + hex_measuring_range + "FFFFFF" + hex_divider + "00"
         reval=send_set_config_object(mac=mac, command=command_string)
         return cls(reval)
 
     @classmethod
     def to_activate_logging(cls, mac=""):
-        command= sensor_interface['ruuvi_commands']['activate_logging_at_sensor']
+        command= sensor_interface['commands']['activate_logging_at_sensor']
         reval=send_activate_logging_object(mac=mac, command=command)
         return cls(reval)
     @classmethod
     def to_deactivate_logging(cls, mac=""):
-        command = sensor_interface['ruuvi_commands']['deactivate_logging_at_sensor']
+        command = sensor_interface['commands']['deactivate_logging_at_sensor']
         reval = send_deactivate_logging_object(mac=mac, command=command)
         return cls(reval)
 
     @classmethod
     def to_get_sensor_time(cls, mac=""):
-        command = sensor_interface['ruuvi_commands']['get_time_from_sensor']
+        command = sensor_interface['commands']['get_time_from_sensor']
         reval = send_get_senor_time_object(mac=mac, command=command)
         return cls(reval)
 
     @classmethod
     def to_get_config(cls, mac=""):
-        command = sensor_interface['ruuvi_commands']['get_config_from_sensor']
+        command = sensor_interface['commands']['get_config_from_sensor']
         reval = send_get_config_object(mac=mac, command=command)
         return cls(reval)
 
     @classmethod
     def to_get_flash_statistics(cls, mac=""):
-        command = sensor_interface['ruuvi_commands']['get_flash_statistic']
+        command = sensor_interface['commands']['get_flash_statistic']
         reval = send_get_flash_statistics_object(mac=mac, command=command)
         return cls(reval)
 
     @classmethod
     def to_get_logging_status(cls, mac=""):
-        command = sensor_interface['ruuvi_commands']['get_logging_status']
+        command = sensor_interface['commands']['get_logging_status']
         reval = send_get_logging_status_object(mac=mac, command=command)
         return cls(reval)
     @classmethod
     def to_get_acceleration_data(cls, mac=""):
-        command = sensor_interface['ruuvi_commands']['readAllString']
+        command = sensor_interface['commands']['readAllString']
         reval = send_get_acceleration_data_object(mac=mac, command=command)
         return cls(reval)
 
     @classmethod
     def to_activate_advertisement_logging(cls, mac=""):
-        command = sensor_interface['ruuvi_commands']['activate_logging_at_sensor']
+        command = sensor_interface['commands']['activate_logging_at_sensor']
         reval = send_activate_advertisement_logging_object(mac=mac, command=command)
         return cls(reval)
 

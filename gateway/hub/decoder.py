@@ -1,3 +1,27 @@
+""" 
+MIT License
+
+Copyright (c) 2016 Tomi Tuhkanen
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 from __future__ import division
 
 import base64
@@ -44,7 +68,7 @@ def parse_mac(data_format, payload_mac):
 
 class UrlDecoder(object):
     """
-    Decodes data from RuuviTag url
+    Decodes data from Tag url
     Protocol specification:
     https://github.com/ruuvi/ruuvi-sensor-protocols
     Decoder operations are ported from:
@@ -102,7 +126,7 @@ class UrlDecoder(object):
 
 class Df3Decoder(object):
     """
-    Decodes data from RuuviTag with Data Format 3
+    Decodes data from Tag with Data Format 3
     Protocol specification:
     https://github.com/ruuvi/ruuvi-sensor-protocols
     """
@@ -169,7 +193,7 @@ class Df3Decoder(object):
 
 class Df5Decoder(object):
     """
-    Decodes data from RuuviTag with Data Format 5
+    Decodes data from Tag with Data Format 5
     Protocol specification:
     https://github.com/ruuvi/ruuvi-sensor-protocols
     """

@@ -41,7 +41,6 @@ jobs:
         
       # Run test_gateway.py
       - name: docs
-        #working-directory: ./tests
         run: make html
         
       - uses: actions/upload-artifact@v1
