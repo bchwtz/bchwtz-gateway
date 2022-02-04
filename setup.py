@@ -10,7 +10,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     
     
 setup(name='gateway',
-      version='v1.2.0',
+      version='v2.0.0',
       author='Team_Gateway',
       author_email = 'example@adress.com',
       description = "Tool to communicate with BLE Devices",
