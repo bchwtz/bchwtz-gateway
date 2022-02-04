@@ -26,7 +26,7 @@ with open(os.path.dirname(__file__) + '/../communication_interface.yml') as ymlf
 
 
 # Creat a named logger 'sensor' and set it on INFO level
-Log_sensor = logging.getLogger('SensorGatewayBleak')
+Log_sensor = logging.getLogger('sensor')
 console_handler = logging.StreamHandler()
 console_handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -91,12 +91,12 @@ class sensor(object):
         """        
         Log_sensor.info("Start timeout function")
         while time.time() - self.start_time < 10:
-            Log_sensor.warning("Timeout timer running {}".format(
+            Log_sensor.INFO("Timeout timer running {}".format(
                 time.strftime("%H:%M:%S", time.localtime(self.start_time)))
                 )
             await asyncio.sleep(1)
             if self.notification_done:
-                self.notification_done = False
+                #self.notification_done = False
                 break
         try:
             self.stopEvent.set()
