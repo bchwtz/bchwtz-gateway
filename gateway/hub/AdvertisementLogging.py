@@ -9,13 +9,8 @@ from os.path import exists
 ble = BleCommunicationNix()
 
 def advertisement_logging():
-    """
-
-
-    Returns
-    -------
-    None.
-
+    """Listen to advertisements from BLE devices and 
+    writes it to an csv-file.
     """
     return_value_object=MessageObjects.return_values_from_sensor()
     last_measurement_number = {}
@@ -39,15 +34,11 @@ def advertisement_logging():
                         last_measurement_number[mac]=decoded["measurement_sequence_number"]
                     msg_obj = return_value_object.from_get_advertisementdata(decoded, mac,
                                                                              current_time).returnValue
-                   #Add push to mainflux here. Use msg_obj from above
                     print([mac,current_time,decoded])
                     keyList = list(decoded.keys())
-                #print(keyList)
                     valueList = list(decoded.values())
-                #print(valueList)
                     s = "".join([str(x) + "," for x in valueList])
                     keys = "".join([str(key) + "," for key in keyList])
-                # print(s)
                     preamble = ""
                     date = datetime.date.today()
                     logfilename = "advertisment-{}.csv".format(date)

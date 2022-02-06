@@ -1,8 +1,15 @@
-# %%region enums for sensor config
+"""This submodule is used to check the arguments of 
+sensor.set_config()
+"""
 from enum import Enum
 
 
 class SamplingRate(Enum):
+    """For validation of the arguments set in `sensor.set_config()`
+
+    :param Enum: Enumeration
+    :type Enum: Enumeratione
+    """
     x01 = 1
     x0A = 10
     x19 = 25
@@ -13,8 +20,10 @@ class SamplingRate(Enum):
 
 
 class SamplingResolution(Enum):
-    """
-    For validation of the arguments set in set_config_sensor.
+    """For validation of the arguments set in `sensor.set_config()`
+
+    :param Enum: Enumeration
+    :type Enum: Enumeratione
     """
     x08 = 8
     x0A = 10
@@ -22,8 +31,10 @@ class SamplingResolution(Enum):
 
 
 class MeasuringRange(Enum):
-    """
-    For validation of the arguments set in set_config_sensor.
+    """For validation of the arguments set in `sensor.set_config()`
+
+    :param Enum: Enumeration
+    :type Enum: Enumeratione
     """
     x02 = 2
     x04 = 4
