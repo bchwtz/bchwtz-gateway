@@ -1,39 +1,23 @@
-import struct
-import time
-from gateway.sensor.SensorConfigEnum import SamplingRate, SamplingResolution,MeasuringRange
+"""
+This module was used to create a dictionary of the values returned 
+by a spicific sensor. The dictionary can then by converted into a json object,
+to send it to a backend like influx or mainflux.
+"""
 import logging
-import yaml
-import os.path
-#import os
-# Look to the path of your current working directory
-#working_directory = os.getcwd()
 
-log=logging.getLogger("msg")
+log = logging.getLogger("msg")
 """
 This region is used to wrap the returned values of the sensor into an object
 """
-#try:
-with open(os.path.dirname(__file__)+ '/../communication_interface.yml') as ymlfile:
-    sensor_interface = yaml.safe_load(ymlfile)
-#except Exception:
-#    print(working_directory)
-#    print("error")
 
 # %% received msg objects from sensor
 class return_values_from_sensor(object):
     def __init__(self,returnValue=None):
-        """
-        
+        """This class is used to create a standard
+        dictionary of return values.
 
-        Parameters
-        ----------
-        returnValue : TYPE, optional
-            DESCRIPTION. The default is None.
-
-        Returns
-        -------
-        None.
-
+        :param returnValue: [description], defaults to None
+        :type returnValue: [type], optional
         """
         if returnValue is not None:
             self.returnValue=returnValue
@@ -44,62 +28,44 @@ class return_values_from_sensor(object):
 
     @classmethod
     def from_get_config(cls, status, sample_rate, resolution, scale, dsp_function, dsp_parameter, mode,divider, mac):
-        """
-        
+        """Classmethod to parse the get_config() return values.
 
-        Parameters
-        ----------
-        cls : TYPE
-            DESCRIPTION.
-        status : TYPE
-            DESCRIPTION.
-        sample_rate : TYPE
-            DESCRIPTION.
-        resolution : TYPE
-            DESCRIPTION.
-        scale : TYPE
-            DESCRIPTION.
-        dsp_function : TYPE
-            DESCRIPTION.
-        dsp_parameter : TYPE
-            DESCRIPTION.
-        mode : TYPE
-            DESCRIPTION.
-        divider : TYPE
-            DESCRIPTION.
-        mac : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        TYPE
-            DESCRIPTION.
-
+        :param status: [description]
+        :type status: [type]
+        :param sample_rate: [description]
+        :type sample_rate: [type]
+        :param resolution: [description]
+        :type resolution: [type]
+        :param scale: [description]
+        :type scale: [type]
+        :param dsp_function: [description]
+        :type dsp_function: [type]
+        :param dsp_parameter: [description]
+        :type dsp_parameter: [type]
+        :param mode: [description]
+        :type mode: [type]
+        :param divider: [description]
+        :type divider: [type]
+        :param mac: [description]
+        :type mac: [type]
+        :return: [description]
+        :rtype: [type]
         """
         reval=config_Object(status, sample_rate, resolution, scale, dsp_function, dsp_parameter, mode,divider, mac)
         return cls(reval)
 
     @classmethod
     def from_get_time(cls, status, received_time, mac):
-        """
-        
+        """Classmethod to parse the get_time() return values.
 
-        Parameters
-        ----------
-        cls : TYPE
-            DESCRIPTION.
-        status : TYPE
-            DESCRIPTION.
-        received_time : TYPE
-            DESCRIPTION.
-        mac : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        TYPE
-            DESCRIPTION.
-
+        :param status: [description]
+        :type status: [type]
+        :param received_time: [description]
+        :type received_time: [type]
+        :param mac: [description]
+        :type mac: [type]
+        :return: [description]
+        :rtype: [type]
         """
         reval=time_Object(status, received_time,mac)
         print("got Time")
@@ -110,66 +76,49 @@ class return_values_from_sensor(object):
                                   ringbuffer_size, valid_records, dirty_records, words_reserved, words_used,
                                   largest_contig,
                                   freeable_words):
-        """
-        
+        """Classmethod to parse the get_flash_statistics() return values.
 
-        Parameters
-        ----------
-        cls : TYPE
-            DESCRIPTION.
-        logging_status : TYPE
-            DESCRIPTION.
-        ringbuffer_start : TYPE
-            DESCRIPTION.
-        ringbuffer_end : TYPE
-            DESCRIPTION.
-        mac : TYPE
-            DESCRIPTION.
-        ringbuffer_size : TYPE
-            DESCRIPTION.
-        valid_records : TYPE
-            DESCRIPTION.
-        dirty_records : TYPE
-            DESCRIPTION.
-        words_reserved : TYPE
-            DESCRIPTION.
-        words_used : TYPE
-            DESCRIPTION.
-        largest_contig : TYPE
-            DESCRIPTION.
-        freeable_words : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        TYPE
-            DESCRIPTION.
-
+        :param logging_status: [description]
+        :type logging_status: [type]
+        :param ringbuffer_start: [description]
+        :type ringbuffer_start: [type]
+        :param ringbuffer_end: [description]
+        :type ringbuffer_end: [type]
+        :param mac: [description]
+        :type mac: [type]
+        :param ringbuffer_size: [description]
+        :type ringbuffer_size: [type]
+        :param valid_records: [description]
+        :type valid_records: [type]
+        :param dirty_records: [description]
+        :type dirty_records: [type]
+        :param words_reserved: [description]
+        :type words_reserved: [type]
+        :param words_used: [description]
+        :type words_used: [type]
+        :param largest_contig: [description]
+        :type largest_contig: [type]
+        :param freeable_words: [description]
+        :type freeable_words: [type]
+        :return: [description]
+        :rtype: [type]
         """
         reval = flash_statistics_Object(  logging_status, ringbuffer_start, ringbuffer_end, mac,
                                   ringbuffer_size, valid_records, dirty_records, words_reserved, words_used,
                                   largest_contig,
                                   freeable_words)
         return cls(reval)
+
     @classmethod
     def form_get_status(cls, status,mac):
-        """
-        
+        """Classmethod to parse the get_status() return values.
 
-        Parameters
-        ----------
-        cls : TYPE
-            DESCRIPTION.
-        status : TYPE
-            DESCRIPTION.
-        mac : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        TYPE
-            DESCRIPTION.
-
+        :param status: [description]
+        :type status: [type]
+        :param mac: [description]
+        :type mac: [type]
+        :return: [description]
+        :rtype: [type]
         """
         reval=status_object(status,mac)
         print(reval)
@@ -177,47 +126,30 @@ class return_values_from_sensor(object):
 
     @classmethod
     def from_get_accelorationdata(cls,accelorationdata,mac):
-        """
-        
+        """Classmethod to parse the get_accelorationdata() return values.
 
-        Parameters
-        ----------
-        cls : TYPE
-            DESCRIPTION.
-        accelorationdata : TYPE
-            DESCRIPTION.
-        mac : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        TYPE
-            DESCRIPTION.
-
+        :param accelorationdata: [description]
+        :type accelorationdata: [type]
+        :param mac: [description]
+        :type mac: [type]
+        :return: [description]
+        :rtype: [type]
         """
         reval=acceloration_data_Object(accelorationdata,mac)
         return cls(reval)
+
     @classmethod
     def from_get_advertisementdata(cls,advertisementData, mac, time):
-        """
-        
+        """Classmethod to parse the get_advertisementdata() return values.
 
-        Parameters
-        ----------
-        cls : TYPE
-            DESCRIPTION.
-        advertisementData : TYPE
-            DESCRIPTION.
-        mac : TYPE
-            DESCRIPTION.
-        time : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        TYPE
-            DESCRIPTION.
-
+        :param advertisementData: [description]
+        :type advertisementData: [type]
+        :param mac: [description]
+        :type mac: [type]
+        :param time: [description]
+        :type time: [type]
+        :return: [description]
+        :rtype: [type]
         """
         reval=advertisement_data_Object(advertisementData,mac,time)
         return cls(reval)
@@ -225,22 +157,14 @@ class return_values_from_sensor(object):
 
 class time_Object(object):
     def __init__(self,status, received_time,mac):
-        """
-        
+        """Classmethod to parse the get_time() return values.
 
-        Parameters
-        ----------
-        status : TYPE
-            DESCRIPTION.
-        received_time : TYPE
-            DESCRIPTION.
-        mac : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
-
+        :param status: [description]
+        :type status: [type]
+        :param received_time: [description]
+        :type received_time: [type]
+        :param mac: [description]
+        :type mac: [type]
         """
         self.status = status
         self.received_time = received_time
@@ -248,34 +172,26 @@ class time_Object(object):
 
 class config_Object(object):
     def __init__(self, status, sample_rate, resolution, scale, dsp_function, dsp_parameter, mode, divider, mac):
-        """
-        
+        """Class to parse the get_config() return values.
 
-        Parameters
-        ----------
-        status : TYPE
-            DESCRIPTION.
-        sample_rate : TYPE
-            DESCRIPTION.
-        resolution : TYPE
-            DESCRIPTION.
-        scale : TYPE
-            DESCRIPTION.
-        dsp_function : TYPE
-            DESCRIPTION.
-        dsp_parameter : TYPE
-            DESCRIPTION.
-        mode : TYPE
-            DESCRIPTION.
-        divider : TYPE
-            DESCRIPTION.
-        mac : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
-
+        :param status: [description]
+        :type status: [type]
+        :param sample_rate: [description]
+        :type sample_rate: [type]
+        :param resolution: [description]
+        :type resolution: [type]
+        :param scale: [description]
+        :type scale: [type]
+        :param dsp_function: [description]
+        :type dsp_function: [type]
+        :param dsp_parameter: [description]
+        :type dsp_parameter: [type]
+        :param mode: [description]
+        :type mode: [type]
+        :param divider: [description]
+        :type divider: [type]
+        :param mac: [description]
+        :type mac: [type]
         """
         self.status = status
         self.sample_rate = sample_rate
@@ -292,38 +208,30 @@ class flash_statistics_Object(object):
                                   ringbuffer_size, valid_records, dirty_records, words_reserved, words_used,
                                   largest_contig,
                                   freeable_words):
-        """
-        
+        """Class to parse the get_flash_statistic() return values.
 
-        Parameters
-        ----------
-        logging_status : TYPE
-            DESCRIPTION.
-        ringbuffer_start : TYPE
-            DESCRIPTION.
-        ringbuffer_end : TYPE
-            DESCRIPTION.
-        mac : TYPE
-            DESCRIPTION.
-        ringbuffer_size : TYPE
-            DESCRIPTION.
-        valid_records : TYPE
-            DESCRIPTION.
-        dirty_records : TYPE
-            DESCRIPTION.
-        words_reserved : TYPE
-            DESCRIPTION.
-        words_used : TYPE
-            DESCRIPTION.
-        largest_contig : TYPE
-            DESCRIPTION.
-        freeable_words : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
-
+        :param logging_status: [description]
+        :type logging_status: [type]
+        :param ringbuffer_start: [description]
+        :type ringbuffer_start: [type]
+        :param ringbuffer_end: [description]
+        :type ringbuffer_end: [type]
+        :param mac: [description]
+        :type mac: [type]
+        :param ringbuffer_size: [description]
+        :type ringbuffer_size: [type]
+        :param valid_records: [description]
+        :type valid_records: [type]
+        :param dirty_records: [description]
+        :type dirty_records: [type]
+        :param words_reserved: [description]
+        :type words_reserved: [type]
+        :param words_used: [description]
+        :type words_used: [type]
+        :param largest_contig: [description]
+        :type largest_contig: [type]
+        :param freeable_words: [description]
+        :type freeable_words: [type]
         """
 
         self.logging_status = logging_status
@@ -340,20 +248,12 @@ class flash_statistics_Object(object):
 
 class status_object(object):
     def __init__(self, status,mac):
-        """
-        
+        """Classmethod to parse the get_status() return values.
 
-        Parameters
-        ----------
-        status : TYPE
-            DESCRIPTION.
-        mac : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
-
+        :param status: [description]
+        :type status: [type]
+        :param mac: [description]
+        :type mac: [type]
         """
         print("logging status")
         self.mac=mac
@@ -367,20 +267,12 @@ class status_object(object):
 
 class acceloration_data_Object(object):
     def __init__(self, accelorationData, mac):
-        """
-        
+        """Classmethod to parse the acceleration data.
 
-        Parameters
-        ----------
-        accelorationData : TYPE
-            DESCRIPTION.
-        mac : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
-
+        :param accelorationData: [description]
+        :type accelorationData: [type]
+        :param mac: [description]
+        :type mac: [type]
         """
         self.loggingData=list(map(list, zip(accelorationData[0], accelorationData[1], accelorationData[2],
                            accelorationData[3])))
@@ -388,397 +280,15 @@ class acceloration_data_Object(object):
 
 class advertisement_data_Object(object):
     def __init__(self, advertisementData,mac, time):
-        """
-        
+        """Classmethod to parse the advertisement data.
 
-        Parameters
-        ----------
-        advertisementData : TYPE
-            DESCRIPTION.
-        mac : TYPE
-            DESCRIPTION.
-        time : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
-
+        :param advertisementData: [description]
+        :type advertisementData: [type]
+        :param mac: [description]
+        :type mac: [type]
+        :param time: [description]
+        :type time: [type]
         """
         self.advertisementData=advertisementData
         self.mac=mac
         self.time=time
-
-
-#%% Send msg objects to sensor
-"""
-All code below is used to send messages to the sensor.
-"""
-class send_msg_object(object):
-    #add logger
-    log = log
-
-    def __init__(self, message=None):
-        """
-        
-
-        Parameters
-        ----------
-        message : TYPE, optional
-            DESCRIPTION. The default is None.
-
-        Returns
-        -------
-        None.
-
-        """
-        if message is not None:
-            print(message)
-            self.message = message
-            print(self.message)
-        else:
-            self.message = ""
-
-
-    @classmethod
-    def to_set_sensorTime(cls,  mac=""):
-        """
-        
-
-        Parameters
-        ----------
-        cls : TYPE
-            DESCRIPTION.
-        mac : TYPE, optional
-            DESCRIPTION. The default is "".
-
-        Returns
-        -------
-        TYPE
-            DESCRIPTION.
-
-        """
-        # Need time as float. Use time.time() for current time.
-        now=time.time()
-        timestamp = struct.pack("<Q", int(now * 1000)).hex()
-        command=sensor_interface['commands']['substring_set_sensor_time'] + timestamp 
-        reval = send_set_sensor_time_object(mac, command)
-        return cls(reval)
-
-    @classmethod
-    def to_set_sensorConfig(cls, mac="", sampling_rate='FF', sampling_resolution='FF', measuring_range='FF',
-                          divider="FF"):
-        """
-        
-
-        Parameters
-        ----------
-        cls : TYPE
-            DESCRIPTION.
-        mac : TYPE, optional
-            DESCRIPTION. The default is "".
-        sampling_rate : TYPE, optional
-            DESCRIPTION. The default is 'FF'.
-        sampling_resolution : TYPE, optional
-            DESCRIPTION. The default is 'FF'.
-        measuring_range : TYPE, optional
-            DESCRIPTION. The default is 'FF'.
-        divider : TYPE, optional
-            DESCRIPTION. The default is "FF".
-
-        Returns
-        -------
-        TYPE
-            DESCRIPTION.
-
-        """
-        # Check if arguments are given and valid
-        if sampling_rate == 'FF':
-            hex_sampling_rate = 'FF'
-        elif sampling_rate in SamplingRate._value2member_map_:
-            hex_sampling_rate = SamplingRate(sampling_rate).name[1:]
-        else:
-            cls.log.warning("Wrong sampling rate")
-            hex_sampling_rate = 'FF'
-        # Check if arguments are given and valid
-        if sampling_resolution == 'FF':
-            hex_sampling_resolution = 'FF'
-        elif sampling_resolution in SamplingResolution._value2member_map_:
-            hex_sampling_resolution = SamplingResolution(sampling_resolution).name[1:]
-        else:
-            cls.log.warning("Wrong sampling resolution")
-            hex_sampling_resolution = 'FF'
-        # Check if arguments are given and valid
-        if measuring_range == 'FF':
-            hex_measuring_range = 'FF'
-        elif measuring_range in MeasuringRange._value2member_map_:
-            hex_measuring_range = MeasuringRange(measuring_range).name[1:]
-        else:
-            cls.log.warning("Wrong measuring range")
-            hex_measuring_range = 'FF'
-        if divider == 'FF':
-            hex_divider = 'FF'
-        else:
-            div=""
-            try:
-               div= int(divider)
-            except Exception as ex :
-                cls.log.error(str(ex))
-                cls.log.warning("Divider must be an int value")
-            if isinstance(div,int):
-                hex_divider =hex(div)[2:]
-            else:
-                hex_divider='FF'
-        # Create command string and send it to targets. If some values aren't correct the defautl value "FF" is sent
-        command_string = sensor_interface['commands']['substring_set_config_sensor'] + hex_sampling_rate + hex_sampling_resolution + hex_measuring_range + "FFFFFF" + hex_divider + "00"
-        reval=send_set_config_object(mac=mac, command=command_string)
-        return cls(reval)
-
-    @classmethod
-    def to_activate_logging(cls, mac=""):
-        command= sensor_interface['commands']['activate_logging_at_sensor']
-        reval=send_activate_logging_object(mac=mac, command=command)
-        return cls(reval)
-    @classmethod
-    def to_deactivate_logging(cls, mac=""):
-        command = sensor_interface['commands']['deactivate_logging_at_sensor']
-        reval = send_deactivate_logging_object(mac=mac, command=command)
-        return cls(reval)
-
-    @classmethod
-    def to_get_sensor_time(cls, mac=""):
-        command = sensor_interface['commands']['get_time_from_sensor']
-        reval = send_get_senor_time_object(mac=mac, command=command)
-        return cls(reval)
-
-    @classmethod
-    def to_get_config(cls, mac=""):
-        command = sensor_interface['commands']['get_config_from_sensor']
-        reval = send_get_config_object(mac=mac, command=command)
-        return cls(reval)
-
-    @classmethod
-    def to_get_flash_statistics(cls, mac=""):
-        command = sensor_interface['commands']['get_flash_statistic']
-        reval = send_get_flash_statistics_object(mac=mac, command=command)
-        return cls(reval)
-
-    @classmethod
-    def to_get_logging_status(cls, mac=""):
-        command = sensor_interface['commands']['get_logging_status']
-        reval = send_get_logging_status_object(mac=mac, command=command)
-        return cls(reval)
-    @classmethod
-    def to_get_acceleration_data(cls, mac=""):
-        command = sensor_interface['commands']['readAllString']
-        reval = send_get_acceleration_data_object(mac=mac, command=command)
-        return cls(reval)
-
-    @classmethod
-    def to_activate_advertisement_logging(cls, mac=""):
-        command = sensor_interface['commands']['activate_logging_at_sensor']
-        reval = send_activate_advertisement_logging_object(mac=mac, command=command)
-        return cls(reval)
-
-
-class send_set_sensor_time_object(object):
-        def __init__(self, mac, command):
-            """
-            
-
-            Parameters
-            ----------
-            mac : TYPE
-                DESCRIPTION.
-            command : TYPE
-                DESCRIPTION.
-
-            Returns
-            -------
-            None.
-
-            """
-            self.mac=mac
-            self.command=command
-
-class send_set_config_object(object):
-        def __init__(self,mac,command):
-            """
-            
-
-            Parameters
-            ----------
-            mac : TYPE
-                DESCRIPTION.
-            command : TYPE
-                DESCRIPTION.
-
-            Returns
-            -------
-            None.
-
-            """
-            self.mac=mac
-            self.command=command
-
-class send_activate_logging_object(object):
-        def __init__(self,mac, command):
-            """
-            
-
-            Parameters
-            ----------
-            mac : TYPE
-                DESCRIPTION.
-            command : TYPE
-                DESCRIPTION.
-
-            Returns
-            -------
-            None.
-
-            """
-            self.mac=mac
-            self.command=command
-
-
-class send_deactivate_logging_object(object):
-    def __init__(self, mac, command):
-        """
-        
-
-        Parameters
-        ----------
-        mac : TYPE
-            DESCRIPTION.
-        command : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
-
-        """
-        self.mac = mac
-        self.command = command
-
-class send_get_config_object(object):
-    def __init__(self, mac, command):
-        """
-        
-
-        Parameters
-        ----------
-        mac : TYPE
-            DESCRIPTION.
-        command : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
-
-        """
-        self.mac = mac
-        self.command = command
-
-class send_get_senor_time_object(object):
-    def __init__(self, mac, command):
-        """
-        
-
-        Parameters
-        ----------
-        mac : TYPE
-            DESCRIPTION.
-        command : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
-
-        """
-        self.mac = mac
-        self.command = command
-
-
-class send_get_flash_statistics_object(object):
-    def __init__(self, mac, command):
-        """
-        
-
-        Parameters
-        ----------
-        mac : TYPE
-            DESCRIPTION.
-        command : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
-
-        """
-        self.mac = mac
-        self.command = command
-
-class send_get_logging_status_object(object):
-    def __init__(self, mac, command):
-        """
-        
-
-        Parameters
-        ----------
-        mac : TYPE
-            DESCRIPTION.
-        command : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
-
-        """
-        self.mac = mac
-        self.command = command
-
-class send_get_acceleration_data_object(object):
-    def __init__(self, mac, command):
-        """
-        
-
-        Parameters
-        ----------
-        mac : TYPE
-            DESCRIPTION.
-        command : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
-
-        """
-        self.mac = mac
-        self.command = command
-
-class send_activate_advertisement_logging_object(object):
-    def __init__(self, mac, command):
-        """
-        
-
-        Parameters
-        ----------
-        mac : TYPE
-            DESCRIPTION.
-        command : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
-
-        """
-        self.mac = mac
-        self.command = command
