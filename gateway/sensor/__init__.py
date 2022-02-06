@@ -1122,6 +1122,8 @@ class sensor(object):
                 self.unpack12(value[1:], self.config.sample_rate, self.config.scale)
                 
     async def setup_for_streaming(self):
+        """Change mode to gatt streaming.
+        """
         UART_RX = sensor_interface["communication_channels"]["UART_RX"]
         UART_TX = sensor_interface["communication_channels"]["UART_TX"]
         async with BleakClient(self.config.mac) as client:
@@ -1133,8 +1135,9 @@ class sensor(object):
             await client.stop_notify(UART_RX)
             self.stopevent.clear()
 
-
     async def activate_streaming(self):
+        """Start streaming and receive data.
+        """
         UART_RX = sensor_interface["communication_channels"]["UART_RX"]
         UART_TX = sensor_interface["communication_channels"]["UART_TX"]
         async with BleakClient(self.config.mac) as client:
@@ -1145,6 +1148,13 @@ class sensor(object):
             await client.stop_notify(UART_RX)
 
     async def listen_for_data(self, samplingtime=10*60, filename = str(int(time.time()))+".csv"):
+        """Listens for incoming data and writes them to a specified csv file.
+
+        :param samplingtime: hearbeat time
+        :type samplingtime: int
+        :param filename: name of csv
+        :type filename: string
+        """
         UART_RX = sensor_interface["communication_channels"]["UART_RX"]
         UART_TX = sensor_interface["communication_channels"]["UART_TX"]
         filepointer.csvfile = open(filename, "w")
