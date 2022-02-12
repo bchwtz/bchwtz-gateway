@@ -907,6 +907,16 @@ class sensor(object):
 
     
     def unpack8(self, bytes, samplingrate, scale):
+        """unpacks the 8 byte sequences of the sensor to hex-strings
+
+        :param bytes: the bytes from your sensor
+        :type bytes: bytes
+        :param samplingrate: current samplingrate of the sensor
+        :type samplingrate: int
+        :param scale: current scale of the sensor
+        :type scale: int
+        """
+
         j = 0
         pos = 0
         accvalues = [0, 0, 0]
@@ -958,6 +968,16 @@ class sensor(object):
                 j += 1
 
     def unpack10(self, bytes, samplingrate, scale):
+        """unpacks the 10 byte sequences of the sensor to hex-strings
+
+        :param bytes: the bytes from your sensor
+        :type bytes: bytes
+        :param samplingrate: current samplingrate of the sensor
+        :type samplingrate: int
+        :param scale: current scale of the sensor
+        :type scale: int
+        """
+
         i = 0
         j = 0
         pos = 0
@@ -1039,6 +1059,16 @@ class sensor(object):
 
 
     def unpack12(self, bytes, samplingrate, scale):
+        """unpacks the 12 byte sequences of the sensor to hex-strings
+
+        :param bytes: the bytes from your sensor
+        :type bytes: bytes
+        :param samplingrate: current samplingrate of the sensor
+        :type samplingrate: int
+        :param scale: current scale of the sensor
+        :type scale: int
+        """
+
         i = 0
         j = 0
         pos = 0
