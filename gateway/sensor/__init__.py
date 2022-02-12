@@ -690,7 +690,7 @@ class sensor(object):
                 Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
 
-        Log_sensor.info("%d Werte entpackt" % (j,))
+        Log_sensor.info("%d unpacked values" % (j,))
         return x_vector, y_vector, z_vector, timestamp_list
 
         

@@ -79,7 +79,6 @@ class ErrorBootloaderModus(Exception):
 class FutureHolder():
     """Eventhandler to communicate between sensor and gateway asynchron.
 
-
     :return: None
     :rtype: None
     """

@@ -6,11 +6,12 @@ to send it to a backend like influx or mainflux.
 import logging
 
 log = logging.getLogger("msg")
+
 """
 This region is used to wrap the returned values of the sensor into an object
 """
 
-# %% received msg objects from sensor
+
 class return_values_from_sensor(object):
     def __init__(self,returnValue=None):
         """This class is used to create a standard
@@ -247,7 +248,7 @@ class flash_statistics_Object(object):
         self.mac = mac
 
 class status_object(object):
-    def __init__(self, status,mac):
+    def __init__(self, status, mac):
         """Classmethod to parse the get_status() return values.
 
         :param status: [description]
