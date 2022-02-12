@@ -1131,6 +1131,12 @@ class sensor(object):
                     j = 0
    
     def callback(self, sender: int, value: bytearray):
+        """this callback is triggered on all data received in GATT-mode. It triggers the correct unpack-method to convert the raw received data into readable hex-strings and extracts the values from those strings. If the sensor reports an error, the callback is going to stop the process using the stopevent of self.
+        param sender: address of the sender
+        type sender: int
+        param value: the bytearray that was received from the sender and needs to be forwarded to the correct unpack-method
+        type value: bytearray
+        """
         # self.process_data_12(sensordaten, value[6], value[4])
         print("Received: %s" % binascii.hexlify(value, "-"))
         if value[0] == 0x4A:
