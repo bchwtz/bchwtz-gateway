@@ -6,7 +6,7 @@ from gateway import sensor
 import logging 
 import zipfile # python standard library
 import os # python standard library
-import tqdm
+from tqdm import tqdm
 
 # Creat a named logger 'log' and set it on INFO level
 log = logging.getLogger('dfu_flashing')
