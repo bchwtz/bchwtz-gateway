@@ -50,7 +50,7 @@ class Event_ts(asyncio.Event):
 
 class SensorConfig():
     def __init__(self, sample_rate=None, resolution=None, scale=None, dsp_function=None, dsp_parameter=None, mode=None, divider=None, mac=None):
-        """[summary]
+        """Storage dto for the sensor's config. It is used to store all important parameters.
 
         :param sample_rate: [description], defaults to None
         :type sample_rate: [type], optional
@@ -79,7 +79,7 @@ class SensorConfig():
         self.mac = mac
 
     def from_dict(dct):
-        """[summary]
+        """ Converts a dictionary with the correct key-value-set to a sensor config object.
 
         :param dct: [description]
         :type dct: [type]
