@@ -40,17 +40,16 @@ If the token is lost, the process must be repeated.
 
 ## Get the docs
 
-To get detailed informations about functions and classes its recommanded to read the 
-full documentation. To do so you can run the following command after you have installed the 
-package as explained above:
+To get detailed information about functions and classes, it is recommended to read the 
+whole documentation. To get the documentation you can run the following command. Please make sure you have installed the python package as explained above.
 
 ```{code-block} python
 make html
 ```
-This command should trigger the sphinx framework and it should generate an outpult like below:
+This command should trigger the sphinx framework and it should generate an outpult like this:
 
 ```{code-block} python
-phinx v4.4.0 in Verwendung
+sphinx v4.4.0 in Verwendung
 making output directory... erledigt
 WARNING: html_static_path entry '_static' does not exist
 [autosummary] generating autosummary for: gateway.experimental.flashing.rst, gateway.experimental.mqttThing.rst, gateway.experimental.rst, gateway.hub.rst, gateway.sensor.rst, git_installation_on_raspberry.md, index.rst, intro_to_sphinx.rst, link_to_readme.md
@@ -58,11 +57,11 @@ Failed to import gateway.experimental.mqttThing.
 ```
 
 ```{admonition} Note
-If yout run the `make html` command, before you run the installation process, the make file will probably not work
-or the autodoc-funktions will raise multiple error caused by import and ModuleNotFound errors. 
+If you run the `make html` command, before you run the installation process, the make file will probably not work
+or the autodoc-funktions will raise multiple errors caused by import and ModuleNotFound errors. 
 ```
-The documentation will be stored under `docs/_build` as html files.
-To remove this file you can simply run `make clean` in terminal.
+The documentation will be stored in `docs/_build` as html files.
+To remove this file you can run `make clean` in terminal.
 
 ## Get sensor advertisments
 The Advertisements of the sensor contain values like humidity, temperature, pressure as well as acceleration data, battery and movement information. 
