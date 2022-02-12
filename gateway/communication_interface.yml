@@ -6,7 +6,7 @@ communication_channels:
     DFU_CONTROL_POINT: "8EC90001-F315-4F60-9FB8-838830DAEA50"
     DFU_DATA_POINT: "8EC90002-F315-4F60-9FB8-838830DAEA50"
 #Adv_UART_RX > Bidirektional
-      
+
 commands:
     readAllString: '4a4a110100000000000000'
     activate_logging_at_sensor: '4a4a080100000000000000'
@@ -18,4 +18,5 @@ commands:
     substring_set_sensor_time: '212108'
     get_flash_statistic: 'FAFA0d0000000000000000'
     get_logging_status: '4A4A090000000000000000'
+    activate_streaming: "4a4a080200000000000000"
     get_heartbeat: '2200F30000000000000000'

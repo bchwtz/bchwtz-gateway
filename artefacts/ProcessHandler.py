@@ -249,5 +249,3 @@ if __name__ == '__main__':
         threadListener.join()
         threadAdv.join()
         Log_ProcessHandlerMF.info('Shutdown threads successfull')
-    
-

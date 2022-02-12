@@ -4,6 +4,7 @@ For this module to work properly, all dependencies must be installed
 and the `communication_interface. yml` must be recorded during the installation process.
 Hint: The logging level can be changed with sensor.Log_sensor.setLevel(logging.warning)
 """
+import binascii
 import struct # built-in
 import logging # built-in
 import os.path # built-in
@@ -23,6 +24,7 @@ from gateway.sensor.MessageObjects import return_values_from_sensor # internal
 with open(os.path.dirname(__file__) + '/../communication_interface.yml') as ymlfile:
     # load interface specifications
     sensor_interface = yaml.safe_load(ymlfile)
+    ymlfile.close()
 
 
 # Creat a named logger 'sensor' and set it on INFO level
@@ -33,38 +35,80 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 console_handler.setFormatter(formatter)
 Log_sensor.addHandler(console_handler)
 
-
 class Event_ts(asyncio.Event):
-    """Custom event loop class for for the sensor object.
+    """Custom event loop class for the sensor().
 
-    Args:
-        asyncio (asyncio.Event): Event_ts inherit asyncio.Event functions.
-    """    
-    def clear(self):
-        """Threadsafe clear of eventloop.
-        """        
+    :param asyncio: None
+    :type asyncio: Event_ts inherit asyncio.Event functions.
+    """
+
+    def clear(self):     
         self._loop.call_soon_threadsafe(super().clear)
 
-    def set(self):
-        """Threadsafe set of eventloop.
-        """        
+    def set(self):    
         self._loop.call_soon_threadsafe(super().set)
 
+class SensorConfig():
+    def __init__(self, sample_rate=None, resolution=None, scale=None, dsp_function=None, dsp_parameter=None, mode=None, divider=None, mac=None):
+        """Storage dto for the sensor's config. It is used to store all important parameters. This config object shall be updated on each update to the sensor config itself.
+
+        :param sample_rate: current samplerate of the sensor, defaults to None
+        :type sample_rate: int, optional
+        :param resolution: current resolution of the sensor, defaults to None
+        :type resolution: int, optional
+        :param scale: current scale of the sensor, defaults to None
+        :type scale: int, optional
+        :param dsp_function: current dsp function, defaults to None
+        :type dsp_function: int, optional
+        :param dsp_parameter: current dsp parameter, defaults to None
+        :type dsp_parameter: int, optional
+        :param mode: current mode of the sensor, defaults to None
+        :type mode: int, optional
+        :param divider: current divider of the sensor, defaults to None
+        :type divider: int, optional
+        :param mac: mac address of the sensor, defaults to None
+        :type mac: string, optional
+        """
+        self.sample_rate = sample_rate
+        self.resolution = resolution
+        self.scale = scale
+        self.dsp_funtion = dsp_function
+        self.dsp_parameter = dsp_parameter
+        self.mode = mode
+        self.divider = divider
+        self.mac = mac
+
+    def from_dict(dct):
+        """ Converts a dictionary with the correct key-value-set to a sensor config object.
+
+        :param dct: [description]
+        :type dct: [type]
+        :return: [description]
+        :rtype: [type]
+        """
+        self = SensorConfig()
+        for key in dct:
+            setattr(self, key, dct[key])
+        print("set new config")
+        return self
+    def __repr__(self) -> str:
+        return str(self.__dict__)
 
 class sensor(object):
     """An object of this class creates a digital twin of a sensor. Every 
     sensor has its own mac and name.
 
-    Args:
-        object : Twin of an heardware sensor.
+    :param sensor: This object represents a hardware ble device.
+    :type sensor: sensor.sensor
     """
     def __init__(self, name : str, mac : str):
-        """Initialization of a sensor
+        """Initialization of a sensor object.
 
-        Args:
-            name (str): Sensor name.
-            mac (str): Sensor mac
-        """        
+        :param name: Name of the BLE device.
+        :type name: str
+        :param mac: MAC address of the BLE device.
+        :type mac: str
+        """
         self.mac = mac
         self.name = name
         self.main_loop = asyncio.get_event_loop()
@@ -75,11 +119,13 @@ class sensor(object):
         self.crcfun = crcmod.mkCrcFun(0x11021, rev=False, 
                                         initCrc=0xffff, xorOut=0)
         self.sensordaten = bytearray()
+        self.stopevent = Event_ts()
+        self.config = SensorConfig()
         return
 
     def clear(self):
-        """Function to manually creating the 
-        sensor_data and data variable.
+        """Function to manually recreate the sensor_data
+        and data variable.
         """
         self.sensor_data = list()
         self.data = list()
@@ -91,7 +137,7 @@ class sensor(object):
         """        
         Log_sensor.info("Start timeout function")
         while time.time() - self.start_time < 10:
-            Log_sensor.INFO("Timeout timer running {}".format(
+            Log_sensor.info("Timeout timer running {}".format(
                 time.strftime("%H:%M:%S", time.localtime(self.start_time)))
                 )
             await asyncio.sleep(1)
@@ -106,14 +152,14 @@ class sensor(object):
     def work_loop(self, command, write_channel, accelerom=False):
         """Initialize and start workloops for specific tasks.
 
-        Args:
-            command (str): Command from sensor_interface
-            write_channel ([type]): Channel from sensor_interface
-            accelerom (bool, optional): Indicate which callback function
-            has to be used. Defaults to False.
-        """        
-        self.taskobj = self.main_loop.create_task(self.connect_ble_sensor(command, 
-                                                    write_channel, accelerom))
+        :param command: Command from sensor_interface
+        :type command: str
+        :param write_channel: Channel from sensor_interface.
+        :type write_channel: str
+        :param accelerom: Indicate which callback function has to be used. Defaults to False
+        :type accelerom: bool, optional
+        """
+        self.taskobj = self.main_loop.create_task(self.connect_ble_sensor(command, write_channel, accelerom))
         try:
             self.main_loop.run_until_complete(self.taskobj)
         except Exception as e:
@@ -121,14 +167,15 @@ class sensor(object):
         return
     
     async def connect_ble_sensor(self, command_string, write_channel, accelerom):
-        """Start GATT connection. Listen to callbacks and send commands.
+        """Starts GATT connection. Listen to callbacks and send commands.
 
-        Args:
-            ccommand_string (str): Command from sensor_interface
-            write_channel ([type]): Channel from sensor_interface
-            accelerom (bool, optional): Indicate which callback function
-            has to be used. Defaults to False.
-        """        
+        :param command_string: Command from sensor_interface.
+        :type command_string: str
+        :param write_channel: Channel from sensor_interdace.
+        :type write_channel: str
+        :param accelerom: Indicates which callback function has to be used.
+        :type accelerom: bool
+        """
         Log_sensor.info("Send {} to MAC {} ".format(self.mac, command_string))
         try:
             async with BleakClient(self.mac) as client:
@@ -163,19 +210,21 @@ class sensor(object):
                 Log_sensor.info('Stop notify: %s' % (self.mac))
                 Log_sensor.info("Task done connect_to_mac_command!")
         except Exception as e:
-            Log_sensor.warning('Connection faild at MAC %s' % (self.mac))
+            Log_sensor.warning('Connection failed at MAC %s' % (self.mac))
             Log_sensor.error("Error: {}".format(e))
         return
     
     def handle_ble_callback(self, client: BleakClient, sender: int, value: bytearray):
         """Parse incomming messages and save it into sensor_data
 
-        Args:
-            client (BleakClient): Object with connection specifications to a specific 
-            sensor and channel
-            sender (int): [description]
-            value (bytearray): Callbacks
-        """        
+        :param client: Object with connection specifications to a specific.
+        :type client: BleakClient
+        :param sender: internal use
+        :type sender: int
+        :param value: callbacks
+        :type value: bytearray
+        """
+
         if value[0] == 0x22 and value[2] == 0xF2:
             status_string = str(self.ri_error_to_string(value[3]), )
             Log_sensor.info("Status: %s" % status_string)
@@ -205,10 +254,10 @@ class sensor(object):
             elif value[2] == 0x09:
 
                 Log_sensor.info("Received time: %s" % hexlify(value[:-9:-1]))
-                recieved_time = time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(value[:-9:-1]), 16) / 1000))
-                Log_sensor.info(recieved_time)
-                self.sensor_data.append([message_return_value.from_get_time(status=status_string, recieved_time=recieved_time,
-                                                   mac=client.address).returnValue.__dict__])
+                received_time=time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(value[:-9:-1]), 16) / 1000))
+                Log_sensor.info(received_time)
+                self.sensor_data.append(message_return_value.from_get_time(status=status_string, received_time=received_time,
+                                                   mac=client.address).returnValue.__dict__)
                 self.stopEvent.set()
                 self.notification_done = True
 
@@ -219,11 +268,12 @@ class sensor(object):
                     sample_rate = 400
                 else:
                     Log_sensor.info("Samplerate:    %d Hz" % value[4])
-                    sample_rate = int(value[4])
-                recieved_config = message_return_value.from_get_config(status = status_string,sample_rate = sample_rate,resolution = int(value[5]),
-                                                    scale = int(value[6]), dsp_function=int(value[7]), dsp_parameter=int(value[8]),
-                                                    mode="%x"% value[9],divider = int(value[10]), mac = client.address)
-                self.sensor_data.append([recieved_config.returnValue.__dict__])
+                    sample_rate=int(value[4])
+                received_config=message_return_value.from_get_config(status=status_string,sample_rate=sample_rate,resolution= int(value[5]),
+                                                    scale=int(value[6]),dsp_function=int(value[7]), dsp_parameter=int(value[8]),
+                                                    mode="%x"% value[9],divider=int(value[10]), mac=client.address)
+                self.sensor_data.append(received_config.returnValue.__dict__)
+                self.config = SensorConfig.from_dict(received_config.returnValue.__dict__)
                 self.notification_done=True
                 self.stopEvent.set()
 
@@ -240,12 +290,12 @@ class sensor(object):
             words_used = value[13] | (value[14] << 8)
             largest_contig = value[15] | (value[16] << 8)
             freeable_words = value[17] | (value[18] << 8)
-            recieved_flash_statistic=message_return_value.from_get_flash_statistics(
+            received_flash_statistic=message_return_value.from_get_flash_statistics(
             logging_status=logging_status, ringbuffer_start=ringbuffer_start,
             ringbuffer_end=ringbuffer_end, ringbuffer_size=ringbuffer_size, valid_records=valid_records, dirty_records=dirty_records,
             words_reserved=words_reserved, words_used= words_used, largest_contig=largest_contig, freeable_words=freeable_words,
             mac=client.address)
-            self.sensor_data.append([recieved_flash_statistic.returnValue.__dict__])
+            self.sensor_data.append([received_flash_statistic.returnValue.__dict__])
             Log_sensor.info("Last Status %s" % (str(self.ri_error_to_string(logging_status)),))
             Log_sensor.info("Ringbuffer start %d" % (ringbuffer_start,))
             Log_sensor.info("Ringbuffer end %d" % (ringbuffer_end,))
@@ -281,16 +331,17 @@ class sensor(object):
         self.sensordaten = bytearray()      
         return
     
-    async def handle_data(self,handle, value):
+    async def handle_data(self, handle, value):
         """Special callback function to handle incomming accelerometer data.
 
-        Args:
-            handle ([type]): [description]
-            value ([type]): Callback as bytearray.
-
-        Returns:
-            x,y,z,timestamp: Return timestamps and acceleration data as vector.
-        """        
+        :param handle: Artefact of SensorGatewayBleak library. Not in use
+        :type handle: deprecated, not in use anymore
+        :param value: Callbacks as bytearray.
+        :type value: bytearray
+        :return: x,y,z,timestamp
+        :rtype: int, int, int, timestamp
+        """
+              
         if value[0] == 0x11:
             # Daten
             self.sensordaten.extend(value[1:])
@@ -347,6 +398,17 @@ class sensor(object):
         return
     
     def process_data_8(self, bytes, scale, rate):
+        """Parse acceleration data with an resolution of 8 Bit.
+
+        :param bytes: Samples from bytearray
+        :type bytes: bytes
+        :param scale: Sensor specific scale
+        :type scale: int
+        :param rate: Sensor specific sampling rate.
+        :type rate: int
+        :return: x_vector, y_vector, z_vector, timestamp_list
+        :rtype: list
+        """
         j = 0
         pos = 0
         koords = ["\nx", "y", "z"]
@@ -406,6 +468,17 @@ class sensor(object):
         return x_vector, y_vector, z_vector, timestamp_list
 
     def process_data_10(self, bytes, scale, rate):
+        """Parse acceleration data with an resolution of 10 Bit.
+
+        :param bytes: Samples from bytearray
+        :type bytes: bytes
+        :param scale: Sensor specific scale
+        :type scale: int
+        :param rate: Sensor specific sampling rate.
+        :type rate: int
+        :return: x_vector, y_vector, z_vector, timestamp_list
+        :rtype: list
+        """
         j = 0
         pos = 0
         koords = ["\nx", "y", "z"]
@@ -531,6 +604,17 @@ class sensor(object):
         return x_vector, y_vector, z_vector, timestamp_list
 
     def process_data_12(self, bytes, scale, rate):
+        """Parse acceleration data with an resolution of 12 Bit.
+
+        :param bytes: Samples from bytearray
+        :type bytes: bytes
+        :param scale: Sensor specific scale
+        :type scale: int
+        :param rate: Sensor specific sampling rate.
+        :type rate: int
+        :return: x_vector, y_vector, z_vector, timestamp_list
+        :rtype: list
+        """
         j = 0
         pos = 0
         koords = ["x", "y", "z"]
@@ -606,12 +690,23 @@ class sensor(object):
                 Log_sensor.info("%d: %s = %f%s" % (j, koords[j % 3], value, "\n" if (j % 3 == 2) else ""))
                 j += 1
 
-        Log_sensor.info("%d Werte entpackt" % (j,))
+        Log_sensor.info("%d unpacked values" % (j,))
         return x_vector, y_vector, z_vector, timestamp_list
 
         
     def set_config(self, sampling_rate='FF', sampling_resolution='FF', measuring_range='FF', divider="FF"):
-        print("setting new config")
+        """Set config function for BLE devices.
+
+        :param sampling_rate: Frequency of the measurements, defaults to 'FF'
+        :type sampling_rate: str, optional
+        :param sampling_resolution: Resolution of the acceleration measurement, defaults to 'FF'
+        :type sampling_resolution: str, optional
+        :param measuring_range: Scale of the measurements, defaults to 'FF'
+        :type measuring_range: str, optional
+        :param divider: Can be set to customize the frequency, defaults to "FF"
+        :type divider: str, optional
+        """
+        Log_sensor.info("Setting new config for sensor {}".format(self.mac))
         if sampling_rate == 'FF':
             hex_sampling_rate = 'FF'
         elif sampling_rate in SamplingRate._value2member_map_:
@@ -681,16 +776,14 @@ class sensor(object):
         The unit of the heartbeet is millisecond [ms]. Just values between 100 ms and
         65.000 ms are permitted.
 
-        Args:
-            heartbeat (int): Frequency of the advertisements in milliseconds.
-        """        
+        :param heartbeat: Frequency of the advertisements in milliseconds.
+        :type heartbeat: int
+        """
         Log_sensor.info("set heartbeat to: {}".format(heartbeat))
         hex_beat = hex(heartbeat)[2:]
         hex_msg = f"2200F2{'0000'[:4 - len(hex_beat)]}{hex_beat}000000000000"
         self.work_loop(hex_msg, sensor_interface["communication_channels"]["UART_TX"])
 
-
-    
     def get_flash_statistic(self):
         """Get flash statistic from sensor.
         """        
@@ -727,12 +820,12 @@ class sensor(object):
         return
     
     def ri_error_to_string(self, error):
-        """
-        Decodes the Tag error, if it was raised.
-        
-        :returns:
-            result : set
-                A set of occured errors.
+        """Decodes the Tag error, if it was raised.
+
+        :param error: Error value in hex.
+        :type error: byte
+        :return: Result with decoded error code
+        :rtype: set
         """
         result = set()
         if (error == 0):
@@ -808,4 +901,301 @@ class sensor(object):
         elif(error == 31):
             Log_sensor.error("RD_ERROR_FATAL")
             result.add("RD_ERROR_FATAL")
-        return result    
+        return result
+
+    def unpack8(self, bytes, samplingrate, scale):
+        """unpacks the 8 byte sequences of the sensor to hex-strings
+
+        :param bytes: the bytes from your sensor
+        :type bytes: bytes
+        :param samplingrate: current samplingrate of the sensor
+        :type samplingrate: int
+        :param scale: current scale of the sensor
+        :type scale: int
+        """
+
+        j = 0
+        pos = 0
+        accvalues = [0, 0, 0]
+        timestamp = 0
+        timeBetweenSamples = 1000/samplingrate
+
+        if(scale == 2):
+            faktor = 16/(256*1000)
+        elif(scale == 4):
+            faktor = 32/(256*1000)
+        elif(scale == 8):
+            faktor = 64/(256*1000)
+        elif(scale == 16):
+            faktor = 192/(256*1000)
+
+        while(pos < len(bytes)):
+            # Ein Datenblock bei 8 Bit Auflösung ist 104 Bytes lang
+            # Jeder Datenblock beginnt mit einem Zeitstempel
+            if pos % 104 == 0:
+                timestamp = int.from_bytes(
+                    bytes[pos:pos+7], byteorder='little', signed=False)
+                pos += 8
+                j = 0
+
+            value = bytes[pos] << 8
+            pos += 1
+            if(value & 0x8000 == 0x8000):
+                # negative Zahl
+                # 16Bit Zweierkomplement zurückrechnen
+                value = value ^ 0xffff
+                value += 1
+                # negieren
+                value = -value
+
+            # save value
+            accvalues[j] = value * faktor
+
+            # Write to CSV
+            if(filepointer.csvfile != None and j % 3 == 2):
+                if(filepointer.csvfile != None):
+                    filepointer.csvfile.write("%d;%f;%f;%f\n" % (
+                        timestamp, accvalues[0], accvalues[1], accvalues[1]))
+                else:
+                    print("%d;%f;%f;%f\n" %
+                        (timestamp, accvalues[0], accvalues[1], accvalues[1]))
+                timestamp += timeBetweenSamples
+                j = 0
+            else:
+                j += 1
+
+    def unpack10(self, bytes, samplingrate, scale):
+        """unpacks the 10 byte sequences of the sensor to hex-strings
+
+        :param bytes: the bytes from your sensor
+        :type bytes: bytes
+        :param samplingrate: current samplingrate of the sensor
+        :type samplingrate: int
+        :param scale: current scale of the sensor
+        :type scale: int
+        """
+
+        i = 0
+        j = 0
+        pos = 0
+        accvalues = [0, 0, 0]
+        timestamp = 0
+        timeBetweenSamples = 1000/samplingrate
+
+        if(scale == 2):
+            faktor = 4/(64*1000)
+        elif(scale == 4):
+            faktor = 8/(64*1000)
+        elif(scale == 8):
+            faktor = 16/(64*1000)
+        elif(scale == 16):
+            faktor = 48/(64*1000)
+
+        while(pos < len(bytes)-1):
+            # Ein Datenblock bei 10 Bit Auflösung ist 128 Bytes lang
+            # Jeder Datenblock beginnt mit einem Zeitstempel
+            if pos % 128 == 0:
+                timestamp = int.from_bytes(
+                    bytes[pos:pos+7], byteorder='little', signed=False)
+                pos += 8
+                i = 0
+                j = 0
+
+            else:
+                if i == 0:
+                    value = bytes[pos] & 0xc0
+                    value |= (bytes[pos] & 0x3f) << 10
+                    pos += 1
+                    value |= (bytes[pos] & 0xc0) << 2
+                    i += 1
+
+                elif i == 1:
+                    value = (bytes[pos] & 0x30) << 2
+                    value |= (bytes[pos] & 0x0f) << 12
+                    pos += 1
+                    value |= (bytes[pos] & 0xf0) << 4
+                    i += 1
+
+                elif i == 2:
+                    value = (bytes[pos] & 0x0c) << 4
+                    value |= (bytes[pos] & 0x03) << 14
+                    pos += 1
+                    value |= (bytes[pos] & 0xfc) << 6
+                    i += 1
+
+                elif i == 3:
+                    value = (bytes[pos] & 0x03) << 6
+                    pos += 1
+                    value |= (bytes[pos]) << 8
+                    pos += 1
+                    i = 0
+
+                if(value & 0x8000 == 0x8000):
+                    # negative Zahl
+                    # 16Bit Zweierkomplement zurückrechnen
+                    value = value ^ 0xffff
+                    value += 1
+                    # negieren
+                    value = -value
+
+                # save value
+                accvalues[j] = value * faktor
+
+                j += 1
+
+                # Write to CSV
+                if(j == 3):
+                    if(filepointer.csvfile != None):
+                        filepointer.csvfile.write("%d;%f;%f;%f\n" % (
+                            timestamp, accvalues[0], accvalues[1], accvalues[2]))
+                    else:
+                        print("%d;%f;%f;%f" %
+                            (timestamp, accvalues[0], accvalues[1], accvalues[2]))
+                    timestamp += timeBetweenSamples
+                    j = 0
+
+    def unpack12(self, bytes, samplingrate, scale):
+        """unpacks the 12 byte sequences of the sensor to hex-strings
+
+        :param bytes: the bytes from your sensor
+        :type bytes: bytes
+        :param samplingrate: current samplingrate of the sensor
+        :type samplingrate: int
+        :param scale: current scale of the sensor
+        :type scale: int
+        """
+
+        i = 0
+        j = 0
+        pos = 0
+        accvalues = [0, 0, 0]
+        timestamp = 0
+        timeBetweenSamples = 1000/samplingrate
+
+        if(scale == 2):
+            faktor = 1/(16*1000)
+        elif(scale == 4):
+            faktor = 2/(16*1000)
+        elif(scale == 8):
+            faktor = 4/(16*1000)
+        elif(scale == 16):
+            faktor = 12/(16*1000)
+
+        while(pos < len(bytes)-1):
+            # Ein Datenblock bei 12 Bit Auflösung ist 152 Bytes lang
+            # Jeder Datenblock beginnt mit einem Zeitstempel
+            if pos % 152 == 0:
+                timestamp = int.from_bytes(
+                    bytes[pos:pos+7], byteorder='little', signed=False)
+                pos += 8
+                i = 0
+                j = 0
+
+            else:
+                if i == 0:
+                    value = bytes[pos] & 0xf0
+                    value |= (bytes[pos] & 0x0f) << 12
+                    pos += 1
+                    value |= (bytes[pos] & 0xf0) << 4
+                    i += 1
+
+                elif i == 1:
+                    value = (bytes[pos] & 0x0f) << 4
+                    pos += 1
+                    value |= bytes[pos] << 8
+                    pos += 1
+                    i = 0
+
+                if(value & 0x8000 == 0x8000):
+                    # negative Zahl
+                    # 16Bit Zweierkomplement zurückrechnen
+                    value = value ^ 0xffff
+                    value += 1
+                    # negieren
+                    value = -value
+
+                # save value
+                accvalues[j] = value * faktor
+
+                j += 1
+
+                # Write to CSV
+                if(j == 3):
+                    if(filepointer.csvfile != None):
+                        filepointer.csvfile.write("%d;%f;%f;%f\n" % (
+                            timestamp, accvalues[0], accvalues[1], accvalues[2]))
+                    else:
+                        print("%d;%f;%f;%f" %
+                            (timestamp, accvalues[0], accvalues[1], accvalues[2]))
+                    timestamp += timeBetweenSamples
+                    j = 0
+   
+    def callback(self, sender: int, value: bytearray):
+        """this callback is triggered on all data received in GATT-mode. It triggers the correct unpack-method to convert the raw received data into readable hex-strings and extracts the values from those strings. If the sensor reports an error, the callback is going to stop the process using the stopevent of self.
+        param sender: address of the sender
+        type sender: int
+        param value: the bytearray that was received from the sender and needs to be forwarded to the correct unpack-method
+        type value: bytearray
+        """
+        # self.process_data_12(sensordaten, value[6], value[4])
+        print("Received: %s" % binascii.hexlify(value, "-"))
+        if value[0] == 0x4A:
+            print("Sender: %s" % sender)
+            print("Status: %s" % (str(self.ri_error_to_string(value[3]),)))
+            self.stopevent.set()
+        elif value[0] == 0x11:
+            # self.sensor_data
+            if self.config.resolution == 8:
+                self.unpack8(value[1:], self.config.sample_rate, self.config.scale)
+            elif self.config.resolution == 10:
+                self.unpack10(value[1:], self.config.sample_rate, self.config.scale)
+            elif self.config.resolution == 12:
+                self.unpack12(value[1:], self.config.sample_rate, self.config.scale)
+                
+    async def setup_for_streaming(self):
+        """Change mode to gatt streaming.
+        """
+        UART_RX = sensor_interface["communication_channels"]["UART_RX"]
+        UART_TX = sensor_interface["communication_channels"]["UART_TX"]
+        async with BleakClient(self.config.mac) as client:
+            await client.start_notify(UART_RX, self.callback)
+            await client.write_gatt_char(UART_TX, bytearray.fromhex("4a4a03%02x%02x%02xFFFFFF0000" % (self.config.sample_rate, self.config.resolution, self.config.scale)))
+            await asyncio.sleep(10)
+            await self.stopevent.wait()
+            print("Samplerate set")
+            await client.stop_notify(UART_RX)
+            self.stopevent.clear()
+
+    async def activate_streaming(self):
+        """Start streaming and receive data.
+        """
+        UART_RX = sensor_interface["communication_channels"]["UART_RX"]
+        UART_TX = sensor_interface["communication_channels"]["UART_TX"]
+        async with BleakClient(self.config.mac) as client:
+            await client.start_notify(UART_RX, self.callback)
+            await client.write_gatt_char(UART_TX, bytearray.fromhex(sensor_interface["commands"]["activate_streaming"]))
+            print("Streaming activated")
+            await self.stopevent.wait()
+            await client.stop_notify(UART_RX)
+
+    async def listen_for_data(self, samplingtime=10*60, filename = str(int(time.time()))+".csv"):
+        """Listens for incoming data and writes them to a specified csv file.
+
+        :param samplingtime: hearbeat time
+        :type samplingtime: int
+        :param filename: name of csv
+        :type filename: string
+        """
+        UART_RX = sensor_interface["communication_channels"]["UART_RX"]
+        UART_TX = sensor_interface["communication_channels"]["UART_TX"]
+        filepointer.csvfile = open(filename, "w")
+        async with BleakClient(self.config.mac) as client:
+            await client.start_notify(UART_RX, self.callback)
+            await asyncio.sleep(samplingtime)
+            await client.stop_notify(UART_RX)
+        filepointer.csvfile.close()
+        filepointer.csvfile = None
+
+# Pointer to file which receives data
+class filepointer:
+    csvfile = None

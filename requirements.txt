@@ -10,3 +10,4 @@ pyyaml
 paho-mqtt
 pytest
 myst-parser
+tqdm

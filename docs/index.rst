@@ -13,10 +13,10 @@ Welcome to gateway's documentation!
    git_installation_on_raspberry.md
    intro_to_sphinx.rst
    link_to_readme.md
+   unittest.rst
    gateway.hub.rst
    gateway.sensor.rst
    gateway.experimental.flashing.rst
-   gateway.experimental.mqttThing.rst
 
 
 
