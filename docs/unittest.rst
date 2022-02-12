@@ -10,3 +10,7 @@ are called by the respective test and checked for the occurrence of certain erro
 
 To improve continuous code integration, the file `gateway_unittest.yml` was created under the subdirectory `.github/workflows`.
 The workflow executes the `setup. py` in a virtual environment and then performs the unittest.
+
+To run the pytest localy type the following command while you are in the gateway directory:
+
+`pytest tests/test_gateway.py`

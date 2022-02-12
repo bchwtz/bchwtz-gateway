@@ -191,10 +191,10 @@ class device_firmware_upgrade():
 
         :param client: Bleak Client
         :type client: BleakClient
-        :param obj: [description]
-        :type obj: [type]
+        :param obj: object
+        :type obj: object
         :param data: bin and dat file
-        :type data: [type]
+        :type data: object
         :raises Exception: if the crcs do not match to each other, this exception will be raised.
         """
 
