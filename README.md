@@ -185,4 +185,5 @@ The heartbeat can be set between 200 [ms] and ~65.000 [ms].
 The value will be encoded in two bytes.
 
 200 = 00 C8
+
 65.000 = FD E8

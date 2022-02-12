@@ -4,14 +4,6 @@ gateway.hub package
 Submodules
 ----------
 
-gateway.hub.AdvertisementDecoder module
----------------------------------------
-
-.. automodule:: gateway.hub.AdvertisementDecoder
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 gateway.hub.AdvertisementLogging module
 ---------------------------------------
 

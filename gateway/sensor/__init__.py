@@ -219,7 +219,7 @@ class sensor(object):
 
         :param client: Object with connection specifications to a specific.
         :type client: BleakClient
-        :param sender: [description]
+        :param sender: internal use
         :type sender: int
         :param value: callbacks
         :type value: bytearray
@@ -335,7 +335,7 @@ class sensor(object):
         """Special callback function to handle incomming accelerometer data.
 
         :param handle: Artefact of SensorGatewayBleak library. Not in use
-        :type handle: [type]
+        :type handle: deprecated, not in use anymore
         :param value: Callbacks as bytearray.
         :type value: bytearray
         :return: x,y,z,timestamp
@@ -784,8 +784,6 @@ class sensor(object):
         hex_msg = f"2200F2{'0000'[:4 - len(hex_beat)]}{hex_beat}000000000000"
         self.work_loop(hex_msg, sensor_interface["communication_channels"]["UART_TX"])
 
-
-    
     def get_flash_statistic(self):
         """Get flash statistic from sensor.
         """        
@@ -827,7 +825,7 @@ class sensor(object):
         :param error: Error value in hex.
         :type error: byte
         :return: Result with decoded error code
-        :rtype: [type]
+        :rtype: set
         """
         result = set()
         if (error == 0):
@@ -905,7 +903,6 @@ class sensor(object):
             result.add("RD_ERROR_FATAL")
         return result
 
-    
     def unpack8(self, bytes, samplingrate, scale):
         """unpacks the 8 byte sequences of the sensor to hex-strings
 
@@ -1057,7 +1054,6 @@ class sensor(object):
                     timestamp += timeBetweenSamples
                     j = 0
 
-
     def unpack12(self, bytes, samplingrate, scale):
         """unpacks the 12 byte sequences of the sensor to hex-strings
 
@@ -1133,8 +1129,7 @@ class sensor(object):
                             (timestamp, accvalues[0], accvalues[1], accvalues[2]))
                     timestamp += timeBetweenSamples
                     j = 0
-
-        
+   
     def callback(self, sender: int, value: bytearray):
         # self.process_data_12(sensordaten, value[6], value[4])
         print("Received: %s" % binascii.hexlify(value, "-"))

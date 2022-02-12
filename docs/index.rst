@@ -17,7 +17,6 @@ Welcome to gateway's documentation!
    gateway.hub.rst
    gateway.sensor.rst
    gateway.experimental.flashing.rst
-   gateway.experimental.mqttThing.rst
 
 
 
