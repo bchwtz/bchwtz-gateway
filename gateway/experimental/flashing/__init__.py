@@ -6,11 +6,12 @@ from gateway import sensor
 import logging 
 import zipfile # python standard library
 import os # python standard library
+import tqdm
 
 # Creat a named logger 'log' and set it on INFO level
 log = logging.getLogger('dfu_flashing')
 console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.INFO)
+console_handler.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 console_handler.setFormatter(formatter)
 log.addHandler(console_handler)
@@ -216,7 +217,7 @@ class device_firmware_upgrade():
             log.info("data sending...")
             bytecount = 0
             globalbytecount = 0
-            for i in range(offset, len(data), 16):
+            for i in tqdm(range(offset, len(data), 16)):
                 ende=i+16
                 if ende > len(data):
                     ende= len(data)
