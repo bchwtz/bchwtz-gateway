@@ -50,24 +50,24 @@ class Event_ts(asyncio.Event):
 
 class SensorConfig():
     def __init__(self, sample_rate=None, resolution=None, scale=None, dsp_function=None, dsp_parameter=None, mode=None, divider=None, mac=None):
-        """Storage dto for the sensor's config. It is used to store all important parameters.
+        """Storage dto for the sensor's config. It is used to store all important parameters. This config object shall be updated on each update to the sensor config itself.
 
-        :param sample_rate: [description], defaults to None
-        :type sample_rate: [type], optional
-        :param resolution: [description], defaults to None
-        :type resolution: [type], optional
-        :param scale: [description], defaults to None
-        :type scale: [type], optional
-        :param dsp_function: [description], defaults to None
-        :type dsp_function: [type], optional
-        :param dsp_parameter: [description], defaults to None
-        :type dsp_parameter: [type], optional
-        :param mode: [description], defaults to None
-        :type mode: [type], optional
-        :param divider: [description], defaults to None
-        :type divider: [type], optional
-        :param mac: [description], defaults to None
-        :type mac: [type], optional
+        :param sample_rate: current samplerate of the sensor, defaults to None
+        :type sample_rate: int, optional
+        :param resolution: current resolution of the sensor, defaults to None
+        :type resolution: int, optional
+        :param scale: current scale of the sensor, defaults to None
+        :type scale: int, optional
+        :param dsp_function: current dsp function, defaults to None
+        :type dsp_function: int, optional
+        :param dsp_parameter: current dsp parameter, defaults to None
+        :type dsp_parameter: int, optional
+        :param mode: current mode of the sensor, defaults to None
+        :type mode: int, optional
+        :param divider: current divider of the sensor, defaults to None
+        :type divider: int, optional
+        :param mac: mac address of the sensor, defaults to None
+        :type mac: string, optional
         """
         self.sample_rate = sample_rate
         self.resolution = resolution
@@ -1131,6 +1131,12 @@ class sensor(object):
                     j = 0
    
     def callback(self, sender: int, value: bytearray):
+        """this callback is triggered on all data received in GATT-mode. It triggers the correct unpack-method to convert the raw received data into readable hex-strings and extracts the values from those strings. If the sensor reports an error, the callback is going to stop the process using the stopevent of self.
+        param sender: address of the sender
+        type sender: int
+        param value: the bytearray that was received from the sender and needs to be forwarded to the correct unpack-method
+        type value: bytearray
+        """
         # self.process_data_12(sensordaten, value[6], value[4])
         print("Received: %s" % binascii.hexlify(value, "-"))
         if value[0] == 0x4A:
