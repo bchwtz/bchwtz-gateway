@@ -1,5 +1,5 @@
 # %% Libraries
-from gateway.hub import AdvertisementLogging
+from gateway.hub import advertisement_logging
 from gateway.sensor import sensor
 from bleak import BleakScanner
 import logging
@@ -76,7 +76,7 @@ class hub(object):
         """
         Log_hub.warn("Warning: To stop the advertisementlogging, you need to interrupt the kernel!")
         input("Press any key to confirm!")
-        AdvertisementLogging.advertisement_logging()
+        advertisement_logging.advertisement_logging()
 
   
     
