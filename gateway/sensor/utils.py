@@ -309,9 +309,9 @@ def unpack8(self, bytes, samplingrate, scale, csvfile):
             if(csvfile != None):
                 csvfile.write("%d;%f;%f;%f\n" % (
                     timestamp, accvalues[0], accvalues[1], accvalues[1]))
-            else:
-                logger.info("%d;%f;%f;%f\n" %
-                    (timestamp, accvalues[0], accvalues[1], accvalues[1]))
+            # else:
+                # logger.info("%d;%f;%f;%f\n" %
+                #     (timestamp, accvalues[0], accvalues[1], accvalues[1]))
             timestamp += timeBetweenSamples
             j = 0
         else:
@@ -391,9 +391,9 @@ def unpack10(self, bytes, samplingrate, scale, csvfile):
                 if(csvfile != None):
                     csvfile.write("%d;%f;%f;%f\n" % (
                         timestamp, accvalues[0], accvalues[1], accvalues[2]))
-                else:
-                    logger.info("%d;%f;%f;%f" %
-                        (timestamp, accvalues[0], accvalues[1], accvalues[2]))
+                # else:
+                    # logger.info("%d;%f;%f;%f" %
+                    #     (timestamp, accvalues[0], accvalues[1], accvalues[2]))
                 timestamp += timeBetweenSamples
                 j = 0
 
@@ -458,8 +458,8 @@ def unpack12(self, bytes, samplingrate, scale, csvfile):
                 if(csvfile != None):
                     csvfile.write("%d;%f;%f;%f\n" % (
                         timestamp, accvalues[0], accvalues[1], accvalues[2]))
-                else:
-                    logger.info("%d;%f;%f;%f" %
-                        (timestamp, accvalues[0], accvalues[1], accvalues[2]))
+                # else:
+                    # logger.info("%d;%f;%f;%f" %
+                    #     (timestamp, accvalues[0], accvalues[1], accvalues[2]))
                 timestamp += timeBetweenSamples
                 j = 0
