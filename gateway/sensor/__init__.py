@@ -159,7 +159,7 @@ class sensor(object):
         except:
             pass
     
-    def work_loop(self, command, write_channel, accelerom=False):
+    def work_loop(self, command, write_channel):
         """Initialize and start workloops for specific tasks.
 
         :param command: Command from sensor_interface
@@ -169,27 +169,25 @@ class sensor(object):
         :param accelerom: Indicate which callback function has to be used. Defaults to False
         :type accelerom: bool, optional
         """
-        self.taskobj = self.main_loop.create_task(self.connect_ble_sensor(command, write_channel, accelerom))
+        self.taskobj = self.main_loop.create_task(self.connect_ble_sensor(command, write_channel))
         try:
             self.main_loop.run_until_complete(self.taskobj)
         except Exception as e:
             logger.error("Exception occured: {}".format(e))
         return
     
-    async def connect_ble_sensor(self, command_string, write_channel, accelerom):
+    async def connect_ble_sensor(self, command_string, write_channel):
         """Starts GATT connection. Listen to callbacks and send commands.
 
         :param command_string: Command from sensor_interface.
         :type command_string: str
         :param write_channel: Channel from sensor_interdace.
         :type write_channel: str
-        :param accelerom: Indicates which callback function has to be used.
-        :type accelerom: bool
         """
         logger.info("Send {} to MAC {} ".format(command_string, self.mac))
         try:
             async with BleakClient(self.mac) as client:
-                if accelerom:
+                if command_string == sensor_interface["commands"]["get_acceleration_data"]:
                     await client.start_notify(
                         sensor_interface["communication_channels"]["UART_RX"], self.handle_data
                         )
@@ -241,7 +239,7 @@ class sensor(object):
 
         # Response messages des Sensors
         if value[0] == 0x22 and value[2] == 0xF2:
-            status_string = str(self.ri_error_to_string(value[3]), )
+            status_string = str(ri_error_to_string(value[3]), )
             logger.info("Status: %s" % status_string)
             self.notification_done=True
             self.stopEvent.set() # das kann vermutlich weg -> stopEvent wird so 2mal gesetzt.
@@ -250,7 +248,7 @@ class sensor(object):
             logger.info("Received heartbeat: {}".format(
                 int.from_bytes(value[4:6], byteorder='big', signed=False))
                 )
-            status_string = str(self.ri_error_to_string(value[3]), )
+            status_string = str(ri_error_to_string(value[3]), )
             logger.info("Status: %s" % status_string)
             self.notification_done = True
             self.stopEvent.set()
@@ -258,7 +256,7 @@ class sensor(object):
         if value[0] == 0x4A or value[0] == 0x21:
             message_return_value = return_values_from_sensor()
             logger.info("Received: %s" % hexlify(value))
-            status_string = str(self.ri_error_to_string(value[3]), )
+            status_string = str(ri_error_to_string(value[3]), )
             logger.info("Status: %s" % status_string)
             if len(value) == 4:
                 test = message_return_value.form_get_status(status=int(value[3]), mac=client.address)
@@ -311,7 +309,7 @@ class sensor(object):
             words_reserved=words_reserved, words_used= words_used, largest_contig=largest_contig, freeable_words=freeable_words,
             mac=client.address)
             self.sensor_data.append([received_flash_statistic.returnValue.__dict__])
-            logger.info("Last Status %s" % (str(self.ri_error_to_string(logging_status)),))
+            logger.info("Last Status %s" % (str(ri_error_to_string(logging_status)),))
             logger.info("Ringbuffer start %d" % (ringbuffer_start,))
             logger.info("Ringbuffer end %d" % (ringbuffer_end,))
             logger.info("Ringbuffer size %d" % (ringbuffer_size,))
@@ -374,7 +372,7 @@ class sensor(object):
             logger.info('Bandwidth : {} Bytes/Second'.format(self.delta))
             self.stopEvent.set()
             # Status
-            logger.debug("Status: %s" % str(self.ri_error_to_string(value[3])))
+            logger.debug("Status: %s" % str(ri_error_to_string(value[3])))
 
             #  TODO: CRC Check in externe Funktion
             crc = value[12:14]
@@ -553,7 +551,7 @@ class sensor(object):
         logger.debug("Received: %s" % binascii.hexlify(value, "-"))
         if value[0] == 0x4A:
             logger.debug("Sender: %s" % sender)
-            logger.debug("Status: %s" % (str(self.ri_error_to_string(value[3]),)))
+            logger.debug("Status: %s" % (str(ri_error_to_string(value[3]),)))
             self.stopevent.set()
         elif value[0] == 0x11:
             # self.sensor_data
