@@ -14,7 +14,8 @@ import yaml # third-party
 import asyncio # third-pary
 from bleak import BleakClient # third-party
 import time # built-in
-import crcmod # third-party
+import crcmod
+from gateway.sensor.SensorConfig import SensorConfig # third-party
 from gateway.sensor.decode_utils import process_data_8, process_data_10, process_data_12, unpack8, unpack10, unpack12
 from gateway.sensor.errorcode_utils import ri_error_to_string
 
@@ -31,59 +32,18 @@ with open(os.path.dirname(__file__) + '/../communication_interface.yml') as ymlf
 UART_RX = sensor_interface["communication_channels"]["UART_RX"]
 UART_TX = sensor_interface["communication_channels"]["UART_TX"]
 
+LOG_LEVEL = logging.INFO
+
+crcfun = crcmod.mkCrcFun(0x11021, rev=False, 
+                                        initCrc=0xffff, xorOut=0)
+
 # Creat a named logger 'sensor' and set it on INFO level
 logger = logging.getLogger('sensor')
 console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-console_handler.setFormatter(formatter)
+console_handler.setLevel(LOG_LEVEL)
+console_handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
 logger.addHandler(console_handler)
-logger.setLevel(logging.INFO)
-
-class SensorConfig():
-    def __init__(self, sample_rate=None, resolution=None, scale=None, dsp_function=None, dsp_parameter=None, mode=None, divider=None, mac=None):
-        """Storage dto for the sensor's config. It is used to store all important parameters. This config object shall be updated on each update to the sensor config itself.
-
-        :param sample_rate: current samplerate of the sensor, defaults to None
-        :type sample_rate: int, optional
-        :param resolution: current resolution of the sensor, defaults to None
-        :type resolution: int, optional
-        :param scale: current scale of the sensor, defaults to None
-        :type scale: int, optional
-        :param dsp_function: current dsp function, defaults to None
-        :type dsp_function: int, optional
-        :param dsp_parameter: current dsp parameter, defaults to None
-        :type dsp_parameter: int, optional
-        :param mode: current mode of the sensor, defaults to None
-        :type mode: int, optional
-        :param divider: current divider of the sensor, defaults to None
-        :type divider: int, optional
-        :param mac: mac address of the sensor, defaults to None
-        :type mac: string, optional
-        """
-        self.sample_rate = sample_rate
-        self.resolution = resolution
-        self.scale = scale
-        self.dsp_funtion = dsp_function
-        self.dsp_parameter = dsp_parameter
-        self.mode = mode
-        self.divider = divider
-        self.mac = mac
-
-    def from_dict(dct):
-        """ Converts a dictionary with the correct key-value-set to a sensor config object.
-
-        :param dct: [description]
-        :type dct: [type]
-        :return: [description]
-        :rtype: [type]
-        """
-        self = SensorConfig()
-        for key in dct:
-            setattr(self, key, dct[key])
-        return self
-    def __repr__(self) -> str:
-        return str(self.__dict__)
+logger.setLevel(LOG_LEVEL)
 
 class sensor(object):
     """An object of this class creates a digital twin of a sensor. Every 
@@ -115,8 +75,6 @@ class sensor(object):
         
         # Check auf Integrität der Daten über Hashwert
         # Cyclix redundancy check
-        self.crcfun = crcmod.mkCrcFun(0x11021, rev=False, 
-                                        initCrc=0xffff, xorOut=0)
 
         # Hilfvariable, wo raw-Data  des Sensors reingeschrieben werden
         self.sensordata = bytearray()
@@ -369,7 +327,7 @@ class sensor(object):
             logger.debug("Received CRC: %s" % hexlify(crc))
 
             # CRC validation
-            ourcrc = self.crcfun(self.sensordata)
+            ourcrc = crcfun(self.sensordata)
 
             if hexlify(crc) == bytearray():
                 logger.info("No crc received")
