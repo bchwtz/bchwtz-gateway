@@ -114,7 +114,7 @@ class sensor(object):
         try:
             self.main_loop.run_until_complete(self.taskobj)
         except Exception as e:
-            logger.error("Exception occured: {}".format(e))
+            logger.error("Error during task execution. Reason: {}".format(e))
         return
     
     async def connect_ble_sensor(self, command_string, write_channel):
