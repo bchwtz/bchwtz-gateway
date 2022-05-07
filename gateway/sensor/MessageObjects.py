@@ -22,7 +22,7 @@ class return_values_from_sensor(object):
         """
         if returnValue is not None:
             self.returnValue=returnValue
-            print(self.returnValue)
+            log.info(self.returnValue)
         else:
             self.returnValue=""
 
@@ -69,7 +69,6 @@ class return_values_from_sensor(object):
         :rtype: [type]
         """
         reval=time_Object(status, received_time,mac)
-        print("got Time")
         return cls(reval)
 
     @classmethod
@@ -122,7 +121,6 @@ class return_values_from_sensor(object):
         :rtype: [type]
         """
         reval=status_object(status,mac)
-        print(reval)
         return cls(reval)
 
     @classmethod
@@ -256,7 +254,6 @@ class status_object(object):
         :param mac: [description]
         :type mac: [type]
         """
-        print("logging status")
         self.mac=mac
         if status==0:
             self.status=1
@@ -264,7 +261,7 @@ class status_object(object):
             self.status=0
         else:
             self.status=-1
-        print(self.status)
+        log.info(self.status)
 
 class acceloration_data_Object(object):
     def __init__(self, accelorationData, mac):
