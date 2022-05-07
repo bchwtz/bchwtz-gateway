@@ -1,4 +1,4 @@
-def ri_error_to_string(self, error):
+def ri_error_to_string(error):
     """Decodes the Tag error, if it was raised.
 
     :param error: Error value in hex.
@@ -9,7 +9,6 @@ def ri_error_to_string(self, error):
     result = set()
     if (error == 0):
         result.add("RD_SUCCESS")
-        self.success = True
     elif(error == 1):
         result.add("RD_ERROR_INTERNAL")
     elif(error == 2):

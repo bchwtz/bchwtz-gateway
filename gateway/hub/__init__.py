@@ -5,15 +5,12 @@ from bleak import BleakScanner
 import logging
 import asyncio
 
+LOG_LEVEL = logging.INFO
 
 # %% Logger
-Log_hub = logging.getLogger('hub')
-Log_hub.setLevel("DEBUG")
-console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-console_handler.setFormatter(formatter)
-Log_hub.addHandler(console_handler)
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger('Hub')
+logger.setLevel(LOG_LEVEL)
 
 # %% hub
 class hub(object):
@@ -21,7 +18,6 @@ class hub(object):
         """Initialize an object from type hub.
         """
         self.main_loop = asyncio.get_event_loop()
-        self.logger = logging.getLogger('hub.hub')
         self.sensorlist: list[sensor] = list()
         return
     
@@ -43,9 +39,9 @@ class hub(object):
         :type devices: bleak.backends.device.BLEDevice
         """
         for i in devices:
-            self.logger.info('Device: %s with Address %s found!' % (i.name, i.address))
+            logger.info('Device: %s with Address %s found!' % (i.name, i.address))
             if ("Ruuvi" in i.name):
-                self.logger.info('Device: %s with Address %s saved in MAC list!' % (i.name, i.address))
+                logger.info('Device: %s with Address %s saved in MAC list!' % (i.name, i.address))
                 self.sensorlist.append(sensor(i.name, i.address))
         return
     
@@ -64,7 +60,7 @@ class hub(object):
     def listen_advertisements(self):
         """Start logging advertisements
         """
-        Log_hub.info("Warning: To stop the advertisementlogging, you need to interrupt the kernel!")
+        logger.info("Warning: To stop the advertisementlogging, you need to interrupt the kernel!")
         input("Press any key to confirm!")
         AdvertisementLogging.advertisement_logging()
 

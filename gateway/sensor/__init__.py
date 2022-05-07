@@ -34,15 +34,12 @@ UART_TX = sensor_interface["communication_channels"]["UART_TX"]
 
 LOG_LEVEL = logging.INFO
 
+# Redundancy check
 crcfun = crcmod.mkCrcFun(0x11021, rev=False, 
                                         initCrc=0xffff, xorOut=0)
 
 # Creat a named logger 'sensor' and set it on INFO level
-logger = logging.getLogger('sensor')
-console_handler = logging.StreamHandler()
-console_handler.setLevel(LOG_LEVEL)
-console_handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
-logger.addHandler(console_handler)
+logger = logging.getLogger('Sensor')
 logger.setLevel(LOG_LEVEL)
 
 class sensor(object):
@@ -73,9 +70,6 @@ class sensor(object):
         # Problem: Speicher wird voll abh. von Samplingrate und Samplingresolution
         self.data = list()  # accelerometer - for streaming
         
-        # Check auf Integrität der Daten über Hashwert
-        # Cyclix redundancy check
-
         # Hilfvariable, wo raw-Data  des Sensors reingeschrieben werden
         self.sensordata = bytearray()
         self.config = SensorConfig()
@@ -90,17 +84,16 @@ class sensor(object):
         logger.info('sensor variables have been cleared!')
         return
 
-    async def timeout_for_commands(self):
+    async def wait_response_or_timeout(self, timeout_sec):
         """Timeout function to prevent endless loops
         """        
-        logger.info("Start timeout function")
-        while time.time() - self.start_time < 10:
+        logger.info("Wait for response or check if timeout of %s seconds is exceeded", timeout_sec)
+        while time.time() - self.start_time < timeout_sec:
             logger.info("Timeout timer running {}".format(
                 time.strftime("%H:%M:%S", time.localtime(self.start_time)))
                 )
             await asyncio.sleep(1)
             if self.notification_done:
-                #self.notification_done = False
                 break
         try:
             self.stopEvent.set()
@@ -157,12 +150,11 @@ class sensor(object):
                 # Wenn keine Nachricht kommt, dann Timeout
                 self.start_time = time.time()
                 logger.info("Set Processtimer")
-                await self.timeout_for_commands()
-                logger.info("timeout starts monitoring")
+                await self.wait_response_or_timeout(10)
                 # Wartet so lange bis Event-Loop thread-safe beendet wurde 
                 # vorher wird in timeout_for_commands stopEvent.set() gerufen
                 await self.stopEvent.wait()
-                logger.warning("Abort workloop task via timeout()!")
+                logger.warning("Abort workloop task via due to timeout limit exceed!")
                 await client.stop_notify(
                     sensor_interface["communication_channels"]["UART_RX"]
                     )
@@ -190,7 +182,6 @@ class sensor(object):
             status_string = str(ri_error_to_string(value[3]), )
             logger.info("Status: %s" % status_string)
             self.notification_done=True
-            self.stopEvent.set() # das kann vermutlich weg -> stopEvent wird so 2mal gesetzt.
 
         if value[0] == 0x22 and value[2] == 0xF3:
             logger.info("Received heartbeat: {}".format(
@@ -199,7 +190,6 @@ class sensor(object):
             status_string = str(ri_error_to_string(value[3]), )
             logger.info("Status: %s" % status_string)
             self.notification_done = True
-            self.stopEvent.set()
 
         if value[0] == 0x4A or value[0] == 0x21:
             message_return_value = return_values_from_sensor()
@@ -209,7 +199,6 @@ class sensor(object):
             if len(value) == 4:
                 test = message_return_value.form_get_status(status=int(value[3]), mac=client.address)
                 self.sensor_data.append([test.returnValue.__dict__])
-                self.stopEvent.set()
                 self.notification_done = True
 
             elif value[2] == 0x09:
@@ -219,7 +208,6 @@ class sensor(object):
                 logger.info(received_time)
                 self.sensor_data.append(message_return_value.from_get_time(status=status_string, received_time=received_time,
                                                    mac=client.address).returnValue.__dict__)
-                self.stopEvent.set()
                 self.notification_done = True
 
             elif value[0] == 0x4a and value[3] == 0x00:
@@ -236,7 +224,6 @@ class sensor(object):
                 self.sensor_data.append(received_config.returnValue.__dict__)
                 self.config = SensorConfig.from_dict(received_config.returnValue.__dict__)
                 self.notification_done=True
-                self.stopEvent.set()
 
         elif value[0] == 0xfb and value[1] == 0x0d:
             message_return_value = return_values_from_sensor()
@@ -267,7 +254,6 @@ class sensor(object):
             logger.info("Words used %d" % (words_used,))
             logger.info("Largest continuos %d" % (largest_contig,))
             logger.info("Freeable words %d\n" % (freeable_words,))
-            self.stopEvent.set()
             self.notification_done = True
     
     def activate_accelerometer_logging(self):
@@ -288,7 +274,7 @@ class sensor(object):
         """Get accelerometer data from sensor.
         """         
         logger.info('Try to get acceleration data from {}'.format(self.mac))
-        self.work_loop(sensor_interface["commands"]["get_acceleration_data"] , sensor_interface["communication_channels"]["UART_TX"], True )  
+        self.work_loop(sensor_interface["commands"]["get_acceleration_data"] , sensor_interface["communication_channels"]["UART_TX"])  
         self.sensordata = bytearray()      
         return
     
@@ -312,17 +298,16 @@ class sensor(object):
             logger.info("Received data block: %s" % hexlify(value[1:]))
             # Marks end of data stream
         elif value[0] == 0x4a and value[3] == 0x00:
+            self.notification_done = True
             message_return_value = return_values_from_sensor()
             self.start_time = time.time()
             self.end_time = time.time()
             self.delta = len(self.sensordata) / (self.end_time - self.start_time)
 
             logger.info('Bandwidth : {} Bytes/Second'.format(self.delta))
-            self.stopEvent.set()
             # Status
             logger.debug("Status: %s" % str(ri_error_to_string(value[3])))
 
-            #  TODO: CRC Check in externe Funktion
             crc = value[12:14]
             logger.debug("Received CRC: %s" % hexlify(crc))
 
@@ -447,7 +432,7 @@ class sensor(object):
         :param heartbeat: Frequency of the advertisements in milliseconds.
         :type heartbeat: int
         """
-        logger.info("set heartbeat to: {}".format(heartbeat))
+        logger.info("Set heartbeat to: {}".format(heartbeat))
         hex_beat = hex(heartbeat)[2:]
         hex_msg = f"2200F2{'0000'[:4 - len(hex_beat)]}{hex_beat}000000000000"
         self.work_loop(hex_msg, sensor_interface["communication_channels"]["UART_TX"])
@@ -483,7 +468,7 @@ class sensor(object):
     def get_heartbeat(self):
         """Get the actuall frequency in which the sensor sends advertisements.
         """        
-        logger.info("get heartbeat...")
+        logger.info("Get heartbeat...")
         self.work_loop(sensor_interface["commands"]["get_heartbeat"], sensor_interface["communication_channels"]["UART_TX"])
         return
     
