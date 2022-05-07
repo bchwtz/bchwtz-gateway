@@ -89,7 +89,7 @@ class sensor(object):
         """        
         logger.info("Wait for response or check if timeout of %s seconds is exceeded", timeout_sec)
         while time.time() - self.start_time < timeout_sec:
-            logger.info("Timeout timer running {}".format(
+            logger.debug("Timeout timer running {}".format(
                 time.strftime("%H:%M:%S", time.localtime(self.start_time)))
                 )
             await asyncio.sleep(1)
@@ -126,8 +126,10 @@ class sensor(object):
         :type write_channel: str
         """
         logger.info("Send {} to MAC {} ".format(command_string, self.mac))
+        self.notification_done = False
         try:
             async with BleakClient(self.mac) as client:
+                logger.info('Start notify: %s' % (self.mac))
                 if command_string == sensor_interface["commands"]["get_acceleration_data"]:
                     await client.start_notify(
                         sensor_interface["communication_channels"]["UART_RX"], self.handle_data
@@ -144,26 +146,22 @@ class sensor(object):
                     await client.write_gatt_char(
                         write_channel, bytearray.fromhex(command_string), True
                         )
-                logger.info('Message send to MAC: %s' % (self.mac))
 
                 # Codeblock sorgt dafür, dass auf Nachricht gewartet wird 
                 # Wenn keine Nachricht kommt, dann Timeout
                 self.start_time = time.time()
-                logger.info("Set Processtimer")
                 await self.wait_response_or_timeout(10)
                 # Wartet so lange bis Event-Loop thread-safe beendet wurde 
                 # vorher wird in timeout_for_commands stopEvent.set() gerufen
                 await self.stopEvent.wait()
-                logger.warning("Abort workloop task via due to timeout limit exceed!")
+                logger.info('Stop notify: %s' % (self.mac))
+                logger.info("Abort workloop task...")
                 await client.stop_notify(
                     sensor_interface["communication_channels"]["UART_RX"]
                     )
                 self.stopEvent.clear()
-                logger.info('Stop notify: %s' % (self.mac))
-                logger.info("Task done connect_to_mac_command!")
         except Exception as e:
-            logger.warning('Connection failed at MAC %s' % (self.mac))
-            logger.error("Error: {}".format(e))
+            logger.error('Connection failed at MAC %s with error %e' % (self.mac, e))
         return
     
     def handle_ble_callback(self, client: BleakClient, sender: int, value: bytearray):
