@@ -18,6 +18,8 @@ import asyncio
 import nest_asyncio
 nest_asyncio.apply()
 
+from gateway.event.event import Event_ts
+
 loop = asyncio.get_event_loop()
 
 async def scan_devices():
@@ -36,14 +38,6 @@ print(address)
 UART_SRV = '6E400001-B5A3-F393-E0A9-E50E24DCCA9E'
 UART_TX = '6E400002-B5A3-F393-E0A9-E50E24DCCA9E'
 UART_RX = '6E400003-B5A3-F393-E0A9-E50E24DCCA9E'
-
-# Thread Safe Event Class
-class Event_ts(asyncio.Event):
-    def clear(self):
-        self._loop.call_soon_threadsafe(super().clear)
-
-    def set(self):
-        self._loop.call_soon_threadsafe(super().set)
 
 stopEvent = Event_ts()
 

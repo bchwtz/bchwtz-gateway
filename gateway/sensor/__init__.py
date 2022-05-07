@@ -21,12 +21,15 @@ from gateway.sensor.errorcode_utils import ri_error_to_string
 from gateway.sensor.SensorConfigEnum import SamplingRate, SamplingResolution, \
      MeasuringRange # internal
 from gateway.sensor.MessageObjects import return_values_from_sensor # internal
+from gateway.event.event import Event_ts
 
 with open(os.path.dirname(__file__) + '/../communication_interface.yml') as ymlfile:
     # load interface specifications
     sensor_interface = yaml.safe_load(ymlfile)
     ymlfile.close()
 
+UART_RX = sensor_interface["communication_channels"]["UART_RX"]
+UART_TX = sensor_interface["communication_channels"]["UART_TX"]
 
 # Creat a named logger 'sensor' and set it on INFO level
 logger = logging.getLogger('sensor')
@@ -36,19 +39,6 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 console_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
 logger.setLevel(logging.INFO)
-
-class Event_ts(asyncio.Event):
-    """Custom event loop class for the sensor().
-
-    :param asyncio: None
-    :type asyncio: Event_ts inherit asyncio.Event functions.
-    """
-
-    def clear(self):     
-        self._loop.call_soon_threadsafe(super().clear)
-
-    def set(self):    
-        self._loop.call_soon_threadsafe(super().set)
 
 class SensorConfig():
     def __init__(self, sample_rate=None, resolution=None, scale=None, dsp_function=None, dsp_parameter=None, mode=None, divider=None, mac=None):
@@ -565,8 +555,6 @@ class sensor(object):
     async def setup_for_streaming(self):
         """Change mode to gatt streaming.
         """
-        UART_RX = sensor_interface["communication_channels"]["UART_RX"]
-        UART_TX = sensor_interface["communication_channels"]["UART_TX"]
         async with BleakClient(self.config.mac) as client:
             await client.start_notify(UART_RX, self.callback)
             await client.write_gatt_char(UART_TX, bytearray.fromhex("4a4a03%02x%02x%02xFFFFFF0000" % (self.config.sample_rate, self.config.resolution, self.config.scale)))
@@ -578,8 +566,6 @@ class sensor(object):
     async def activate_streaming(self):
         """Start streaming and receive data.
         """
-        UART_RX = sensor_interface["communication_channels"]["UART_RX"]
-        UART_TX = sensor_interface["communication_channels"]["UART_TX"]
         async with BleakClient(self.config.mac) as client:
             await client.start_notify(UART_RX, self.callback)
             await client.write_gatt_char(UART_TX, bytearray.fromhex(sensor_interface["commands"]["activate_streaming"]))
@@ -594,8 +580,6 @@ class sensor(object):
         :param filename: name of csv
         :type filename: string
         """
-        UART_RX = sensor_interface["communication_channels"]["UART_RX"]
-        UART_TX = sensor_interface["communication_channels"]["UART_TX"]
         filepointer.csvfile = open(filename, "w")
         async with BleakClient(self.config.mac) as client:
             await client.start_notify(UART_RX, self.callback)

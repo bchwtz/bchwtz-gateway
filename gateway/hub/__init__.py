@@ -15,16 +15,6 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 console_handler.setFormatter(formatter)
 Log_hub.addHandler(console_handler)
 
-# %% Event_ts
-class Event_ts(asyncio.Event):
-    """Custom event loop class for hub
-    """
-    def clear(self):
-        self._loop.call_soon_threadsafe(super().clear)
-
-    def set(self):
-        self._loop.call_soon_threadsafe(super().set)  
-
 # %% hub
 class hub(object):
     def __init__(self):
