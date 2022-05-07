@@ -74,7 +74,7 @@ class hub(object):
     def listen_advertisements(self):
         """Start logging advertisements
         """
-        Log_hub.warn("Warning: To stop the advertisementlogging, you need to interrupt the kernel!")
+        Log_hub.info("Warning: To stop the advertisementlogging, you need to interrupt the kernel!")
         input("Press any key to confirm!")
         AdvertisementLogging.advertisement_logging()
 

@@ -15,7 +15,8 @@ import asyncio # third-pary
 from bleak import BleakClient # third-party
 import time # built-in
 import crcmod # third-party
-from gateway.sensor.utils import process_data_8, process_data_10, process_data_12, unpack8, unpack10, unpack12
+from gateway.sensor.decode_utils import process_data_8, process_data_10, process_data_12, unpack8, unpack10, unpack12
+from gateway.sensor.errorcode_utils import ri_error_to_string
 
 from gateway.sensor.SensorConfigEnum import SamplingRate, SamplingResolution, \
      MeasuringRange # internal
@@ -34,6 +35,7 @@ console_handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 console_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
+logger.setLevel(logging.INFO)
 
 class Event_ts(asyncio.Event):
     """Custom event loop class for the sensor().
@@ -113,12 +115,21 @@ class sensor(object):
         self.main_loop = asyncio.get_event_loop()
         self.stopEvent = Event_ts()
         self.notification_done = False  # improvement wanted
-        self.sensor_data = list()  # command callbacks
-        self.data = list()  # accelerometer
+
+        # Trennung, weil Daten unterschiedlich geparsed werden
+        self.sensor_data = list()  # command callbacks - for minor functions like getTime
+        # Acceloremeter-Daten werden in Ringspeicher geschrieben (Wenn acceloremeter logging aktiviert wurde) und werden nur auf Abfrage geholt
+        # Problem: Wir wissen nicht wann speicher voll wird. 
+        # Problem: Speicher wird voll abh. von Samplingrate und Samplingresolution
+        self.data = list()  # accelerometer - for streaming
+        
+        # Check auf Integrität der Daten über Hashwert
+        # Cyclix redundancy check
         self.crcfun = crcmod.mkCrcFun(0x11021, rev=False, 
                                         initCrc=0xffff, xorOut=0)
+
+        # Hilfvariable, wo raw-Data  des Sensors reingeschrieben werden
         self.sensordata = bytearray()
-        self.stopevent = Event_ts()
         self.config = SensorConfig()
         return
 
@@ -175,7 +186,7 @@ class sensor(object):
         :param accelerom: Indicates which callback function has to be used.
         :type accelerom: bool
         """
-        logger.info("Send {} to MAC {} ".format(self.mac, command_string))
+        logger.info("Send {} to MAC {} ".format(command_string, self.mac))
         try:
             async with BleakClient(self.mac) as client:
                 if accelerom:
@@ -189,17 +200,21 @@ class sensor(object):
                     # Send the command (Wait for Response must be True)
                     await client.start_notify(
                         sensor_interface["communication_channels"]["UART_RX"], 
-                        partial(self.handle_ble_callback, client)
+                        partial(self.handle_ble_callback, client) # partial kann evtl. weg? 
                         )
                     await client.write_gatt_char(
                         write_channel, bytearray.fromhex(command_string), True
                         )
                 logger.info('Message send to MAC: %s' % (self.mac))
 
+                # Codeblock sorgt dafür, dass auf Nachricht gewartet wird 
+                # Wenn keine Nachricht kommt, dann Timeout
                 self.start_time = time.time()
                 logger.info("Set Processtimer")
                 await self.timeout_for_commands()
                 logger.info("timeout starts monitoring")
+                # Wartet so lange bis Event-Loop thread-safe beendet wurde 
+                # vorher wird in timeout_for_commands stopEvent.set() gerufen
                 await self.stopEvent.wait()
                 logger.warning("Abort workloop task via timeout()!")
                 await client.stop_notify(
@@ -224,11 +239,12 @@ class sensor(object):
         :type value: bytearray
         """
 
+        # Response messages des Sensors
         if value[0] == 0x22 and value[2] == 0xF2:
             status_string = str(self.ri_error_to_string(value[3]), )
             logger.info("Status: %s" % status_string)
             self.notification_done=True
-            self.stopEvent.set()
+            self.stopEvent.set() # das kann vermutlich weg -> stopEvent wird so 2mal gesetzt.
 
         if value[0] == 0x22 and value[2] == 0xF3:
             logger.info("Received heartbeat: {}".format(
@@ -340,11 +356,14 @@ class sensor(object):
         :return: x,y,z,timestamp
         :rtype: int, int, int, timestamp
         """
+
+        # Handling of accelerometer data
         if value[0] == 0x11:
             # Daten
             self.sensordata.extend(value[1:])
+            # Time wird gesetzt um die Abfrage des Ringbuffers auf 10 Sekunden zu setzen -> Querabhängigkeit zu _timeout Funktion
             self.start_time = time.time()
-            logger.debug("Received data block: %s" % hexlify(value[1:]))
+            logger.info("Received data block: %s" % hexlify(value[1:]))
             # Marks end of data stream
         elif value[0] == 0x4a and value[3] == 0x00:
             message_return_value = return_values_from_sensor()
@@ -352,11 +371,12 @@ class sensor(object):
             self.end_time = time.time()
             self.delta = len(self.sensordata) / (self.end_time - self.start_time)
 
-            logger.debug('Bandwidth : {} Bytes/Second'.format(self.delta))
+            logger.info('Bandwidth : {} Bytes/Second'.format(self.delta))
             self.stopEvent.set()
             # Status
             logger.debug("Status: %s" % str(self.ri_error_to_string(value[3])))
 
+            #  TODO: CRC Check in externe Funktion
             crc = value[12:14]
             logger.debug("Received CRC: %s" % hexlify(crc))
 
@@ -372,6 +392,10 @@ class sensor(object):
                 return None
 
             # Start data
+            # Timestamp hier wird genutzt um zu den acceleration daten die Zeit zu haben 
+            # Timestamp wird vom Sensor nicht jede Nachricht mitgeschickt. 
+            # Time für acceleration data ergibt sich aus letztem timestamp + sampling frequenz * anzahl samples seit letztem timestamp
+            # Hier gibt noch Fehler, die beim Sensor liegen könnten -> Abweichungen zwischen Interpolierten Zeitstempel und geschickten nächsten TimeStamp
             if (value[5] == 12):
                 # 12 Bit
                 logger.info("Start processing reveived data with process_sensor_data_12")
@@ -517,90 +541,7 @@ class sensor(object):
         self.work_loop(sensor_interface["commands"]["get_heartbeat"], sensor_interface["communication_channels"]["UART_TX"])
         return
     
-    def ri_error_to_string(self, error):
-        """Decodes the Tag error, if it was raised.
-
-        :param error: Error value in hex.
-        :type error: byte
-        :return: Result with decoded error code
-        :rtype: set
-        """
-        result = set()
-        if (error == 0):
-            logger.info("RD_SUCCESS")
-            result.add("RD_SUCCESS")
-            self.success = True
-        elif(error == 1):
-            logger.error("RD_ERROR_INTERNAL")
-            result.add("RD_ERROR_INTERNAL")
-        elif(error == 2):
-            logger.error("RD_ERROR_NO_MEM")
-            result.add("RD_ERROR_NO_MEM")
-        elif(error == 3):
-            logger.error("RD_ERROR_NOT_FOUND")
-            result.add("RD_ERROR_NOT_FOUND")
-        elif(error == 4):
-            logger.error("RD_ERROR_NOT_SUPPORTED")
-            result.add("RD_ERROR_NOT_SUPPORTED")
-        elif(error == 5):
-            logger.error("RD_ERROR_INVALID_PARAM")
-            result.add("RD_ERROR_INVALID_PARAM")
-        elif(error == 6):
-            logger.error("RD_ERROR_INVALID_STATE")
-            result.add("RD_ERROR_INVALID_STATE")
-        elif(error == 7):
-            logger.error("RD_ERROR_INVALID_LENGTH")
-            result.add("RD_ERROR_INVALID_LENGTH")
-        elif(error == 8):
-            logger.error("RD_ERROR_INVALID_FLAGS")
-            result.add("RD_ERROR_INVALID_FLAGS")
-        elif(error == 9):
-            logger.error("RD_ERROR_INVALID_DATA")
-            result.add("RD_ERROR_INVALID_DATA")
-        elif(error == 10):
-            logger.error("RD_ERROR_DATA_SIZE")
-            result.add("RD_ERROR_DATA_SIZE")
-        elif(error == 11):
-            logger.error("RD_ERROR_TIMEOUT")
-            result.add("RD_ERROR_TIMEOUT")
-        elif(error == 12):
-            logger.error("RD_ERROR_NULL")
-            result.add("RD_ERROR_NULL")
-        elif(error == 13):
-            logger.error("RD_ERROR_FORBIDDEN")
-            result.add("RD_ERROR_FORBIDDEN")
-        elif(error == 14):
-            logger.error("RD_ERROR_INVALID_ADDR")
-            result.add("RD_ERROR_INVALID_ADDR")
-        elif(error == 15):
-            logger.error("RD_ERROR_BUSY")
-            result.add("RD_ERROR_BUSY")
-        elif(error == 16):
-            logger.error("RD_ERROR_RESOURCES")
-            result.add("RD_ERROR_RESOURCES")
-        elif(error == 17):
-            logger.error("RD_ERROR_NOT_IMPLEMENTED")
-            result.add("RD_ERROR_NOT_IMPLEMENTED")
-        elif(error == 18):
-            logger.error("RD_ERROR_SELFTEST")
-            result.add("RD_ERROR_SELFTEST")
-        elif(error == 19):
-            logger.error("RD_STATUS_MORE_AVAILABLE")
-            result.add("RD_STATUS_MORE_AVAILABLE")
-        elif(error == 20):
-            logger.error("RD_ERROR_NOT_INITIALIZED")
-            result.add("RD_ERROR_NOT_INITIALIZED")
-        elif(error == 21):
-            logger.error("RD_ERROR_NOT_ACKNOWLEDGED")
-            result.add("RD_ERROR_NOT_ACKNOWLEDGED")
-        elif(error == 22):
-            logger.error("RD_ERROR_NOT_ENABLED")
-            result.add("RD_ERROR_NOT_ENABLED")
-        elif(error == 31):
-            logger.error("RD_ERROR_FATAL")
-            result.add("RD_ERROR_FATAL")
-        return result
-   
+#    Callback für streaming funktionalität
     def callback(self, sender: int, value: bytearray):
         """this callback is triggered on all data received in GATT-mode. It triggers the correct unpack-method to convert the raw received data into readable hex-strings and extracts the values from those strings. If the sensor reports an error, the callback is going to stop the process using the stopevent of self.
         param sender: address of the sender
