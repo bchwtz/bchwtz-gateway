@@ -19,7 +19,7 @@ import crcmod # third-party
 
 from gateway.sensor.SensorConfigEnum import SamplingRate, SamplingResolution, \
      MeasuringRange # internal
-from gateway.sensor.MessageObjects import return_values_from_sensor # internal
+from gateway.sensor.message_objects import ReturnValuesFromSensor # internal
 
 with open(os.path.dirname(__file__) + '/../communication_interface.yml') as ymlfile:
     # load interface specifications
@@ -34,6 +34,8 @@ console_handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 console_handler.setFormatter(formatter)
 Log_sensor.addHandler(console_handler)
+
+Log_sensor.setLevel(logging.INFO)
 
 class Event_ts(asyncio.Event):
     """Custom event loop class for the sensor().
@@ -241,13 +243,13 @@ class sensor(object):
             self.stopEvent.set()
 
         if value[0] == 0x4A or value[0] == 0x21:
-            message_return_value = return_values_from_sensor()
+            message_return_value = ReturnValuesFromSensor()
             Log_sensor.info("Received: %s" % hexlify(value))
             status_string = str(self.ri_error_to_string(value[3]), )
             Log_sensor.info("Status: %s" % status_string)
             if len(value) == 4:
                 test = message_return_value.form_get_status(status=int(value[3]), mac=client.address)
-                self.sensor_data.append([test.returnValue.__dict__])
+                self.sensor_data.append([test.return_value.__dict__])
                 self.stopEvent.set()
                 self.notification_done = True
 
@@ -257,7 +259,7 @@ class sensor(object):
                 received_time=time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(value[:-9:-1]), 16) / 1000))
                 Log_sensor.info(received_time)
                 self.sensor_data.append(message_return_value.from_get_time(status=status_string, received_time=received_time,
-                                                   mac=client.address).returnValue.__dict__)
+                                                   mac=client.address).return_value.__dict__)
                 self.stopEvent.set()
                 self.notification_done = True
 
@@ -272,13 +274,13 @@ class sensor(object):
                 received_config=message_return_value.from_get_config(status=status_string,sample_rate=sample_rate,resolution= int(value[5]),
                                                     scale=int(value[6]),dsp_function=int(value[7]), dsp_parameter=int(value[8]),
                                                     mode="%x"% value[9],divider=int(value[10]), mac=client.address)
-                self.sensor_data.append(received_config.returnValue.__dict__)
-                self.config = SensorConfig.from_dict(received_config.returnValue.__dict__)
+                self.sensor_data.append(received_config.return_value.__dict__)
+                self.config = SensorConfig.from_dict(received_config.return_value.__dict__)
                 self.notification_done=True
                 self.stopEvent.set()
 
         elif value[0] == 0xfb and value[1] == 0x0d:
-            message_return_value = return_values_from_sensor()
+            message_return_value = ReturnValuesFromSensor()
             Log_sensor.info("Received: %s" % hexlify(value))
             logging_status = value[3]
             ringbuffer_start = value[4]
@@ -295,7 +297,7 @@ class sensor(object):
             ringbuffer_end=ringbuffer_end, ringbuffer_size=ringbuffer_size, valid_records=valid_records, dirty_records=dirty_records,
             words_reserved=words_reserved, words_used= words_used, largest_contig=largest_contig, freeable_words=freeable_words,
             mac=client.address)
-            self.sensor_data.append([received_flash_statistic.returnValue.__dict__])
+            self.sensor_data.append([received_flash_statistic.return_value.__dict__])
             Log_sensor.info("Last Status %s" % (str(self.ri_error_to_string(logging_status)),))
             Log_sensor.info("Ringbuffer start %d" % (ringbuffer_start,))
             Log_sensor.info("Ringbuffer end %d" % (ringbuffer_end,))
@@ -349,7 +351,7 @@ class sensor(object):
             Log_sensor.debug("Received data block: %s" % hexlify(value[1:]))
             # Marks end of data stream
         elif value[0] == 0x4a and value[3] == 0x00:
-            message_return_value = return_values_from_sensor()
+            message_return_value = ReturnValuesFromSensor()
             self.start_time = time.time()
             self.end_time = time.time()
             print(len(self.sensordaten))
@@ -394,7 +396,7 @@ class sensor(object):
             if AccelorationData != None:
                 Log_sensor.info("Run in Funktion AccelorationData != None")
                 dataList=message_return_value.from_get_accelorationdata(accelorationdata=AccelorationData,mac=self.mac)
-                self.data.append(dataList.returnValue.__dict__)
+                self.data.append(dataList.return_value.__dict__)
         return
     
     def process_data_8(self, bytes, scale, rate):

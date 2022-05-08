@@ -5,7 +5,7 @@ from os.path import exists
 from gateway.hub.nix_hci import BleCommunicationNix
 from gateway.hub.decoder import get_decoder
 from gateway.hub.DataFormats import DataFormats
-from gateway.sensor import MessageObjects
+from gateway.sensor import message_objects
 
 
 ble = BleCommunicationNix()
@@ -14,7 +14,7 @@ def advertisement_logging():
     """Listen to advertisements from BLE devices and
     writes it to an csv-file.
     """
-    return_value_object=MessageObjects.return_values_from_sensor()
+    return_value_object=message_objects.ReturnValuesFromSensor()
     last_measurement_number = {}
     try:
         for ble_data in ble.get_datas():
@@ -35,7 +35,7 @@ def advertisement_logging():
                     else:
                         last_measurement_number[mac]=decoded["measurement_sequence_number"]
                     _msg_obj = return_value_object.from_get_advertisementdata(decoded, mac,
-                                                                        current_time).returnValue
+                                                                        current_time).return_value
                     print([mac,current_time,decoded])
                     key_list = list(decoded.keys())
                     value_list = list(decoded.values())
