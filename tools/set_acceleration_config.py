@@ -18,7 +18,7 @@ args = parser.parse_args()
 print(args)
 
 # find tags
-myhub = hub.hub()
+myhub = hub.Hub()
 myhub.discover(args.timeout)
 
 # Pick one of the tags manually or automatically

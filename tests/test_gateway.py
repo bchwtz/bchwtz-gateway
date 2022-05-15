@@ -29,7 +29,7 @@ def test_function_discover():
     exception occures, there will be raised an error instead of an user warning.
     """    
     from gateway import hub
-    myhub = hub.hub()
+    myhub = hub.Hub()
     try:
         myhub.discover()
     except BleakDBusError:
