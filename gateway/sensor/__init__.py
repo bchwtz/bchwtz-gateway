@@ -17,7 +17,7 @@ from bleak import BleakClient # third-party
 import time # built-in
 import crcmod # third-party
 
-from gateway.sensor.SensorConfigEnum import SamplingRate, SamplingResolution, \
+from gateway.sensor.sensor_config_enum import SamplingRate, SamplingResolution, \
      MeasuringRange # internal
 from gateway.sensor.message_objects import ReturnValuesFromSensor # internal
 

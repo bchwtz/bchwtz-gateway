@@ -1,7 +1,7 @@
 from gateway import hub
 from gateway.experimental import flashing
 
-myHub = hub.hub()
+myHub = hub.Hub()
 
 myHub.discover()
 
