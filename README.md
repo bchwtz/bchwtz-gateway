@@ -38,6 +38,10 @@ The token is displayed by github only once for copy in plain text.
 If the token is lost, the process must be repeated.
 ```
 
+## Enable bleak logging
+Execute the following command on your Raspberry.
+export BLEAK_LOGGING=1 
+
 ## Get the docs
 
 To get detailed information about functions and classes, it is recommended to read the 
