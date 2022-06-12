@@ -1,5 +1,5 @@
 """
-This module was used to create a dictionary of the values returned 
+This module was used to create a dictionary of the values returned
 by a spicific sensor. The dictionary can then by converted into a json object,
 to send it to a backend like influx or mainflux.
 """
@@ -12,8 +12,9 @@ This region is used to wrap the returned values of the sensor into an object
 """
 
 
-class return_values_from_sensor(object):
-    def __init__(self,returnValue=None):
+class ReturnValuesFromSensor():
+    """This class is used to create a standard dictionary of return values."""
+    def __init__(self,returnvalue=None):
         """This class is used to create a standard
         dictionary of return values.
 
@@ -24,11 +25,12 @@ class return_values_from_sensor(object):
             self.returnValue=returnValue
             log.info(self.returnValue)
         else:
-            self.returnValue=""
+            self.return_value=""
 
 
     @classmethod
-    def from_get_config(cls, status, sample_rate, resolution, scale, dsp_function, dsp_parameter, mode,divider, mac):
+    def from_get_config(cls, status, sample_rate, resolution, scale, dsp_function,
+                        dsp_parameter, mode,divider, mac):
         """Classmethod to parse the get_config() return values.
 
         :param status: [description]
@@ -52,7 +54,8 @@ class return_values_from_sensor(object):
         :return: [description]
         :rtype: [type]
         """
-        reval=config_Object(status, sample_rate, resolution, scale, dsp_function, dsp_parameter, mode,divider, mac)
+        reval=ConfigObject(status, sample_rate, resolution, scale,
+                dsp_function, dsp_parameter, mode,divider, mac)
         return cls(reval)
 
     @classmethod
@@ -72,10 +75,10 @@ class return_values_from_sensor(object):
         return cls(reval)
 
     @classmethod
-    def from_get_flash_statistics(cls,  logging_status, ringbuffer_start, ringbuffer_end, mac,
-                                  ringbuffer_size, valid_records, dirty_records, words_reserved, words_used,
-                                  largest_contig,
-                                  freeable_words):
+    def from_get_flash_statistics(cls,  logging_status, ringbuffer_start,
+                                    ringbuffer_end, mac,
+                                  ringbuffer_size, valid_records, dirty_records, words_reserved,
+                                  words_used, largest_contig, freeable_words):
         """Classmethod to parse the get_flash_statistics() return values.
 
         :param logging_status: [description]
@@ -103,10 +106,9 @@ class return_values_from_sensor(object):
         :return: [description]
         :rtype: [type]
         """
-        reval = flash_statistics_Object(  logging_status, ringbuffer_start, ringbuffer_end, mac,
-                                  ringbuffer_size, valid_records, dirty_records, words_reserved, words_used,
-                                  largest_contig,
-                                  freeable_words)
+        reval = FlashStatisticsObject(  logging_status, ringbuffer_start, ringbuffer_end, mac,
+                                  ringbuffer_size, valid_records, dirty_records,
+                                  words_reserved, words_used, largest_contig, freeable_words)
         return cls(reval)
 
     @classmethod
@@ -134,14 +136,14 @@ class return_values_from_sensor(object):
         :return: [description]
         :rtype: [type]
         """
-        reval=acceloration_data_Object(accelorationdata,mac)
+        reval=AccelorationDataObject(accelorationdata,mac)
         return cls(reval)
 
     @classmethod
-    def from_get_advertisementdata(cls,advertisementData, mac, time):
+    def from_get_advertisementdata(cls,advertisementdata, mac, time):
         """Classmethod to parse the get_advertisementdata() return values.
 
-        :param advertisementData: [description]
+        :param advertisementdata: [description]
         :type advertisementData: [type]
         :param mac: [description]
         :type mac: [type]
@@ -150,11 +152,12 @@ class return_values_from_sensor(object):
         :return: [description]
         :rtype: [type]
         """
-        reval=advertisement_data_Object(advertisementData,mac,time)
+        reval=AdvertisementDataObject(advertisementdata,mac,time)
         return cls(reval)
 
 
-class time_Object(object):
+class TimeObject():
+    """Class representing a time-object."""
     def __init__(self,status, received_time,mac):
         """Classmethod to parse the get_time() return values.
 
@@ -169,8 +172,10 @@ class time_Object(object):
         self.received_time = received_time
         self.mac = mac
 
-class config_Object(object):
-    def __init__(self, status, sample_rate, resolution, scale, dsp_function, dsp_parameter, mode, divider, mac):
+class ConfigObject():
+    """Class representin ConfigObject."""
+    def __init__(self, status, sample_rate, resolution, scale, dsp_function, dsp_parameter, mode,
+                divider, mac):
         """Class to parse the get_config() return values.
 
         :param status: [description]
@@ -202,11 +207,11 @@ class config_Object(object):
         self.divider=divider
         self.mac = mac
 
-class flash_statistics_Object(object):
+class FlashStatisticsObject():
+    """Representation of a flash-statistics object."""
     def __init__(self,  logging_status, ringbuffer_start, ringbuffer_end, mac,
-                                  ringbuffer_size, valid_records, dirty_records, words_reserved, words_used,
-                                  largest_contig,
-                                  freeable_words):
+                                  ringbuffer_size, valid_records, dirty_records, words_reserved,
+                                  words_used, largest_contig, freeable_words):
         """Class to parse the get_flash_statistic() return values.
 
         :param logging_status: [description]
@@ -245,7 +250,8 @@ class flash_statistics_Object(object):
         self.freeable_words = freeable_words
         self.mac = mac
 
-class status_object(object):
+class StatusObject():
+    """StatusObject"""
     def __init__(self, status, mac):
         """Classmethod to parse the get_status() return values.
 
@@ -263,8 +269,9 @@ class status_object(object):
             self.status=-1
         log.info(self.status)
 
-class acceloration_data_Object(object):
-    def __init__(self, accelorationData, mac):
+class AccelorationDataObject():
+    """AccelorationDataObject"""
+    def __init__(self, accelorationdata, mac):
         """Classmethod to parse the acceleration data.
 
         :param accelorationData: [description]
@@ -272,12 +279,13 @@ class acceloration_data_Object(object):
         :param mac: [description]
         :type mac: [type]
         """
-        self.loggingData=list(map(list, zip(accelorationData[0], accelorationData[1], accelorationData[2],
-                           accelorationData[3])))
+        self.loggingdata=list(map(list, zip(accelorationdata[0], accelorationdata[1],
+                            accelorationdata[2], accelorationdata[3])))
         self.mac=mac
 
-class advertisement_data_Object(object):
-    def __init__(self, advertisementData,mac, time):
+class AdvertisementDataObject():
+    """Object representing advertisement_data"""
+    def __init__(self, advertisementdata,mac, time):
         """Classmethod to parse the advertisement data.
 
         :param advertisementData: [description]
@@ -287,6 +295,6 @@ class advertisement_data_Object(object):
         :param time: [description]
         :type time: [type]
         """
-        self.advertisementData=advertisementData
+        self.advertisementdata=advertisementdata
         self.mac=mac
         self.time=time

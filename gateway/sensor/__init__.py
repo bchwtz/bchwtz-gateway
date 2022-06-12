@@ -19,10 +19,9 @@ from gateway.sensor.SensorConfig import SensorConfig # third-party
 from gateway.sensor.decode_utils import process_data_8, process_data_10, process_data_12, unpack8, unpack10, unpack12
 from gateway.sensor.errorcode_utils import ri_error_to_string
 
-from gateway.sensor.SensorConfigEnum import SamplingRate, SamplingResolution, \
+from gateway.sensor.sensor_config_enum import SamplingRate, SamplingResolution, \
      MeasuringRange # internal
-from gateway.sensor.MessageObjects import return_values_from_sensor # internal
-from gateway.event.event import Event_ts
+from gateway.sensor.message_objects import ReturnValuesFromSensor # internal
 
 with open(os.path.dirname(__file__) + '/../communication_interface.yml') as ymlfile:
     # load interface specifications
@@ -190,7 +189,7 @@ class sensor(object):
             self.notification_done = True
 
         if value[0] == 0x4A or value[0] == 0x21:
-            message_return_value = return_values_from_sensor()
+            message_return_value = ReturnValuesFromSensor()
             logger.info("Received: %s" % hexlify(value))
             status_string = str(ri_error_to_string(value[3]), )
             logger.info("Status: %s" % status_string)
@@ -219,8 +218,8 @@ class sensor(object):
                 received_config=message_return_value.from_get_config(status=status_string,sample_rate=sample_rate,resolution= int(value[5]),
                                                     scale=int(value[6]),dsp_function=int(value[7]), dsp_parameter=int(value[8]),
                                                     mode="%x"% value[9],divider=int(value[10]), mac=client.address)
-                self.sensor_data.append(received_config.returnValue.__dict__)
-                self.config = SensorConfig.from_dict(received_config.returnValue.__dict__)
+                self.sensor_data.append(received_config.return_value.__dict__)
+                self.config = SensorConfig.from_dict(received_config.return_value.__dict__)
                 self.notification_done=True
 
         elif value[0] == 0xfb and value[1] == 0x0d:
@@ -297,7 +296,7 @@ class sensor(object):
             # Marks end of data stream
         elif value[0] == 0x4a and value[3] == 0x00:
             self.notification_done = True
-            message_return_value = return_values_from_sensor()
+            message_return_value = ReturnValuesFromSensor()
             self.start_time = time.time()
             self.end_time = time.time()
             self.delta = len(self.sensordata) / (self.end_time - self.start_time)
@@ -342,7 +341,7 @@ class sensor(object):
             if AccelorationData != None:
                 logger.info("Run in Funktion AccelorationData != None")
                 dataList=message_return_value.from_get_accelorationdata(accelorationdata=AccelorationData,mac=self.mac)
-                self.data.append(dataList.returnValue.__dict__)
+                self.data.append(dataList.return_value.__dict__)
         return
          
     def set_config(self, sampling_rate='FF', sampling_resolution='FF', measuring_range='FF', divider="FF"):

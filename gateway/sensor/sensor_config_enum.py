@@ -1,4 +1,4 @@
-"""This submodule is used to check the arguments of 
+"""This submodule is used to check the arguments of
 sensor.set_config()
 """
 from enum import Enum

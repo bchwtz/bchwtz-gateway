@@ -2,7 +2,7 @@ from gateway import hub
 import time
 
 #find tags
-myhub = hub.hub()
+myhub = hub.Hub()
 myhub.discover()
 
 #pick one of the tags
