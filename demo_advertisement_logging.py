@@ -1,6 +1,6 @@
 from gateway import hub
 
-myhub = hub.hub()
+myhub = hub.Hub()
 
 myhub.discover()
 

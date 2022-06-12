@@ -3,7 +3,7 @@ import time
 from enum import Enum
 
 # find tags
-myhub = hub.hub()
+myhub = hub.Hub()
 myhub.discover()
 
 # Pick one of the tags

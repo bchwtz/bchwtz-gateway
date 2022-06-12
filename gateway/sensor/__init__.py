@@ -15,6 +15,7 @@ import asyncio # third-pary
 from bleak import BleakClient # third-party
 import time # built-in
 import crcmod
+from gateway.event.event import Event_ts
 from gateway.sensor.SensorConfig import SensorConfig # third-party
 from gateway.sensor.decode_utils import process_data_8, process_data_10, process_data_12, unpack8, unpack10, unpack12
 from gateway.sensor.errorcode_utils import ri_error_to_string
@@ -223,7 +224,7 @@ class sensor(object):
                 self.notification_done=True
 
         elif value[0] == 0xfb and value[1] == 0x0d:
-            message_return_value = return_values_from_sensor()
+            message_return_value = ReturnValuesFromSensor()
             logger.info("Received: %s" % hexlify(value))
             logging_status = value[3]
             ringbuffer_start = value[4]

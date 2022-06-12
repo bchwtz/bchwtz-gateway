@@ -35,7 +35,7 @@
 
 
 
-# myhub = hub.hub()
+# myhub = hub.Hub()
 # myhub.discover()
 
 # mac = 'DD:51:1E:E1:15:D4'
@@ -71,7 +71,7 @@
 
 from gateway import hub
 
-myhub = hub.hub()
+myhub = hub.Hub()
 
 myhub.discover()
 

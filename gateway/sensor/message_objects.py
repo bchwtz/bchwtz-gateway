@@ -21,8 +21,8 @@ class ReturnValuesFromSensor():
         :param returnValue: [description], defaults to None
         :type returnValue: [type], optional
         """
-        if returnValue is not None:
-            self.returnValue=returnValue
+        if returnvalue is not None:
+            self.returnValue=returnvalue
             log.info(self.returnValue)
         else:
             self.return_value=""
@@ -71,7 +71,7 @@ class ReturnValuesFromSensor():
         :return: [description]
         :rtype: [type]
         """
-        reval=time_Object(status, received_time,mac)
+        reval=TimeObject(status, received_time,mac)
         return cls(reval)
 
     @classmethod
@@ -122,7 +122,7 @@ class ReturnValuesFromSensor():
         :return: [description]
         :rtype: [type]
         """
-        reval=status_object(status,mac)
+        reval=StatusObject(status,mac)
         return cls(reval)
 
     @classmethod
