@@ -8,25 +8,12 @@ from gateway.sensor import sensor
 
 
 
+LOG_LEVEL = logging.INFO
 
 # %% Logger
-Log_hub = logging.getLogger('hub')
-Log_hub.setLevel("DEBUG")
-console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-console_handler.setFormatter(formatter)
-Log_hub.addHandler(console_handler)
-
-# %% Event_ts
-class EventTs(asyncio.Event):
-    """Custom event loop class for hub
-    """
-    def clear(self):
-        self._loop.call_soon_threadsafe(super().clear)
-
-    def set(self):
-        self._loop.call_soon_threadsafe(super().set)
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger('Hub')
+logger.setLevel(LOG_LEVEL)
 
 # %% hub
 class Hub():
@@ -35,7 +22,6 @@ class Hub():
         """Initialize an object from type hub.
         """
         self.main_loop = asyncio.get_event_loop()
-        self.logger = logging.getLogger('hub.hub')
         self.sensorlist: list[sensor] = list()
 
     def discover(self, timeout = 5.0):
@@ -56,9 +42,9 @@ class Hub():
         :type devices: bleak.backends.device.BLEDevice
         """
         for i in devices:
-            self.logger.info('Device: %s with Address %s found!' % (i.name, i.address))
-            if "Ruuvi" in i.name:
-                self.logger.info('Device: %s with Address %s saved in MAC list!'%(i.name,i.address))
+            logger.info('Device: %s with Address %s found!' % (i.name, i.address))
+            if ("Ruuvi" in i.name):
+                logger.info('Device: %s with Address %s saved in MAC list!' % (i.name, i.address))
                 self.sensorlist.append(sensor(i.name, i.address))
 
     async def find_tags(self, timeout = 5.0):
@@ -76,7 +62,7 @@ class Hub():
     def listen_advertisements(self):
         """Start logging advertisements
         """
-        Log_hub.warn("Warning: To stop the advertisementlogging, you need to interrupt the kernel!")
+        logger.info("Warning: To stop the advertisementlogging, you need to interrupt the kernel!")
         input("Press any key to confirm!")
         advertisement_logging.advertisement_logging()
 

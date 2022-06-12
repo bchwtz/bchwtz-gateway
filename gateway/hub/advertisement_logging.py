@@ -26,7 +26,6 @@ def advertisement_logging():
                 decoded = get_decoder(data).decode_data(data)
                 if decoded is not None:
                     del decoded["mac"]
-                # print(decoded)
                     if mac in last_measurement_number:
                         if decoded["measurement_sequence_number"] != last_measurement_number[mac]:
                             last_measurement_number[mac] = decoded["measurement_sequence_number"]
