@@ -34,7 +34,7 @@ def advertisement_logging():
                     else:
                         last_measurement_number[mac]=decoded["measurement_sequence_number"]
                     _msg_obj = return_value_object.from_get_advertisementdata(decoded, mac,
-                                                                        current_time).return_value
+                                                                        current_time)
                     print([mac,current_time,decoded])
                     key_list = list(decoded.keys())
                     value_list = list(decoded.values())
