@@ -219,8 +219,8 @@ class sensor(object):
                 received_config=message_return_value.from_get_config(status=status_string,sample_rate=sample_rate,resolution= int(value[5]),
                                                     scale=int(value[6]),dsp_function=int(value[7]), dsp_parameter=int(value[8]),
                                                     mode="%x"% value[9],divider=int(value[10]), mac=client.address)
-                self.sensor_data.append(received_config.return_value.__dict__)
-                self.config = SensorConfig.from_dict(received_config.return_value.__dict__)
+                self.sensor_data.append(received_config.__dict__)
+                self.config = SensorConfig.from_dict(received_config.__dict__)
                 self.notification_done=True
 
         elif value[0] == 0xfb and value[1] == 0x0d:

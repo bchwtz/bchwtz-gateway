@@ -22,8 +22,8 @@ class ReturnValuesFromSensor():
         :type returnValue: [type], optional
         """
         if returnvalue is not None:
-            self.returnValue=returnvalue
-            log.info(self.returnValue)
+            self.return_value=returnvalue
+            log.info(self.return_value)
         else:
             self.return_value=""
 
