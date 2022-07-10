@@ -221,7 +221,8 @@ class sensor(object):
                                                     mode="%x"% value[9],divider=int(value[10]), mac=client.address)
                 self.sensor_data.append(received_config.return_value.__dict__)
                 print(received_config.return_value.__dict__)
-                self.config = SensorConfig.from_dict(received_config.return_value.__dict__)
+                self.config = SensorConfig()
+                self.config = self.config.from_dict(received_config.return_value.__dict__)
                 self.notification_done=True
 
         elif value[0] == 0xfb and value[1] == 0x0d:
