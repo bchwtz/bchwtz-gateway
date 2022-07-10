@@ -196,7 +196,7 @@ class sensor(object):
             logger.info("Status: %s" % status_string)
             if len(value) == 4:
                 test = message_return_value.form_get_status(status=int(value[3]), mac=client.address)
-                self.sensor_data.append([test.returnValue.__dict__])
+                self.sensor_data.append([test.return_value.__dict__])
                 self.notification_done = True
 
             elif value[2] == 0x09:
@@ -205,7 +205,7 @@ class sensor(object):
                 received_time=time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(value[:-9:-1]), 16) / 1000))
                 logger.info(received_time)
                 self.sensor_data.append(message_return_value.from_get_time(status=status_string, received_time=received_time,
-                                                   mac=client.address).returnValue.__dict__)
+                                                   mac=client.address).return_value.__dict__)
                 self.notification_done = True
 
             elif value[0] == 0x4a and value[3] == 0x00:
@@ -243,7 +243,7 @@ class sensor(object):
             ringbuffer_end=ringbuffer_end, ringbuffer_size=ringbuffer_size, valid_records=valid_records, dirty_records=dirty_records,
             words_reserved=words_reserved, words_used= words_used, largest_contig=largest_contig, freeable_words=freeable_words,
             mac=client.address)
-            self.sensor_data.append([received_flash_statistic.returnValue.__dict__])
+            self.sensor_data.append([received_flash_statistic.return_value.__dict__])
             logger.info("Last Status %s" % (str(ri_error_to_string(logging_status)),))
             logger.info("Ringbuffer start %d" % (ringbuffer_start,))
             logger.info("Ringbuffer end %d" % (ringbuffer_end,))
