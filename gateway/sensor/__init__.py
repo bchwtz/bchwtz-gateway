@@ -224,6 +224,7 @@ class sensor(object):
                 self.config = SensorConfig()
                 self.config = self.config.from_dict(received_config.return_value.__dict__)
                 self.notification_done=True
+                return
 
         elif value[0] == 0xfb and value[1] == 0x0d:
             message_return_value = ReturnValuesFromSensor()
