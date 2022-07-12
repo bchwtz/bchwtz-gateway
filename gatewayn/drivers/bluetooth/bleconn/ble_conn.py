@@ -1,8 +1,7 @@
 from bleak import BleakScanner
 import asyncio
 import logging
-from gatewayn.sensor import Sensor
-
+from gatewayn.drivers.bluetooth.bleconn.tag import Tag
 class BLEConn():
     def __init__(self) -> None:
         self.main_loop = asyncio.get_event_loop()
@@ -33,5 +32,7 @@ class BLEConn():
             self.logger.info('Device: %s with Address %s found!' % (i.name, i.address))
             if ("Ruuvi" in i.name):
                 self.logger.info('Device: %s with Address %s saved in MAC list!' % (i.name, i.address))
-                sensorlist.append(Sensor(i.name, i.address))
+                sensorlist.append(Tag(i.name, i.address))
         return sensorlist
+    
+    def 
