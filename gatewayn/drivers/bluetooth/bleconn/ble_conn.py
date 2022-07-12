@@ -1,10 +1,12 @@
 from bleak import BleakScanner
 import asyncio
 import logging
+from termcolor import colored
 from gatewayn.drivers.bluetooth.bleconn.tag import Tag
 class BLEConn():
     def __init__(self) -> None:
         self.main_loop = asyncio.get_event_loop()
+        logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         self.logger = logging.getLogger("BLEConn")
         self.logger.setLevel(logging.INFO)
 
@@ -31,8 +33,7 @@ class BLEConn():
         for i in devices:
             self.logger.info('Device: %s with Address %s found!' % (i.name, i.address))
             if ("Ruuvi" in i.name):
-                self.logger.info('Device: %s with Address %s saved in MAC list!' % (i.name, i.address))
+                self.logger.info(colored('Device: %s with Address %s saved in MAC list!' % (i.name, i.address), "green", attrs=['bold']) )
                 sensorlist.append(Tag(i.name, i.address))
         return sensorlist
     
-    def 
