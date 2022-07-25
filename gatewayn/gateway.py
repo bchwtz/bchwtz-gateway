@@ -4,3 +4,4 @@ class Gateway:
 
     def __init__(self) -> None:
         self.hub = Hub()
+        
