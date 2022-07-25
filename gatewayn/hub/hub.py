@@ -1,6 +1,7 @@
 import asyncio
 from gatewayn.sensor.sensor import Sensor
-from gatewayn.drivers.bluetooth.bleconn import BLEConn
+from gatewayn.drivers.bluetooth.ble_conn.ble_conn import BLEConn
+from bleak.backends.device import BLEDevice
 
 class Hub():
     def __init__(self):
@@ -10,7 +11,11 @@ class Hub():
 
     def discover_sensors(self, timeout = 5.0):
         self.sensors = []
-        taskobj = self.main_loop.create_task(self.ble_conn.find_tags(timeout))
+        devices = self.main_loop.run_until_complete(self.ble_conn.scan_tags(timeout))
+        print(devices)
+        self.__devices_to_sensors(devices)
+        print(self.sensors)
+        print(self.get_sensor_by_mac("C1:FC:9B:69:04:8B"))
     
     def get_sensor_by_mac(self, mac = None) -> Sensor:
         """Get a sensor object by a known mac adress.
@@ -23,6 +28,10 @@ class Hub():
         # TODO: REFACTOR - this is slower than needed
         if mac is not None:
             for sensor in self.sensors:
-                if sensor.mac == mac:
+                if sensor.address == mac:
                     return sensor
         return None
+
+    def __devices_to_sensors(self, devices: list[BLEDevice]) -> list[Sensor]:
+        self.sensors = [Sensor.from_device(dev) for dev in devices]
+        return self.sensors
