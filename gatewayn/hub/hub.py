@@ -17,7 +17,7 @@ class Hub():
         print(self.sensors)
         print(self.get_sensor_by_mac("C1:FC:9B:69:04:8B"))
     
-    def get_sensor_by_mac(self, mac = None) -> Sensor:
+    def get_sensor_by_mac(self, mac: str = None) -> Sensor:
         """Get a sensor object by a known mac adress.
 
         :param mac: mac adress from a BLE device, defaults to None
@@ -29,6 +29,21 @@ class Hub():
         if mac is not None:
             for sensor in self.sensors:
                 if sensor.address == mac:
+                    return sensor
+        return None
+
+    def get_sensor_by_name(self, name: str = None) -> Sensor:
+        """Get a sensor object by a known mac adress.
+
+        :param mac: mac adress from a BLE device, defaults to None
+        :type mac: str, optional
+        :return: Returns a sensor object.
+        :rtype: sensor.sensor
+        """
+        # TODO: REFACTOR - this is slower than needed
+        if name is not None:
+            for sensor in self.sensors:
+                if sensor.name == name:
                     return sensor
         return None
 

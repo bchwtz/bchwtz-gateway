@@ -22,7 +22,7 @@ class BLEConn():
         sensorlist = self.__validate_mac(devices)
         return sensorlist
 
-    async def start_notify(self, tag: BLEDevice, chan: str, timeout = 5.0, cb: Callable[[int, bytearray], None] = None):
+    async def run_single_ble_command(self, tag: BLEDevice, read_chan: str, write_chan: str, cmd: str = "", timeout = 5.0, cb: Callable[[int, bytearray], None] = None, retries = 0, max_retries = 5):
         """ Connects to a given tag and starts notification of the given callback
         :param tag: communication device abstraction
         :type tag: Tag
@@ -31,8 +31,15 @@ class BLEConn():
         :param cb: Callback that will be executed when a notification is received
         :type cb: Callable[[int, bytearray]
         """
-        async with BleakClient(tag) as client:
-            await client.start_notify(char_specifier = chan, callback = cb)
+        try:
+            async with BleakClient(tag) as client:
+                await client.start_notify(char_specifier = read_chan, callback = cb)
+                await client.write_gatt_char(write_chan, bytearray.fromhex(cmd), True)
+        except:
+            if retries < max_retries:
+                self.logger.info("retrying...")
+                await self.run_single_ble_command(tag, read_chan, write_chan, cmd, timeout, cb, retries+1, max_retries)
+            return
 
     def __validate_mac(self, devices) -> list:
         """ This funcion updates the internal mac_list. If a MAC address passed the

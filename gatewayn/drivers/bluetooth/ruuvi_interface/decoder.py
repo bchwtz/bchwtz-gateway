@@ -1,7 +1,10 @@
 from binascii import hexlify # built-in
+import logging
 
+logger = logging.getLogger("Decoder")
+logger.setLevel(logging.INFO)
 class Decoder():
-    def process_data_8(bytes, scale, rate):
+    def __process_data_8(bytes, scale, rate):
         """Parse acceleration data with an resolution of 8 Bit.
         :param bytes: Samples from bytearray
         :type bytes: bytes
@@ -61,7 +64,7 @@ class Decoder():
         return x_vector, y_vector, z_vector, timestamp_list
 
 
-    def process_data_10(bytes, scale, rate):
+    def __process_data_10(bytes, scale, rate):
         """Parse acceleration data with an resolution of 10 Bit.
         :param bytes: Samples from bytearray
         :type bytes: bytes
@@ -181,7 +184,7 @@ class Decoder():
         return x_vector, y_vector, z_vector, timestamp_list
 
 
-    def process_data_12(bytes, scale, rate):
+    def __process_data_12(bytes, scale, rate):
         """Parse acceleration data with an resolution of 12 Bit.
         :param bytes: Samples from bytearray
         :type bytes: bytes
@@ -263,7 +266,7 @@ class Decoder():
 
 
 
-    def unpack8(self, bytes, samplingrate, scale, csvfile):
+    def __unpack8(self, bytes, samplingrate, scale, csvfile):
         """unpacks the 8 byte sequences of the sensor to hex-strings
         :param bytes: the bytes from your sensor
         :type bytes: bytes
@@ -319,7 +322,7 @@ class Decoder():
 
 
 
-    def unpack10(self, bytes, samplingrate, scale, csvfile):
+    def __unpack10(self, bytes, samplingrate, scale, csvfile):
         """unpacks the 10 byte sequences of the sensor to hex-strings
         :param bytes: the bytes from your sensor
         :type bytes: bytes
@@ -398,7 +401,7 @@ class Decoder():
                     j = 0
 
 
-    def unpack12(self, bytes, samplingrate, scale, csvfile):
+    def __unpack12(self, bytes, samplingrate, scale, csvfile):
         """unpacks the 12 byte sequences of the sensor to hex-strings
         :param bytes: the bytes from your sensor
         :type bytes: bytes
@@ -463,3 +466,9 @@ class Decoder():
                             (timestamp, accvalues[0], accvalues[1], accvalues[2]))
                     timestamp += timeBetweenSamples
                     j = 0
+
+    def decode_ruuvi_msg(bytearr: bytearray = None):
+        if bytearr is None:
+            logger.warning("no input data - returning None")
+            return None
+        
