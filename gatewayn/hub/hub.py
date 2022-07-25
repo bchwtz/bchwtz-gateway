@@ -8,18 +8,15 @@ class Hub():
         self.main_loop = asyncio.get_event_loop()
         self.sensors: list[Sensor] = []
         self.ble_conn = BLEConn()
+        
 
     def discover_sensors(self, timeout = 5.0):
         self.sensors = []
         devices = self.main_loop.run_until_complete(self.ble_conn.scan_tags(timeout))
-        print(devices)
         self.__devices_to_sensors(devices)
-        print(self.sensors)
-        print(self.get_sensor_by_mac("C1:FC:9B:69:04:8B"))
     
     def get_sensor_by_mac(self, mac: str = None) -> Sensor:
         """Get a sensor object by a known mac adress.
-
         :param mac: mac adress from a BLE device, defaults to None
         :type mac: str, optional
         :return: Returns a sensor object.
@@ -34,7 +31,6 @@ class Hub():
 
     def get_sensor_by_name(self, name: str = None) -> Sensor:
         """Get a sensor object by a known mac adress.
-
         :param mac: mac adress from a BLE device, defaults to None
         :type mac: str, optional
         :return: Returns a sensor object.

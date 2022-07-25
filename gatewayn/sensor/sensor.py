@@ -26,7 +26,7 @@ class Sensor():
         sensor.address = device.address
         return sensor
 
-    def get_advertisment_log(self, cb: Callable[[int, bytearray], None] = None) -> None:
+    def get_acceleration_log(self, cb: Callable[[int, bytearray], None] = None) -> None:
         if cb is None:
             cb = self.default_log_callback
         self.main_loop.run_until_complete(self.bleConn.run_single_ble_command(
@@ -64,4 +64,4 @@ class Sensor():
         self.logger.info(f"msg: {rx_bt}")
 
     async def multi_communication_callback(self, status_code: int, rx_bt: bytearray) -> None:
-
+        pass

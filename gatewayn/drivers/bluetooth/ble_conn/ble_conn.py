@@ -10,7 +10,7 @@ class BLEConn():
         self.logger = logging.getLogger("BLEConn")
         self.logger.setLevel(logging.INFO)
 
-    async def scan_tags(self, timeout = 5.0) -> list:
+    async def scan_tags(self, timeout = 5.0) -> list[BLEDevice]:
         """The function searches for bluetooth devices nearby and passes the
         MAC addresses to the __validate_mac function.
 
@@ -41,14 +41,17 @@ class BLEConn():
                 await self.run_single_ble_command(tag, read_chan, write_chan, cmd, timeout, cb, retries+1, max_retries)
             return
 
-    def __validate_mac(self, devices) -> list:
+    def __validate_mac(self, devices: list[BLEDevice]) -> list[BLEDevice]:
         """ This funcion updates the internal mac_list. If a MAC address passed the
         checked_mac_address process, it will extend the list 'mac'.
         :param devices: device passed by the BleakScanner function
         :type devices: bleak.backends.device.BLEDevice
+
+        TODO: check for vendor name or some other idempotent information
         """
         sensorlist = []
         for i in devices:
+            self.logger.warn(i.metadata)
             self.logger.info('Device: %s with Address %s found!' % (i.name, i.address))
             if ("Ruuvi" in i.name):
                 self.logger.info(colored('Device: %s with Address %s saved in MAC list!' % (i.name, i.address), "green", attrs=['bold']) )
