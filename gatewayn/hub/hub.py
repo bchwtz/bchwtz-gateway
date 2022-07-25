@@ -8,7 +8,6 @@ class Hub():
         self.main_loop = asyncio.get_event_loop()
         self.sensors: list[Sensor] = []
         self.ble_conn = BLEConn()
-        
 
     def discover_sensors(self, timeout = 5.0):
         self.sensors = []

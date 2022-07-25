@@ -1,9 +1,11 @@
+import binascii
 from bleak import BleakScanner, BleakClient
 from bleak.backends.device import BLEDevice
 import asyncio
 import logging
 from termcolor import colored
 from typing import Callable
+from binascii import hexlify
 class BLEConn():
     def __init__(self) -> None:
         logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
