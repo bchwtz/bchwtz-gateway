@@ -40,7 +40,7 @@ class BLEConn():
                 await client.write_gatt_char(write_chan, bytearray.fromhex(cmd), True)
         except Exception as e:
             if retries < max_retries:
-                self.logger.info(f"{e} - retrying...")
+                self.logger.warn(f"{e} - retrying...")
                 time.sleep(5)
                 await self.run_single_ble_command(tag, read_chan, write_chan, cmd, timeout, cb, retries+1, max_retries)
             return
