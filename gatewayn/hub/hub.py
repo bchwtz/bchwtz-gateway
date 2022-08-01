@@ -1,5 +1,6 @@
 import asyncio
 from gatewayn.tag.tag import Tag
+from gatewayn.tag.tag_builder import TagBuilder
 from gatewayn.drivers.bluetooth.ble_conn.ble_conn import BLEConn
 from bleak.backends.device import BLEDevice
 from gatewayn.config import Config
@@ -45,5 +46,5 @@ class Hub():
         return None
 
     def __devices_to_tags(self, devices: list[BLEDevice]) -> list[Tag]:
-        self.tags = [Tag.from_device(dev) for dev in devices]
+        self.tags = [TagBuilder().from_device(dev).build() for dev in devices]
         return self.tags

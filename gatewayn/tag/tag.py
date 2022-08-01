@@ -19,13 +19,6 @@ class Tag():
         self.logger = logging.getLogger("Tag")
         self.logger.setLevel(logging.INFO)
 
-    def from_device(device: BLEDevice) -> Self:
-        tag = Tag()
-        tag.bleDevice: BLEDevice = device
-        tag.name = device.name
-        tag.address = device.address
-        return tag
-
     def get_acceleration_log(self, cb: Callable[[int, bytearray], None] = None) -> None:
         if cb is None:
             cb = self.default_log_callback
