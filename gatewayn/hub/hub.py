@@ -2,16 +2,18 @@ import asyncio
 from gatewayn.sensor.sensor import Sensor
 from gatewayn.drivers.bluetooth.ble_conn.ble_conn import BLEConn
 from bleak.backends.device import BLEDevice
+from gatewayn.config import Config
 
 class Hub():
     def __init__(self):
         self.main_loop = asyncio.get_event_loop()
         self.sensors: list[Sensor] = []
         self.ble_conn = BLEConn()
+        self.config = Config()
 
     def discover_sensors(self, timeout = 5.0):
         self.sensors = []
-        devices = self.main_loop.run_until_complete(self.ble_conn.scan_tags(timeout))
+        devices = self.main_loop.run_until_complete(self.ble_conn.scan_tags(self.config.global_config.bluetooth_manufacturer_id, timeout))
         self.__devices_to_sensors(devices)
     
     def get_sensor_by_mac(self, mac: str = None) -> Sensor:

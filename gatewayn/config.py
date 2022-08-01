@@ -1,7 +1,8 @@
-class CommunicationInterface:
+class Config:
     def __init__(self) -> None:
-        self.commands = CommunicationInterface.Commands()
-        self.channels = CommunicationInterface.CommunicationChannels()
+        self.commands = Config.Commands()
+        self.channels = Config.CommunicationChannels()
+        self.global_config = Config.GlobalConfig()
 
     class Commands:
         def __init__(self) -> None:
@@ -26,3 +27,7 @@ class CommunicationInterface:
             self.advertisements_rx = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E"
             self.dfu_control_pt = "8EC90001-F315-4F60-9FB8-838830DAEA50"
             self.dfu_data_pt = "8EC90002-F315-4F60-9FB8-838830DAEA50"
+    
+    class GlobalConfig:
+        def __init__(self) -> None:
+            self.bluetooth_manufacturer_id = 1177

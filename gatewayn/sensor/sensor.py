@@ -5,7 +5,7 @@ from bleak.backends.device import BLEDevice
 from nbformat import write
 from numpy import byte
 from gatewayn.drivers.bluetooth.ble_conn.ble_conn import BLEConn
-from gatewayn.sensor.bluetooth_strings import CommunicationInterface
+from gatewayn.config import Config
 import logging
 
 class Sensor():
@@ -15,7 +15,7 @@ class Sensor():
         self.bleDevice: BLEDevice = device
         self.main_loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
         self.bleConn: BLEConn = BLEConn()
-        self.communication_config = CommunicationInterface()
+        self.communication_config = Config()
         self.logger = logging.getLogger("Sensor")
         self.logger.setLevel(logging.INFO)
 
