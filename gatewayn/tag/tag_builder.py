@@ -20,7 +20,7 @@ class TagBuilder:
         self.tag_ble_device: BLEDevice = device
         self.tag_name = device.name
         self.tag_address = device.address
-        self.tag_sensors[
+        self.tag_sensors = [
             TemperatureSensor(),
             HumiditySensor(),
             AccelerationSensor(),
