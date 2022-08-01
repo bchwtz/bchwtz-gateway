@@ -6,6 +6,7 @@ import logging
 from termcolor import colored
 from typing import Callable
 from binascii import hexlify
+import time
 class BLEConn():
     def __init__(self) -> None:
         logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -37,9 +38,10 @@ class BLEConn():
             async with BleakClient(tag) as client:
                 await client.start_notify(char_specifier = read_chan, callback = cb)
                 await client.write_gatt_char(write_chan, bytearray.fromhex(cmd), True)
-        except:
+        except Exception as e:
             if retries < max_retries:
-                self.logger.info("retrying...")
+                self.logger.info(f"{e} - retrying...")
+                time.sleep(5)
                 await self.run_single_ble_command(tag, read_chan, write_chan, cmd, timeout, cb, retries+1, max_retries)
             return
 

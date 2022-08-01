@@ -5,12 +5,12 @@ from typing_extensions import Self
 
 class TagBuilder:
     def __init__(self) -> None:
-        self.tag_bleDevice = None
+        self.tag_ble_device = None
         self.tag_name = ""
         self.tag_address = ""
 
     def from_device(self, device: BLEDevice) -> Self:
-        self.tag_bleDevice: BLEDevice = device
+        self.tag_ble_device: BLEDevice = device
         self.tag_name = device.name
         self.tag_address = device.address
         return self
@@ -24,9 +24,9 @@ class TagBuilder:
         return self
 
     def ble_device(self, ble_device: BLEDevice) -> Self:
-        self.tag_bleDevice = ble_device
+        self.tag_ble_device = ble_device
         return self
 
     def build(self) -> Tag:
-        tag = Tag(name=self.tag_name, address=self.tag_address, device=self.ble_device)
+        tag = Tag(name=self.tag_name, address=self.tag_address, device=self.tag_ble_device)
         return tag
