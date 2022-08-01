@@ -8,6 +8,10 @@ from gatewayn.drivers.bluetooth.ble_conn.ble_conn import BLEConn
 from gatewayn.config import Config
 import logging
 
+from gatewayn.sensor.sensor import Sensor
+
+
+
 class Tag():
     def __init__(self, name: str = "", address: str = "", device: BLEDevice = None) -> None:
         self.name: str = name
@@ -18,6 +22,8 @@ class Tag():
         self.communication_config = Config()
         self.logger = logging.getLogger("Tag")
         self.logger.setLevel(logging.INFO)
+        # TODO: add sensors as ble caps on firmware side to autoload sensor classes by names
+        self.sensors: list[Sensor] = []
 
     def get_acceleration_log(self, cb: Callable[[int, bytearray], None] = None) -> None:
         if cb is None:
