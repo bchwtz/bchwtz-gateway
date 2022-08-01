@@ -19,10 +19,10 @@ class BLEConn():
         :param timeout: timeout for the find_tags function, defaults to 5.0
         :type timeout: float, optional
         """
-        sensorlist = []
+        devicelist = []
         devices = await BleakScanner.discover(timeout=timeout)
-        sensorlist = self.__validate_mac(devices, manufacturer_id)
-        return sensorlist
+        devicelist = self.__validate_manufacturer(devices, manufacturer_id)
+        return devicelist
 
     async def run_single_ble_command(self, tag: BLEDevice, read_chan: str, write_chan: str, cmd: str = "", timeout = 5.0, cb: Callable[[int, bytearray], None] = None, retries = 0, max_retries = 5):
         """ Connects to a given tag and starts notification of the given callback
@@ -43,7 +43,7 @@ class BLEConn():
                 await self.run_single_ble_command(tag, read_chan, write_chan, cmd, timeout, cb, retries+1, max_retries)
             return
 
-    def __validate_mac(self, devices: list[BLEDevice], manufacturer_id = 0) -> list[BLEDevice]:
+    def __validate_manufacturer(self, devices: list[BLEDevice], manufacturer_id = 0) -> list[BLEDevice]:
         """ This funcion updates the internal mac_list. If a MAC address passed the
         checked_mac_address process, it will extend the list 'mac'.
         :param devices: device passed by the BleakScanner function
@@ -51,10 +51,10 @@ class BLEConn():
 
         TODO: check for vendor name or some other idempotent information
         """
-        sensorlist = []
+        devicelist = []
         for i in devices:
             if "manufacturer_data" in i.metadata:
                 if manufacturer_id in i.metadata["manufacturer_data"]:
                     self.logger.info(colored('Device: %s with Address %s saved in MAC list!' % (i.name, i.address), "green", attrs=['bold']) )
-                    sensorlist.append(i)
-        return sensorlist
+                    devicelist.append(i)
+        return devicelist

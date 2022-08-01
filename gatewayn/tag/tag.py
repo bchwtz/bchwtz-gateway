@@ -8,7 +8,7 @@ from gatewayn.drivers.bluetooth.ble_conn.ble_conn import BLEConn
 from gatewayn.config import Config
 import logging
 
-class Sensor():
+class Tag():
     def __init__(self, name: str = "", address: str = "", device: BLEDevice = None) -> None:
         self.name: str = name
         self.address: str = address
@@ -16,15 +16,15 @@ class Sensor():
         self.main_loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
         self.bleConn: BLEConn = BLEConn()
         self.communication_config = Config()
-        self.logger = logging.getLogger("Sensor")
+        self.logger = logging.getLogger("Tag")
         self.logger.setLevel(logging.INFO)
 
     def from_device(device: BLEDevice) -> Self:
-        sensor = Sensor()
-        sensor.bleDevice: BLEDevice = device
-        sensor.name = device.name
-        sensor.address = device.address
-        return sensor
+        tag = Tag()
+        tag.bleDevice: BLEDevice = device
+        tag.name = device.name
+        tag.address = device.address
+        return tag
 
     def get_acceleration_log(self, cb: Callable[[int, bytearray], None] = None) -> None:
         if cb is None:
