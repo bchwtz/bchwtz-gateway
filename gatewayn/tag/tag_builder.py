@@ -1,4 +1,3 @@
-from torch import addr
 from gatewayn.tag.tag import Tag
 from bleak.backends.device import BLEDevice
 from typing_extensions import Self
