@@ -1,9 +1,6 @@
 from enum import Enum
 
-from gatewayn.config import Config
-
-
-class Config(Enum):
+class Config:
     class Commands(Enum):
         read_all: str = "4a4a110100000000000000"
         activate_logging_at_tag: str = "4a4a080100000000000000"
