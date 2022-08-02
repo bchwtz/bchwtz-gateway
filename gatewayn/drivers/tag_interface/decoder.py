@@ -1,6 +1,7 @@
 from ast import Bytes
 from binascii import hexlify # built-in
 import logging
+import time
 
 logger = logging.getLogger("Decoder")
 logger.setLevel(logging.INFO)
@@ -491,3 +492,15 @@ class Decoder():
             self.__unpack10(bytearr, sampling_rate, scale, None)
         elif resolution == 12:
             self.__unpack12(bytearr, sampling_rate, scale, None)
+
+    def decode_samplerate_rx(self, bytearr: Bytes =  None) -> int:
+        if bytearr[4] == 201:
+            logger.info("Samplerate 400Hz")
+            return 400
+        logger.info(f"Samplerate {bytearr[4]} Hz")
+        return int(bytearr[4])
+
+    def decode_time_rx(self, bytearr: Bytes =  None) -> int:
+        logger.info("Received time: %s" % hexlify(bytearr[:-9:-1]))
+        received_time = time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(bytearr[:-9:-1]), 16) / 1000))        
+        return received_time

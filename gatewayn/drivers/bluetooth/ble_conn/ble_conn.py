@@ -13,11 +13,11 @@ class BLEConn():
         self.logger = logging.getLogger("BLEConn")
         self.logger.setLevel(logging.INFO)
 
-    async def scan_tags(self, manufacturer_id = 0, timeout = 5.0) -> list[BLEDevice]:
+    async def scan_tags(self, manufacturer_id = 0, timeout = 20.0) -> list[BLEDevice]:
         """The function searches for bluetooth devices nearby and passes the
         MAC addresses to the __validate_mac function.
 
-        :param timeout: timeout for the find_tags function, defaults to 5.0
+        :param timeout: timeout for the find_tags function, defaults to 20.0
         :type timeout: float, optional
         """
         devicelist = []
@@ -25,7 +25,7 @@ class BLEConn():
         devicelist = self.__validate_manufacturer(devices, manufacturer_id)
         return devicelist
 
-    async def run_single_ble_command(self, tag: BLEDevice, read_chan: str, write_chan: str, cmd: str = "", timeout = 5.0, cb: Callable[[int, bytearray], None] = None, retries = 0, max_retries = 5):
+    async def run_single_ble_command(self, tag: BLEDevice, read_chan: str, write_chan: str, cmd: str = "", timeout = 20.0, cb: Callable[[int, bytearray], None] = None, retries = 0, max_retries = 5):
         """ Connects to a given tag and starts notification of the given callback
         :param tag: communication device abstraction
         :type tag: Tag
@@ -35,7 +35,7 @@ class BLEConn():
         :type cb: Callable[[int, bytearray]
         """
         try:
-            async with BleakClient(tag) as client:
+            async with BleakClient(tag, timeout = timeout) as client:
                 await client.start_notify(char_specifier = read_chan, callback = cb)
                 await client.write_gatt_char(write_chan, bytearray.fromhex(cmd), True)
         except Exception as e:
