@@ -1,10 +1,15 @@
+from ast import Bytes
 from binascii import hexlify # built-in
 import logging
 
 logger = logging.getLogger("Decoder")
 logger.setLevel(logging.INFO)
 class Decoder():
-    def __process_data_8(bytes, scale, rate):
+    def __init__(self) -> None:
+        self.resolution = 0
+
+
+    def __process_data_8(self, bytes, scale, rate):
         """Parse acceleration data with an resolution of 8 Bit.
         :param bytes: Samples from bytearray
         :type bytes: bytes
@@ -64,7 +69,7 @@ class Decoder():
         return x_vector, y_vector, z_vector, timestamp_list
 
 
-    def __process_data_10(bytes, scale, rate):
+    def __process_data_10(self, bytes, scale, rate):
         """Parse acceleration data with an resolution of 10 Bit.
         :param bytes: Samples from bytearray
         :type bytes: bytes
@@ -184,7 +189,7 @@ class Decoder():
         return x_vector, y_vector, z_vector, timestamp_list
 
 
-    def __process_data_12(bytes, scale, rate):
+    def __process_data_12(self, bytes, scale, rate):
         """Parse acceleration data with an resolution of 12 Bit.
         :param bytes: Samples from bytearray
         :type bytes: bytes
@@ -266,7 +271,7 @@ class Decoder():
 
 
 
-    def __unpack8(self, bytes, samplingrate, scale, csvfile):
+    def __unpack8(self, bytes, samplingrate, scale, csvfile) -> list:
         """unpacks the 8 byte sequences of the sensor to hex-strings
         :param bytes: the bytes from your sensor
         :type bytes: bytes
@@ -277,6 +282,7 @@ class Decoder():
         """
         j = 0
         pos = 0
+        res = []
         accvalues = [0, 0, 0]
         timestamp = 0
         timeBetweenSamples = 1000/samplingrate
@@ -317,12 +323,14 @@ class Decoder():
                         (timestamp, accvalues[0], accvalues[1], accvalues[1]))
                 timestamp += timeBetweenSamples
                 j = 0
+                res.append(f"{timestamp, accvalues[0], accvalues[1], accvalues[2]}")
             else:
                 j += 1
+        return res
 
 
 
-    def __unpack10(self, bytes, samplingrate, scale, csvfile):
+    def __unpack10(self, bytes, samplingrate, scale, csvfile) -> list:
         """unpacks the 10 byte sequences of the sensor to hex-strings
         :param bytes: the bytes from your sensor
         :type bytes: bytes
@@ -337,6 +345,7 @@ class Decoder():
         accvalues = [0, 0, 0]
         timestamp = 0
         timeBetweenSamples = 1000/samplingrate
+        res = []
         if(scale == 2):
             faktor = 4/(64*1000)
         elif(scale == 4):
@@ -399,9 +408,10 @@ class Decoder():
                             (timestamp, accvalues[0], accvalues[1], accvalues[2]))
                     timestamp += timeBetweenSamples
                     j = 0
+                    res.append(f"{timestamp, accvalues[0], accvalues[1], accvalues[2]}")
+        return res
 
-
-    def __unpack12(self, bytes, samplingrate, scale, csvfile):
+    def __unpack12(self, bytes, samplingrate, scale, csvfile) -> list:
         """unpacks the 12 byte sequences of the sensor to hex-strings
         :param bytes: the bytes from your sensor
         :type bytes: bytes
@@ -416,6 +426,7 @@ class Decoder():
         accvalues = [0, 0, 0]
         timestamp = 0
         timeBetweenSamples = 1000/samplingrate
+        res = []
         if(scale == 2):
             faktor = 1/(16*1000)
         elif(scale == 4):
@@ -466,9 +477,17 @@ class Decoder():
                             (timestamp, accvalues[0], accvalues[1], accvalues[2]))
                     timestamp += timeBetweenSamples
                     j = 0
+                    res.append([timestamp, accvalues[0], accvalues[1], accvalues[2]])
+        return res
 
-    def decode_ruuvi_msg(bytearr: bytearray = None):
+    def decode_ruuvi_msg(self, bytearr: Bytes = None, resolution: int = 12, sampling_rate: int = 10, scale: float = 2):
+        self.resolution = resolution
         if bytearr is None:
             logger.warning("no input data - returning None")
             return None
-        
+        if resolution == 8:
+            self.__unpack8(bytearr, sampling_rate, scale, None)
+        elif resolution == 10:
+            self.__unpack10(bytearr, sampling_rate, scale, None)
+        elif resolution == 12:
+            self.__unpack12(bytearr, sampling_rate, scale, None)
