@@ -1,8 +1,6 @@
 import pytest
-import asyncio
 from gatewayn.hub.hub import Hub
 
-loop = asyncio.new_event_loop()
 test_hub = Hub()
 
 def test_get_tag_by_mac():
