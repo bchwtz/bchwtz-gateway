@@ -13,6 +13,17 @@ class BLEConn():
         self.logger = logging.getLogger("BLEConn")
         self.logger.setLevel(logging.INFO)
 
+    # cof - bleak adscanning seems broken - have to investigate further later... muuuuuch later...
+    async def listen_advertisments(self, manufacturer_id = 0, timeout = 5.0) -> None:
+        async with BleakScanner() as scanner:
+            scanner.register_detection_callback(self.cb_advertisments)
+            await scanner.start()
+            await asyncio.sleep(50)
+            await scanner.stop()
+
+    async def cb_advertisments(self, device, data):
+        print(device, data)
+
     async def scan_tags(self, manufacturer_id = 0, timeout = 20.0) -> list[BLEDevice]:
         """The function searches for bluetooth devices nearby and passes the
         MAC addresses to the __validate_mac function.

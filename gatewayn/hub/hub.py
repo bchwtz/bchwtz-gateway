@@ -11,7 +11,7 @@ class Hub():
         self.tags: list[Tag] = []
         self.ble_conn = BLEConn()
 
-    def discover_tags(self, timeout = 5.0):
+    def discover_tags(self, timeout: float = 5.0) -> None:
         self.tags = []
         devices = self.main_loop.run_until_complete(self.ble_conn.scan_tags(Config.GlobalConfig.bluetooth_manufacturer_id.value, timeout))
         self.__devices_to_tags(devices)
