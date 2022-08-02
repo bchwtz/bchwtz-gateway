@@ -52,7 +52,7 @@ class BLEConn():
         except Exception as e:
             if retries < max_retries:
                 self.logger.warn(f"{e} - retrying...")
-                time.sleep(5)
+                time.sleep(timeout)
                 await self.run_single_ble_command(tag, read_chan, write_chan, cmd, timeout, cb, retries+1, max_retries)
             return
 
