@@ -43,7 +43,7 @@ class Tag():
             self.ble_device,
             read_chan = Config.CommunicationChannels.rx.value,
             write_chan = Config.CommunicationChannels.tx.value,
-            cmd = Config.Commands.get_tag_config,
+            cmd = Config.Commands.get_tag_config.value,
             cb = cb
         ))
 
