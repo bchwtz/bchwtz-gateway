@@ -11,8 +11,8 @@ sensor1 = myhub.sensorlist[0]
 print(type(sensor1))
 
 # Get basic sensor configurations
-sensor1.get_config()
-print(sensor1.sensor_data)
+#sensor1.get_config()
+#print(sensor1.sensor_data)
 
 # set config 
 sensor1.set_config(sampling_rate = 100, sampling_resolution = 12, measuring_range = 16, divider = 20)

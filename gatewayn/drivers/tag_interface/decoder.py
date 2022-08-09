@@ -3,6 +3,8 @@ from binascii import hexlify # built-in
 import logging
 import time
 
+from gatewayn.tag.tagconfig import TagConfig
+
 logger = logging.getLogger("Decoder")
 logger.setLevel(logging.INFO)
 class Decoder():
@@ -493,14 +495,25 @@ class Decoder():
         elif resolution == 12:
             self.__unpack12(bytearr, sampling_rate, scale, None)
 
-    def decode_samplerate_rx(self, bytearr: Bytes =  None) -> int:
+    def decode_config_rx(self, bytearr: Bytes =  None) -> TagConfig:
+        config = TagConfig()
         if bytearr[4] == 201:
             logger.info("Samplerate 400Hz")
-            return 400
-        logger.info(f"Samplerate {bytearr[4]} Hz")
-        return int(bytearr[4])
+            config.samplerate = 400
+        else:
+            config.samplerate = int(bytearr[4])
+        logger.info(f"Samplerate {config.samplerate} Hz")
+        config.resolution = int(bytearr[5])
+        config.scale = int(bytearr[6])
+        config.dsp_function = int(bytearr[7])
+        config.dsp_parameter = int(bytearr[8])
+        config.mode = "%x" % bytearr[9]
+        config.divider = int(bytearr[10])
+        return config
 
     def decode_time_rx(self, bytearr: Bytes =  None) -> int:
         logger.info("Received time: %s" % hexlify(bytearr[:-9:-1]))
         received_time = time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(bytearr[:-9:-1]), 16) / 1000))        
         return received_time
+
+    

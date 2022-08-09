@@ -3,6 +3,7 @@ from time import time
 from typing import Callable
 from typing_extensions import Self
 from bleak.backends.device import BLEDevice
+from gatewayn.tag.tagconfig import TagConfig
 from nbformat import write
 from numpy import byte
 from gatewayn.drivers.bluetooth.ble_conn.ble_conn import BLEConn
@@ -24,10 +25,11 @@ class Tag():
         self.ble_conn: BLEConn = BLEConn()
         self.logger = logging.getLogger("Tag")
         self.logger.setLevel(logging.INFO)
-        self.samplerate = 0
+        self.samplerate: int = 0
         # TODO: add sensors as ble caps on firmware side to autoload sensor classes by names
         self.sensors: list[Sensor] = []
-        self.dec = Decoder()
+        self.dec: Decoder = Decoder()
+        self.config: TagConfig = None
         self.time = None
 
     def get_acceleration_log(self, cb: Callable[[int, bytearray], None] = None) -> None:
@@ -96,14 +98,13 @@ class Tag():
         print(caught_signals)
         if caught_signals == None:
             return
-        if "samplerate" in caught_signals:
-            self.handle_samplerate_cb(rx_bt)
+        if "config" in caught_signals:
+            self.handle_config_cb(rx_bt)
         elif "time" in caught_signals:
             self.handle_time_cb(rx_bt)
 
-    def handle_samplerate_cb(self, rx_bt: bytearray) -> None:
-        samplerate = self.dec.decode_samplerate_rx(rx_bt)
-        self.samplerate = samplerate
+    def handle_config_cb(self, rx_bt: bytearray) -> None:
+        self.config = self.dec.decode_config_rx(rx_bt)
     
     def handle_time_cb(self, rx_bt: bytearray) -> None:
         time = self.dec.decode_time_rx(rx_bt)
