@@ -1,8 +1,11 @@
 import asyncio
-from time import time
+from datetime import datetime
 from typing import Callable
+import time
 from typing_extensions import Self
+from xmlrpc.client import DateTime
 from bleak.backends.device import BLEDevice
+from gatewayn.drivers.tag_interface.encoder import Encoder
 from gatewayn.tag.tagconfig import TagConfig
 from nbformat import write
 from numpy import byte
@@ -29,8 +32,9 @@ class Tag():
         # TODO: add sensors as ble caps on firmware side to autoload sensor classes by names
         self.sensors: list[Sensor] = []
         self.dec: Decoder = Decoder()
+        self.enc: Encoder = Encoder()
         self.config: TagConfig = None
-        self.time = None
+        self.time: DateTime = None
 
     def get_acceleration_log(self, cb: Callable[[int, bytearray], None] = None) -> None:
         if cb is None:
@@ -109,3 +113,16 @@ class Tag():
     def handle_time_cb(self, rx_bt: bytearray) -> None:
         time = self.dec.decode_time_rx(rx_bt)
         self.time = time
+
+    def set_time_to_now(self, cb: Callable[[int, bytearray], None] = None) -> None:
+        if cb is None:
+            cb = self.multi_communication_callback
+        cmd = self.enc.encode_time(time = datetime.now().timestamp())
+        print(cmd)
+        self.main_loop.run_until_complete(self.ble_conn.run_single_ble_command(
+            self.ble_device,
+            read_chan = Config.CommunicationChannels.rx.value,
+            write_chan = Config.CommunicationChannels.tx.value,
+            cmd = cmd,
+            cb = cb
+        ))

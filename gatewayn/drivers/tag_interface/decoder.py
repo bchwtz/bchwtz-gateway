@@ -513,7 +513,7 @@ class Decoder():
 
     def decode_time_rx(self, bytearr: Bytes =  None) -> int:
         logger.info("Received time: %s" % hexlify(bytearr[:-9:-1]))
-        received_time = time.strftime('%D %H:%M:%S', time.gmtime(int(hexlify(bytearr[:-9:-1]), 16) / 1000))        
+        received_time = time.strftime('%D %H:%M:%S', time.localtime(int(hexlify(bytearr[:-9:-1]), 16) / 1000))        
         return received_time
 
     
