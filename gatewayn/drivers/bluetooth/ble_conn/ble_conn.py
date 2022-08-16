@@ -14,17 +14,17 @@ class BLEConn():
         self.logger.setLevel(logging.INFO)
 
     # cof - bleak adscanning seems broken - have to investigate further later... muuuuuch later...
-    async def listen_advertisments(self, manufacturer_id = 0, timeout = 5.0) -> None:
+    async def listen_advertisments(self, manufacturer_id: int = 0, timeout: float = 5.0) -> None:
         async with BleakScanner() as scanner:
             scanner.register_detection_callback(self.cb_advertisments)
             await scanner.start()
             await asyncio.sleep(50)
             await scanner.stop()
 
-    async def cb_advertisments(self, device, data):
+    async def cb_advertisments(self, device: BLEDevice, data: dict):
         print(device, data)
 
-    async def scan_tags(self, manufacturer_id = 0, timeout = 20.0) -> list[BLEDevice]:
+    async def scan_tags(self, manufacturer_id: int = 0, timeout: float = 20.0) -> list[BLEDevice]:
         """The function searches for bluetooth devices nearby and passes the
         MAC addresses to the __validate_mac function.
 
@@ -56,7 +56,7 @@ class BLEConn():
                 await self.run_single_ble_command(tag, read_chan, write_chan, cmd, timeout, cb, retries+1, max_retries)
             return
 
-    def __validate_manufacturer(self, devices: list[BLEDevice], manufacturer_id = 0) -> list[BLEDevice]:
+    def __validate_manufacturer(self, devices: list[BLEDevice], manufacturer_id: int = 0) -> list[BLEDevice]:
         """ This funcion updates the internal mac_list. If a MAC address passed the
         checked_mac_address process, it will extend the list 'mac'.
         :param devices: device passed by the BleakScanner function
