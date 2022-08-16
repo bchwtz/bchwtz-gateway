@@ -36,7 +36,7 @@ class BLEConn():
         devicelist = self.__validate_manufacturer(devices, manufacturer_id)
         return devicelist
 
-    async def run_single_ble_command(self, tag: BLEDevice, read_chan: str, write_chan: str, cmd: str = "", timeout = 20.0, cb: Callable[[int, bytearray], None] = None, retries = 0, max_retries = 5):
+    async def run_single_ble_command(self, tag: BLEDevice, read_chan: str, write_chan: str, cmd: str = "", timeout = 20.0, cb: Callable[[int, bytearray], None] = None, retries: int = 0, max_retries: int = 5):
         """ Connects to a given tag and starts notification of the given callback
         :param tag: communication device abstraction
         :type tag: Tag
