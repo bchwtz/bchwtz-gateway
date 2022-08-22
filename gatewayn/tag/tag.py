@@ -5,17 +5,17 @@ import time
 from typing_extensions import Self
 from xmlrpc.client import DateTime
 from bleak.backends.device import BLEDevice
-from gatewayn.drivers.tag_interface.encoder import Encoder
+from gatewayn.tag.tag_interface.encoder import Encoder
 from gatewayn.tag.tagconfig import TagConfig
 from nbformat import write
 from numpy import byte
 from gatewayn.drivers.bluetooth.ble_conn.ble_conn import BLEConn
 from gatewayn.config import Config
 import logging
-from gatewayn.drivers.tag_interface.decoder import Decoder
+from gatewayn.tag.tag_interface.decoder import Decoder
 
 from gatewayn.sensor.sensor import Sensor
-from gatewayn.drivers.tag_interface.signals import SigScanner
+from gatewayn.tag.tag_interface.signals import SigScanner
 
 
 
