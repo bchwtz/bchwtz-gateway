@@ -15,17 +15,18 @@ class Encoder():
     def encode_config(self, config: TagConfig) -> str:
         if config.samplerate not in Config.AllowedValues.samplerate.value:
             config.samplerate = 0xff
-        sampleratestr = f'{config.samplerate:x}'
+        sampleratestr = "{:02x}".format(config.samplerate)
+        print(sampleratestr)
         if config.resolution not in Config.AllowedValues.sample_resolution.value:
             config.resolution = 0xff
-        resolutionstr = f'{config.resolution:x}'
+        resolutionstr = "{:02x}".format(config.resolution)
         if config.scale not in Config.AllowedValues.scale.value:
             config.scale = 0xff
-        scalestr = f'{config.scale:x}'
+        scalestr = "{:02x}".format(config.scale)
         if config.divider > 254:
             self.logger.warn("divider overflowed (max 0xff), resetting to 0xff")
             config.divider = 0xff
-        dividerstr = f'{config.divider:x}'
+        dividerstr = "{:02x}".format(config.divider)
         command = Config.Commands.set_tag_config_substr.value + sampleratestr + resolutionstr + scalestr + "ffffff" + dividerstr + "00"
         self.logger.info("Set sensor config {}".format(command))
         return command

@@ -497,6 +497,9 @@ class Decoder():
 
     def decode_config_rx(self, bytearr: Bytes =  None) -> TagConfig:
         config = TagConfig()
+        if len(bytearr) < 11:
+            logger.error("invalid bytearr - resuming with empty config")
+            return TagConfig()
         if bytearr[4] == 201:
             logger.info("Samplerate 400Hz")
             config.samplerate = 400
