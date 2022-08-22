@@ -26,6 +26,28 @@ class Config:
     class GlobalConfig(Enum):
         bluetooth_manufacturer_id: int = 1177
 
+    class AllowedValues(Enum):
+        samplerate: list[int] = [
+            1,
+            10,
+            25,
+            50,
+            100,
+            200,
+            400
+        ]
+        sample_resolution: list[int] = [
+            8,
+            10,
+            12
+        ]
+        scale: list[int] = [
+            2,
+            4,
+            8,
+            16
+        ]
+
     class ReturnSignals(Enum):
         # These are configs for the sigscanner-class from drivers. Keys are the required offset in the bytearray, values are the values required at the offsets to get a match.
         config: list[dict] = [{0: 0x4a, 3: 0x00}]

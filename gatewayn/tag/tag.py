@@ -40,7 +40,7 @@ class Tag():
         if cb is None:
             cb = self.default_log_callback
         self.main_loop.run_until_complete(self.ble_conn.run_single_ble_command(
-            self.ble_device,
+            tag = self.ble_device,
             read_chan = Config.CommunicationChannels.rx.value,
             write_chan = Config.CommunicationChannels.tx.value,
             cmd = Config.Commands.get_acceleration_data.value,
@@ -51,7 +51,7 @@ class Tag():
         if cb is None:
             cb = self.multi_communication_callback
         self.main_loop.run_until_complete(self.ble_conn.run_single_ble_command(
-            self.ble_device,
+            tag = self.ble_device,
             read_chan = Config.CommunicationChannels.rx.value,
             write_chan = Config.CommunicationChannels.tx.value,
             cmd = Config.Commands.get_tag_config.value,
@@ -62,7 +62,7 @@ class Tag():
         if cb is None:
             cb = self.multi_communication_callback
         self.main_loop.run_until_complete(self.ble_conn.run_single_ble_command(
-            self.ble_device,
+            tag = self.ble_device,
             read_chan = Config.CommunicationChannels.rx.value,
             write_chan = Config.CommunicationChannels.tx.value,
             cmd = Config.Commands.get_tag_timestamp.value,
@@ -73,7 +73,7 @@ class Tag():
         if cb is None:
             cb = self.default_log_callback
         self.main_loop.run_until_complete(self.ble_conn.run_single_ble_command(
-            self.ble_device,
+            tag = self.ble_device,
             read_chan = Config.CommunicationChannels.rx.value,
             write_chan = Config.CommunicationChannels.tx.value,
             cmd = Config.Commands.get_flash_statistics.value,
@@ -84,7 +84,7 @@ class Tag():
         if cb is None:
             cb = self.default_log_callback
         self.main_loop.run_until_complete(self.ble_conn.run_single_ble_command(
-            self.ble_device,
+            tag = self.ble_device,
             read_chan = Config.CommunicationChannels.rx.value,
             write_chan = Config.CommunicationChannels.tx.value,
             cmd = Config.Commands.get_logging_status.value,
@@ -120,9 +120,27 @@ class Tag():
         cmd = self.enc.encode_time(time = datetime.now().timestamp())
         print(cmd)
         self.main_loop.run_until_complete(self.ble_conn.run_single_ble_command(
-            self.ble_device,
+            tag = self.ble_device,
             read_chan = Config.CommunicationChannels.rx.value,
             write_chan = Config.CommunicationChannels.tx.value,
             cmd = cmd,
             cb = cb
+        ))
+
+    # TODO : move to enc
+    def set_heartbeat(self, heartbeat_interval: int = 10):
+        self.logger.info("Set heartbeat interval to: {}".format(heartbeat_interval))
+        hex_beat = hex(heartbeat_interval)[2:]
+        hex_msg = f"2200F2{'0000'[:4 - len(hex_beat)]}{hex_beat}000000000000"
+
+    def set_config(self, config: TagConfig = None):
+        if config is not None:
+            self.config = config
+        cmd = self.enc.encode_config(config = self.config)
+        self.main_loop.run_until_complete(self.ble_conn.run_single_ble_command(
+            tag = self.ble_device,
+            read_chan = Config.CommunicationChannels.rx.value,
+            write_chan = Config.CommunicationChannels.tx.value,
+            cmd = cmd,
+            cb = self.multi_communication_callback
         ))
