@@ -15,7 +15,7 @@ class Hub():
         self.logger = logging.getLogger("Hub")
         self.logger.setLevel(logging.DEBUG)
 
-    def discover_tags(self, timeout: float = 5.0, rediscover: bool = False) -> None:
+    def discover_tags(self, timeout: float = 5.0, rediscover: bool = False, autoload_config: bool = True) -> None:
         devices = self.main_loop.run_until_complete(self.ble_conn.scan_tags(Config.GlobalConfig.bluetooth_manufacturer_id.value, timeout))
         if not rediscover:
             self.__check_tags_online_state(devices)
@@ -25,18 +25,22 @@ class Hub():
             devices = filter(lambda dev: not any(dev.address == t.address for t in self.tags), devices)
         self.logger.debug("found new devices")
         self.__devices_to_tags(devices)
-    
-    def get_tag_by_mac(self, mac: str = None) -> Tag:
+        if autoload_config:
+            for dev in devices:
+                tag = self.get_tag_by_address(dev.address)
+                tag.get_config()
+                
+    def get_tag_by_address(self, address: str = None) -> Tag:
         """Get a tag object by a known mac adress.
-        :param mac: mac adress from a BLE device, defaults to None
+        :param address: mac adress from a BLE device, defaults to None
         :type mac: str, optional
         :return: Returns a tag object.
         :rtype: tag.tag
         """
         # TODO: REFACTOR - this is slower than needed
-        if mac is not None:
+        if address is not None:
             for tag in self.tags:
-                if tag.address == mac:
+                if tag.address == address:
                     return tag
         return None
 
