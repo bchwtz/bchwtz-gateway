@@ -20,7 +20,7 @@ from gatewayn.tag.tag_interface.signals import SigScanner
 
 
 class Tag():
-    def __init__(self, name: str = "", address: str = "", device: BLEDevice = None) -> None:
+    def __init__(self, name: str = "", address: str = "", device: BLEDevice = None, online: bool = True) -> None:
         self.name: str = name
         self.address: str = address
         self.ble_device: BLEDevice = device
@@ -35,6 +35,8 @@ class Tag():
         self.enc: Encoder = Encoder()
         self.config: TagConfig = None
         self.time: DateTime = None
+        self.online: bool = online
+        self.last_seen: float = time.time()
 
     def get_acceleration_log(self, cb: Callable[[int, bytearray], None] = None) -> None:
         if cb is None:
@@ -99,7 +101,7 @@ class Tag():
     async def multi_communication_callback(self, status_code: int, rx_bt: bytearray) -> None:
         caught_signals = None
         caught_signals = SigScanner.scan_signals(rx_bt, Config.ReturnSignals)
-        print(caught_signals)
+        self.logger.debug(caught_signals)
         if caught_signals == None:
             return
         if "config" in caught_signals:
@@ -118,7 +120,7 @@ class Tag():
         if cb is None:
             cb = self.multi_communication_callback
         cmd = self.enc.encode_time(time = datetime.now().timestamp())
-        print(cmd)
+        self.logger.debug(cmd)
         self.main_loop.run_until_complete(self.ble_conn.run_single_ble_command(
             tag = self.ble_device,
             read_chan = Config.CommunicationChannels.rx.value,
@@ -129,7 +131,7 @@ class Tag():
 
     # TODO : move to enc
     def set_heartbeat(self, heartbeat_interval: int = 10):
-        self.logger.info("Set heartbeat interval to: {}".format(heartbeat_interval))
+        self.logger.debug("Set heartbeat interval to: {}".format(heartbeat_interval))
         hex_beat = hex(heartbeat_interval)[2:]
         hex_msg = f"2200F2{'0000'[:4 - len(hex_beat)]}{hex_beat}000000000000"
 

@@ -10,9 +10,10 @@ from gatewayn.sensor.barometer import BarometerSensor
 
 class TagBuilder:
     def __init__(self) -> None:
-        self.tag_ble_device = None
-        self.tag_name = ""
-        self.tag_address = ""
+        self.tag_ble_device: BLEDevice = None
+        self.tag_name: str = ""
+        self.tag_address: str = ""
+        self.tag_online: bool = True
         self.tag_sensors = []
 
     def from_device(self, device: BLEDevice) -> Self:
@@ -25,6 +26,7 @@ class TagBuilder:
             AccelerationSensor(),
             BarometerSensor(),
         ]
+        self.tag_online = True
         return self
 
     def name(self, name: str = "") -> Self:
@@ -39,6 +41,10 @@ class TagBuilder:
         self.tag_ble_device = ble_device
         return self
 
+    def online(self, online: bool = True) -> Self:
+        self.tag_online = online
+        return self
+
     def build(self) -> Tag:
-        tag = Tag(name=self.tag_name, address=self.tag_address, device=self.tag_ble_device)
+        tag = Tag(name=self.tag_name, address=self.tag_address, device=self.tag_ble_device, online=self.tag_online)
         return tag
