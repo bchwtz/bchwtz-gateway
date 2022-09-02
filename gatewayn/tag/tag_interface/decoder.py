@@ -489,11 +489,11 @@ class Decoder():
             logger.warning("no input data - returning None")
             return None
         if resolution == 8:
-            return self.__unpack8(bytearr, sampling_rate, scale, None)
+            return self.__process_data_8(bytearr, sampling_rate, scale, None)
         elif resolution == 10:
-            return self.__unpack10(bytearr, sampling_rate, scale, None)
+            return self.__process_data_10(bytearr, sampling_rate, scale, None)
         elif resolution == 12:
-            return self.__unpack12(bytearr, sampling_rate, scale, None)
+            return self.__process_data_12(bytearr, sampling_rate, scale, None)
 
     def decode_config_rx(self, bytearr: Bytes =  None) -> TagConfig:
         config = TagConfig()
