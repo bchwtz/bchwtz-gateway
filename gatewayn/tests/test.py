@@ -1,3 +1,4 @@
+import struct
 import time
 from unittest.mock import AsyncMock
 from gatewayn.drivers.bluetooth.ble_conn.ble_conn import BLEConn
@@ -31,10 +32,12 @@ def create_test_conn():
     print(f'testtime: {testtime}')
     testtime_encoded = enc.encode_time(time = testtime)
     print(testtime_encoded)
-    
+    now = struct.pack("<Q", int(testtime * 1000)).hex()
+    # Constructing time cmd
+    rxcmd = '210009' + now
     # Erste Versuch, den wir zusammen überlegt haben. Hier kriege ich None zurück,weil er kein Signal findet.
-    asyncio.run(test_tag.multi_communication_callback(0, bytes.fromhex(testtime_encoded)))
-    
+    asyncio.run(test_tag.multi_communication_callback(0, bytes.fromhex(rxcmd)))
+    print(test_tag.time)
 
     # Zweiter Versuch, nach Montag.
     #print('setting time to')
