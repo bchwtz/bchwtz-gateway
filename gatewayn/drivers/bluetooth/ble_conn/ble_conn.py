@@ -10,30 +10,27 @@ import time
 class BLEConn():
     def __init__(self) -> None:
         logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        self.logger = logging.getLogger("BLEConn")
+        self.logger: logging.Logger = logging.getLogger("BLEConn")
         self.logger.setLevel(logging.INFO)
 
     # cof - bleak adscanning seems broken - have to investigate further later... muuuuuch later...
-    async def listen_advertisments(self, manufacturer_id: int = 0, timeout: float = 5.0) -> None:
-        async with BleakScanner() as scanner:
-            scanner.register_detection_callback(self.cb_advertisments)
-            await scanner.start()
-            await asyncio.sleep(50)
-            await scanner.stop()
-
-    async def cb_advertisments(self, device: BLEDevice, data: dict):
-        print(device, data)
+    async def listen_advertisements(self, timeout: float = 5.0, cb: Callable[[BLEDevice, dict], None] = None) -> None:
+        scanner = BleakScanner()
+        scanner.register_detection_callback(cb)
+        await scanner.start()
+        await asyncio.sleep(50)
+        await scanner.stop()
 
     async def scan_tags(self, manufacturer_id: int = 0, timeout: float = 20.0) -> list[BLEDevice]:
         """The function searches for bluetooth devices nearby and passes the
-        MAC addresses to the __validate_mac function.
+        MAC addresses to the validate_manufacturer function.
 
         :param timeout: timeout for the find_tags function, defaults to 20.0
         :type timeout: float, optional
         """
         devicelist = []
         devices = await BleakScanner.discover(timeout=timeout)
-        devicelist = self.__validate_manufacturer(devices, manufacturer_id)
+        devicelist = self.validate_manufacturer(devices, manufacturer_id)
         return devicelist
 
     async def run_single_ble_command(self, tag: BLEDevice, read_chan: str, write_chan: str, cmd: str = "", timeout = 20.0, cb: Callable[[int, bytearray], None] = None, retries: int = 0, max_retries: int = 5):
@@ -56,7 +53,7 @@ class BLEConn():
                 await self.run_single_ble_command(tag, read_chan, write_chan, cmd, timeout, cb, retries+1, max_retries)
             return
 
-    def __validate_manufacturer(self, devices: list[BLEDevice], manufacturer_id: int = 0) -> list[BLEDevice]:
+    def validate_manufacturer(self, devices: list[BLEDevice], manufacturer_id: int = 0) -> list[BLEDevice]:
         """ This funcion updates the internal mac_list. If a MAC address passed the
         checked_mac_address process, it will extend the list 'mac'.
         :param devices: device passed by the BleakScanner function

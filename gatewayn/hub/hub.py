@@ -5,18 +5,18 @@ from gatewayn.tag.tag import Tag
 from gatewayn.tag.tag_builder import TagBuilder
 from gatewayn.drivers.bluetooth.ble_conn.ble_conn import BLEConn
 from bleak.backends.device import BLEDevice
+from bleak.backends.scanner import AdvertisementData
 from gatewayn.config import Config
 
 class Hub():
     def __init__(self):
-        self.main_loop = asyncio.get_event_loop()
         self.tags: list[Tag] = []
         self.ble_conn = BLEConn()
         self.logger = logging.getLogger("Hub")
         self.logger.setLevel(logging.DEBUG)
 
-    def discover_tags(self, timeout: float = 5.0, rediscover: bool = False, autoload_config: bool = True) -> None:
-        devices = self.main_loop.run_until_complete(self.ble_conn.scan_tags(Config.GlobalConfig.bluetooth_manufacturer_id.value, timeout))
+    async def discover_tags(self, timeout: float = 5.0, rediscover: bool = False, autoload_config: bool = True) -> None:
+        devices = await self.ble_conn.scan_tags(Config.GlobalConfig.bluetooth_manufacturer_id.value, timeout)
         if not rediscover:
             self.__check_tags_online_state(devices)
             if not self.__has_new_devices(devices):
@@ -29,7 +29,29 @@ class Hub():
             for dev in devices:
                 tag = self.get_tag_by_address(dev.address)
                 tag.get_config()
-                
+    
+    async def listen_for_advertisements(self, timeout: float = 50) -> None:
+        await self.ble_conn.listen_advertisements(timeout, self.cb_advertisements)
+    
+    async def cb_advertisements(self, device: BLEDevice, data: AdvertisementData):
+        devices = self.ble_conn.validate_manufacturer([device], Config.GlobalConfig.bluetooth_manufacturer_id.value)
+        if len(devices) <= 0:
+            return
+        # print(data)
+        device = devices[0]
+        tag = self.get_tag_by_address(devices[0].address)
+        if tag is None:
+            tag = Tag(device.name, device.address, device, True)
+            self.tags.append(tag)
+            await tag.get_config()
+            self.logger.info(f"setting up new device with address {tag.address}")
+            return
+        if tag.config is None or tag.config.samplerate == 0:
+            self.logger.warn("tag config was not loaded yet!")
+            return
+        dt = tag.dec.decode_ruuvi_advertisement(data.manufacturer_data.get(Config.GlobalConfig.bluetooth_manufacturer_id.value), tag.config.samplerate, tag.config.scale, None)
+        print(f"dt = {dt}")
+
     def get_tag_by_address(self, address: str = None) -> Tag:
         """Get a tag object by a known mac adress.
         :param address: mac adress from a BLE device, defaults to None

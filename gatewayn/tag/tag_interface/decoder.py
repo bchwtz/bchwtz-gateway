@@ -483,17 +483,17 @@ class Decoder():
                     res.append([timestamp, accvalues[0], accvalues[1], accvalues[2]])
         return res
 
-    def decode_ruuvi_msg(self, bytearr: Bytes = None, resolution: int = 12, sampling_rate: int = 10, scale: float = 2):
+    def decode_ruuvi_advertisement(self, bytearr: Bytes = None, resolution: int = 12, sampling_rate: int = 10, scale: float = 2):
         self.resolution = resolution
         if bytearr is None:
             logger.warning("no input data - returning None")
             return None
         if resolution == 8:
-            self.__unpack8(bytearr, sampling_rate, scale, None)
+            return self.__unpack8(bytearr, sampling_rate, scale, None)
         elif resolution == 10:
-            self.__unpack10(bytearr, sampling_rate, scale, None)
+            return self.__unpack10(bytearr, sampling_rate, scale, None)
         elif resolution == 12:
-            self.__unpack12(bytearr, sampling_rate, scale, None)
+            return self.__unpack12(bytearr, sampling_rate, scale, None)
 
     def decode_config_rx(self, bytearr: Bytes =  None) -> TagConfig:
         config = TagConfig()
