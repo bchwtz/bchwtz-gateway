@@ -45,12 +45,11 @@ class Hub():
             self.tags.append(tag)
             await tag.get_config()
             self.logger.info(f"setting up new device with address {tag.address}")
-            return
-        if tag.config is None or tag.config.samplerate == 0:
-            self.logger.warn("tag config was not loaded yet!")
-            return
-        dt = tag.dec.decode_ruuvi_advertisement(data.manufacturer_data.get(Config.GlobalConfig.bluetooth_manufacturer_id.value), tag.config.samplerate, tag.config.scale, None)
-        print(f"dt = {dt}")
+        # if tag.config is None or tag.config.samplerate == 0:
+        #     self.logger.warn("tag config was not loaded yet!")
+        #     return
+        tag.read_sensor_data(data.manufacturer_data.get(Config.GlobalConfig.bluetooth_manufacturer_id.value))
+        tag.last_seen = time.time()
 
     def get_tag_by_address(self, address: str = None) -> Tag:
         """Get a tag object by a known mac adress.

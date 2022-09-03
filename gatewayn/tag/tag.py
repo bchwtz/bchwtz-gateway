@@ -5,6 +5,11 @@ import time
 from typing_extensions import Self
 from xmlrpc.client import DateTime
 from bleak.backends.device import BLEDevice
+from gatewayn.sensor.acceleration import AccelerationSensor
+from gatewayn.sensor.barometer import BarometerSensor
+from gatewayn.sensor.temperature import TemperatureSensor
+from gatewayn.sensor.humidity import HumiditySensor
+from gatewayn.sensor.battery import BatterySensor
 from gatewayn.tag.tag_interface.encoder import Encoder
 from gatewayn.tag.tagconfig import TagConfig
 from nbformat import write
@@ -13,6 +18,7 @@ from gatewayn.drivers.bluetooth.ble_conn.ble_conn import BLEConn
 from gatewayn.config import Config
 import logging
 from gatewayn.tag.tag_interface.decoder import Decoder
+from bleak.backends.scanner import AdvertisementData
 
 from gatewayn.sensor.sensor import Sensor
 from gatewayn.tag.tag_interface.signals import SigScanner
@@ -29,7 +35,13 @@ class Tag():
         self.logger.setLevel(logging.INFO)
         self.samplerate: int = 0
         # TODO: add sensors as ble caps on firmware side to autoload sensor classes by names
-        self.sensors: list[Sensor] = []
+        self.sensors: list[Sensor] = [
+            AccelerationSensor(),
+            BarometerSensor(),
+            TemperatureSensor(),
+            HumiditySensor(),
+            BatterySensor(),
+        ]
         self.dec: Decoder = Decoder()
         self.enc: Encoder = Encoder()
         self.config: TagConfig = None
@@ -145,3 +157,10 @@ class Tag():
             cmd = cmd,
             cb = self.multi_communication_callback
         )
+
+    def read_sensor_data(self, data: AdvertisementData = None):
+        if data is None:
+            return
+        tag_data = self.dec.decode_advertisement(data)
+        for sensor in self.sensors:
+            sensor.read_data_from_advertisement(tag_data)

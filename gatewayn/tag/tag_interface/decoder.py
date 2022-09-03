@@ -2,11 +2,13 @@ from ast import Bytes
 from binascii import hexlify # built-in
 import logging
 import time
+from bleak.backends.scanner import AdvertisementData
+from ruuvitag_sensor.decoder import Df3Decoder, get_decoder
 
 from gatewayn.tag.tagconfig import TagConfig
 
 logger = logging.getLogger("Decoder")
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 class Decoder():
     def __init__(self) -> None:
         self.resolution = 0
@@ -483,17 +485,19 @@ class Decoder():
                     res.append([timestamp, accvalues[0], accvalues[1], accvalues[2]])
         return res
 
-    def decode_ruuvi_advertisement(self, bytearr: Bytes = None, resolution: int = 12, sampling_rate: int = 10, scale: float = 2):
+    def decode_data(self, bytearr: Bytes = None, resolution: int = 12, samplerate: int = 10, scale: float = 2):
         self.resolution = resolution
         if bytearr is None:
             logger.warning("no input data - returning None")
             return None
         if resolution == 8:
-            return self.__process_data_8(bytearr, sampling_rate, scale, None)
+            return self.__process_data_8(bytearr, scale, samplerate)
         elif resolution == 10:
-            return self.__process_data_10(bytearr, sampling_rate, scale, None)
+            return self.__process_data_10(bytearr, scale, samplerate)
         elif resolution == 12:
-            return self.__process_data_12(bytearr, sampling_rate, scale, None)
+            return self.__process_data_12(bytearr, scale, samplerate)
+        logger.warning(f"Did not find resolution: {resolution}")
+        return None
 
     def decode_config_rx(self, bytearr: Bytes =  None) -> TagConfig:
         config = TagConfig()
@@ -519,4 +523,6 @@ class Decoder():
         received_time = time.strftime('%D %H:%M:%S', time.localtime(int(hexlify(bytearr[:-9:-1]), 16) / 1000))        
         return received_time
 
-    
+    def decode_advertisement(self, advertisement_data: AdvertisementData) -> dict:
+        data = advertisement_data.hex()
+        return get_decoder(advertisement_data).decode_data(data)

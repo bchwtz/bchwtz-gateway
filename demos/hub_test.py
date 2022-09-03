@@ -4,6 +4,10 @@ from gatewayn.hub.hub import Hub
 
 hub = Hub()
 main_loop = asyncio.get_event_loop()
+i = 1
+i = i << 12
+print(bin(i))
+print(i)
 main_loop.run_until_complete(hub.listen_for_advertisements())
 
 # testtag = hub.get_tag_by_name("Ruuvi 048B")
