@@ -33,7 +33,6 @@ class Tag():
         self.ble_conn: BLEConn = BLEConn()
         self.logger = logging.getLogger("Tag")
         self.logger.setLevel(logging.INFO)
-        self.samplerate: int = 0
         # TODO: add sensors as ble caps on firmware side to autoload sensor classes by names
         self.sensors: list[Sensor] = [
             AccelerationSensor(),

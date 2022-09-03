@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+// Not necessary for Python but should still be declared to avoid name collisions 
+// in the Protocol Buffers namespace and non-Python languages
+package gateway;
+option go_package = "github.com/bchwtz-fhswf/gateway/client/generated;generated";
+
+import "google/protobuf/any.proto";
+
+message Tag {
+    repeated Sensor sensors = 1;
+    string address = 2;
+    int64 last_seen = 3;
+    TagConfig config = 4;
+
+    message Sensor {
+        string name = 1;
+        repeated Measurement measurements = 2;
+
+        message Measurement {
+            string name = 1;
+            google.protobuf.Any value = 2;
+        }
+    }
+
+    message TagConfig {
+        int32 samplerate = 1;
+        int32 resolution = 2;
+        int32 scale = 3;
+        int32 dsp_function = 4;
+        string mode = 5;
+        int32 divider = 6;
+    }
+}
+
+message AllTags{
+    repeated Tag tags = 1;
+}

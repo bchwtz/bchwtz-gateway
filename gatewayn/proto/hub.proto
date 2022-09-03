@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+// Not necessary for Python but should still be declared to avoid name collisions 
+// in the Protocol Buffers namespace and non-Python languages
+package gateway;
+option go_package = "github.com/bchwtz-fhswf/gateway/client/generated;generated";
+
+import "tag.proto";
+
+enum HubCommandValue {
+    StartBLEScan = 0;
+    StartAdvertisementListener = 1;
+}
+
+message HubCommand {
+    HubCommandValue cmd = 1;
+}
+
+message HubResponse {
+    string message = 1;
+}
+
+message GetTagRequest {
+    string address = 1;
+}
+
+service Hub {
+    rpc StartAdvertisementScanning(HubCommand) returns (HubResponse) {};
+    rpc GetTags(GetTagRequest) returns (stream Tag) {};
+}
