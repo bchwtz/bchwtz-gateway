@@ -50,6 +50,7 @@ class Hub():
         #     return
         tag.read_sensor_data(data.manufacturer_data.get(Config.GlobalConfig.bluetooth_manufacturer_id.value))
         tag.last_seen = time.time()
+        tag.online = True
 
     def get_tag_by_address(self, address: str = None) -> Tag:
         """Get a tag object by a known mac adress.
