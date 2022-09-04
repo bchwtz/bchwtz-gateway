@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-func main() {
+func startClient() {
 	var opts []grpc.DialOption
 	opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	conn, err := grpc.Dial("[::]:50051", opts...)

@@ -3,23 +3,21 @@ import logging
 import time
 from gatewayn.api.services.hub_service import HubService
 import gatewayn.proto_generated.hub_pb2_grpc as hub_service
-from flask import Flask
-from flask_restful import Resource, Api, reqparse
 from gatewayn.hub.hub import Hub
+from purerpc import Server
 import grpc
 
 class API:
     def __init__(self):
-        self.server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-        self.hub = Hub()
+        self.server = Server(50051)
+        self.hub_service = HubService(Hub())
 
     def setup_routes(self):
-        hub_serve = HubService(self.hub)
-        hub_service.add_HubServicer_to_server(hub_serve, self.server)
+        
+        self.server.add_service(self.hub_service.service)
 
     async def run(self):
-        self.server.add_insecure_port('[::]:50051')
-        self.server.start()
+        await self.server.serve_async()
         try:
             while True:
                 time.sleep(3600*24)

@@ -16,7 +16,7 @@ _sym_db = _symbol_database.Default()
 from . import tag_pb2 as tag__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\thub.proto\x12\x07gateway\x1a\ttag.proto\"3\n\nHubCommand\x12%\n\x03\x63md\x18\x01 \x01(\x0e\x32\x18.gateway.HubCommandValue\"\x1e\n\x0bHubResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\" \n\rGetTagRequest\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t*C\n\x0fHubCommandValue\x12\x10\n\x0cStartBLEScan\x10\x00\x12\x1e\n\x1aStartAdvertisementListener\x10\x01\x32\x85\x01\n\x03Hub\x12I\n\x1aStartAdvertisementScanning\x12\x13.gateway.HubCommand\x1a\x14.gateway.HubResponse\"\x00\x12\x33\n\x07GetTags\x12\x16.gateway.GetTagRequest\x1a\x0c.gateway.Tag\"\x00\x30\x01\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\thub.proto\x12\x07gateway\x1a\ttag.proto\"3\n\nHubCommand\x12%\n\x03\x63md\x18\x01 \x01(\x0e\x32\x18.gateway.HubCommandValue\"\x1e\n\x0bHubResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\" \n\rGetTagRequest\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\",\n\x0eGetTagResponse\x12\x1a\n\x04tags\x18\x01 \x03(\x0b\x32\x0c.gateway.Tag*C\n\x0fHubCommandValue\x12\x10\n\x0cStartBLEScan\x10\x00\x12\x1e\n\x1aStartAdvertisementListener\x10\x01\x32\x8e\x01\n\x03Hub\x12I\n\x1aStartAdvertisementScanning\x12\x13.gateway.HubCommand\x1a\x14.gateway.HubResponse\"\x00\x12<\n\x07GetTags\x12\x16.gateway.GetTagRequest\x1a\x17.gateway.GetTagResponse\"\x00\x42<Z:github.com/bchwtz-fhswf/gateway/client/generated;generatedb\x06proto3')
 
 _HUBCOMMANDVALUE = DESCRIPTOR.enum_types_by_name['HubCommandValue']
 HubCommandValue = enum_type_wrapper.EnumTypeWrapper(_HUBCOMMANDVALUE)
@@ -27,6 +27,7 @@ StartAdvertisementListener = 1
 _HUBCOMMAND = DESCRIPTOR.message_types_by_name['HubCommand']
 _HUBRESPONSE = DESCRIPTOR.message_types_by_name['HubResponse']
 _GETTAGREQUEST = DESCRIPTOR.message_types_by_name['GetTagRequest']
+_GETTAGRESPONSE = DESCRIPTOR.message_types_by_name['GetTagResponse']
 HubCommand = _reflection.GeneratedProtocolMessageType('HubCommand', (_message.Message,), {
   'DESCRIPTOR' : _HUBCOMMAND,
   '__module__' : 'hub_pb2'
@@ -48,18 +49,28 @@ GetTagRequest = _reflection.GeneratedProtocolMessageType('GetTagRequest', (_mess
   })
 _sym_db.RegisterMessage(GetTagRequest)
 
+GetTagResponse = _reflection.GeneratedProtocolMessageType('GetTagResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GETTAGRESPONSE,
+  '__module__' : 'hub_pb2'
+  # @@protoc_insertion_point(class_scope:gateway.GetTagResponse)
+  })
+_sym_db.RegisterMessage(GetTagResponse)
+
 _HUB = DESCRIPTOR.services_by_name['Hub']
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _HUBCOMMANDVALUE._serialized_start=152
-  _HUBCOMMANDVALUE._serialized_end=219
+  DESCRIPTOR._serialized_options = b'Z:github.com/bchwtz-fhswf/gateway/client/generated;generated'
+  _HUBCOMMANDVALUE._serialized_start=198
+  _HUBCOMMANDVALUE._serialized_end=265
   _HUBCOMMAND._serialized_start=33
   _HUBCOMMAND._serialized_end=84
   _HUBRESPONSE._serialized_start=86
   _HUBRESPONSE._serialized_end=116
   _GETTAGREQUEST._serialized_start=118
   _GETTAGREQUEST._serialized_end=150
-  _HUB._serialized_start=222
-  _HUB._serialized_end=355
+  _GETTAGRESPONSE._serialized_start=152
+  _GETTAGRESPONSE._serialized_end=196
+  _HUB._serialized_start=268
+  _HUB._serialized_end=410
 # @@protoc_insertion_point(module_scope)

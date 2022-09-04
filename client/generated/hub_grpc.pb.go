@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type HubClient interface {
 	StartAdvertisementScanning(ctx context.Context, in *HubCommand, opts ...grpc.CallOption) (*HubResponse, error)
-	GetTags(ctx context.Context, in *GetTagRequest, opts ...grpc.CallOption) (Hub_GetTagsClient, error)
+	GetTags(ctx context.Context, in *GetTagRequest, opts ...grpc.CallOption) (*GetTagResponse, error)
 }
 
 type hubClient struct {
@@ -43,36 +43,13 @@ func (c *hubClient) StartAdvertisementScanning(ctx context.Context, in *HubComma
 	return out, nil
 }
 
-func (c *hubClient) GetTags(ctx context.Context, in *GetTagRequest, opts ...grpc.CallOption) (Hub_GetTagsClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Hub_ServiceDesc.Streams[0], "/gateway.Hub/GetTags", opts...)
+func (c *hubClient) GetTags(ctx context.Context, in *GetTagRequest, opts ...grpc.CallOption) (*GetTagResponse, error) {
+	out := new(GetTagResponse)
+	err := c.cc.Invoke(ctx, "/gateway.Hub/GetTags", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &hubGetTagsClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type Hub_GetTagsClient interface {
-	Recv() (*Tag, error)
-	grpc.ClientStream
-}
-
-type hubGetTagsClient struct {
-	grpc.ClientStream
-}
-
-func (x *hubGetTagsClient) Recv() (*Tag, error) {
-	m := new(Tag)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
+	return out, nil
 }
 
 // HubServer is the server API for Hub service.
@@ -80,7 +57,7 @@ func (x *hubGetTagsClient) Recv() (*Tag, error) {
 // for forward compatibility
 type HubServer interface {
 	StartAdvertisementScanning(context.Context, *HubCommand) (*HubResponse, error)
-	GetTags(*GetTagRequest, Hub_GetTagsServer) error
+	GetTags(context.Context, *GetTagRequest) (*GetTagResponse, error)
 	mustEmbedUnimplementedHubServer()
 }
 
@@ -91,8 +68,8 @@ type UnimplementedHubServer struct {
 func (UnimplementedHubServer) StartAdvertisementScanning(context.Context, *HubCommand) (*HubResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StartAdvertisementScanning not implemented")
 }
-func (UnimplementedHubServer) GetTags(*GetTagRequest, Hub_GetTagsServer) error {
-	return status.Errorf(codes.Unimplemented, "method GetTags not implemented")
+func (UnimplementedHubServer) GetTags(context.Context, *GetTagRequest) (*GetTagResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTags not implemented")
 }
 func (UnimplementedHubServer) mustEmbedUnimplementedHubServer() {}
 
@@ -125,25 +102,22 @@ func _Hub_StartAdvertisementScanning_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Hub_GetTags_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(GetTagRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
+func _Hub_GetTags_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
 	}
-	return srv.(HubServer).GetTags(m, &hubGetTagsServer{stream})
-}
-
-type Hub_GetTagsServer interface {
-	Send(*Tag) error
-	grpc.ServerStream
-}
-
-type hubGetTagsServer struct {
-	grpc.ServerStream
-}
-
-func (x *hubGetTagsServer) Send(m *Tag) error {
-	return x.ServerStream.SendMsg(m)
+	if interceptor == nil {
+		return srv.(HubServer).GetTags(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gateway.Hub/GetTags",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServer).GetTags(ctx, req.(*GetTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 // Hub_ServiceDesc is the grpc.ServiceDesc for Hub service.
@@ -157,13 +131,11 @@ var Hub_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "StartAdvertisementScanning",
 			Handler:    _Hub_StartAdvertisementScanning_Handler,
 		},
-	},
-	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "GetTags",
-			Handler:       _Hub_GetTags_Handler,
-			ServerStreams: true,
+			MethodName: "GetTags",
+			Handler:    _Hub_GetTags_Handler,
 		},
 	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "hub.proto",
 }

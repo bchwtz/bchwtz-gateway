@@ -24,7 +24,11 @@ message GetTagRequest {
     string address = 1;
 }
 
+message GetTagResponse {
+    repeated Tag tags = 1;
+}
+
 service Hub {
     rpc StartAdvertisementScanning(HubCommand) returns (HubResponse) {};
-    rpc GetTags(GetTagRequest) returns (stream Tag) {};
+    rpc GetTags(GetTagRequest) returns (GetTagResponse) {};
 }
