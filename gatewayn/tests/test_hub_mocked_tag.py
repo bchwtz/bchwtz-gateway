@@ -15,7 +15,7 @@ class TestHub():
     conn.run_single_ble_command = MagicMock(return_value = None)
     print(conn.run_single_ble_command())
     ble_device = BLEDevice(
-        address='6C:5D:7F:8G:9H',
+        address='CF:43:43:33:71:A1',
         name='TestDevice')
 
     test_tag = TagBuilder().from_device(ble_device).build()
@@ -24,3 +24,6 @@ class TestHub():
     
     def test_get_tag_by_name_wrong_name(self):
         assert isinstance(self.test_hub.get_tag_by_name(name="TestDevice"),Tag)
+
+    def test_get_tag_by_name_wrong_Mac(self):
+        assert isinstance(self.test_hub.get_tag_by_mac(mac="CF:43:43:33:71:A1"),Tag)
