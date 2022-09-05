@@ -13,7 +13,7 @@ class TestTag:
                 conn.run_single_ble_command = AsyncMock(return_value = None)
                 # creating new BLEDevice
                 ble_device = BLEDevice(
-                address='6C:5D:7F:8G:9H',
+                address='CF:43:43:33:71:A1',
                 name='TestDevice')
 
                 test_tag = TagBuilder().from_device(ble_device).build()
@@ -34,7 +34,7 @@ class TestTag:
                 conn.run_single_ble_command = AsyncMock(return_value = None)
                 # creating new BLEDevice
                 ble_device = BLEDevice(
-                address='6C:5D:7F:8G:9H',
+                address='CF:43:43:33:71:A1',
                 name='TestDevice')
 
                 test_tag = TagBuilder().from_device(ble_device).build()
@@ -52,7 +52,7 @@ class TestTag:
                 conn.run_single_ble_command = AsyncMock(return_value = None)
                 # creating new BLEDevice
                 ble_device = BLEDevice(
-                address='6C:5D:7F:8G:9H',
+                address='CF:43:43:33:71:A1',
                 name='TestDevice')
 
                 test_tag = TagBuilder().from_device(ble_device).build()
@@ -73,7 +73,7 @@ class TestTag:
                 conn.run_single_ble_command = AsyncMock(return_value = None)
                 # creating new BLEDevice
                 ble_device = BLEDevice(
-                address='6C:5D:7F:8G:9H',
+                address='CF:43:43:33:71:A1',
                 name='TestDevice')
 
                 test_tag = TagBuilder().from_device(ble_device).build()
