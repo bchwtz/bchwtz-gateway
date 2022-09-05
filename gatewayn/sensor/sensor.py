@@ -6,6 +6,8 @@ class Sensor:
 
     def __init__(self) -> None:
         self.name = "BasicSensor"
+        self.last_measurement: any = None
+        self.measurements: list[any] = []
         self.logger = logging.getLogger("Sensor")
         self.logger.setLevel(logging.INFO)
 

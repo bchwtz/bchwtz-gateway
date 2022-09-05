@@ -22,9 +22,11 @@ from bleak.backends.scanner import AdvertisementData
 
 from gatewayn.sensor.sensor import Sensor
 from gatewayn.tag.tag_interface.signals import SigScanner
+import mongox
 
 
-
+client = mongox.Client("mongodb://localhost:27017", get_event_loop=asyncio.get_running_loop)
+db = client.get_database("gateway")
 class Tag():
     def __init__(self, name: str = "", address: str = "", device: BLEDevice = None, online: bool = True) -> None:
         self.name: str = name

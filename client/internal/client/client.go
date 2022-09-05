@@ -34,12 +34,11 @@ func (client *Client) Connect() {
 	if err != nil {
 		logrus.Fatalln(err)
 	}
-	defer conn.Close()
 
 	client.GClient = pb.NewHubClient(conn)
 	client.CommandChannel = make(chan Command)
 	go client.runCommands()
-	<-client.DoneCH
+	// <-client.DoneCH
 	// res, err := client.GClient.StartAdvertisementScanning(context.Background(), &pb.HubCommand{})
 	// if err != nil {
 	// 	logrus.Errorln(err)
@@ -63,9 +62,9 @@ func (client *Client) runCommands() {
 			if err != nil {
 				logrus.Errorln(err)
 			}
-			logrus.Println(res.Tags)
+			logrus.Infoln(res.Tags)
+			client.DoneCH <- true
 		}
-		client.DoneCH <- true
 	}
 }
 

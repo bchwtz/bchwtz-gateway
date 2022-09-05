@@ -15,30 +15,15 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import any_pb2 as google_dot_protobuf_dot_any__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\ttag.proto\x12\x07gateway\x1a\x19google/protobuf/any.proto\"\x82\x03\n\x03Tag\x12$\n\x07sensors\x18\x01 \x03(\x0b\x32\x13.gateway.Tag.Sensor\x12\x0f\n\x07\x61\x64\x64ress\x18\x02 \x01(\t\x12\x11\n\tlast_seen\x18\x03 \x01(\x03\x12&\n\x06\x63onfig\x18\x04 \x01(\x0b\x32\x16.gateway.Tag.TagConfig\x1a\x8f\x01\n\x06Sensor\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x35\n\x0cmeasurements\x18\x02 \x03(\x0b\x32\x1f.gateway.Tag.Sensor.Measurement\x1a@\n\x0bMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12#\n\x05value\x18\x02 \x01(\x0b\x32\x14.google.protobuf.Any\x1aw\n\tTagConfig\x12\x12\n\nsamplerate\x18\x01 \x01(\x05\x12\x12\n\nresolution\x18\x02 \x01(\x05\x12\r\n\x05scale\x18\x03 \x01(\x05\x12\x14\n\x0c\x64sp_function\x18\x04 \x01(\x05\x12\x0c\n\x04mode\x18\x05 \x01(\t\x12\x0f\n\x07\x64ivider\x18\x06 \x01(\x05\"%\n\x07\x41llTags\x12\x1a\n\x04tags\x18\x01 \x03(\x0b\x32\x0c.gateway.TagB<Z:github.com/bchwtz-fhswf/gateway/client/generated;generatedb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\ttag.proto\x12\x07gateway\x1a\x19google/protobuf/any.proto\"\x84\x02\n\x03Tag\x12 \n\x07sensors\x18\x01 \x03(\x0b\x32\x0f.gateway.Sensor\x12\x0f\n\x07\x61\x64\x64ress\x18\x02 \x01(\t\x12\x11\n\tlast_seen\x18\x03 \x01(\x02\x12&\n\x06\x63onfig\x18\x04 \x01(\x0b\x32\x16.gateway.Tag.TagConfig\x1a\x8e\x01\n\tTagConfig\x12\x12\n\nsamplerate\x18\x01 \x01(\x05\x12\x12\n\nresolution\x18\x02 \x01(\x05\x12\r\n\x05scale\x18\x03 \x01(\x05\x12\x14\n\x0c\x64sp_function\x18\x04 \x01(\x05\x12\x15\n\rdsp_parameter\x18\x05 \x01(\x05\x12\x0c\n\x04mode\x18\x06 \x01(\t\x12\x0f\n\x07\x64ivider\x18\x07 \x01(\x05\"%\n\x07\x41llTags\x12\x1a\n\x04tags\x18\x01 \x03(\x0b\x32\x0c.gateway.Tag\"r\n\x06Sensor\x12\x0c\n\x04name\x18\x01 \x01(\t\x12.\n\x10last_measurement\x18\x02 \x01(\x0b\x32\x14.google.protobuf.Any\x12*\n\x0cmeasurements\x18\x03 \x03(\x0b\x32\x14.google.protobuf.AnyB<Z:github.com/bchwtz-fhswf/gateway/client/generated;generatedb\x06proto3')
 
 
 
 _TAG = DESCRIPTOR.message_types_by_name['Tag']
-_TAG_SENSOR = _TAG.nested_types_by_name['Sensor']
-_TAG_SENSOR_MEASUREMENT = _TAG_SENSOR.nested_types_by_name['Measurement']
 _TAG_TAGCONFIG = _TAG.nested_types_by_name['TagConfig']
 _ALLTAGS = DESCRIPTOR.message_types_by_name['AllTags']
+_SENSOR = DESCRIPTOR.message_types_by_name['Sensor']
 Tag = _reflection.GeneratedProtocolMessageType('Tag', (_message.Message,), {
-
-  'Sensor' : _reflection.GeneratedProtocolMessageType('Sensor', (_message.Message,), {
-
-    'Measurement' : _reflection.GeneratedProtocolMessageType('Measurement', (_message.Message,), {
-      'DESCRIPTOR' : _TAG_SENSOR_MEASUREMENT,
-      '__module__' : 'tag_pb2'
-      # @@protoc_insertion_point(class_scope:gateway.Tag.Sensor.Measurement)
-      })
-    ,
-    'DESCRIPTOR' : _TAG_SENSOR,
-    '__module__' : 'tag_pb2'
-    # @@protoc_insertion_point(class_scope:gateway.Tag.Sensor)
-    })
-  ,
 
   'TagConfig' : _reflection.GeneratedProtocolMessageType('TagConfig', (_message.Message,), {
     'DESCRIPTOR' : _TAG_TAGCONFIG,
@@ -51,8 +36,6 @@ Tag = _reflection.GeneratedProtocolMessageType('Tag', (_message.Message,), {
   # @@protoc_insertion_point(class_scope:gateway.Tag)
   })
 _sym_db.RegisterMessage(Tag)
-_sym_db.RegisterMessage(Tag.Sensor)
-_sym_db.RegisterMessage(Tag.Sensor.Measurement)
 _sym_db.RegisterMessage(Tag.TagConfig)
 
 AllTags = _reflection.GeneratedProtocolMessageType('AllTags', (_message.Message,), {
@@ -62,18 +45,23 @@ AllTags = _reflection.GeneratedProtocolMessageType('AllTags', (_message.Message,
   })
 _sym_db.RegisterMessage(AllTags)
 
+Sensor = _reflection.GeneratedProtocolMessageType('Sensor', (_message.Message,), {
+  'DESCRIPTOR' : _SENSOR,
+  '__module__' : 'tag_pb2'
+  # @@protoc_insertion_point(class_scope:gateway.Sensor)
+  })
+_sym_db.RegisterMessage(Sensor)
+
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   DESCRIPTOR._serialized_options = b'Z:github.com/bchwtz-fhswf/gateway/client/generated;generated'
   _TAG._serialized_start=50
-  _TAG._serialized_end=436
-  _TAG_SENSOR._serialized_start=172
-  _TAG_SENSOR._serialized_end=315
-  _TAG_SENSOR_MEASUREMENT._serialized_start=251
-  _TAG_SENSOR_MEASUREMENT._serialized_end=315
-  _TAG_TAGCONFIG._serialized_start=317
-  _TAG_TAGCONFIG._serialized_end=436
-  _ALLTAGS._serialized_start=438
-  _ALLTAGS._serialized_end=475
+  _TAG._serialized_end=310
+  _TAG_TAGCONFIG._serialized_start=168
+  _TAG_TAGCONFIG._serialized_end=310
+  _ALLTAGS._serialized_start=312
+  _ALLTAGS._serialized_end=349
+  _SENSOR._serialized_start=351
+  _SENSOR._serialized_end=465
 # @@protoc_insertion_point(module_scope)

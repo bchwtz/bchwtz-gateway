@@ -26,6 +26,7 @@ to quickly create a Cobra application.`,
 		cl := client.GetInstance()
 		cl.CommandChannel <- client.StartAdvertisementScanning
 		logrus.Println("started scanning...")
+		<-cl.DoneCH
 	},
 }
 

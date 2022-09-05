@@ -18,7 +18,7 @@ class BLEConn():
         scanner = BleakScanner()
         scanner.register_detection_callback(cb)
         await scanner.start()
-        await asyncio.sleep(50)
+        await asyncio.sleep(timeout)
         await scanner.stop()
 
     async def scan_tags(self, manufacturer_id: int = 0, timeout: float = 20.0) -> list[BLEDevice]:
@@ -65,6 +65,6 @@ class BLEConn():
         for i in devices:
             if "manufacturer_data" in i.metadata:
                 if manufacturer_id in i.metadata["manufacturer_data"]:
-                    self.logger.info(colored('Device: %s with Address %s saved in MAC list!' % (i.name, i.address), "green", attrs=['bold']) )
+                    self.logger.info(colored('Device: %s with Address %s discovered!' % (i.name, i.address), "green", attrs=['bold']) )
                     devicelist.append(i)
         return devicelist

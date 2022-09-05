@@ -100,3 +100,4 @@ class Hub():
                 tag.online = True
                 tag.last_seen = time.time()
                 self.logger.debug(f"setting tag online: {tag.address}")
+

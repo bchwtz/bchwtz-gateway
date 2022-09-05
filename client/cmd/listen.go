@@ -25,6 +25,7 @@ to quickly create a Cobra application.`,
 		cl := client.GetInstance()
 		cl.CommandChannel <- client.GetTags
 		// TODO: add resp channel
+		<-cl.DoneCH
 	},
 }
 
