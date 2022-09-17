@@ -1,0 +1,14 @@
+version: "3.5"
+services:
+  mqtt-broker:
+    image: rabbitmq:3
+    command: "/bin/bash -c \"rabbitmq-plugins enable rabbitmq_mqtt; rabbitmq-server\""
+    ports:
+      - "1883:1883"
+    volumes:
+      - "rabbitmq:/etc/rabbitmq"
+    environment:
+      - "RABBITMQ_DEFAULT_USER=mqtt"
+      - "RABBITMQ_DEFAULT_PASS=6p449xLrC5PH3pfbkMvj/XBQt443Kg6S"
+volumes:
+  rabbitmq:

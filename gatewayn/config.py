@@ -25,6 +25,9 @@ class Config:
     
     class GlobalConfig(Enum):
         bluetooth_manufacturer_id: int = 1177
+        mqtt_address: str = "mqtt-broker"
+        mqtt_user: str = "mqtt"
+        mqtt_password: str = "6p449xLrC5PH3pfbkMvj/XBQt443Kg6S"
 
     class AllowedValues(Enum):
         samplerate: list[int] = [

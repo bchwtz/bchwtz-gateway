@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import time
+from gatewayn.gateway import Gateway
 from gatewayn.tag.tag import Tag
 from gatewayn.tag.tag_builder import TagBuilder
 from gatewayn.drivers.bluetooth.ble_conn.ble_conn import BLEConn
@@ -14,6 +15,16 @@ class Hub():
         self.ble_conn = BLEConn()
         self.logger = logging.getLogger("Hub")
         self.logger.setLevel(logging.DEBUG)
+        self.__gateway: Gateway = None
+
+    def set_gateway(self, gateway: Gateway) -> None:
+        if self.__gateway is None:
+            self.__gateway = gateway
+            return
+        self.logger.warn("gateway was already set - ignoring!")
+
+    def get_gateway(self) -> Gateway:
+        return self.__gateway
 
     async def discover_tags(self, timeout: float = 5.0, rediscover: bool = False, autoload_config: bool = True) -> None:
         devices = await self.ble_conn.scan_tags(Config.GlobalConfig.bluetooth_manufacturer_id.value, timeout)
