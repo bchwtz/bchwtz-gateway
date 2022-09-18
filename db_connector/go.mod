@@ -2,7 +2,7 @@ module github.com/bchwtz-fhswf/gateway/db_connector
 
 go 1.19
 
-replace github.com/systematiccaos/going-forward => /home/caos/workspace/going-forward
+//replace github.com/systematiccaos/going-forward => /home/caos/workspace/going-forward
 
 require (
 	github.com/joho/godotenv v1.4.0
