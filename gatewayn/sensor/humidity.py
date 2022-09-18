@@ -1,3 +1,4 @@
+from datetime import datetime
 from gatewayn.sensor.sensor import Sensor
 
 class HumiditySensor(Sensor):
@@ -18,6 +19,7 @@ class HumiditySensor(Sensor):
             self.humidity: float = humidity
             self.sequence_number: int = sequence_number
             self.data_format: int = data_format
+            self.recorded_time: float = datetime.time()
 
         def get_props(self):
             return self.__dict__
