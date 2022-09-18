@@ -5,11 +5,19 @@ class BarometerSensor(Sensor):
     def __init__(self) -> None:
         super(BarometerSensor, self).__init__()
         self.name: str = "BarometerSensor"
-        self.last_measurement: float = 0.0
-        self.measurements: list[float] = []
+        self.measurements: list[BarometerSensor.PressureMeasurement] = []
 
     def read_data_from_advertisement(self, data: dict[str, any]):
-        self.last_measurement = data.get("pressure")
-        self.measurements.append(self.last_measurement)
-        self.logger.debug(f"read pressure: {self.last_measurement}")
+        measurement = BarometerSensor.PressureMeasurement(pressure=data.get("pressure", 0), sequence_number=data.get("sequence_number", 0), data_format=data.get("sequence_number", 0))
+        self.measurements.append(measurement)
+        self.logger.debug(f"read pressure: {measurement}")
         return
+
+    class PressureMeasurement:
+        def __init__(self, pressure: float = 0.0, sequence_number: int = 0, data_format: int = 0) -> None:
+            self.pressure: float = pressure
+            self.sequence_number: int = sequence_number
+            self.data_format: int = data_format
+
+        def get_props(self):
+            return self.__dict__

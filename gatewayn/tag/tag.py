@@ -163,6 +163,7 @@ class Tag(object):
         if data is None:
             return
         tag_data = self.dec.decode_advertisement(data)
+        self.logger.info(tag_data)
         for sensor in self.sensors:
             sensor.read_data_from_advertisement(tag_data)
 

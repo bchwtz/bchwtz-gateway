@@ -5,8 +5,6 @@ class AccelerationSensor(Sensor):
     def __init__(self) -> None:
         super(AccelerationSensor, self).__init__()
         self.name: str = "AccelerationSensor"
-        self.last_measurement: AccelerationSensor.AccelerationMeasurement = None
-        self.movement_counter: int = 0
         self.measurements: list[AccelerationSensor.AccelerationMeasurement] = []
 
     def read_data_from_advertisement(self, data: dict[str, any]):
@@ -16,11 +14,14 @@ class AccelerationSensor(Sensor):
         return
 
     class AccelerationMeasurement:
-        def __init__(self, acc_x: float = 0.0, acc_y: float = 0.0, acc_z: float = 0.0, acc: float = 0.0, movement_counter: int = 0) -> None:
+        def __init__(self, acc_x: float = 0.0, acc_y: float = 0.0, acc_z: float = 0.0, acc: float = 0.0, movement_counter: int = 0, sequence_number: int = 0, data_format: int = 0) -> None:
             self.acc_x: float = acc_x
             self.acc_y: float = acc_y
             self.acc_z: float = acc_z
             self.acc: float = acc
+            self.sequence_number: int = sequence_number
+            self.data_format: int = data_format
+            self.movement_counter: int = movement_counter
 
         def get_props(self):
             return self.__dict__
