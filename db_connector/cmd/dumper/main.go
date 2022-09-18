@@ -8,6 +8,6 @@ import (
 
 func main() {
 	util.SetupLogs()
-	gw := gateway.NewGateway()
+	gw := gateway.NewDumper()
 	logrus.Println(gw)
 }
