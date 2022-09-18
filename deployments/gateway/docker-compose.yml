@@ -10,5 +10,33 @@ services:
     environment:
       - "RABBITMQ_DEFAULT_USER=mqtt"
       - "RABBITMQ_DEFAULT_PASS=6p449xLrC5PH3pfbkMvj/XBQt443Kg6S"
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: gDoEBioACf6NClS6kc4lQEx2YFRTJBx
+      MONGO_INITDB_DATABASE: gateway
+    ports:
+      - 27017:27017
+      - 27018:27018
+      - 27019:27019
+    volumes:
+      - mongodb:/data/db
+  
+  mongo-express:
+    image: mongo-express
+    restart: always
+    depends_on:
+      - mongo
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_ADMINUSERNAME: mongo
+      ME_CONFIG_MONGODB_ADMINPASSWORD: gDoEBioACf6NClS6kc4lQEx2YFRTJBx
+
 volumes:
   rabbitmq:
+  mongodb:

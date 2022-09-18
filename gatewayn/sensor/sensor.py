@@ -2,7 +2,8 @@ from logging import Logger
 import logging
 
 
-class Sensor:
+
+class Sensor(object):
 
     def __init__(self) -> None:
         self.name = "BasicSensor"
@@ -14,3 +15,6 @@ class Sensor:
     def read_data_from_advertisement(self, data: dict[str, any]):
         self.logger.error("read_data_from_advertisement not implemented on this type of sensor")
         return
+    
+    def get_props(self):
+        return self.__dict__

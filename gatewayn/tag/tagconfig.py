@@ -4,7 +4,7 @@ from gatewayn.config import Config
 import logging
 
 
-class TagConfig:
+class TagConfig(object):
 
     def __init__(self) -> None:
         self.samplerate: int = 0
@@ -40,3 +40,6 @@ class TagConfig:
             self.logger.error("divider is too big or too small (0-254)")
             return
         self.divider = divider
+
+    def get_props(self):
+        return {'samplerate': self.samplerate, 'resolution': self.resolution, 'scale': self.scale, 'mode': self.mode, 'divider': self.divider, 'dsp_function': self.dsp_function, 'dsp_parameter': self.dsp_parameter}

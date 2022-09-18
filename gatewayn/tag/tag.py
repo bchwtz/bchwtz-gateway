@@ -27,7 +27,7 @@ import mongox
 
 client = mongox.Client("mongodb://localhost:27017", get_event_loop=asyncio.get_running_loop)
 db = client.get_database("gateway")
-class Tag():
+class Tag(object):
     def __init__(self, name: str = "", address: str = "", device: BLEDevice = None, online: bool = True) -> None:
         self.name: str = name
         self.address: str = address
@@ -165,3 +165,6 @@ class Tag():
         tag_data = self.dec.decode_advertisement(data)
         for sensor in self.sensors:
             sensor.read_data_from_advertisement(tag_data)
+
+    def get_props(self):
+        return {'name': self.name, 'address': self.address, 'sensors': self.sensors, 'time': self.time, 'config': self.config, 'online': self.online, 'last_seen': self.last_seen}

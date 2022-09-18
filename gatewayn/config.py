@@ -1,6 +1,16 @@
 from enum import Enum
+from os import environ
+from dotenv import load_dotenv
 
 class Config:
+
+    def load_from_environ():
+        load_dotenv()
+        for chan in Config.MQTTConfig:
+            key = chan.name.upper()
+            if environ.get(key) is not None:
+                print(environ.get(key))
+                chan._value_ = environ.get(key)
     class Commands(Enum):
         read_all: str = "4a4a110100000000000000"
         activate_logging_at_tag: str = "4a4a080100000000000000"
@@ -25,9 +35,13 @@ class Config:
     
     class GlobalConfig(Enum):
         bluetooth_manufacturer_id: int = 1177
-        mqtt_address: str = "mqtt-broker"
+        mqtt_address: str = "localhost"
         mqtt_user: str = "mqtt"
         mqtt_password: str = "6p449xLrC5PH3pfbkMvj/XBQt443Kg6S"
+        mqtt_client_id: str = "gateway_client"
+
+    class MQTTConfig(Enum):
+        topic_listen_adv: str = ""
 
     class AllowedValues(Enum):
         samplerate: list[int] = [

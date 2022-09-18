@@ -1,30 +1,22 @@
 import asyncio
 import logging
 import time
-from gatewayn.gateway import Gateway
 from gatewayn.tag.tag import Tag
 from gatewayn.tag.tag_builder import TagBuilder
 from gatewayn.drivers.bluetooth.ble_conn.ble_conn import BLEConn
 from bleak.backends.device import BLEDevice
 from bleak.backends.scanner import AdvertisementData
 from gatewayn.config import Config
+import json
+from paho.mqtt.client import Client
 
-class Hub():
+class Hub(object):
     def __init__(self):
         self.tags: list[Tag] = []
         self.ble_conn = BLEConn()
         self.logger = logging.getLogger("Hub")
         self.logger.setLevel(logging.DEBUG)
-        self.__gateway: Gateway = None
-
-    def set_gateway(self, gateway: Gateway) -> None:
-        if self.__gateway is None:
-            self.__gateway = gateway
-            return
-        self.logger.warn("gateway was already set - ignoring!")
-
-    def get_gateway(self) -> Gateway:
-        return self.__gateway
+        self.mqtt_client: Client = None
 
     async def discover_tags(self, timeout: float = 5.0, rediscover: bool = False, autoload_config: bool = True) -> None:
         devices = await self.ble_conn.scan_tags(Config.GlobalConfig.bluetooth_manufacturer_id.value, timeout)
@@ -62,6 +54,9 @@ class Hub():
         tag.read_sensor_data(data.manufacturer_data.get(Config.GlobalConfig.bluetooth_manufacturer_id.value))
         tag.last_seen = time.time()
         tag.online = True
+        if self.mqtt_client is not None:
+            self.logger.info("logging to channel %s", Config.MQTTConfig.topic_listen_adv.value)
+            self.mqtt_client.publish(Config.MQTTConfig.topic_listen_adv.value, json.dumps(self, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
     def get_tag_by_address(self, address: str = None) -> Tag:
         """Get a tag object by a known mac adress.
@@ -112,3 +107,5 @@ class Hub():
                 tag.last_seen = time.time()
                 self.logger.debug(f"setting tag online: {tag.address}")
 
+    def get_props(self):
+        return {'tags': self.tags}

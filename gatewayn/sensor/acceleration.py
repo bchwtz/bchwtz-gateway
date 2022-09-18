@@ -21,3 +21,6 @@ class AccelerationSensor(Sensor):
             self.acc_y: float = acc_y
             self.acc_z: float = acc_z
             self.acc: float = acc
+
+        def get_props(self):
+            return self.__dict__
