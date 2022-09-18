@@ -16,7 +16,7 @@ func NewCLI() CLI {
 }
 
 func (c *CLI) configure() {
-	app := &cli.App{
+	c.App = &cli.App{
 		Name:  "boom",
 		Usage: "make an explosive entrance",
 		Action: func(*cli.Context) error {

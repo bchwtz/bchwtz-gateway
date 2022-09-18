@@ -9,6 +9,7 @@ require (
 	github.com/keepeye/logrus-filename v0.0.0-20190711075016-ce01a4391dd1
 	github.com/sirupsen/logrus v1.9.0
 	github.com/systematiccaos/going-forward v0.0.0-20220918010412-b8aea8cfe347
+	github.com/urfave/cli v1.22.10
 	go.mongodb.org/mongo-driver v1.10.2
 )
 
