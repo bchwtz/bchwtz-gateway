@@ -1,4 +1,4 @@
-import datetime
+import time
 from gatewayn.sensor.sensor import Sensor
 
 class BatterySensor(Sensor):
@@ -19,7 +19,7 @@ class BatterySensor(Sensor):
             self.voltage = voltage
             self.sequence_number: int = sequence_number
             self.data_format: int = data_format
-            self.recorded_time: float = datetime.time()
+            self.recorded_time: float = time.time()
 
 
         def get_props(self):

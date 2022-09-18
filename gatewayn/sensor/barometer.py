@@ -1,4 +1,4 @@
-import datetime
+import time
 from gatewayn.sensor.sensor import Sensor
 
 class BarometerSensor(Sensor):
@@ -19,7 +19,7 @@ class BarometerSensor(Sensor):
             self.pressure: float = pressure
             self.sequence_number: int = sequence_number
             self.data_format: int = data_format
-            self.recorded_time: float = datetime.time()
+            self.recorded_time: float = time.time()
 
         def get_props(self):
             return self.__dict__
