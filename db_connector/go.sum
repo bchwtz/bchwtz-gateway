@@ -38,6 +38,8 @@ github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/systematiccaos/going-forward v0.0.0-20220918010412-b8aea8cfe347 h1:Uy6Fc3hzX+XmseT6S0xxA5qEfTgzMJfin0BAWihs3GY=
 github.com/systematiccaos/going-forward v0.0.0-20220918010412-b8aea8cfe347/go.mod h1:l/1rYhELag445lqwjSfUc4L6ThXCESDZXg+GaM/JCkY=
+github.com/systematiccaos/going-forward v0.0.0-20220918173206-4062474a6426 h1:kgwE24ObycPsW0bdh+ahGk39UWOnImLwxQfjCIMW/tI=
+github.com/systematiccaos/going-forward v0.0.0-20220918173206-4062474a6426/go.mod h1:gHzdhvQzLvllDhYcMICE1nA9jxOjM4qWKs009nM88S0=
 github.com/tidwall/pretty v1.0.0/go.mod h1:XNkn88O1ChpSDQmQeStsy+sBenx6DDtFZJxhVysOjyk=
 github.com/urfave/cli v1.22.10 h1:p8Fspmz3iTctJstry1PYS3HVdllxnEzTEsgIgtxTrCk=
 github.com/urfave/cli v1.22.10/go.mod h1:Gos4lmkARVdJ6EkW0WaNv/tZAAMe9V7XWyB60NtXRu0=

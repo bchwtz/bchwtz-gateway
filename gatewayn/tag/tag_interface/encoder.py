@@ -38,3 +38,8 @@ class Encoder():
         command = Config.Commands.set_tag_time_substr.value + now
         self.logger.debug("Set sensor time {}".format(command))
         return command
+
+    def encode_heartbeat(self, interval: int = 0) -> str:
+        hex_beat = hex(interval)[2:]
+        hex_msg = f"{Config.Commands.set_heartbeat_substr.value}{'0000'[:4 - len(hex_beat)]}{hex_beat}000000000000"
+        return hex_msg

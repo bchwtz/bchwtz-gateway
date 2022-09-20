@@ -46,6 +46,7 @@ class Tag(object):
         self.dec: Decoder = Decoder()
         self.enc: Encoder = Encoder()
         self.config: TagConfig = None
+        self.heartbeat: int = 0
         self.time: DateTime = None
         self.online: bool = online
         self.last_seen: float = time.time()
@@ -120,9 +121,24 @@ class Tag(object):
             self.handle_config_cb(rx_bt)
         elif "time" in caught_signals:
             self.handle_time_cb(rx_bt)
+        elif "heartbeat" in caught_signals:
+            self.handle_heartbeat_cb(rx_bt)
+
+    async def get_heartbeat(self) -> None:
+        cmd = Config.Commands.get_heartbeat_config.value
+        await self.ble_conn.run_single_ble_command(
+            tag = self.ble_device,
+            cmd = cmd,
+            read_chan = Config.CommunicationChannels.rx.value,
+            write_chan = Config.CommunicationChannels.tx.value,
+            cb = self.multi_communication_callback
+        )
 
     def handle_config_cb(self, rx_bt: bytearray) -> None:
         self.config = self.dec.decode_config_rx(rx_bt)
+
+    def handle_heartbeat_cb(self, rx_bt: bytearray) -> None:
+        self.heartbeat = self.dec.decode_heartbeat_rx(rx_bt)
     
     def handle_time_cb(self, rx_bt: bytearray) -> None:
         time = self.dec.decode_time_rx(rx_bt)
@@ -142,10 +158,16 @@ class Tag(object):
         )
 
     # TODO : move to enc
-    def set_heartbeat(self, heartbeat_interval: int = 10):
-        self.logger.debug("Set heartbeat interval to: {}".format(heartbeat_interval))
-        hex_beat = hex(heartbeat_interval)[2:]
-        hex_msg = f"2200F2{'0000'[:4 - len(hex_beat)]}{hex_beat}000000000000"
+    async def set_heartbeat(self, interval: int = 10):
+        self.logger.debug("Set heartbeat interval to: {}".format(interval))
+        cmd = self.enc.encode_heartbeat(interval=interval)
+        await self.ble_conn.run_single_ble_command(
+            tag = self.ble_device,
+            read_chan = Config.CommunicationChannels.rx.value,
+            write_chan = Config.CommunicationChannels.tx.value,
+            cmd = cmd,
+            cb = self.multi_communication_callback
+        )
 
     async def set_config(self, config: TagConfig = None):
         if config is not None:

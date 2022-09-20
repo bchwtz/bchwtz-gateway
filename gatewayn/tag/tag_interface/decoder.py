@@ -526,3 +526,6 @@ class Decoder():
     def decode_advertisement(self, advertisement_data: AdvertisementData) -> dict:
         data = advertisement_data.hex()
         return get_decoder(advertisement_data).decode_data(data)
+
+    def decode_heartbeat_rx(self, bytearr: Bytes = None) -> int:
+        logger.info("Received heartbeat: %s" % int.from_bytes(bytearr[4:6], byteorder='big', signed=False))

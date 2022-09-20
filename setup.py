@@ -2,7 +2,7 @@
 from setuptools import find_packages
 from setuptools import setup
 
-with open('requirements.txt') as f:
+with open('gatewayn/requirements.txt') as f:
     required = f.read().splitlines()
 
 with open("README.md", "r", encoding="utf-8") as fh:
