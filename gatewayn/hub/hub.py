@@ -54,10 +54,13 @@ class Hub(object):
         tag.read_sensor_data(data.manufacturer_data.get(Config.GlobalConfig.bluetooth_manufacturer_id.value))
         tag.last_seen = time.time()
         tag.online = True
+        self.log_mqtt()
+
+    def log_mqtt(self):
         if self.mqtt_client is not None:
-            # Transmiting whole hub to make changes persistent that happend while mqtt may not be available
-            self.logger.info("logging to channel %s", Config.MQTTConfig.topic_listen_adv.value)
-            self.mqtt_client.publish(Config.MQTTConfig.topic_listen_adv.value, json.dumps(self, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+            self.logger.info("logging to channel %s", Config.MQTTConfig.topic_log.value)
+            self.mqtt_client.publish(Config.MQTTConfig.topic_log.value, json.dumps(self, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+
 
     def get_tag_by_address(self, address: str = None) -> Tag:
         """Get a tag object by a known mac adress.

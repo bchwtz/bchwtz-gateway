@@ -124,14 +124,15 @@ class Tag(object):
         elif "heartbeat" in caught_signals:
             self.handle_heartbeat_cb(rx_bt)
 
-    async def get_heartbeat(self) -> None:
+    async def get_heartbeat(self, max_retries: int = 5) -> None:
         cmd = Config.Commands.get_heartbeat_config.value
         await self.ble_conn.run_single_ble_command(
             tag = self.ble_device,
             cmd = cmd,
             read_chan = Config.CommunicationChannels.rx.value,
             write_chan = Config.CommunicationChannels.tx.value,
-            cb = self.multi_communication_callback
+            cb = self.multi_communication_callback,
+            max_retries=max_retries
         )
 
     def handle_config_cb(self, rx_bt: bytearray) -> None:

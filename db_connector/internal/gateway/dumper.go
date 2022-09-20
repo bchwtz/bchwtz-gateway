@@ -33,6 +33,7 @@ func (gw *GatewayDumper) run() {
 	gw.get_advertisement_channel = make(chan mqtt.MQTTSubscriptionMessage)
 	gw.hub = model.Hub{}
 	gw.listenAdvertisements()
+	gw.listenLogs()
 	go gw.writeAdvertisementsToDB()
 	<-donech
 }
@@ -44,6 +45,14 @@ func (gw *GatewayDumper) listenAdvertisements() {
 		logrus.Fatalln(err)
 	}
 	logrus.Infoln("subscribing on channel " + topic)
+}
+
+func (gw *GatewayDumper) listenLogs() {
+	topic := os.Getenv("TOPIC_LOG")
+
+	if err := gw.mqclient.Subscribe(topic, gw.get_advertisement_channel); err != nil {
+		logrus.Fatalln(err)
+	}
 }
 
 func (gw *GatewayDumper) writeAdvertisementsToDB() {

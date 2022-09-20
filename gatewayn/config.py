@@ -21,7 +21,7 @@ class Config:
         get_tag_timestamp: str = "2121090000000000000000"
         set_tag_time_substr: str = "212108"
         get_flash_statistics: str = "FAFA0d0000000000000000"
-        get_logging_status: str = "4A4A090000000000000000"
+        get_loggintopic_listen_advg_status: str = "4A4A090000000000000000"
         activate_acc_streaming: str = "4a4a080200000000000000"
         get_heartbeat_config: str = "2200F30000000000000000"
         set_heartbeat_substr: str = "2200F2"
@@ -43,6 +43,7 @@ class Config:
 
     class MQTTConfig(Enum):
         topic_listen_adv: str = ""
+        topic_log: str = ""
 
     class AllowedValues(Enum):
         samplerate: list[int] = [
