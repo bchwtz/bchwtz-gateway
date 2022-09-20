@@ -46,6 +46,8 @@ class BLEConn():
             async with BleakClient(tag, timeout = timeout) as client:
                 await client.start_notify(char_specifier = read_chan, callback = cb)
                 await client.write_gatt_char(write_chan, bytearray.fromhex(cmd), True)
+                await client.disconnect()
+                
         except Exception as e:
             if retries < max_retries:
                 self.logger.warn(f"{e} - retrying...")
