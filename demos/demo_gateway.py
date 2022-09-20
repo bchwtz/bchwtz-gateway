@@ -6,4 +6,8 @@ from gatewayn.config import Config
 
 gw = Gateway()
 print("spawned gw")
-asyncio.get_event_loop().run_until_complete(gw.run())
+main_loop = asyncio.get_event_loop()
+main_loop.run_until_complete(gw.hub.discover_tags())
+
+main_loop.run_until_complete(gw.hub.tags[0].get_config())
+# main_loop.run_until_complete(gw.get_advertisements())

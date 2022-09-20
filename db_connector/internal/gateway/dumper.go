@@ -44,7 +44,7 @@ func (gw *GatewayDumper) listenAdvertisements() {
 	if err := gw.mqclient.Subscribe(topic, gw.get_advertisement_channel); err != nil {
 		logrus.Fatalln(err)
 	}
-	logrus.Infoln("subscribing on channel " + topic)
+	logrus.Infoln("subscribing on topic " + topic)
 }
 
 func (gw *GatewayDumper) listenLogs() {
@@ -53,6 +53,7 @@ func (gw *GatewayDumper) listenLogs() {
 	if err := gw.mqclient.Subscribe(topic, gw.get_advertisement_channel); err != nil {
 		logrus.Fatalln(err)
 	}
+	logrus.Infoln("subscribing to logs on topic " + topic)
 }
 
 func (gw *GatewayDumper) writeAdvertisementsToDB() {
