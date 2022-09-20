@@ -8,4 +8,5 @@ type Tag struct {
 	Config   TagConfig     `json:"config"`
 	Online   bool          `json:"online"`
 	LastSeen float32       `json:"last_seen"`
+	Time     float32       `json:"time"`
 }

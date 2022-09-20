@@ -48,11 +48,11 @@ class Tag(object):
         self.enc: Encoder = Encoder()
         self.config: TagConfig = None
         self.heartbeat: int = 0
-        self.time: DateTime = None
+        self.time: float = 0.0
         self.online: bool = online
         self.last_seen: float = time.time()
         self.pubsub_hub: aiopubsub.Hub = pubsub_hub
-        self.publisher: aiopubsub.Publisher = aiopubsub.Publisher(self.pubsub_hub, aiopubsub.Key("log"))
+        self.publisher: aiopubsub.Publisher = aiopubsub.Publisher(self.pubsub_hub, prefix = aiopubsub.Key("TAG"))
 
     async def get_acceleration_log(self, cb: Callable[[int, bytearray], None] = None) -> None:
         if cb is None:
@@ -84,7 +84,8 @@ class Tag(object):
             read_chan = Config.CommunicationChannels.rx.value,
             write_chan = Config.CommunicationChannels.tx.value,
             cmd = Config.Commands.get_tag_timestamp.value,
-            cb = cb
+            cb = cb,
+            timeout=30
         )
 
     async def get_flash_statistics(self, cb: Callable[[int, bytearray], None] = None) -> None:
@@ -142,15 +143,18 @@ class Tag(object):
 
     def handle_config_cb(self, rx_bt: bytearray) -> None:
         self.config = self.dec.decode_config_rx(rx_bt)
+        self.publisher.publish(aiopubsub.Key("log", "CONFIG"), self)
 
     def handle_heartbeat_cb(self, rx_bt: bytearray) -> None:
         self.heartbeat = self.dec.decode_heartbeat_rx(rx_bt)
+        self.publisher.publish(aiopubsub.Key("log", "HEARTBEAT"), self)
     
     def handle_time_cb(self, rx_bt: bytearray) -> None:
         time = self.dec.decode_time_rx(rx_bt)
         self.time = time
+        self.publisher.publish(aiopubsub.Key("log", "TIME"), self)
 
-    async def set_time_to_now(self, custom_time: float =0.0, cb: Callable[[int, bytearray], None] = None) -> None:
+    async def set_time(self, custom_time: float = 0.0, cb: Callable[[int, bytearray], None] = None) -> None:
         if cb is None:
             cb = self.multi_communication_callback
         if custom_time == 0.0:
@@ -162,7 +166,8 @@ class Tag(object):
             read_chan = Config.CommunicationChannels.rx.value,
             write_chan = Config.CommunicationChannels.tx.value,
             cmd = cmd,
-            cb = cb
+            cb = cb,
+            timeout=30
         )
 
     # TODO : move to enc

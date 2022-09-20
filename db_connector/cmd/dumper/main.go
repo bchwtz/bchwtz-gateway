@@ -8,6 +8,7 @@ import (
 
 func main() {
 	util.SetupLogs()
+	logrus.SetLevel(logrus.TraceLevel)
 	gw := gateway.NewDumper()
 	logrus.Println(gw)
 }

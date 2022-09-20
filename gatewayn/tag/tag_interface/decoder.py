@@ -2,6 +2,7 @@ from ast import Bytes
 from binascii import hexlify # built-in
 import logging
 import time
+from xmlrpc.client import DateTime
 from bleak.backends.scanner import AdvertisementData
 from ruuvitag_sensor.decoder import Df3Decoder, get_decoder
 
@@ -518,9 +519,9 @@ class Decoder():
         config.divider = int(bytearr[10])
         return config
 
-    def decode_time_rx(self, bytearr: Bytes =  None) -> int:
+    def decode_time_rx(self, bytearr: Bytes =  None) -> float:
         logger.info("Received time: %s" % hexlify(bytearr[:-9:-1]))
-        received_time = time.strftime('%D %H:%M:%S', time.localtime(int(hexlify(bytearr[:-9:-1]), 16) / 1000))        
+        received_time = time.mktime(time.localtime(int(hexlify(bytearr[:-9:-1]), 16) / 1000))
         return received_time
 
     def decode_advertisement(self, advertisement_data: AdvertisementData) -> dict:
