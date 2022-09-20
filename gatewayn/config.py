@@ -6,11 +6,17 @@ class Config:
 
     def load_from_environ():
         load_dotenv()
-        for chan in Config.MQTTConfig:
-            key = chan.name.upper()
-            if environ.get(key) is not None:
-                print(environ.get(key))
-                chan._value_ = environ.get(key)
+        for prop in Config.MQTTConfig:
+            Config.load_key_from_environ(prop)
+
+        for prop in Config.GlobalConfig:
+            Config.load_key_from_environ(prop)
+
+    def load_key_from_environ(prop):
+        key = prop.name.upper()
+        if environ.get(key) is not None:
+            print(environ.get(key))
+            prop._value_ = environ.get(key)
     class Commands(Enum):
         read_all: str = "4a4a110100000000000000"
         activate_logging_at_tag: str = "4a4a080100000000000000"
