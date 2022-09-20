@@ -9,14 +9,19 @@ from bleak.backends.scanner import AdvertisementData
 from gatewayn.config import Config
 import json
 from paho.mqtt.client import Client
+import aiopubsub
 
 class Hub(object):
+
+    instance = None
+
     def __init__(self):
         self.tags: list[Tag] = []
         self.ble_conn = BLEConn()
         self.logger = logging.getLogger("Hub")
         self.logger.setLevel(logging.DEBUG)
         self.mqtt_client: Client = None
+        self.pubsub_hub: aiopubsub.Hub = aiopubsub.Hub()
 
     async def discover_tags(self, timeout: float = 5.0, rediscover: bool = False, autoload_config: bool = True) -> None:
         devices = await self.ble_conn.scan_tags(Config.GlobalConfig.bluetooth_manufacturer_id.value, timeout)
@@ -32,11 +37,13 @@ class Hub(object):
             for dev in devices:
                 tag = self.get_tag_by_address(dev.address)
                 tag.get_config()
+        self.log_mqtt()
     
     async def listen_for_advertisements(self, timeout: float = 50) -> None:
         await self.ble_conn.listen_advertisements(timeout, self.cb_advertisements)
     
     async def cb_advertisements(self, device: BLEDevice, data: AdvertisementData):
+        device.metadata = data.__dict__
         devices = self.ble_conn.validate_manufacturer([device], Config.GlobalConfig.bluetooth_manufacturer_id.value)
         if len(devices) <= 0:
             return
@@ -61,6 +68,9 @@ class Hub(object):
             self.logger.info("logging to channel %s", Config.MQTTConfig.topic_log.value)
             self.mqtt_client.publish(Config.MQTTConfig.topic_log.value, json.dumps(self, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
+    async def on_log_event(self, key: aiopubsub.Key, tag: Tag):
+        self.logger.info("logging to mqtt")
+        self.log_mqtt()
 
     def get_tag_by_address(self, address: str = None) -> Tag:
         """Get a tag object by a known mac adress.
@@ -91,7 +101,7 @@ class Hub(object):
         return None
 
     def __devices_to_tags(self, devices: list[BLEDevice]) -> list[Tag]:
-        self.tags = [TagBuilder().from_device(dev).build() for dev in devices]
+        self.tags = [TagBuilder().from_device(dev, self.pubsub_hub).build() for dev in devices]
         return self.tags
 
     def __has_new_devices(self, devices: list[BLEDevice]) -> bool:
@@ -113,3 +123,8 @@ class Hub(object):
 
     def get_props(self):
         return {'tags': self.tags}
+
+    async def subscribe_to_log_events(self):
+        self.log_subscriber: aiopubsub.Subscriber = aiopubsub.Subscriber(self.pubsub_hub, "events")
+        subscribe_key = aiopubsub.Key('*', 'log', '*')
+        self.log_subscriber.add_async_listener(subscribe_key, self.on_log_event)

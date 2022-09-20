@@ -3,6 +3,7 @@ from time import sleep, time
 from gatewayn.hub.hub import Hub
 import paho.mqtt.client as mqtt
 from gatewayn.config import Config
+import asyncio
 class Gateway:
 
     def __init__(self) -> None:
@@ -16,8 +17,10 @@ class Gateway:
         self.hub.mqtt_client = self.mqtt_client
         self.logger.info("connected successfully to mqtt")
         self.mqtt_client.loop_start()
+        asyncio.get_event_loop().create_task(self.hub.subscribe_to_log_events())
 
-    async def run(self) -> None:
+    async def get_advertisements(self) -> None:
         while True:
+            print("running")
             await self.hub.listen_for_advertisements()
             sleep(20)

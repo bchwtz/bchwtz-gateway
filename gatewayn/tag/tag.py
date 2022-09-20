@@ -19,6 +19,7 @@ from gatewayn.config import Config
 import logging
 from gatewayn.tag.tag_interface.decoder import Decoder
 from bleak.backends.scanner import AdvertisementData
+import aiopubsub
 
 from gatewayn.sensor.sensor import Sensor
 from gatewayn.tag.tag_interface.signals import SigScanner
@@ -28,7 +29,7 @@ import mongox
 client = mongox.Client("mongodb://localhost:27017", get_event_loop=asyncio.get_running_loop)
 db = client.get_database("gateway")
 class Tag(object):
-    def __init__(self, name: str = "", address: str = "", device: BLEDevice = None, online: bool = True) -> None:
+    def __init__(self, name: str = "", address: str = "", device: BLEDevice = None, online: bool = True, pubsub_hub: aiopubsub.Hub = None) -> None:
         self.name: str = name
         self.address: str = address
         self.ble_device: BLEDevice = device
@@ -50,6 +51,8 @@ class Tag(object):
         self.time: DateTime = None
         self.online: bool = online
         self.last_seen: float = time.time()
+        self.pubsub_hub: aiopubsub.Hub = pubsub_hub
+        self.publisher: aiopubsub.Publisher = aiopubsub.Publisher(self.pubsub_hub, aiopubsub.Key("log"))
 
     async def get_acceleration_log(self, cb: Callable[[int, bytearray], None] = None) -> None:
         if cb is None:
@@ -123,6 +126,8 @@ class Tag(object):
             self.handle_time_cb(rx_bt)
         elif "heartbeat" in caught_signals:
             self.handle_heartbeat_cb(rx_bt)
+        
+        self.publisher.publish(aiopubsub.Key("log"), self)
 
     async def get_heartbeat(self, max_retries: int = 5) -> None:
         cmd = Config.Commands.get_heartbeat_config.value
