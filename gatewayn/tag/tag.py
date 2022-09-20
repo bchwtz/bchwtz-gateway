@@ -150,10 +150,12 @@ class Tag(object):
         time = self.dec.decode_time_rx(rx_bt)
         self.time = time
 
-    async def set_time_to_now(self, cb: Callable[[int, bytearray], None] = None) -> None:
+    async def set_time_to_now(self, custom_time: float =0.0, cb: Callable[[int, bytearray], None] = None) -> None:
         if cb is None:
             cb = self.multi_communication_callback
-        cmd = self.enc.encode_time(time = datetime.now().timestamp())
+        if custom_time == 0.0:
+            custom_time = datetime.now().timestamp()
+        cmd = self.enc.encode_time(time = custom_time)
         self.logger.debug(cmd)
         await self.ble_conn.run_single_ble_command(
             tag = self.ble_device,
