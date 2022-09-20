@@ -14,9 +14,10 @@ class Config:
 
     def load_key_from_environ(prop):
         key = prop.name.upper()
+
         if environ.get(key) is not None:
-            print(environ.get(key))
             prop._value_ = environ.get(key)
+
     class Commands(Enum):
         read_all: str = "4a4a110100000000000000"
         activate_logging_at_tag: str = "4a4a080100000000000000"
@@ -27,7 +28,7 @@ class Config:
         get_tag_timestamp: str = "2121090000000000000000"
         set_tag_time_substr: str = "212108"
         get_flash_statistics: str = "FAFA0d0000000000000000"
-        get_loggintopic_listen_advg_status: str = "4A4A090000000000000000"
+        get_logging_status: str = "4A4A090000000000000000"
         activate_acc_streaming: str = "4a4a080200000000000000"
         get_heartbeat_config: str = "2200F30000000000000000"
         set_heartbeat_substr: str = "2200F2"
@@ -48,8 +49,10 @@ class Config:
         mqtt_client_id: str = "gateway_client"
 
     class MQTTConfig(Enum):
-        topic_listen_adv: str = ""
-        topic_log: str = ""
+        topic_command: str = "1"
+        topic_command_res: str = "2"
+        topic_log: str = "3"
+        topic_listen_adv: str = "4"
 
     class AllowedValues(Enum):
         samplerate: list[int] = [

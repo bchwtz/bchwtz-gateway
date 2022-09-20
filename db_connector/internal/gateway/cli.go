@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/bchwtz-fhswf/gateway/db_connector/internal/commandinterface"
+	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 	"github.com/systematiccaos/going-forward/mqtt"
 	"github.com/urfave/cli"
@@ -25,6 +26,9 @@ const (
 )
 
 func NewCLI() CLI {
+	if err := godotenv.Load("../.env"); err != nil {
+		logrus.Errorln(err)
+	}
 	cliapp := CLI{}
 	cliapp.mqclient.Connect(os.Getenv("MQTT_BROKER"), os.Getenv("MQTT_CLIENTID"), os.Getenv("MQTT_USER"), os.Getenv("MQTT_PASSWORD"), true)
 	cliapp.configure()
@@ -33,6 +37,7 @@ func NewCLI() CLI {
 
 func (c *CLI) handleComms(req commandinterface.CommandRequest) error {
 	logrus.Infoln("waiting for a response from the gateway...")
+	logrus.Println("topic: " + c.topic)
 	c.mqclient.Publish(c.topic, commandinterface.NewCommandRequest("get_config", nil))
 	answerch := make(chan mqtt.MQTTSubscriptionMessage)
 	c.mqclient.Subscribe(c.restopic, answerch)
