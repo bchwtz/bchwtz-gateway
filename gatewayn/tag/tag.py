@@ -165,7 +165,7 @@ class Tag(object):
 
     # TODO : move to enc
     async def set_heartbeat(self, interval: int = 10):
-        self.logger.debug("Set heartbeat interval to: {}".format(interval))
+        self.logger.info("Set heartbeat interval to: {}".format(interval))
         cmd = self.enc.encode_heartbeat(interval=interval)
         await self.ble_conn.run_single_ble_command(
             tag = self.ble_device,
