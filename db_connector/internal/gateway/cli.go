@@ -2,7 +2,9 @@ package gateway
 
 import (
 	"encoding/json"
+	"errors"
 	"os"
+	"reflect"
 
 	"github.com/bchwtz-fhswf/gateway/db_connector/internal/commandinterface"
 	"github.com/joho/godotenv"
@@ -64,6 +66,14 @@ func (c *CLI) handleComms(req commandinterface.CommandRequest) error {
 		}
 		answer.Message.Ack()
 		logrus.Println(res.Payload)
+		if reflect.TypeOf(res.Payload).Kind() == reflect.Map {
+			resmap := res.Payload.(map[string]interface{})
+			if resmap["status"] == "error" {
+				err := errors.New(resmap["msg"].(string))
+				logrus.Errorln(err)
+				return err
+			}
+		}
 		return nil
 	}
 }
@@ -106,6 +116,14 @@ func (c *CLI) configure() {
 					{
 						Name:      "get",
 						ArgsUsage: "first arg is the tags name - if none is set every tag will be asked for its time and config",
+						Action: func(cCtx *cli.Context) error {
+							args := ""
+							if cCtx.Args().Present() {
+								args = cCtx.Args().First()
+							}
+							req := commandinterface.NewCommandRequest("get_tags", args)
+							return c.handleComms(req)
+						},
 						Subcommands: []cli.Command{
 							{
 								Name: "time",

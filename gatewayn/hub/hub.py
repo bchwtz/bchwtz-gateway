@@ -161,11 +161,10 @@ class Hub(object):
                 self.logger.info("running get_config on tag: %s", t.address)
                 asyncio.run_coroutine_threadsafe(t.get_config(), self.main_loop)
 
+        else:
+            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": id, "payload": {"status": "error", "msg": "did not find any fitting command for your request"}}))
+            return
 
-        # self.internal_command_publisher.publish(aiopubsub.Key("command"), {"name": name, "payload": payload})
         self.logger.debug("sent payload")
-        # self.logger.info(self.tags[0].__dict__)
-        # self.tags[0].test_pub()
-        res = {"id": str(uuid.uuid4()), "request_id": id, "payload": "success!", "name": name}
+        res = {"id": str(uuid.uuid4()), "request_id": id, "payload": {"status": "success", "tags": self.tags}, "name": name}
         self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps(res))
-        # self.logger.info("sent response to %s" % Config.MQTTConfig.topic_command_res.value)
