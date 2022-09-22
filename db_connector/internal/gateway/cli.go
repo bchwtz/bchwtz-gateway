@@ -30,7 +30,9 @@ func NewCLI() CLI {
 		logrus.Errorln(err)
 	}
 	cliapp := CLI{}
-	cliapp.mqclient.Connect(os.Getenv("MQTT_BROKER"), os.Getenv("MQTT_CLIENTID"), os.Getenv("MQTT_USER"), os.Getenv("MQTT_PASSWORD"), true)
+	if err := cliapp.mqclient.Connect(os.Getenv("MQTT_BROKER")+":"+os.Getenv("MQTT_PORT"), os.Getenv("MQTT_CLIENTID"), os.Getenv("MQTT_USER"), os.Getenv("MQTT_PASSWORD"), true); err != nil {
+		logrus.Fatalln(err)
+	}
 	cliapp.configure()
 	return cliapp
 }
@@ -38,9 +40,19 @@ func NewCLI() CLI {
 func (c *CLI) handleComms(req commandinterface.CommandRequest) error {
 	logrus.Infoln("waiting for a response from the gateway...")
 	logrus.Println("topic: " + c.topic)
-	c.mqclient.Publish(c.topic, commandinterface.NewCommandRequest("get_config", nil))
+	reqbt, err := json.Marshal(&req)
+	if err != nil {
+		logrus.Errorln(err)
+		return err
+	}
 	answerch := make(chan mqtt.MQTTSubscriptionMessage)
+	logrus.Info("subscribing to " + c.restopic)
 	c.mqclient.Subscribe(c.restopic, answerch)
+	tk := c.mqclient.Publish(c.topic, reqbt)
+	if tk.Wait() && tk.Error() != nil {
+		logrus.Errorln(tk.Error())
+		return tk.Error()
+	}
 	for {
 		answer := <-answerch
 		res := commandinterface.CommandResponse{}

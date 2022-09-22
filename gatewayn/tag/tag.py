@@ -35,7 +35,7 @@ class Tag(object):
         self.ble_device: BLEDevice = device
         self.ble_conn: BLEConn = BLEConn()
         self.logger = logging.getLogger("Tag")
-        self.logger.setLevel(logging.INFO)
+        self.logger.setLevel(logging.ERROR)
         # TODO: add sensors as ble caps on firmware side to autoload sensor classes by names
         self.sensors: list[Sensor] = [
             AccelerationSensor(),
@@ -109,6 +109,9 @@ class Tag(object):
             cmd = Config.Commands.get_logging_status.value,
             cb = cb
         )
+
+    def test_pub(self):
+        self.publisher.publish(aiopubsub.Key("command"), self)
 
     def default_log_callback(self, status_code: int, rx_bt: bytearray) -> None:
         res = self.dec.decode_ruuvi_msg(rx_bt)

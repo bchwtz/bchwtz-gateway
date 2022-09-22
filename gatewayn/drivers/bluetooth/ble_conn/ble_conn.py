@@ -11,7 +11,7 @@ class BLEConn():
     def __init__(self) -> None:
         logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         self.logger: logging.Logger = logging.getLogger("BLEConn")
-        self.logger.setLevel(logging.INFO)
+        self.logger.setLevel(logging.ERROR)
 
     # cof - bleak adscanning seems broken - have to investigate further later... muuuuuch later...
     async def listen_advertisements(self, timeout: float = 5.0, cb: Callable[[BLEDevice, dict], None] = None) -> None:
@@ -47,7 +47,7 @@ class BLEConn():
                 await client.start_notify(char_specifier = read_chan, callback = cb)
                 await client.write_gatt_char(write_chan, bytearray.fromhex(cmd), True)
                 await client.disconnect()
-                
+
         except Exception as e:
             if retries < max_retries:
                 self.logger.warn(f"{e} - retrying...")

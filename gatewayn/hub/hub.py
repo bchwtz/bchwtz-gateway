@@ -1,6 +1,8 @@
 import asyncio
 import logging
+from threading import Thread
 import time
+import uuid
 from gatewayn.tag.tag import Tag
 from gatewayn.tag.tag_builder import TagBuilder
 from gatewayn.drivers.bluetooth.ble_conn.ble_conn import BLEConn
@@ -8,7 +10,7 @@ from bleak.backends.device import BLEDevice
 from bleak.backends.scanner import AdvertisementData
 from gatewayn.config import Config
 import json
-from paho.mqtt.client import Client
+from paho.mqtt.client import Client, MQTTMessage
 import aiopubsub
 
 class Hub(object):
@@ -22,6 +24,7 @@ class Hub(object):
         self.logger.setLevel(logging.DEBUG)
         self.mqtt_client: Client = None
         self.pubsub_hub: aiopubsub.Hub = aiopubsub.Hub()
+        self.main_loop: asyncio.BaseEventLoop = asyncio.get_event_loop()
 
     async def discover_tags(self, timeout: float = 5.0, rediscover: bool = False, autoload_config: bool = True) -> None:
         devices = await self.ble_conn.scan_tags(Config.GlobalConfig.bluetooth_manufacturer_id.value, timeout)
@@ -51,7 +54,7 @@ class Hub(object):
         device = devices[0]
         tag = self.get_tag_by_address(devices[0].address)
         if tag is None:
-            tag = Tag(device.name, device.address, device, True)
+            tag = Tag(device.name, device.address, device, True, self.pubsub_hub)
             self.tags.append(tag)
             await tag.get_config()
             self.logger.info(f"setting up new device with address {tag.address}")
@@ -65,12 +68,17 @@ class Hub(object):
 
     def log_mqtt(self):
         if self.mqtt_client is not None:
-            self.logger.info("logging to channel %s", Config.MQTTConfig.topic_log.value)
-            self.mqtt_client.publish(Config.MQTTConfig.topic_log.value, json.dumps(self, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+            self.logger.info("logging to channel %s", Config.MQTTConfig.topic_listen_adv.value)
+            self.mqtt_client.publish(Config.MQTTConfig.topic_listen_adv.value, json.dumps(self, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
     async def on_log_event(self, key: aiopubsub.Key, tag: Tag):
         self.logger.info("logging to mqtt")
         self.log_mqtt()
+
+    async def on_command_event(self, key: aiopubsub.Key, cmd: dict):
+        self.logger.info("fetching time")
+        for t in self.tags:
+            await t.get_time()
 
     def get_tag_by_address(self, address: str = None) -> Tag:
         """Get a tag object by a known mac adress.
@@ -128,3 +136,36 @@ class Hub(object):
         self.log_subscriber: aiopubsub.Subscriber = aiopubsub.Subscriber(self.pubsub_hub, "events")
         subscribe_key = aiopubsub.Key('*', 'log', '*')
         self.log_subscriber.add_async_listener(subscribe_key, self.on_log_event)
+
+    def mqtt_on_connect(self, client, userdata, flags, rc):
+        self.logger.info("connected to mqtt")
+        self.logger.debug("result: %s"%rc)
+        sub = Config.MQTTConfig.topic_command.value
+        res = self.mqtt_client.subscribe(sub, 0)
+        self.logger.info(sub)
+
+    def mqtt_on_command(self, client, userdata, message: MQTTMessage):
+        msg_dct: dict = json.loads(message.payload)
+        self.logger.info(msg_dct)
+        name = msg_dct["name"]
+        id = msg_dct["id"]
+        payload = msg_dct["payload"]
+        # print(self.internal_command_publisher.__dict__)
+        if name == "get_time":
+            for t in self.tags:
+                self.logger.info("running get_time on tag: %s", t.address)
+                asyncio.run_coroutine_threadsafe(t.get_time(), self.main_loop)
+
+        elif name == "get_config":
+            for t in self.tags:
+                self.logger.info("running get_config on tag: %s", t.address)
+                asyncio.run_coroutine_threadsafe(t.get_config(), self.main_loop)
+
+
+        # self.internal_command_publisher.publish(aiopubsub.Key("command"), {"name": name, "payload": payload})
+        self.logger.debug("sent payload")
+        # self.logger.info(self.tags[0].__dict__)
+        # self.tags[0].test_pub()
+        res = {"id": str(uuid.uuid4()), "request_id": id, "payload": "success!", "name": name}
+        self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps(res))
+        # self.logger.info("sent response to %s" % Config.MQTTConfig.topic_command_res.value)
