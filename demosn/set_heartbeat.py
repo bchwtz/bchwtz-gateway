@@ -1,3 +1,4 @@
+"""This demo sets the hearbeat on a tag to value specified by you."""
 import asyncio
 from gatewayn.hub.hub import Hub
 

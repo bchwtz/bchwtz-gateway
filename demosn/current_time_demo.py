@@ -1,3 +1,6 @@
+"""In this demo you set the system time on the tag to the current time when running this script.
+Immediatly afterwards the time read from the tag.
+Then the drift between setting the time on the tag and the time which should have been set is calculated."""
 import asyncio
 import time
 from datetime import datetime

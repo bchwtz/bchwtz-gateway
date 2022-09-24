@@ -1,3 +1,5 @@
+"""This demo shows how to get the currently set hearbeat from the tag.
+"""
 import asyncio
 from gatewayn.hub.hub import Hub
 
