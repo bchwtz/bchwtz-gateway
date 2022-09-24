@@ -1,7 +1,5 @@
 aiopubsub==3.0.0
 bleak==0.12.1
-grpc==1.0.0
-grpcio==1.47.0
 mongox==0.1.0
 nbformat==5.2.0
 numpy==1.23.3
