@@ -1,5 +1,7 @@
 import time
 from gatewayn.sensor.sensor import Sensor
+from gatewayn.sensor.measurement import Measurement
+
 
 class BatterySensor(Sensor):
     
@@ -14,7 +16,7 @@ class BatterySensor(Sensor):
         self.logger.debug(f"read voltage: {measurement}")
         return
 
-    class BatteryMeasurement:
+    class BatteryMeasurement(Measurement):
         def __init__(self, voltage: float = 0.0, sequence_number: int = 0, data_format: int = 0) -> None:
             self.voltage = voltage
             self.sequence_number: int = sequence_number

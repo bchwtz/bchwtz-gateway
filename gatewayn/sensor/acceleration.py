@@ -1,5 +1,7 @@
 import time
 from gatewayn.sensor.sensor import Sensor
+from gatewayn.sensor.measurement import Measurement
+
 
 class AccelerationSensor(Sensor):
     
@@ -14,7 +16,7 @@ class AccelerationSensor(Sensor):
         self.measurements.append(self.last_measurement)
         return
 
-    class AccelerationMeasurement:
+    class AccelerationMeasurement(Measurement):
         def __init__(self, acc_x: float = 0.0, acc_y: float = 0.0, acc_z: float = 0.0, acc: float = 0.0, movement_counter: int = 0, sequence_number: int = 0, data_format: int = 0) -> None:
             self.acc_x: float = acc_x
             self.acc_y: float = acc_y

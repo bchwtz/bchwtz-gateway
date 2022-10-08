@@ -32,7 +32,7 @@ func NewCLI() CLI {
 		logrus.Errorln(err)
 	}
 	cliapp := CLI{}
-	if err := cliapp.mqclient.Connect(os.Getenv("MQTT_BROKER")+":"+os.Getenv("MQTT_PORT"), os.Getenv("MQTT_CLIENTID"), os.Getenv("MQTT_USER"), os.Getenv("MQTT_PASSWORD"), true); err != nil {
+	if err := cliapp.mqclient.Connect(os.Getenv("MQTT_BROKER")+":"+os.Getenv("MQTT_PORT"), os.Getenv("MQTT_CLIENTID"+"_cmd_ctrl"), os.Getenv("MQTT_USER"), os.Getenv("MQTT_PASSWORD"), true); err != nil {
 		logrus.Fatalln(err)
 	}
 	cliapp.configure()

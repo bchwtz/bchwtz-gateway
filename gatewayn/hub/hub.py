@@ -72,7 +72,7 @@ class Hub(object):
             self.mqtt_client.publish(Config.MQTTConfig.topic_listen_adv.value, json.dumps(self, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
     async def on_log_event(self, key: aiopubsub.Key, tag: Tag):
-        self.logger.info("logging to mqtt")
+        self.logger.info("logging to mqtt for key %s", key)
         self.log_mqtt()
 
     async def on_command_event(self, key: aiopubsub.Key, cmd: dict):
@@ -150,21 +150,32 @@ class Hub(object):
         name = msg_dct["name"]
         id = msg_dct["id"]
         payload = msg_dct["payload"]
+        tags = []
+        for t in self.tags:
+            tags.append(t.get_props())
         # print(self.internal_command_publisher.__dict__)
         if name == "get_time":
             for t in self.tags:
                 self.logger.info("running get_time on tag: %s", t.address)
                 asyncio.run_coroutine_threadsafe(t.get_time(), self.main_loop)
 
+        if name == "set_time":
+            for t in self.tags:
+                self.logger.info("running set_time on tag: %s", t.address)
+                asyncio.run_coroutine_threadsafe(t.set_time(), self.main_loop)
+
         elif name == "get_config":
             for t in self.tags:
                 self.logger.info("running get_config on tag: %s", t.address)
                 asyncio.run_coroutine_threadsafe(t.get_config(), self.main_loop)
+
+        elif name == "get_tags":
+            self.logger.info("printing tags to mqtt")
 
         else:
             self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": id, "payload": {"status": "error", "msg": "did not find any fitting command for your request"}}))
             return
 
         self.logger.debug("sent payload")
-        res = {"id": str(uuid.uuid4()), "request_id": id, "payload": {"status": "success", "tags": self.tags}, "name": name}
-        self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps(res))
+        res = {"id": str(uuid.uuid4()), "request_id": id, "payload": {"status": "success", "tags": None}, "name": name}
+        self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps(res, skipkeys=True))

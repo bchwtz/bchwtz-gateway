@@ -77,6 +77,7 @@ class Tag(object):
         )
 
     async def get_time(self, cb: Callable[[int, bytearray], None] = None) -> None:
+        print("fetching time")
         if cb is None:
             cb = self.multi_communication_callback
         await self.ble_conn.run_single_ble_command(
@@ -155,7 +156,9 @@ class Tag(object):
     def handle_time_cb(self, rx_bt: bytearray) -> None:
         time = self.dec.decode_time_rx(rx_bt)
         self.time = time
+        print("got time - sending...")
         self.publisher.publish(aiopubsub.Key("log", "TIME"), self)
+        print(self.time)
 
     async def set_time(self, custom_time: float = 0.0, cb: Callable[[int, bytearray], None] = None) -> None:
         if cb is None:
@@ -205,5 +208,11 @@ class Tag(object):
         for sensor in self.sensors:
             sensor.read_data_from_advertisement(tag_data)
 
+    def get_sensors_props(self) -> dict:
+        sensors = []
+        for s in self.sensors:
+            sensors.append(s.get_props())
+        return sensors
+
     def get_props(self):
-        return {'name': self.name, 'address': self.address, 'sensors': self.sensors, 'time': self.time, 'config': self.config, 'online': self.online, 'last_seen': self.last_seen}
+        return {'name': self.name, 'address': self.address, 'sensors': self.get_sensors_props(), 'time': self.time, 'config': self.config, 'online': self.online, 'last_seen': self.last_seen}

@@ -1,5 +1,6 @@
 import time
 from gatewayn.sensor.sensor import Sensor
+from gatewayn.sensor.measurement import Measurement
 
 class HumiditySensor(Sensor):
     
@@ -14,7 +15,7 @@ class HumiditySensor(Sensor):
         self.logger.debug(f"read humidity: {self.measurement}")
         return
 
-    class HumidityMeasurement:
+    class HumidityMeasurement(Measurement):
         def __init__(self, humidity: float=0.0, sequence_number: int = 0, data_format: int = 0) -> None:
             self.humidity: float = humidity
             self.sequence_number: int = sequence_number

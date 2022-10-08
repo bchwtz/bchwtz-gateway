@@ -1,4 +1,5 @@
 import time
+from gatewayn.sensor.measurement import Measurement
 from gatewayn.sensor.sensor import Sensor
 
 class TemperatureSensor(Sensor):
@@ -14,7 +15,7 @@ class TemperatureSensor(Sensor):
         self.logger.debug(f"read temperature: {self.measurement}")
         return
 
-    class TemperatureMeasurement:
+    class TemperatureMeasurement(Measurement):
         def __init__(self, temperature: float = 0.0, sequence_number: int = 0, data_format: int = 0) -> None:
             self.temperature: float = temperature
             self.sequence_number: int = sequence_number

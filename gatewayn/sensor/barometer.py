@@ -1,5 +1,7 @@
 import time
 from gatewayn.sensor.sensor import Sensor
+from gatewayn.sensor.measurement import Measurement
+
 
 class BarometerSensor(Sensor):
 
@@ -14,7 +16,7 @@ class BarometerSensor(Sensor):
         self.logger.debug(f"read pressure: {measurement}")
         return
 
-    class PressureMeasurement:
+    class PressureMeasurement(Measurement):
         def __init__(self, pressure: float = 0.0, sequence_number: int = 0, data_format: int = 0) -> None:
             self.pressure: float = pressure
             self.sequence_number: int = sequence_number
