@@ -159,7 +159,7 @@ class Hub(object):
                 self.logger.info("running get_time on tag: %s", t.address)
                 asyncio.run_coroutine_threadsafe(t.get_time(), self.main_loop)
 
-        if name == "set_time":
+        elif name == "set_time":
             for t in self.tags:
                 self.logger.info("running set_time on tag: %s", t.address)
                 asyncio.run_coroutine_threadsafe(t.set_time(), self.main_loop)
