@@ -50,13 +50,15 @@ class Hub(object):
         devices = self.ble_conn.validate_manufacturer([device], Config.GlobalConfig.bluetooth_manufacturer_id.value)
         if len(devices) <= 0:
             return
-        # print(data)
         device = devices[0]
         tag = self.get_tag_by_address(devices[0].address)
         if tag is None:
             tag = Tag(device.name, device.address, device, True, self.pubsub_hub)
             self.tags.append(tag)
             await tag.get_config()
+            if Config.GlobalConfig.forced_time_sync.value:
+                await tag.set_time()
+                await tag.get_time()
             self.logger.info(f"setting up new device with address {tag.address}")
         # if tag.config is None or tag.config.samplerate == 0:
         #     self.logger.warn("tag config was not loaded yet!")

@@ -24,6 +24,6 @@ class Sensor(object):
         return measurements
     
     def get_props(self):
-        dct = {"name": self.name, "measurments": self.get_measurement_props}
+        dct = {"name": self.name, "measurments": self.get_measurement_props()}
         # dct["measurements"] = self.get_measurement_props()
         return dct

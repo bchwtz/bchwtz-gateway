@@ -43,6 +43,7 @@ class Config:
     
     class GlobalConfig(Enum):
         bluetooth_manufacturer_id: int = 1177
+        forced_time_sync: bool = True
         mqtt_address: str = "localhost"
         mqtt_user: str = "mqtt"
         mqtt_password: str = "6p449xLrC5PH3pfbkMvj/XBQt443Kg6S"

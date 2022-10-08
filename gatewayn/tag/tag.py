@@ -204,12 +204,11 @@ class Tag(object):
         if data is None:
             return
         tag_data = self.dec.decode_advertisement(data)
-        self.logger.info(tag_data)
         for sensor in self.sensors:
             sensor.read_data_from_advertisement(tag_data)
 
-    def get_sensors_props(self) -> dict:
-        sensors = []
+    def get_sensors_props(self) -> list:
+        sensors = [dict]
         for s in self.sensors:
             sensors.append(s.get_props())
         return sensors
