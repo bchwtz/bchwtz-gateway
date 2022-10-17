@@ -32,10 +32,9 @@ jobs:
       - run: mkdir build && go build -o build/gw cmd/cli/main.go && go build -o build/gw-dumper cmd/dumper/main.go
         working-directory: ${{env.working-directory}}
       - uses: actions/upload-artifact@v3
-        working-directory: ${{env.working-directory}}
         with:
           name: build-artifacts
-          path: build/*
+          path: ${{env.working-directory}}/build/*
   # deploy:
   #   needs: build
   #   runs-on: deploy
