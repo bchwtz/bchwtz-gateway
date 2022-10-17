@@ -31,7 +31,9 @@ jobs:
           go-version: '>=1.19.1' # The Go version to download (if necessary) and use.
       - name: go download
         working-directory: ${{env.working-directory}}
-        run: go version
+        run: | 
+          go build -o cli cmd/cli/main.go
+          go build -o dumper cmd/cli/main.go
 
   # deploy:
   #   needs: build
