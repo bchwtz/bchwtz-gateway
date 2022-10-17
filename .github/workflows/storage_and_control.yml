@@ -29,12 +29,24 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: '>=1.19.1' # The Go version to download (if necessary) and use.
-      - run: mkdir build && go build -o build/gw cmd/cli/main.go && go build -o build/gw-dumper cmd/dumper/main.go
+      - run: |
+          mkdir build
+          go build -o build/gw cmd/cli/main.go
+          go build -o build/gw-dumper cmd/dumper/main.go
+          GOOS=windows go build -o build/gw.exe cmd/cli/main.go
         working-directory: ${{env.working-directory}}
       - uses: actions/upload-artifact@v3
         with:
           name: build-artifacts
           path: ${{env.working-directory}}/build/*
+      - uses: actions/upload-artifact@v3
+        with:
+          name: gw
+          path: ${{env.working-directory}}/build/gw
+      - uses: actions/upload-artifact@v3
+        with:
+          name: gw.exe
+          path: ${{env.working-directory}}/build/gw.exe
   # deploy:
   #   needs: build
   #   runs-on: deploy
