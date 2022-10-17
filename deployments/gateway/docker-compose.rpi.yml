@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   ble-gateway:
-    image: ghcr.io/bchwtz-fhswf/gateway/ble-gateway:latest
+    image: ghcr.io/bchwtz-fhswf/gateway/ble-gateway:refactoring-and-new-design
 
   db-dumper:
-    image: ghcr.io/bchwtz-fhswf/gateway/db-dumper:latest
+    image: ghcr.io/bchwtz-fhswf/gateway/db-dumper:refactoring-and-new-design
