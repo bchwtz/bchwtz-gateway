@@ -29,12 +29,11 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: '>=1.19.1' # The Go version to download (if necessary) and use.
-      - name: go build
-        working-directory: ${{env.working-directory}}
-        run: | 
+      - run: | 
           mkdir build
           go build -o build/gw cmd/cli/main.go
           go build -o build/gw-dumper cmd/dumper/main.go
+        working-directory: ${{env.working-directory}}
       - uses: actions/upload-artifact@v3
         with:
           name: build-artifacts
