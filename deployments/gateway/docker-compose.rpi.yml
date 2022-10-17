@@ -1,0 +1,7 @@
+version: "3.5"
+services:
+  ble-gateway:
+    image: sysexect/ble-gateway:latest
+
+  db-dumper:
+    image: sysexect/gateway-db-dumper:latest
