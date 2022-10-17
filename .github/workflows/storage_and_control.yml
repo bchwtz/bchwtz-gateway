@@ -74,7 +74,7 @@ jobs:
           with:
             name: build-artifacts
 
-        - run: docker build -t ${{ env.registry }}/{{ env.image_name }}:latest -f {{ env.working-directory }}/docker/dumper/Dockerfile ./
+        - run: docker build -t ${{ env.registry }}/${{ env.image_name }}:latest -f ${{ env.working-directory }}/docker/dumper/Dockerfile ./
 
         - name: Extract metadata (tags, labels) for Docker
           id: meta
