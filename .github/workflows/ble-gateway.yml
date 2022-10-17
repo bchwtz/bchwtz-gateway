@@ -38,8 +38,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: docker build -t ${{ env.registry }}/${{ env.image_name }}:latest -f ${{ env.working-directory }}/docker/gateway/Dockerfile ./
-
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
