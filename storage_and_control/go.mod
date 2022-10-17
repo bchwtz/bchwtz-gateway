@@ -1,4 +1,4 @@
-module github.com/bchwtz-fhswf/gateway/db_connector
+module github.com/bchwtz-fhswf/gateway/storage_and_control
 
 go 1.19
 

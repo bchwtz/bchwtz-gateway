@@ -6,7 +6,7 @@ import (
 	"os"
 	"reflect"
 
-	"github.com/bchwtz-fhswf/gateway/db_connector/internal/commandinterface"
+	"github.com/bchwtz-fhswf/gateway/storage_and_control/internal/commandinterface"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 	"github.com/systematiccaos/going-forward/mqtt"

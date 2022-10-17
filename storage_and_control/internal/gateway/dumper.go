@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"os"
 
-	"github.com/bchwtz-fhswf/gateway/db_connector/internal/model"
+	"github.com/bchwtz-fhswf/gateway/storage_and_control/internal/model"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 	"github.com/systematiccaos/going-forward/db"
