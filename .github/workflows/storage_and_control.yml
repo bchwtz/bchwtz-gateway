@@ -35,6 +35,7 @@ jobs:
           mkdir build
           go build -o build/gw cmd/cli/main.go
           go build -o build/gw-dumper cmd/dumper/main.go
+        uses: actions/upload-artifact@v3
         with:
           name: build-artifacts
           path: build
