@@ -7,4 +7,4 @@ ENV PYTHONPATH=/opt/gateway
 
 RUN cd gatewayn && pip install -r requirements.txt
 
-CMD python demos/demo_gateway.py
+CMD env > .env && python demos/demo_gateway.py
