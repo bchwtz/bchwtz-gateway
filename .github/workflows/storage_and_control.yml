@@ -32,8 +32,12 @@ jobs:
       - name: go download
         working-directory: ${{env.working-directory}}
         run: | 
-          go build -o cli cmd/cli/main.go
-          go build -o dumper cmd/cli/main.go
+          mkdir build
+          go build -o build/gw cmd/cli/main.go
+          go build -o build/gw-dumper cmd/dumper/main.go
+        with:
+          name: build-artifacts
+          path: build
 
   # deploy:
   #   needs: build
