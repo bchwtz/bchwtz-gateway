@@ -79,7 +79,7 @@ jobs:
         with:
           name: build-artifacts
 
-      - run: docker build -t ${{ env.registry }}/${{ env.image_name }}:latest -f ${{ env.working-directory }}/docker/dumper/Dockerfile ./
+      # - run: docker build -t ${{ env.registry }}/${{ env.image_name }}:latest -f ${{ env.working-directory }}/docker/dumper/Dockerfile ./
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -91,7 +91,7 @@ jobs:
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./
-          dockerfile: ${{ env.working-directory }}/docker/dumper/Dockerfile
+          file: ${{ env.working-directory }}/docker/dumper/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
