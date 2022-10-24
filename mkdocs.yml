@@ -1,0 +1,4 @@
+site_name: Gatway Documentation
+
+theme:
+  name: "material"
