@@ -8,13 +8,22 @@ from typing import Callable
 from binascii import hexlify
 import time
 class BLEConn():
+    """ Wraps bleak to be easily accessible for the gateway's usecase and to be able to use custom logging.
+    """
     def __init__(self) -> None:
+        """ creates a new instance of BLEConn.
+        """
         logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         self.logger: logging.Logger = logging.getLogger("BLEConn")
         self.logger.setLevel(logging.ERROR)
 
     # cof - bleak adscanning seems broken - have to investigate further later... muuuuuch later...
     async def listen_advertisements(self, timeout: float = 5.0, cb: Callable[[BLEDevice, dict], None] = None) -> None:
+        """ Starts listening for advertisements.
+            Arguments:
+                timeout: specifies how long the listening should be running
+                cb: Callback that is called on every advertisement that is discovered
+        """
         scanner = BleakScanner()
         scanner.register_detection_callback(cb)
         await scanner.start()
@@ -23,10 +32,11 @@ class BLEConn():
 
     async def scan_tags(self, manufacturer_id: int = 0, timeout: float = 20.0) -> list[BLEDevice]:
         """The function searches for bluetooth devices nearby and passes the
-        MAC addresses to the validate_manufacturer function.
-
-        :param timeout: timeout for the find_tags function, defaults to 20.0
-        :type timeout: float, optional
+            MAC addresses to the validate_manufacturer function.
+            Arguments:
+                timeout: timeout for the find_tags function
+            Returns:
+                A list of BLEDevice that can be used by other parts of the software now
         """
         devicelist = []
         devices = await BleakScanner.discover(timeout=timeout)
@@ -35,12 +45,10 @@ class BLEConn():
 
     async def run_single_ble_command(self, tag: BLEDevice, read_chan: str, write_chan: str, cmd: str = "", timeout = 20.0, cb: Callable[[int, bytearray], None] = None, retries: int = 0, max_retries: int = 5):
         """ Connects to a given tag and starts notification of the given callback
-        :param tag: communication device abstraction
-        :type tag: Tag
-        :param : timeout
-        :type timeout: float
-        :param cb: Callback that will be executed when a notification is received
-        :type cb: Callable[[int, bytearray]
+        Arguments:
+            tag: communication device abstraction
+            timeout: how long should one run of the function take?
+            b: Callback that will be executed when a notification is received
         """
         try:
             async with BleakClient(tag, timeout = timeout) as client:
@@ -58,8 +66,8 @@ class BLEConn():
     def validate_manufacturer(self, devices: list[BLEDevice], manufacturer_id: int = 0) -> list[BLEDevice]:
         """ This funcion updates the internal mac_list. If a MAC address passed the
         checked_mac_address process, it will extend the list 'mac'.
-        :param devices: device passed by the BleakScanner function
-        :type devices: bleak.backends.device.BLEDevice
+        Arguments:
+            devices: device passed by the BleakScanner function
 
         TODO: check for vendor name or some other idempotent information
         """

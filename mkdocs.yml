@@ -15,6 +15,7 @@ nav:
     - hub_ref.md
     - tag_ref.md
     - sensor_ref.md
+    - ble_conn_ref.md
   - Demos: how-to-guides.md
   - explanation.md
   - test-documentation.md
