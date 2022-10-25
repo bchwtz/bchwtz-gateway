@@ -1,0 +1,16 @@
+site_name: Gatway Documentation
+
+theme:
+  name: "material"
+
+plugins:
+  - mkdocstrings
+
+nav:
+  - Gateway Documentation: index.md
+  - tutorials.md
+  - reference.md
+  - Demos: how-to-guides.md
+  - explanation.md
+  - test-documentation.md
+
