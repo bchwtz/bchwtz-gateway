@@ -12,6 +12,7 @@ nav:
   - reference.md
   - Reference:
     - gateway_ref.md
+    - config_ref.md
     - sensor_ref.md
   - Demos: how-to-guides.md
   - explanation.md

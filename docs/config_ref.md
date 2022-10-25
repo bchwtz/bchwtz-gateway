@@ -1,0 +1,2 @@
+# Config
+::: gatewayn.config.Config

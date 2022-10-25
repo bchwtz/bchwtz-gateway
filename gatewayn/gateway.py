@@ -8,8 +8,11 @@ import asyncio
 
 
 class Gateway:
-
+    """ This class is a demo server for the gateway. It will write all its outputs to a specified MQTT-broker and will read commands from the same broker.
+    """
     def __init__(self) -> None:
+        """ Sets up a new gateway. Just a simple constructor.
+        """
         self.hub = Hub()
         self.logger = logging.getLogger("Gateway")
         self.logger.setLevel(logging.INFO)
@@ -27,6 +30,8 @@ class Gateway:
 
 
     async def get_advertisements(self) -> None:
+        """ Runs the get_advertisements command as a loop. Should consider to rename this method to run.
+        """
         while True:
             print("running")
             await self.hub.listen_for_advertisements()

@@ -1,10 +1,15 @@
 from enum import Enum
 from os import environ
+from types import MappingProxyType
 from dotenv import load_dotenv
 
 class Config:
+    """ This class represents the global config of the gateway-library. Parts of this config can be overwritten by environment variables.
+    """
 
     def load_from_environ():
+        """ Loads Config.MQTTConfig and Config.MQTT.GlobalConfig parameters from environmentfile or system environment if the keys are specified in uppercase.
+        """
         load_dotenv()
         for prop in Config.MQTTConfig:
             Config.load_key_from_environ(prop)
@@ -12,13 +17,19 @@ class Config:
         for prop in Config.GlobalConfig:
             Config.load_key_from_environ(prop)
 
-    def load_key_from_environ(prop):
+    def load_key_from_environ(prop: Enum):
+        """ Helper to identify and load a key form environment variables.
+            Arguments:
+                prop: The property of the Enum to search for.
+        """
         key = prop.name.upper()
 
         if environ.get(key) is not None:
             prop._value_ = environ.get(key)
 
     class Commands(Enum):
+        """ All commandstrings of a tag are specified here (default is for ruuvi tags). If you have specified own commands or added new ones, please add them here.
+        """
         read_all: str = "4a4a110100000000000000"
         activate_logging_at_tag: str = "4a4a080100000000000000"
         deactivate_logging_at_tag: str = "4a4a080000000000000000"
@@ -34,6 +45,8 @@ class Config:
         set_heartbeat_substr: str = "2200F2"
 
     class CommunicationChannels(Enum):
+        """ All communication channels of a tag are specified here.
+        """
         srv: str = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E"
         tx: str = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E"
         rx: str = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E"
@@ -42,6 +55,8 @@ class Config:
         dfu_data_pt: str = "8EC90002-F315-4F60-9FB8-838830DAEA50"
     
     class GlobalConfig(Enum):
+        """ GlobalConfig has the most important and generic config parameters for a tag and the gateway.
+        """
         bluetooth_manufacturer_id: int = 1177
         forced_time_sync: bool = True
         mqtt_address: str = "localhost"
@@ -50,12 +65,16 @@ class Config:
         mqtt_client_id: str = "gateway_client"
 
     class MQTTConfig(Enum):
+        """ Specific MQTT-parameters. Please override these values using your own in an environment variable.
+        """
         topic_command: str = "1"
         topic_command_res: str = "2"
         topic_log: str = "3"
         topic_listen_adv: str = "4"
 
     class AllowedValues(Enum):
+        """ Has allowed values for specific commandstrings. The gateway will check for non-allowed values automatically.
+        """
         samplerate: list[int] = [
             1,
             10,
@@ -78,7 +97,8 @@ class Config:
         ]
 
     class ReturnSignals(Enum):
-        # These are configs for the sigscanner-class from drivers. Keys are the required offset in the bytearray, values are the values required at the offsets to get a match.
+        """ These are configs for the sigscanner-class from drivers. Keys are the required offset in the bytearray, values are the values required at the offsets to get a match. Don't change this, if you are not certain what you are doing! This might lead to completely missinterpreted values from your tag.
+        """
         config: list[dict] = [{0: 0x4a, 3: 0x00}]
         status: list[dict] = [{0: 0x22, 2: 0xF2}]
         heartbeat: list[dict] = [{0: 0x22, 2: 0xF3}]
