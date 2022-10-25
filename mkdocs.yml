@@ -9,10 +9,10 @@ plugins:
 nav:
   - Gateway Documentation: index.md
   - tutorials.md
-  - reference.md
   - Reference:
     - gateway_ref.md
     - config_ref.md
+    - hub_ref.md
     - tag_ref.md
     - sensor_ref.md
   - Demos: how-to-guides.md

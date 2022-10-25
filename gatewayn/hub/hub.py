@@ -14,10 +14,12 @@ from paho.mqtt.client import Client, MQTTMessage
 import aiopubsub
 
 class Hub(object):
-
-    instance = None
+    """ Hub has all tags of a gateway and enables you to search for specific tags. It also scans for tags or listens for advertisments and logs everything to mqtt.
+    """
 
     def __init__(self):
+        """ Initializes a new Hub.
+        """
         self.tags: list[Tag] = []
         self.ble_conn = BLEConn()
         self.logger = logging.getLogger("Hub")
@@ -27,6 +29,12 @@ class Hub(object):
         self.main_loop: asyncio.BaseEventLoop = asyncio.get_event_loop()
 
     async def discover_tags(self, timeout: float = 5.0, rediscover: bool = False, autoload_config: bool = True) -> None:
+        """ Starts a classic bluetooth scan and search for any tags matching our manufacturer_id.
+            Arguments:
+                timeout: when should we stop the scan?
+                rediscover: should already known tags be rediscovered and all their measurements be deleted from ram?
+                autoload_config: if this is true each tag will be configured on its first discovery. If rediscover is on, this will be done on every contact.
+        """
         devices = await self.ble_conn.scan_tags(Config.GlobalConfig.bluetooth_manufacturer_id.value, timeout)
         if not rediscover:
             self.__check_tags_online_state(devices)
@@ -43,9 +51,18 @@ class Hub(object):
         self.log_mqtt()
     
     async def listen_for_advertisements(self, timeout: float = 50) -> None:
+        """ Listens for advertisements and calls tha listen_advertisements_cb on every received advertisement.
+            Arguments:
+                timeout: When should we stop listening for advertisements? Can be looped.
+        """
         await self.ble_conn.listen_advertisements(timeout, self.cb_advertisements)
     
     async def cb_advertisements(self, device: BLEDevice, data: AdvertisementData):
+        """ Is called on every received advertisment. Sets up a new tag or adds advertisements to a known tag.
+            Arguments:
+                device: ble_device that was discovered
+                data: AdvertismentData as dit
+        """
         device.metadata = data.__dict__
         devices = self.ble_conn.validate_manufacturer([device], Config.GlobalConfig.bluetooth_manufacturer_id.value)
         if len(devices) <= 0:
@@ -69,15 +86,24 @@ class Hub(object):
         self.log_mqtt()
 
     def log_mqtt(self):
+        """ used to log data on the mqtt_log channel.
+        """
         if self.mqtt_client is not None:
             self.logger.info("logging to channel %s", Config.MQTTConfig.topic_listen_adv.value)
             self.mqtt_client.publish(Config.MQTTConfig.topic_listen_adv.value, json.dumps(self, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
     async def on_log_event(self, key: aiopubsub.Key, tag: Tag):
+        """ Listener callback for internal pubsub. Will forward everything to mqtt-log-channel
+            Arguments:
+                key: the key that the event was received on
+                tag: the tag object that has to be sent to log_mqtt
+        """
         self.logger.info("logging to mqtt for key %s", key)
         self.log_mqtt()
 
     async def on_command_event(self, key: aiopubsub.Key, cmd: dict):
+        """ Called when a command via mqtt was discovered (deprecated)
+        """
         self.logger.info("fetching time")
         for t in self.tags:
             await t.get_time()
@@ -85,11 +111,11 @@ class Hub(object):
     def get_tag_by_address(self, address: str = None) -> Tag:
         """Get a tag object by a known mac adress.
         :param address: mac adress from a BLE device, defaults to None
-        :type mac: str, optional
-        :return: Returns a tag object.
-        :rtype: tag.tag
+        Arguments:
+            mac: the mac address of the tag
+        Returns:
+            a tag object
         """
-        # TODO: REFACTOR - this is slower than needed
         if address is not None:
             for tag in self.tags:
                 if tag.address == address:
@@ -98,10 +124,10 @@ class Hub(object):
 
     def get_tag_by_name(self, name: str = None) -> Tag:
         """Get a tag object by a known mac adress.
-        :param mac: mac adress from a BLE device, defaults to None
-        :type mac: str, optional
-        :return: Returns a tag object.
-        :rtype: tag.tag
+        Arguments:
+            mac: mac adress from a BLE device, defaults to None
+        Returns:
+            Returns a tag object.
         """
         # TODO: REFACTOR - this is slower than needed
         if name is not None:
@@ -131,15 +157,28 @@ class Hub(object):
                 tag.last_seen = time.time()
                 self.logger.debug(f"setting tag online: {tag.address}")
 
-    def get_props(self):
+    def get_props(self) -> dict:
+        """ Returns self as a dict
+            Returns:
+                self as dict
+        """
         return {'tags': self.tags}
 
     async def subscribe_to_log_events(self):
+        """ Subscribes to log events on internal pubsub.
+        """
         self.log_subscriber: aiopubsub.Subscriber = aiopubsub.Subscriber(self.pubsub_hub, "events")
         subscribe_key = aiopubsub.Key('*', 'log', '*')
         self.log_subscriber.add_async_listener(subscribe_key, self.on_log_event)
 
     def mqtt_on_connect(self, client, userdata, flags, rc):
+        """ Connect callback for mqtt.
+            Arguments:
+                client: MQTT-client (paho)
+                userdata: MQTT userdata
+                flags: MQTT flags
+                rc: MQTT result
+        """
         self.logger.info("connected to mqtt")
         self.logger.debug("result: %s"%rc)
         sub = Config.MQTTConfig.topic_command.value
@@ -147,6 +186,12 @@ class Hub(object):
         self.logger.info(sub)
 
     def mqtt_on_command(self, client, userdata, message: MQTTMessage):
+        """ MQTT listener for the command channel. Will execute the command submitted to mqtt. Will respond with a status to mqtt.
+            Arguments:
+                client: MQTT-client
+                userdata: MQTT-userdata
+                message: Message received by the client
+        """
         msg_dct: dict = json.loads(message.payload)
         self.logger.info(msg_dct)
         name = msg_dct["name"]
