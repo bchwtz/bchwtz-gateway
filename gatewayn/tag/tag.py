@@ -279,7 +279,8 @@ class Tag(object):
 
     def get_sensors_props(self) -> list[dict]:
         """ Making the object's sensors serializable.
-            Returns: all sensor properties as a list of dicts
+            Returns:
+                all sensor properties as a list of dicts
         """
         sensors = [dict]
         for s in self.sensors:
@@ -288,6 +289,7 @@ class Tag(object):
 
     def get_props(self) -> dict:
         """ Making the tag serializable.
-            Returns: self as dict
+            Returns:
+                self as dict
         """
         return {'name': self.name, 'address': self.address, 'sensors': self.get_sensors_props(), 'time': self.time, 'config': self.config, 'online': self.online, 'last_seen': self.last_seen}
