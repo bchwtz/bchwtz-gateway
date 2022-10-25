@@ -10,6 +10,9 @@ nav:
   - Gateway Documentation: index.md
   - tutorials.md
   - reference.md
+  - Reference:
+    - gateway_ref.md
+    - sensor_ref.md
   - Demos: how-to-guides.md
   - explanation.md
   - test-documentation.md
