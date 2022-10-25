@@ -4,7 +4,11 @@ from gatewayn.sensor.measurement import Measurement
 
 
 class Sensor(object):
+    """An object of this class creates a digital representation of a sensor. Every 
+    sensor has a name and measurements of a defined class.
 
+    :type sensor: sensor.sensor.Sensor
+    """
     def __init__(self) -> None:
         self.name = "BasicSensor"
         self.measurements: list[Measurement] = []
