@@ -1,0 +1,2238 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.1, mkdocs-material-8.5.7">
+    
+    
+      
+        <title>Hub - Gatway Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#hub" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Gatway Documentation" class="md-header__button md-logo" aria-label="Gatway Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Gatway Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Hub
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Gatway Documentation" class="md-nav__button md-logo" aria-label="Gatway Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Gatway Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../introduction/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gateway_ref/" class="md-nav__link">
+        Gateway module
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config_ref/" class="md-nav__link">
+        Config
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Hub
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Hub
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub" class="md-nav__link">
+    gatewayn.hub.hub.Hub
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.cb_advertisements" class="md-nav__link">
+    cb_advertisements()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.discover_tags" class="md-nav__link">
+    discover_tags()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.get_props" class="md-nav__link">
+    get_props()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.get_tag_by_address" class="md-nav__link">
+    get_tag_by_address()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.get_tag_by_name" class="md-nav__link">
+    get_tag_by_name()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.listen_for_advertisements" class="md-nav__link">
+    listen_for_advertisements()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.log_mqtt" class="md-nav__link">
+    log_mqtt()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.mqtt_on_command" class="md-nav__link">
+    mqtt_on_command()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.mqtt_on_connect" class="md-nav__link">
+    mqtt_on_connect()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.on_command_event" class="md-nav__link">
+    on_command_event()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.on_log_event" class="md-nav__link">
+    on_log_event()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.subscribe_to_log_events" class="md-nav__link">
+    subscribe_to_log_events()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tag_ref/" class="md-nav__link">
+        Tag
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sensor_ref/" class="md-nav__link">
+        Sensor module
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ble_conn_ref/" class="md-nav__link">
+        Bluetooth Connection Driver
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Demos
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Demos" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Demos
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../demos_overview/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../analyse_heatbeats_ref/" class="md-nav__link">
+        Analyse Heartbeat
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../current_time_demo_ref/" class="md-nav__link">
+        Time Demo
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../get_set_heartbeat_ref/" class="md-nav__link">
+        Heartbeat Demo
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../explanation/" class="md-nav__link">
+        Explanation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test-documentation/" class="md-nav__link">
+        Test documentation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../git_installation_on_raspberry/" class="md-nav__link">
+        How to setup Git on a Raspberry Pi
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../documentation_ref/" class="md-nav__link">
+        Documentation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../readme/" class="md-nav__link">
+        Readme
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub" class="md-nav__link">
+    gatewayn.hub.hub.Hub
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.cb_advertisements" class="md-nav__link">
+    cb_advertisements()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.discover_tags" class="md-nav__link">
+    discover_tags()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.get_props" class="md-nav__link">
+    get_props()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.get_tag_by_address" class="md-nav__link">
+    get_tag_by_address()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.get_tag_by_name" class="md-nav__link">
+    get_tag_by_name()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.listen_for_advertisements" class="md-nav__link">
+    listen_for_advertisements()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.log_mqtt" class="md-nav__link">
+    log_mqtt()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.mqtt_on_command" class="md-nav__link">
+    mqtt_on_command()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.mqtt_on_connect" class="md-nav__link">
+    mqtt_on_connect()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.on_command_event" class="md-nav__link">
+    on_command_event()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.on_log_event" class="md-nav__link">
+    on_log_event()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.hub.hub.Hub.subscribe_to_log_events" class="md-nav__link">
+    subscribe_to_log_events()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="hub">Hub</h1>
+
+
+<div class="doc doc-object doc-class">
+
+
+<a id="gatewayn.hub.hub.Hub"></a>
+  <div class="doc doc-contents first">
+      <p class="doc doc-class-bases">
+        Bases: <code>object</code></p>
+
+  
+      <p>Hub has all tags of a gateway and enables you to search for specific tags. It also scans for tags or listens for advertisments and logs everything to mqtt.</p>
+
+
+        <details class="quote">
+          <summary>Source code in <code>gatewayn/hub/hub.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Hub</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Hub has all tags of a gateway and enables you to search for specific tags. It also scans for tags or listens for advertisments and logs everything to mqtt.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Initializes a new Hub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Tag</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ble_conn</span> <span class="o">=</span> <span class="n">BLEConn</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;Hub&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mqtt_client</span><span class="p">:</span> <span class="n">Client</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pubsub_hub</span><span class="p">:</span> <span class="n">aiopubsub</span><span class="o">.</span><span class="n">Hub</span> <span class="o">=</span> <span class="n">aiopubsub</span><span class="o">.</span><span class="n">Hub</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_loop</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">BaseEventLoop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">discover_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">5.0</span><span class="p">,</span> <span class="n">rediscover</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">autoload_config</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Starts a classic bluetooth scan and search for any tags matching our manufacturer_id.</span>
+<span class="sd">            Arguments:</span>
+<span class="sd">                timeout: when should we stop the scan?</span>
+<span class="sd">                rediscover: should already known tags be rediscovered and all their measurements be deleted from ram?</span>
+<span class="sd">                autoload_config: if this is true each tag will be configured on its first discovery. If rediscover is on, this will be done on every contact.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">devices</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">ble_conn</span><span class="o">.</span><span class="n">scan_tags</span><span class="p">(</span><span class="n">Config</span><span class="o">.</span><span class="n">GlobalConfig</span><span class="o">.</span><span class="n">bluetooth_manufacturer_id</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">rediscover</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__check_tags_online_state</span><span class="p">(</span><span class="n">devices</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__has_new_devices</span><span class="p">(</span><span class="n">devices</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;found no new devices&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="n">devices</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">dev</span><span class="p">:</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">dev</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="n">t</span><span class="o">.</span><span class="n">address</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">),</span> <span class="n">devices</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;found new devices&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__devices_to_tags</span><span class="p">(</span><span class="n">devices</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">autoload_config</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">dev</span> <span class="ow">in</span> <span class="n">devices</span><span class="p">:</span>
+                <span class="n">tag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tag_by_address</span><span class="p">(</span><span class="n">dev</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+                <span class="n">tag</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_mqtt</span><span class="p">()</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">listen_for_advertisements</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Listens for advertisements and calls tha listen_advertisements_cb on every received advertisement.</span>
+<span class="sd">            Arguments:</span>
+<span class="sd">                timeout: When should we stop listening for advertisements? Can be looped.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">ble_conn</span><span class="o">.</span><span class="n">listen_advertisements</span><span class="p">(</span><span class="n">timeout</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cb_advertisements</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">cb_advertisements</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">BLEDevice</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">AdvertisementData</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Is called on every received advertisment. Sets up a new tag or adds advertisements to a known tag.</span>
+<span class="sd">            Arguments:</span>
+<span class="sd">                device: ble_device that was discovered</span>
+<span class="sd">                data: AdvertismentData as dit</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">device</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="vm">__dict__</span>
+        <span class="n">devices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ble_conn</span><span class="o">.</span><span class="n">validate_manufacturer</span><span class="p">([</span><span class="n">device</span><span class="p">],</span> <span class="n">Config</span><span class="o">.</span><span class="n">GlobalConfig</span><span class="o">.</span><span class="n">bluetooth_manufacturer_id</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">devices</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">devices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">tag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tag_by_address</span><span class="p">(</span><span class="n">devices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">tag</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">device</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pubsub_hub</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+            <span class="k">await</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">Config</span><span class="o">.</span><span class="n">GlobalConfig</span><span class="o">.</span><span class="n">forced_time_sync</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                <span class="k">await</span> <span class="n">tag</span><span class="o">.</span><span class="n">set_time</span><span class="p">()</span>
+                <span class="k">await</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_time</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;setting up new device with address </span><span class="si">{</span><span class="n">tag</span><span class="o">.</span><span class="n">address</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># if tag.config is None or tag.config.samplerate == 0:</span>
+        <span class="c1">#     self.logger.warn(&quot;tag config was not loaded yet!&quot;)</span>
+        <span class="c1">#     return</span>
+        <span class="n">tag</span><span class="o">.</span><span class="n">read_sensor_data</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">manufacturer_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Config</span><span class="o">.</span><span class="n">GlobalConfig</span><span class="o">.</span><span class="n">bluetooth_manufacturer_id</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+        <span class="n">tag</span><span class="o">.</span><span class="n">last_seen</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">tag</span><span class="o">.</span><span class="n">online</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_mqtt</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">log_mqtt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; used to log data on the mqtt_log channel.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mqtt_client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;logging to channel </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">Config</span><span class="o">.</span><span class="n">MQTTConfig</span><span class="o">.</span><span class="n">topic_listen_adv</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mqtt_client</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">Config</span><span class="o">.</span><span class="n">MQTTConfig</span><span class="o">.</span><span class="n">topic_listen_adv</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="k">lambda</span> <span class="n">o</span><span class="p">:</span> <span class="n">o</span><span class="o">.</span><span class="n">get_props</span><span class="p">()</span> <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="s2">&quot;get_props&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span> <span class="n">skipkeys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check_circular</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">on_log_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">aiopubsub</span><span class="o">.</span><span class="n">Key</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="n">Tag</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Listener callback for internal pubsub. Will forward everything to mqtt-log-channel</span>
+<span class="sd">            Arguments:</span>
+<span class="sd">                key: the key that the event was received on</span>
+<span class="sd">                tag: the tag object that has to be sent to log_mqtt</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;logging to mqtt for key </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_mqtt</span><span class="p">()</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">on_command_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">aiopubsub</span><span class="o">.</span><span class="n">Key</span><span class="p">,</span> <span class="n">cmd</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Called when a command via mqtt was discovered (deprecated)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;fetching time&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">t</span><span class="o">.</span><span class="n">get_time</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get_tag_by_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tag</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get a tag object by a known mac adress.</span>
+<span class="sd">        :param address: mac adress from a BLE device, defaults to None</span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            mac: the mac address of the tag</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            a tag object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">address</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="n">address</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">tag</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">get_tag_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tag</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get a tag object by a known mac adress.</span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            mac: mac adress from a BLE device, defaults to None</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Returns a tag object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: REFACTOR - this is slower than needed</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">tag</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__devices_to_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">devices</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BLEDevice</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Tag</span><span class="p">]:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tags</span> <span class="o">=</span> <span class="p">[</span><span class="n">TagBuilder</span><span class="p">()</span><span class="o">.</span><span class="n">from_device</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pubsub_hub</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">()</span> <span class="k">for</span> <span class="n">dev</span> <span class="ow">in</span> <span class="n">devices</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span>
+
+    <span class="k">def</span> <span class="nf">__has_new_devices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">devices</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BLEDevice</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">devices</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="n">device</span><span class="o">.</span><span class="n">address</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">__check_tags_online_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">devices</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BLEDevice</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="n">dev</span><span class="o">.</span><span class="n">address</span> <span class="k">for</span> <span class="n">dev</span> <span class="ow">in</span> <span class="n">devices</span><span class="p">):</span>
+                <span class="n">tag</span><span class="o">.</span><span class="n">online</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;setting tag offline: </span><span class="si">{</span><span class="n">tag</span><span class="o">.</span><span class="n">address</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tag</span><span class="o">.</span><span class="n">online</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">tag</span><span class="o">.</span><span class="n">last_seen</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;setting tag online: </span><span class="si">{</span><span class="n">tag</span><span class="o">.</span><span class="n">address</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Returns self as a dict</span>
+<span class="sd">            Returns:</span>
+<span class="sd">                self as dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;tags&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">}</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe_to_log_events</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Subscribes to log events on internal pubsub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_subscriber</span><span class="p">:</span> <span class="n">aiopubsub</span><span class="o">.</span><span class="n">Subscriber</span> <span class="o">=</span> <span class="n">aiopubsub</span><span class="o">.</span><span class="n">Subscriber</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pubsub_hub</span><span class="p">,</span> <span class="s2">&quot;events&quot;</span><span class="p">)</span>
+        <span class="n">subscribe_key</span> <span class="o">=</span> <span class="n">aiopubsub</span><span class="o">.</span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="s1">&#39;log&#39;</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_subscriber</span><span class="o">.</span><span class="n">add_async_listener</span><span class="p">(</span><span class="n">subscribe_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_log_event</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">mqtt_on_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">userdata</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="n">rc</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Connect callback for mqtt.</span>
+<span class="sd">            Arguments:</span>
+<span class="sd">                client: MQTT-client (paho)</span>
+<span class="sd">                userdata: MQTT userdata</span>
+<span class="sd">                flags: MQTT flags</span>
+<span class="sd">                rc: MQTT result</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;connected to mqtt&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;result: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">rc</span><span class="p">)</span>
+        <span class="n">sub</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">MQTTConfig</span><span class="o">.</span><span class="n">topic_command</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mqtt_client</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">mqtt_on_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">userdata</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">MQTTMessage</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; MQTT listener for the command channel. Will execute the command submitted to mqtt. Will respond with a status to mqtt.</span>
+<span class="sd">            Arguments:</span>
+<span class="sd">                client: MQTT-client</span>
+<span class="sd">                userdata: MQTT-userdata</span>
+<span class="sd">                message: Message received by the client</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">msg_dct</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">payload</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg_dct</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">msg_dct</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="n">msg_dct</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="n">msg_dct</span><span class="p">[</span><span class="s2">&quot;payload&quot;</span><span class="p">]</span>
+        <span class="n">tags</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span>
+            <span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get_props</span><span class="p">())</span>
+        <span class="c1"># print(self.internal_command_publisher.__dict__)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;get_time&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;running get_time on tag: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+                <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get_time</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_loop</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;set_time&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;running set_time on tag: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+                <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">set_time</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_loop</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;get_config&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;running get_config on tag: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+                <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get_config</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_loop</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;get_tags&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;printing tags to mqtt&quot;</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mqtt_client</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">Config</span><span class="o">.</span><span class="n">MQTTConfig</span><span class="o">.</span><span class="n">topic_command_res</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;request_id&quot;</span><span class="p">:</span> <span class="nb">id</span><span class="p">,</span> <span class="s2">&quot;payload&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="s2">&quot;msg&quot;</span><span class="p">:</span> <span class="s2">&quot;did not find any fitting command for your request&quot;</span><span class="p">}}))</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;sent payload&quot;</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()),</span> <span class="s2">&quot;request_id&quot;</span><span class="p">:</span> <span class="nb">id</span><span class="p">,</span> <span class="s2">&quot;payload&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">,</span> <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mqtt_client</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">Config</span><span class="o">.</span><span class="n">MQTTConfig</span><span class="o">.</span><span class="n">topic_command_res</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">skipkeys</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.hub.hub.Hub.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">()</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Initializes a new Hub.</p>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/hub/hub.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Initializes a new Hub.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Tag</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">ble_conn</span> <span class="o">=</span> <span class="n">BLEConn</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;Hub&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">mqtt_client</span><span class="p">:</span> <span class="n">Client</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">pubsub_hub</span><span class="p">:</span> <span class="n">aiopubsub</span><span class="o">.</span><span class="n">Hub</span> <span class="o">=</span> <span class="n">aiopubsub</span><span class="o">.</span><span class="n">Hub</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">main_loop</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">BaseEventLoop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.hub.hub.Hub.cb_advertisements" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">cb_advertisements</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Is called on every received advertisment. Sets up a new tag or adds advertisements to a known tag.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>device</code></td>
+          <td>
+                <code><span title="bleak.backends.device.BLEDevice">BLEDevice</span></code>
+          </td>
+          <td><p>ble_device that was discovered</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>data</code></td>
+          <td>
+                <code><span title="bleak.backends.scanner.AdvertisementData">AdvertisementData</span></code>
+          </td>
+          <td><p>AdvertismentData as dit</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/hub/hub.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">cb_advertisements</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">BLEDevice</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">AdvertisementData</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Is called on every received advertisment. Sets up a new tag or adds advertisements to a known tag.</span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            device: ble_device that was discovered</span>
+<span class="sd">            data: AdvertismentData as dit</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">device</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="vm">__dict__</span>
+    <span class="n">devices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ble_conn</span><span class="o">.</span><span class="n">validate_manufacturer</span><span class="p">([</span><span class="n">device</span><span class="p">],</span> <span class="n">Config</span><span class="o">.</span><span class="n">GlobalConfig</span><span class="o">.</span><span class="n">bluetooth_manufacturer_id</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">devices</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">device</span> <span class="o">=</span> <span class="n">devices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">tag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tag_by_address</span><span class="p">(</span><span class="n">devices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">tag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">tag</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">device</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pubsub_hub</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">Config</span><span class="o">.</span><span class="n">GlobalConfig</span><span class="o">.</span><span class="n">forced_time_sync</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">tag</span><span class="o">.</span><span class="n">set_time</span><span class="p">()</span>
+            <span class="k">await</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;setting up new device with address </span><span class="si">{</span><span class="n">tag</span><span class="o">.</span><span class="n">address</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="c1"># if tag.config is None or tag.config.samplerate == 0:</span>
+    <span class="c1">#     self.logger.warn(&quot;tag config was not loaded yet!&quot;)</span>
+    <span class="c1">#     return</span>
+    <span class="n">tag</span><span class="o">.</span><span class="n">read_sensor_data</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">manufacturer_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Config</span><span class="o">.</span><span class="n">GlobalConfig</span><span class="o">.</span><span class="n">bluetooth_manufacturer_id</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+    <span class="n">tag</span><span class="o">.</span><span class="n">last_seen</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">tag</span><span class="o">.</span><span class="n">online</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">log_mqtt</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.hub.hub.Hub.discover_tags" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">discover_tags</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">rediscover</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">autoload_config</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Starts a classic bluetooth scan and search for any tags matching our manufacturer_id.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>timeout</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td><p>when should we stop the scan?</p></td>
+          <td>
+                <code>5.0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>rediscover</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>should already known tags be rediscovered and all their measurements be deleted from ram?</p></td>
+          <td>
+                <code>False</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>autoload_config</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>if this is true each tag will be configured on its first discovery. If rediscover is on, this will be done on every contact.</p></td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/hub/hub.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">discover_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">5.0</span><span class="p">,</span> <span class="n">rediscover</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">autoload_config</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Starts a classic bluetooth scan and search for any tags matching our manufacturer_id.</span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            timeout: when should we stop the scan?</span>
+<span class="sd">            rediscover: should already known tags be rediscovered and all their measurements be deleted from ram?</span>
+<span class="sd">            autoload_config: if this is true each tag will be configured on its first discovery. If rediscover is on, this will be done on every contact.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">devices</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">ble_conn</span><span class="o">.</span><span class="n">scan_tags</span><span class="p">(</span><span class="n">Config</span><span class="o">.</span><span class="n">GlobalConfig</span><span class="o">.</span><span class="n">bluetooth_manufacturer_id</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">rediscover</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__check_tags_online_state</span><span class="p">(</span><span class="n">devices</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__has_new_devices</span><span class="p">(</span><span class="n">devices</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;found no new devices&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="n">devices</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">dev</span><span class="p">:</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">dev</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="n">t</span><span class="o">.</span><span class="n">address</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">),</span> <span class="n">devices</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;found new devices&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__devices_to_tags</span><span class="p">(</span><span class="n">devices</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">autoload_config</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">dev</span> <span class="ow">in</span> <span class="n">devices</span><span class="p">:</span>
+            <span class="n">tag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tag_by_address</span><span class="p">(</span><span class="n">dev</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+            <span class="n">tag</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">log_mqtt</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.hub.hub.Hub.get_props" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_props</span><span class="p">()</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Returns self as a dict</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>dict</code>
+          </td>
+          <td><p>self as dict</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/hub/hub.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Returns self as a dict</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            self as dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;tags&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.hub.hub.Hub.get_tag_by_address" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_tag_by_address</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Get a tag object by a known mac adress.
+:param address: mac adress from a BLE device, defaults to None</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>mac</code></td>
+          <td>
+          </td>
+          <td><p>the mac address of the tag</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="gatewayn.tag.tag.Tag" href="../tag_ref/#gatewayn.tag.tag.Tag">Tag</a></code>
+          </td>
+          <td><p>a tag object</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/hub/hub.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_tag_by_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tag</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get a tag object by a known mac adress.</span>
+<span class="sd">    :param address: mac adress from a BLE device, defaults to None</span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        mac: the mac address of the tag</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        a tag object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">address</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="n">address</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">tag</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.hub.hub.Hub.get_tag_by_name" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_tag_by_name</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Get a tag object by a known mac adress.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>mac</code></td>
+          <td>
+          </td>
+          <td><p>mac adress from a BLE device, defaults to None</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="gatewayn.tag.tag.Tag" href="../tag_ref/#gatewayn.tag.tag.Tag">Tag</a></code>
+          </td>
+          <td><p>Returns a tag object.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/hub/hub.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_tag_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tag</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get a tag object by a known mac adress.</span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        mac: mac adress from a BLE device, defaults to None</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Returns a tag object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO: REFACTOR - this is slower than needed</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">tag</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.hub.hub.Hub.listen_for_advertisements" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">listen_for_advertisements</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Listens for advertisements and calls tha listen_advertisements_cb on every received advertisement.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>timeout</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td><p>When should we stop listening for advertisements? Can be looped.</p></td>
+          <td>
+                <code>50</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/hub/hub.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">listen_for_advertisements</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Listens for advertisements and calls tha listen_advertisements_cb on every received advertisement.</span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            timeout: When should we stop listening for advertisements? Can be looped.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">ble_conn</span><span class="o">.</span><span class="n">listen_advertisements</span><span class="p">(</span><span class="n">timeout</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cb_advertisements</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.hub.hub.Hub.log_mqtt" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">log_mqtt</span><span class="p">()</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>used to log data on the mqtt_log channel.</p>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/hub/hub.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">log_mqtt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; used to log data on the mqtt_log channel.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mqtt_client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;logging to channel </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">Config</span><span class="o">.</span><span class="n">MQTTConfig</span><span class="o">.</span><span class="n">topic_listen_adv</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mqtt_client</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">Config</span><span class="o">.</span><span class="n">MQTTConfig</span><span class="o">.</span><span class="n">topic_listen_adv</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="k">lambda</span> <span class="n">o</span><span class="p">:</span> <span class="n">o</span><span class="o">.</span><span class="n">get_props</span><span class="p">()</span> <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="s2">&quot;get_props&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span> <span class="n">skipkeys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check_circular</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.hub.hub.Hub.mqtt_on_command" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">mqtt_on_command</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">userdata</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>MQTT listener for the command channel. Will execute the command submitted to mqtt. Will respond with a status to mqtt.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>client</code></td>
+          <td>
+          </td>
+          <td><p>MQTT-client</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>userdata</code></td>
+          <td>
+          </td>
+          <td><p>MQTT-userdata</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>message</code></td>
+          <td>
+                <code><span title="paho.mqtt.client.MQTTMessage">MQTTMessage</span></code>
+          </td>
+          <td><p>Message received by the client</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/hub/hub.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">mqtt_on_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">userdata</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">MQTTMessage</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; MQTT listener for the command channel. Will execute the command submitted to mqtt. Will respond with a status to mqtt.</span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            client: MQTT-client</span>
+<span class="sd">            userdata: MQTT-userdata</span>
+<span class="sd">            message: Message received by the client</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">msg_dct</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">payload</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg_dct</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">msg_dct</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">msg_dct</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="n">msg_dct</span><span class="p">[</span><span class="s2">&quot;payload&quot;</span><span class="p">]</span>
+    <span class="n">tags</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span>
+        <span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get_props</span><span class="p">())</span>
+    <span class="c1"># print(self.internal_command_publisher.__dict__)</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;get_time&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;running get_time on tag: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get_time</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_loop</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;set_time&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;running set_time on tag: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">set_time</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_loop</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;get_config&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;running get_config on tag: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get_config</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_loop</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;get_tags&quot;</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;printing tags to mqtt&quot;</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mqtt_client</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">Config</span><span class="o">.</span><span class="n">MQTTConfig</span><span class="o">.</span><span class="n">topic_command_res</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;request_id&quot;</span><span class="p">:</span> <span class="nb">id</span><span class="p">,</span> <span class="s2">&quot;payload&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="s2">&quot;msg&quot;</span><span class="p">:</span> <span class="s2">&quot;did not find any fitting command for your request&quot;</span><span class="p">}}))</span>
+        <span class="k">return</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;sent payload&quot;</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()),</span> <span class="s2">&quot;request_id&quot;</span><span class="p">:</span> <span class="nb">id</span><span class="p">,</span> <span class="s2">&quot;payload&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">,</span> <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">mqtt_client</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">Config</span><span class="o">.</span><span class="n">MQTTConfig</span><span class="o">.</span><span class="n">topic_command_res</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">skipkeys</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.hub.hub.Hub.mqtt_on_connect" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">mqtt_on_connect</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">userdata</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="n">rc</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Connect callback for mqtt.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>client</code></td>
+          <td>
+          </td>
+          <td><p>MQTT-client (paho)</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>userdata</code></td>
+          <td>
+          </td>
+          <td><p>MQTT userdata</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>flags</code></td>
+          <td>
+          </td>
+          <td><p>MQTT flags</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>rc</code></td>
+          <td>
+          </td>
+          <td><p>MQTT result</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/hub/hub.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">mqtt_on_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">userdata</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="n">rc</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Connect callback for mqtt.</span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            client: MQTT-client (paho)</span>
+<span class="sd">            userdata: MQTT userdata</span>
+<span class="sd">            flags: MQTT flags</span>
+<span class="sd">            rc: MQTT result</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;connected to mqtt&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;result: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">rc</span><span class="p">)</span>
+    <span class="n">sub</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">MQTTConfig</span><span class="o">.</span><span class="n">topic_command</span><span class="o">.</span><span class="n">value</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mqtt_client</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.hub.hub.Hub.on_command_event" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">on_command_event</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">cmd</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Called when a command via mqtt was discovered (deprecated)</p>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/hub/hub.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">on_command_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">aiopubsub</span><span class="o">.</span><span class="n">Key</span><span class="p">,</span> <span class="n">cmd</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Called when a command via mqtt was discovered (deprecated)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;fetching time&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">t</span><span class="o">.</span><span class="n">get_time</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.hub.hub.Hub.on_log_event" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">on_log_event</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Listener callback for internal pubsub. Will forward everything to mqtt-log-channel</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>key</code></td>
+          <td>
+                <code>aiopubsub.<span title="aiopubsub.Key">Key</span></code>
+          </td>
+          <td><p>the key that the event was received on</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>tag</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="gatewayn.tag.tag.Tag" href="../tag_ref/#gatewayn.tag.tag.Tag">Tag</a></code>
+          </td>
+          <td><p>the tag object that has to be sent to log_mqtt</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/hub/hub.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">on_log_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">aiopubsub</span><span class="o">.</span><span class="n">Key</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="n">Tag</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Listener callback for internal pubsub. Will forward everything to mqtt-log-channel</span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            key: the key that the event was received on</span>
+<span class="sd">            tag: the tag object that has to be sent to log_mqtt</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;logging to mqtt for key </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">log_mqtt</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.hub.hub.Hub.subscribe_to_log_events" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">subscribe_to_log_events</span><span class="p">()</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Subscribes to log events on internal pubsub.</p>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/hub/hub.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe_to_log_events</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Subscribes to log events on internal pubsub.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">log_subscriber</span><span class="p">:</span> <span class="n">aiopubsub</span><span class="o">.</span><span class="n">Subscriber</span> <span class="o">=</span> <span class="n">aiopubsub</span><span class="o">.</span><span class="n">Subscriber</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pubsub_hub</span><span class="p">,</span> <span class="s2">&quot;events&quot;</span><span class="p">)</span>
+    <span class="n">subscribe_key</span> <span class="o">=</span> <span class="n">aiopubsub</span><span class="o">.</span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="s1">&#39;log&#39;</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">log_subscriber</span><span class="o">.</span><span class="n">add_async_listener</span><span class="p">(</span><span class="n">subscribe_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_log_event</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../config_ref/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Config" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Config
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../tag_ref/" class="md-footer__link md-footer__link--next" aria-label="Next: Tag" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Tag
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.8492ddcf.min.js"></script>
+      
+    
+  </body>
+</html>

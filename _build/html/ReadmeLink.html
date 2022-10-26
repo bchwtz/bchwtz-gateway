@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Getting-Started Guide &#8212; RuuviTag-Gateway 1.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="The Documentation Guide" href="DocumentationGuide.html" />
+    <link rel="prev" title="Welcome to RuuviTag-Gateway’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="tex2jax_ignore mathjax_ignore section" id="getting-started-guide">
+<h1>Getting-Started Guide<a class="headerlink" href="#getting-started-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="usefull-informations-for-preperation">
+<h2>Usefull Informations for Preperation<a class="headerlink" href="#usefull-informations-for-preperation" title="Permalink to this headline">¶</a></h2>
+<p>There are some tricks to communicate with RaspberryPi and get Python Code run. The aim of this chapter is to give a brief
+introduction to the installation and application of the packages.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Before installing, a few <a class="reference external" href="https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token">settings</a>
+have to be made, so that the gateway gets access to the private repository.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1. Go to Github&gt;Settings&gt;Developer Settings&gt;Personal Access tokens
+2. Creat a new access token for the RaspberryPi
+3. To acces to the repository via comand line, select `repo`
+4. Copy the token
+</pre></div>
+</div>
+<div class="admonition-note admonition">
+<p class="admonition-title">Note</p>
+<p>The token is displayed by github only once for copy in plain text.
+If the token is lost, the process must be repeated.</p>
+</div>
+<p>The software can be installed via command line.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip3</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="n">git</span><span class="o">+</span><span class="n">https</span><span class="p">:</span><span class="o">//&lt;</span><span class="n">access</span> <span class="n">token</span><span class="o">&gt;</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">bchwtz</span><span class="o">-</span><span class="n">fhswf</span><span class="o">/</span><span class="n">gateway</span><span class="o">.</span><span class="n">git</span><span class="nd">@develop</span><span class="c1">#egg=gateway</span>
+</pre></div>
+</div>
+<div class="admonition-note admonition">
+<p class="admonition-title">Note</p>
+<p>We used to push the latest changes into the develop branche. If you want to install a specific version,
+the last comand segment has to be changed (e.g. …&#64;main#egg=gateway).</p>
+</div>
+<p>Performing the installation requires ’sudo’ permissions. When executing the command line,
+a corresponding login with the necessary rights is required. Dependent libraries and packages
+are now installed. Feedback will be returned if the installation is successful.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Defaulting</span> <span class="n">to</span> <span class="n">user</span> <span class="n">installation</span> <span class="n">because</span> <span class="n">normal</span> <span class="n">site</span><span class="o">-</span><span class="n">packages</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">writeable</span>
+<span class="n">Looking</span> <span class="ow">in</span> <span class="n">indexes</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">pypi</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">simple</span><span class="p">,</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">piwheels</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">simple</span>
+<span class="n">Obtaining</span> <span class="n">gateway</span> <span class="kn">from</span> <span class="nn">git</span><span class="o">+</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">bchwtz</span><span class="o">-</span><span class="n">fhswf</span><span class="o">/</span><span class="n">gateway</span><span class="o">.</span><span class="n">git</span><span class="nd">@develop</span><span class="c1">#egg=gateway</span>
+  <span class="n">Updating</span> <span class="o">./</span><span class="n">src</span><span class="o">/</span><span class="n">gateway</span> <span class="n">clone</span> <span class="p">(</span><span class="n">to</span> <span class="n">revision</span> <span class="n">develop</span><span class="p">)</span>
+  <span class="n">Running</span> <span class="n">command</span> <span class="n">git</span> <span class="n">fetch</span> <span class="o">-</span><span class="n">q</span> <span class="o">--</span><span class="n">tags</span>
+<span class="n">Username</span> <span class="k">for</span> <span class="s1">&#39;https://github.com&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">username</span><span class="o">&gt;</span>
+<span class="n">Password</span> <span class="k">for</span> <span class="s1">&#39;https://&lt;username&gt;@github.com&#39;</span><span class="p">:</span>
+  <span class="n">Running</span> <span class="n">command</span> <span class="n">git</span> <span class="n">reset</span> <span class="o">--</span><span class="n">hard</span> <span class="o">-</span><span class="n">q</span> <span class="mi">38</span><span class="n">b0e0af30a41759ebcfd8be822870358268d75b</span>
+<span class="n">Requirement</span> <span class="n">already</span> <span class="n">satisfied</span><span class="p">:</span> <span class="n">asyncio</span> <span class="ow">in</span> <span class="o">./.</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="o">.</span><span class="mi">7</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span> <span class="p">(</span><span class="kn">from</span> <span class="nn">gateway</span><span class="p">)</span> <span class="p">(</span><span class="mf">3.4</span><span class="o">.</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">Requirement</span> <span class="n">already</span> <span class="n">satisfied</span><span class="p">:</span> <span class="n">nest_asyncio</span> <span class="ow">in</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="o">.</span><span class="mi">7</span><span class="o">/</span><span class="n">dist</span><span class="o">-</span><span class="n">packages</span> <span class="p">(</span><span class="kn">from</span> <span class="nn">gateway</span><span class="p">)</span> <span class="p">(</span><span class="mf">1.5</span><span class="o">.</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">Requirement</span> <span class="n">already</span> <span class="n">satisfied</span><span class="p">:</span> <span class="n">regex</span> <span class="ow">in</span> <span class="o">./.</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="o">.</span><span class="mi">7</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span> <span class="p">(</span><span class="kn">from</span> <span class="nn">gateway</span><span class="p">)</span> <span class="p">(</span><span class="mf">2021.8</span><span class="o">.</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">Requirement</span> <span class="n">already</span> <span class="n">satisfied</span><span class="p">:</span> <span class="n">bleak</span> <span class="ow">in</span> <span class="o">./.</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="o">.</span><span class="mi">7</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span> <span class="p">(</span><span class="kn">from</span> <span class="nn">gateway</span><span class="p">)</span> <span class="p">(</span><span class="mf">0.11</span><span class="o">.</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">Requirement</span> <span class="n">already</span> <span class="n">satisfied</span><span class="p">:</span> <span class="n">crcmod</span> <span class="ow">in</span> <span class="o">./.</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="o">.</span><span class="mi">7</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span> <span class="p">(</span><span class="kn">from</span> <span class="nn">gateway</span><span class="p">)</span> <span class="p">(</span><span class="mf">1.7</span><span class="p">)</span>
+<span class="n">Requirement</span> <span class="n">already</span> <span class="n">satisfied</span><span class="p">:</span> <span class="n">async_timeout</span> <span class="ow">in</span> <span class="o">./.</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="o">.</span><span class="mi">7</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span> <span class="p">(</span><span class="kn">from</span> <span class="nn">gateway</span><span class="p">)</span> <span class="p">(</span><span class="mf">3.0</span><span class="o">.</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">Requirement</span> <span class="n">already</span> <span class="n">satisfied</span><span class="p">:</span> <span class="n">configparser</span> <span class="ow">in</span> <span class="o">./.</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="o">.</span><span class="mi">7</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span> <span class="p">(</span><span class="kn">from</span> <span class="nn">gateway</span><span class="p">)</span> <span class="p">(</span><span class="mf">5.0</span><span class="o">.</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">Requirement</span> <span class="n">already</span> <span class="n">satisfied</span><span class="p">:</span> <span class="n">dbus</span><span class="o">-</span><span class="nb">next</span> <span class="ow">in</span> <span class="o">./.</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="o">.</span><span class="mi">7</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span> <span class="p">(</span><span class="kn">from</span> <span class="nn">bleak</span><span class="o">-&gt;</span><span class="n">gateway</span><span class="p">)</span> <span class="p">(</span><span class="mf">0.2</span><span class="o">.</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">Installing</span> <span class="n">collected</span> <span class="n">packages</span><span class="p">:</span> <span class="n">gateway</span>
+  <span class="n">Attempting</span> <span class="n">uninstall</span><span class="p">:</span> <span class="n">gateway</span>
+    <span class="n">Found</span> <span class="n">existing</span> <span class="n">installation</span><span class="p">:</span> <span class="n">gateway</span> <span class="mf">1.2</span><span class="o">.</span><span class="mi">0</span>
+    <span class="n">Uninstalling</span> <span class="n">gateway</span><span class="o">-</span><span class="mf">1.2</span><span class="o">.</span><span class="mi">0</span><span class="p">:</span>
+      <span class="n">Successfully</span> <span class="n">uninstalled</span> <span class="n">gateway</span><span class="o">-</span><span class="mf">1.2</span><span class="o">.</span><span class="mi">0</span>
+  <span class="n">Running</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">develop</span> <span class="k">for</span> <span class="n">gateway</span>
+<span class="n">Successfully</span> <span class="n">installed</span> <span class="n">gateway</span>
+</pre></div>
+</div>
+<div class="admonition-note admonition">
+<p class="admonition-title">Note</p>
+<p>The Setup.py can also be run offline. To do this, the code line <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">python</span> <span class="pre">Setup.py</span> <span class="pre">install</span></code>
+must be executed from the project directory.</p>
+</div>
+</div>
+<div class="section" id="get-sensor-data">
+<h2>Get Sensor Data<a class="headerlink" href="#get-sensor-data" title="Permalink to this headline">¶</a></h2>
+<p>The file ’SensorGatewayBleak.py’ can now be imported as a library in any PythonIDE.
+The functions of the library can be tested with the following code lines.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Ruuvi_Com_Obj</span> <span class="o">=</span> <span class="n">SensorGatewayBleak</span><span class="o">.</span><span class="n">RuuviTagAccelerometerCommunicationBleak</span><span class="p">()</span> 
+
+<span class="n">Ruuvi_Com_Obj</span><span class="o">.</span><span class="n">deactivate_logging_at_sensor</span><span class="p">()</span>
+<span class="n">Ruuvi_Com_Obj</span><span class="o">.</span><span class="n">activate_logging_at_sensor</span><span class="p">()</span>
+<span class="n">Test</span> <span class="o">=</span> <span class="n">Ruuvi_Com_Obj</span><span class="o">.</span><span class="n">get_acceleration_data</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The logging of the Accelorometer data is reseted by the disabling/activating function.
+The data will be returned as a list.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">RuuviTag-Gateway</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting-Started Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#usefull-informations-for-preperation">Usefull Informations for Preperation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-sensor-data">Get Sensor Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="DocumentationGuide.html">The Documentation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Gateway.html">Gateway package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_readme_link.html">Getting-Started Testautomation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to RuuviTag-Gateway’s documentation!</a></li>
+      <li>Next: <a href="DocumentationGuide.html" title="next chapter">The Documentation Guide</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Project team gateway.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/ReadmeLink.md.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,3209 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.1, mkdocs-material-8.5.7">
+    
+    
+      
+        <title>Sensor module - Gatway Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sensor-module" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Gatway Documentation" class="md-header__button md-logo" aria-label="Gatway Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Gatway Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Sensor module
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Gatway Documentation" class="md-nav__button md-logo" aria-label="Gatway Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Gatway Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../introduction/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gateway_ref/" class="md-nav__link">
+        Gateway module
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config_ref/" class="md-nav__link">
+        Config
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hub_ref/" class="md-nav__link">
+        Hub
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tag_ref/" class="md-nav__link">
+        Tag
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Sensor module
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Sensor module
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.sensor" class="md-nav__link">
+    gatewayn.sensor
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ble_conn_ref/" class="md-nav__link">
+        Bluetooth Connection Driver
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Demos
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Demos" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Demos
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../demos_overview/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../analyse_heatbeats_ref/" class="md-nav__link">
+        Analyse Heartbeat
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../current_time_demo_ref/" class="md-nav__link">
+        Time Demo
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../get_set_heartbeat_ref/" class="md-nav__link">
+        Heartbeat Demo
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../explanation/" class="md-nav__link">
+        Explanation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test-documentation/" class="md-nav__link">
+        Test documentation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../git_installation_on_raspberry/" class="md-nav__link">
+        How to setup Git on a Raspberry Pi
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../documentation_ref/" class="md-nav__link">
+        Documentation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../readme/" class="md-nav__link">
+        Readme
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#gatewayn.sensor" class="md-nav__link">
+    gatewayn.sensor
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="sensor-module">Sensor module</h1>
+
+
+<div class="doc doc-object doc-module">
+
+
+<a id="gatewayn.sensor"></a>
+  <div class="doc doc-contents first">
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div><p>This module consists of all hardware sensors on the tag's board. A sensor always has measurements of its own type.</p>
+<h1 id="sensor">Sensor</h1>
+
+
+<div class="doc doc-object doc-class">
+
+
+<a id="gatewayn.sensor.sensor.Sensor"></a>
+  <div class="doc doc-contents first">
+      <p class="doc doc-class-bases">
+        Bases: <code>object</code></p>
+
+  
+      <p>An object of this class creates a digital representation of a sensor. Every 
+sensor has a name and measurements of a defined class.</p>
+
+
+        <details class="quote">
+          <summary>Source code in <code>gatewayn/sensor/sensor.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Sensor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An object of this class creates a digital representation of a sensor. Every </span>
+<span class="sd">    sensor has a name and measurements of a defined class.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Sets up a new sensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;BasicSensor&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Measurement</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;Sensor&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">read_data_from_advertisement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;Reads data that was discovered during an advertisement event, especially for this sensor type.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            data: dict with the data of the advertisement</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;read_data_from_advertisement not implemented on this type of sensor&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">def</span> <span class="nf">get_measurement_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Returns all measurements of this sensor as a list of dicts to be json-serializable.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Measurements as a list of dicts.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">measurements</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">dict</span><span class="p">:</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">get_props</span><span class="p">()</span>
+            <span class="n">measurements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">measurements</span>
+
+    <span class="k">def</span> <span class="nf">get_props</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dct</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;measurements&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_measurement_props</span><span class="p">()}</span>
+        <span class="c1"># dct[&quot;measurements&quot;] = self.get_measurement_props()</span>
+        <span class="k">return</span> <span class="n">dct</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.sensor.sensor.Sensor.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">()</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Sets up a new sensor</p>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/sensor.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Sets up a new sensor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;BasicSensor&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Measurement</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;Sensor&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.sensor.sensor.Sensor.get_measurement_props" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_measurement_props</span><span class="p">()</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Returns all measurements of this sensor as a list of dicts to be json-serializable.</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>list[dict]</code>
+          </td>
+          <td><p>Measurements as a list of dicts.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/sensor.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_measurement_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Returns all measurements of this sensor as a list of dicts to be json-serializable.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Measurements as a list of dicts.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">measurements</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">dict</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">get_props</span><span class="p">()</span>
+        <span class="n">measurements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">measurements</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.sensor.sensor.Sensor.read_data_from_advertisement" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">read_data_from_advertisement</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Reads data that was discovered during an advertisement event, especially for this sensor type.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>data</code></td>
+          <td>
+                <code>dict[str, any]</code>
+          </td>
+          <td><p>dict with the data of the advertisement</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/sensor.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">read_data_from_advertisement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;Reads data that was discovered during an advertisement event, especially for this sensor type.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        data: dict with the data of the advertisement</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;read_data_from_advertisement not implemented on this type of sensor&quot;</span><span class="p">)</span>
+    <span class="k">return</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div><h1 id="measurement">Measurement</h1>
+
+
+<div class="doc doc-object doc-class">
+
+
+<a id="gatewayn.sensor.measurement.Measurement"></a>
+  <div class="doc doc-contents first">
+      <p class="doc doc-class-bases">
+        Bases: <code>object</code></p>
+
+  
+      <p>An object of this class creates a digital representation of a measurement. Every 
+measurement has measurements of a defined class.</p>
+
+
+        <details class="quote">
+          <summary>Source code in <code>gatewayn/sensor/measurement.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Measurement</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An object of this class creates a digital representation of a measurement. Every </span>
+<span class="sd">        measurement has measurements of a defined class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">get_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Returns the object as a dict to make it serializable.</span>
+<span class="sd">            Returns:</span>
+<span class="sd">                self as dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.sensor.measurement.Measurement.get_props" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_props</span><span class="p">()</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Returns the object as a dict to make it serializable.</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>dict</code>
+          </td>
+          <td><p>self as dict</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/measurement.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Returns the object as a dict to make it serializable.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            self as dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div><h1 id="temperaturesensor">TemperatureSensor</h1>
+
+
+<div class="doc doc-object doc-class">
+
+
+<a id="gatewayn.sensor.temperature.TemperatureSensor"></a>
+  <div class="doc doc-contents first">
+      <p class="doc doc-class-bases">
+        Bases: <code><a class="autorefs autorefs-internal" title="gatewayn.sensor.sensor.Sensor" href="#gatewayn.sensor.sensor.Sensor">Sensor</a></code></p>
+
+  
+      <p>An object of this class creates a digital representation of a temperature sensor. This sensor's measurements are of type gatewayn.sensor.temperature.TemperatureSensor.TemperatureMeasurement.</p>
+
+
+        <details class="quote">
+          <summary>Source code in <code>gatewayn/sensor/temperature.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">TemperatureSensor</span><span class="p">(</span><span class="n">Sensor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An object of this class creates a digital representation of a temperature sensor. This sensor&#39;s measurements are of type gatewayn.sensor.temperature.TemperatureSensor.TemperatureMeasurement.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Sets up a new TemperatureSensor object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TemperatureSensor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;TemperatureSensor&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TemperatureSensor</span><span class="o">.</span><span class="n">TemperatureMeasurement</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">read_data_from_advertisement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot; Reads data of an advertisement event onto the sensor&#39;s measurements and adds them to the list of Measurments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">measurement</span> <span class="o">=</span> <span class="n">TemperatureSensor</span><span class="o">.</span><span class="n">TemperatureMeasurement</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;temperature&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">sequence_number</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sequence_number&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">data_format</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data_format&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">measurement</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;read temperature: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">measurement</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">class</span> <span class="nc">TemperatureMeasurement</span><span class="p">(</span><span class="n">Measurement</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;TemperatureMeasurements store data in degrees celsius.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot; Creates a new TemperatureMeasurements object.</span>
+
+<span class="sd">            Arguments:</span>
+<span class="sd">                temperature: Temperature in degrees celcius</span>
+<span class="sd">                sequence_number: Stores the index of the current measurement</span>
+<span class="sd">                data_format: Data format the measurement was received in (is inside the message from the tag)</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">temperature</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">sequence_number</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">data_format</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">recorded_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+
+        <span class="k">def</span> <span class="nf">get_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot; Returns self object as a dict for serialization.</span>
+<span class="sd">                Returns:</span>
+<span class="sd">                    dict of properties</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="gatewayn.sensor.temperature.TemperatureSensor.TemperatureMeasurement" class="doc doc-heading">
+        <code>TemperatureMeasurement</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><a class="autorefs autorefs-internal" title="gatewayn.sensor.measurement.Measurement" href="#gatewayn.sensor.measurement.Measurement">Measurement</a></code></p>
+
+  
+      <p>TemperatureMeasurements store data in degrees celsius.</p>
+
+
+        <details class="quote">
+          <summary>Source code in <code>gatewayn/sensor/temperature.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">TemperatureMeasurement</span><span class="p">(</span><span class="n">Measurement</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;TemperatureMeasurements store data in degrees celsius.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates a new TemperatureMeasurements object.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            temperature: Temperature in degrees celcius</span>
+<span class="sd">            sequence_number: Stores the index of the current measurement</span>
+<span class="sd">            data_format: Data format the measurement was received in (is inside the message from the tag)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">temperature</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">sequence_number</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">data_format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recorded_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">get_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Returns self object as a dict for serialization.</span>
+<span class="sd">            Returns:</span>
+<span class="sd">                dict of properties</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="gatewayn.sensor.temperature.TemperatureSensor.TemperatureMeasurement.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Creates a new TemperatureMeasurements object.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>temperature</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td><p>Temperature in degrees celcius</p></td>
+          <td>
+                <code>0.0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>sequence_number</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>Stores the index of the current measurement</p></td>
+          <td>
+                <code>0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>data_format</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>Data format the measurement was received in (is inside the message from the tag)</p></td>
+          <td>
+                <code>0</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/temperature.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Creates a new TemperatureMeasurements object.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        temperature: Temperature in degrees celcius</span>
+<span class="sd">        sequence_number: Stores the index of the current measurement</span>
+<span class="sd">        data_format: Data format the measurement was received in (is inside the message from the tag)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">temperature</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">sequence_number</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">data_format</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">recorded_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="gatewayn.sensor.temperature.TemperatureSensor.TemperatureMeasurement.get_props" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_props</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Returns self object as a dict for serialization.</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>dict</code>
+          </td>
+          <td><p>dict of properties</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/temperature.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Returns self object as a dict for serialization.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            dict of properties</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.sensor.temperature.TemperatureSensor.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">()</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Sets up a new TemperatureSensor object</p>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/temperature.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Sets up a new TemperatureSensor object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">TemperatureSensor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;TemperatureSensor&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TemperatureSensor</span><span class="o">.</span><span class="n">TemperatureMeasurement</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.sensor.temperature.TemperatureSensor.read_data_from_advertisement" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">read_data_from_advertisement</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Reads data of an advertisement event onto the sensor's measurements and adds them to the list of Measurments.</p>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/temperature.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">read_data_from_advertisement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot; Reads data of an advertisement event onto the sensor&#39;s measurements and adds them to the list of Measurments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">measurement</span> <span class="o">=</span> <span class="n">TemperatureSensor</span><span class="o">.</span><span class="n">TemperatureMeasurement</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;temperature&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">sequence_number</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sequence_number&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">data_format</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data_format&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">measurement</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;read temperature: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">measurement</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div><h1 id="humiditysensor">HumiditySensor</h1>
+
+
+<div class="doc doc-object doc-class">
+
+
+<a id="gatewayn.sensor.humidity.HumiditySensor"></a>
+  <div class="doc doc-contents first">
+      <p class="doc doc-class-bases">
+        Bases: <code><a class="autorefs autorefs-internal" title="gatewayn.sensor.sensor.Sensor" href="#gatewayn.sensor.sensor.Sensor">Sensor</a></code></p>
+
+  
+      <p>An object of this class creates a digital representation of a humidity sensor. This sensor's measurements are of type gatewayn.sensor.humidity.HumiditySensor.HumidityMeasurement.</p>
+
+
+        <details class="quote">
+          <summary>Source code in <code>gatewayn/sensor/humidity.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">HumiditySensor</span><span class="p">(</span><span class="n">Sensor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; An object of this class creates a digital representation of a humidity sensor. This sensor&#39;s measurements are of type gatewayn.sensor.humidity.HumiditySensor.HumidityMeasurement.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Sets up a new HumiditySensor object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">HumiditySensor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;HumiditySensor&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">HumiditySensor</span><span class="o">.</span><span class="n">HumidityMeasurement</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">read_data_from_advertisement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot; Reads data of an advertisement event onto the sensor&#39;s measurements and adds them to the list of Measurments.</span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            data: The advertisements data as a dict.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">measurement</span> <span class="o">=</span> <span class="n">HumiditySensor</span><span class="o">.</span><span class="n">HumidityMeasurement</span><span class="p">(</span><span class="n">humidity</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;humidity&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">sequence_number</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sequence_number&quot;</span><span class="p">),</span> <span class="n">data_format</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data_format&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">measurement</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;read humidity: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">measurement</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">class</span> <span class="nc">HumidityMeasurement</span><span class="p">(</span><span class="n">Measurement</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; HumidityMeasurements store data in percent.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">humidity</span><span class="p">:</span> <span class="nb">float</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot; Creates a new HumidityMeasurements object.</span>
+
+<span class="sd">            Arguments:</span>
+<span class="sd">                humidity: Humidity in percent</span>
+<span class="sd">                sequence_number: Stores the index of the current measurement</span>
+<span class="sd">                data_format: Data format the measurement was received in (is inside the message from the tag)</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">humidity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">humidity</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">sequence_number</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">data_format</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">recorded_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">get_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot; Returns self object as a dict for serialization.</span>
+<span class="sd">                Returns:</span>
+<span class="sd">                    dict of properties</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="gatewayn.sensor.humidity.HumiditySensor.HumidityMeasurement" class="doc doc-heading">
+        <code>HumidityMeasurement</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><a class="autorefs autorefs-internal" title="gatewayn.sensor.measurement.Measurement" href="#gatewayn.sensor.measurement.Measurement">Measurement</a></code></p>
+
+  
+      <p>HumidityMeasurements store data in percent.</p>
+
+
+        <details class="quote">
+          <summary>Source code in <code>gatewayn/sensor/humidity.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">HumidityMeasurement</span><span class="p">(</span><span class="n">Measurement</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; HumidityMeasurements store data in percent.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">humidity</span><span class="p">:</span> <span class="nb">float</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates a new HumidityMeasurements object.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            humidity: Humidity in percent</span>
+<span class="sd">            sequence_number: Stores the index of the current measurement</span>
+<span class="sd">            data_format: Data format the measurement was received in (is inside the message from the tag)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">humidity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">humidity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">sequence_number</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">data_format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recorded_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Returns self object as a dict for serialization.</span>
+<span class="sd">            Returns:</span>
+<span class="sd">                dict of properties</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="gatewayn.sensor.humidity.HumiditySensor.HumidityMeasurement.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">humidity</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Creates a new HumidityMeasurements object.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>humidity</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td><p>Humidity in percent</p></td>
+          <td>
+                <code>0.0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>sequence_number</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>Stores the index of the current measurement</p></td>
+          <td>
+                <code>0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>data_format</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>Data format the measurement was received in (is inside the message from the tag)</p></td>
+          <td>
+                <code>0</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/humidity.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">humidity</span><span class="p">:</span> <span class="nb">float</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Creates a new HumidityMeasurements object.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        humidity: Humidity in percent</span>
+<span class="sd">        sequence_number: Stores the index of the current measurement</span>
+<span class="sd">        data_format: Data format the measurement was received in (is inside the message from the tag)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">humidity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">humidity</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">sequence_number</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">data_format</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">recorded_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="gatewayn.sensor.humidity.HumiditySensor.HumidityMeasurement.get_props" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_props</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Returns self object as a dict for serialization.</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>dict</code>
+          </td>
+          <td><p>dict of properties</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/humidity.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Returns self object as a dict for serialization.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            dict of properties</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.sensor.humidity.HumiditySensor.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">()</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Sets up a new HumiditySensor object</p>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/humidity.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Sets up a new HumiditySensor object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">HumiditySensor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;HumiditySensor&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">HumiditySensor</span><span class="o">.</span><span class="n">HumidityMeasurement</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.sensor.humidity.HumiditySensor.read_data_from_advertisement" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">read_data_from_advertisement</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Reads data of an advertisement event onto the sensor's measurements and adds them to the list of Measurments.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>data</code></td>
+          <td>
+                <code>dict[str, any]</code>
+          </td>
+          <td><p>The advertisements data as a dict.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/humidity.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">read_data_from_advertisement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot; Reads data of an advertisement event onto the sensor&#39;s measurements and adds them to the list of Measurments.</span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        data: The advertisements data as a dict.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">measurement</span> <span class="o">=</span> <span class="n">HumiditySensor</span><span class="o">.</span><span class="n">HumidityMeasurement</span><span class="p">(</span><span class="n">humidity</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;humidity&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">sequence_number</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sequence_number&quot;</span><span class="p">),</span> <span class="n">data_format</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data_format&quot;</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">measurement</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;read humidity: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">measurement</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div><h1 id="batterysensor">BatterySensor</h1>
+
+
+<div class="doc doc-object doc-class">
+
+
+<a id="gatewayn.sensor.battery.BatterySensor"></a>
+  <div class="doc doc-contents first">
+      <p class="doc doc-class-bases">
+        Bases: <code><a class="autorefs autorefs-internal" title="gatewayn.sensor.sensor.Sensor" href="#gatewayn.sensor.sensor.Sensor">Sensor</a></code></p>
+
+  
+      <p>An object of this class creates a digital representation of a battery sensor. This sensors measurements are of type gatewayn.sensor.battery.BatterySensor.BatteryMeasurement.</p>
+
+
+        <details class="quote">
+          <summary>Source code in <code>gatewayn/sensor/battery.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BatterySensor</span><span class="p">(</span><span class="n">Sensor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An object of this class creates a digital representation of a battery sensor. This sensors measurements are of type gatewayn.sensor.battery.BatterySensor.BatteryMeasurement.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BatterySensor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;BatterySensor&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BatterySensor</span><span class="o">.</span><span class="n">BatteryMeasurement</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">read_data_from_advertisement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]):</span>
+        <span class="n">measurement</span> <span class="o">=</span> <span class="n">BatterySensor</span><span class="o">.</span><span class="n">BatteryMeasurement</span><span class="p">(</span><span class="n">voltage</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;battery&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">sequence_number</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sequence_number&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">data_format</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data_format&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">measurement</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;read voltage: </span><span class="si">{</span><span class="n">measurement</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">class</span> <span class="nc">BatteryMeasurement</span><span class="p">(</span><span class="n">Measurement</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;BatteryMeasurements store data in volts.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">voltage</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot; Creates a new BatteryMeasurements object.</span>
+
+<span class="sd">            Arguments:</span>
+<span class="sd">                voltage: Charge in volts</span>
+<span class="sd">                sequence_number: Stores the index of the current measurement</span>
+<span class="sd">                data_format: Data format the measurement was received in (is inside the message from the tag)</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">voltage</span> <span class="o">=</span> <span class="n">voltage</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">sequence_number</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">data_format</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">recorded_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+
+        <span class="k">def</span> <span class="nf">get_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot; Returns self object as a dict for serialization.</span>
+<span class="sd">                Returns:</span>
+<span class="sd">                    dict of properties</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="gatewayn.sensor.battery.BatterySensor.BatteryMeasurement" class="doc doc-heading">
+        <code>BatteryMeasurement</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><a class="autorefs autorefs-internal" title="gatewayn.sensor.measurement.Measurement" href="#gatewayn.sensor.measurement.Measurement">Measurement</a></code></p>
+
+  
+      <p>BatteryMeasurements store data in volts.</p>
+
+
+        <details class="quote">
+          <summary>Source code in <code>gatewayn/sensor/battery.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BatteryMeasurement</span><span class="p">(</span><span class="n">Measurement</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;BatteryMeasurements store data in volts.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">voltage</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates a new BatteryMeasurements object.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            voltage: Charge in volts</span>
+<span class="sd">            sequence_number: Stores the index of the current measurement</span>
+<span class="sd">            data_format: Data format the measurement was received in (is inside the message from the tag)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">voltage</span> <span class="o">=</span> <span class="n">voltage</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">sequence_number</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">data_format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recorded_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">get_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Returns self object as a dict for serialization.</span>
+<span class="sd">            Returns:</span>
+<span class="sd">                dict of properties</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="gatewayn.sensor.battery.BatterySensor.BatteryMeasurement.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">voltage</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Creates a new BatteryMeasurements object.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>voltage</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td><p>Charge in volts</p></td>
+          <td>
+                <code>0.0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>sequence_number</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>Stores the index of the current measurement</p></td>
+          <td>
+                <code>0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>data_format</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>Data format the measurement was received in (is inside the message from the tag)</p></td>
+          <td>
+                <code>0</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/battery.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">voltage</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Creates a new BatteryMeasurements object.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        voltage: Charge in volts</span>
+<span class="sd">        sequence_number: Stores the index of the current measurement</span>
+<span class="sd">        data_format: Data format the measurement was received in (is inside the message from the tag)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">voltage</span> <span class="o">=</span> <span class="n">voltage</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">sequence_number</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">data_format</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">recorded_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="gatewayn.sensor.battery.BatterySensor.BatteryMeasurement.get_props" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_props</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Returns self object as a dict for serialization.</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>dict</code>
+          </td>
+          <td><p>dict of properties</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/battery.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Returns self object as a dict for serialization.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            dict of properties</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div><h1 id="barometersensor">BarometerSensor</h1>
+
+
+<div class="doc doc-object doc-class">
+
+
+<a id="gatewayn.sensor.barometer.BarometerSensor"></a>
+  <div class="doc doc-contents first">
+      <p class="doc doc-class-bases">
+        Bases: <code><a class="autorefs autorefs-internal" title="gatewayn.sensor.sensor.Sensor" href="#gatewayn.sensor.sensor.Sensor">Sensor</a></code></p>
+
+  
+      <p>An object of this class creates a digital representation of a barometer sensor. This sensors measurements are of type gatewayn.sensor.barometer.BarometerSensor.PressureMeasurement.</p>
+
+
+        <details class="quote">
+          <summary>Source code in <code>gatewayn/sensor/barometer.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BarometerSensor</span><span class="p">(</span><span class="n">Sensor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An object of this class creates a digital representation of a barometer sensor. This sensors measurements are of type gatewayn.sensor.barometer.BarometerSensor.PressureMeasurement.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Sets up a new BarometerSensor object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BarometerSensor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;BarometerSensor&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BarometerSensor</span><span class="o">.</span><span class="n">PressureMeasurement</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">read_data_from_advertisement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot; Reads data of an advertisement event onto the sensor&#39;s measurements and adds them to the list of Measurments.</span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            data: The advertisements data as a dict.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">measurement</span> <span class="o">=</span> <span class="n">BarometerSensor</span><span class="o">.</span><span class="n">PressureMeasurement</span><span class="p">(</span><span class="n">pressure</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pressure&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">sequence_number</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sequence_number&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">data_format</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sequence_number&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">measurement</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;read pressure: </span><span class="si">{</span><span class="n">measurement</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">class</span> <span class="nc">PressureMeasurement</span><span class="p">(</span><span class="n">Measurement</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; PressureMeasurements store data in kilopascal.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pressure</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot; Creates a new PressureMeasurements object.</span>
+
+<span class="sd">            Arguments:</span>
+<span class="sd">                pressure: Pressure in kilopascal</span>
+<span class="sd">                sequence_number: Stores the index of the current measurement</span>
+<span class="sd">                data_format: Data format the measurement was received in (is inside the message from the tag)</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pressure</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">pressure</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">sequence_number</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">data_format</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">recorded_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">get_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot; Returns self object as a dict for serialization.</span>
+<span class="sd">                Returns:</span>
+<span class="sd">                    dict of properties</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="gatewayn.sensor.barometer.BarometerSensor.PressureMeasurement" class="doc doc-heading">
+        <code>PressureMeasurement</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><a class="autorefs autorefs-internal" title="gatewayn.sensor.measurement.Measurement" href="#gatewayn.sensor.measurement.Measurement">Measurement</a></code></p>
+
+  
+      <p>PressureMeasurements store data in kilopascal.</p>
+
+
+        <details class="quote">
+          <summary>Source code in <code>gatewayn/sensor/barometer.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">PressureMeasurement</span><span class="p">(</span><span class="n">Measurement</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; PressureMeasurements store data in kilopascal.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pressure</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates a new PressureMeasurements object.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            pressure: Pressure in kilopascal</span>
+<span class="sd">            sequence_number: Stores the index of the current measurement</span>
+<span class="sd">            data_format: Data format the measurement was received in (is inside the message from the tag)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pressure</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">pressure</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">sequence_number</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">data_format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recorded_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Returns self object as a dict for serialization.</span>
+<span class="sd">            Returns:</span>
+<span class="sd">                dict of properties</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="gatewayn.sensor.barometer.BarometerSensor.PressureMeasurement.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">pressure</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Creates a new PressureMeasurements object.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>pressure</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td><p>Pressure in kilopascal</p></td>
+          <td>
+                <code>0.0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>sequence_number</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>Stores the index of the current measurement</p></td>
+          <td>
+                <code>0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>data_format</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>Data format the measurement was received in (is inside the message from the tag)</p></td>
+          <td>
+                <code>0</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/barometer.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pressure</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Creates a new PressureMeasurements object.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        pressure: Pressure in kilopascal</span>
+<span class="sd">        sequence_number: Stores the index of the current measurement</span>
+<span class="sd">        data_format: Data format the measurement was received in (is inside the message from the tag)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">pressure</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">pressure</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">sequence_number</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">data_format</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">recorded_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="gatewayn.sensor.barometer.BarometerSensor.PressureMeasurement.get_props" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_props</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Returns self object as a dict for serialization.</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>dict</code>
+          </td>
+          <td><p>dict of properties</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/barometer.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Returns self object as a dict for serialization.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            dict of properties</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.sensor.barometer.BarometerSensor.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">()</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Sets up a new BarometerSensor object</p>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/barometer.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Sets up a new BarometerSensor object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">BarometerSensor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;BarometerSensor&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BarometerSensor</span><span class="o">.</span><span class="n">PressureMeasurement</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.sensor.barometer.BarometerSensor.read_data_from_advertisement" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">read_data_from_advertisement</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Reads data of an advertisement event onto the sensor's measurements and adds them to the list of Measurments.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>data</code></td>
+          <td>
+                <code>dict[str, any]</code>
+          </td>
+          <td><p>The advertisements data as a dict.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/barometer.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">read_data_from_advertisement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot; Reads data of an advertisement event onto the sensor&#39;s measurements and adds them to the list of Measurments.</span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        data: The advertisements data as a dict.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">measurement</span> <span class="o">=</span> <span class="n">BarometerSensor</span><span class="o">.</span><span class="n">PressureMeasurement</span><span class="p">(</span><span class="n">pressure</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pressure&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">sequence_number</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sequence_number&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">data_format</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sequence_number&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">measurement</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;read pressure: </span><span class="si">{</span><span class="n">measurement</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div><h1 id="accelerometer">Accelerometer</h1>
+
+
+<div class="doc doc-object doc-class">
+
+
+<a id="gatewayn.sensor.acceleration.AccelerationSensor"></a>
+  <div class="doc doc-contents first">
+      <p class="doc doc-class-bases">
+        Bases: <code><a class="autorefs autorefs-internal" title="gatewayn.sensor.sensor.Sensor" href="#gatewayn.sensor.sensor.Sensor">Sensor</a></code></p>
+
+  
+      <p>An object of this class creates a digital representation of a acceleration sensor. This sensors measurements are of type gatewayn.sensor.barometer.BarometerSensor.AccelerationMeasurement.</p>
+
+
+        <details class="quote">
+          <summary>Source code in <code>gatewayn/sensor/acceleration.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AccelerationSensor</span><span class="p">(</span><span class="n">Sensor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An object of this class creates a digital representation of a acceleration sensor. This sensors measurements are of type gatewayn.sensor.barometer.BarometerSensor.AccelerationMeasurement.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Sets up a new AccelerationSensor object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">AccelerationSensor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;AccelerationSensor&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">AccelerationSensor</span><span class="o">.</span><span class="n">AccelerationMeasurement</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">read_data_from_advertisement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot; Reads data of an advertisement event onto the sensor&#39;s measurements and adds them to the list of Measurments.</span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            data: The advertisements data as a dict.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_measurement</span> <span class="o">=</span> <span class="n">AccelerationSensor</span><span class="o">.</span><span class="n">AccelerationMeasurement</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;acceleration_x&quot;</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;acceleration_y&quot;</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;acceleration_z&quot;</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;acceleration&quot;</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;movement_counter&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">movement_counter</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;movement_counter&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_measurement</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">class</span> <span class="nc">AccelerationMeasurement</span><span class="p">(</span><span class="n">Measurement</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; AccelerationMeasurements store data in a vector + acceleration force.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acc_x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">acc_y</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">acc_z</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">acc</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">movement_counter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot; Creates a new AccelerationMeasurements object.</span>
+
+<span class="sd">            Arguments:</span>
+<span class="sd">                acc_x: x-vectorpart of the force</span>
+<span class="sd">                acc_y: y-vectorpart of the force</span>
+<span class="sd">                acc_z: z-vectorpart of the force</span>
+<span class="sd">                acc: acc-force scalar</span>
+<span class="sd">                sequence_number: Stores the index of the current measurement</span>
+<span class="sd">                data_format: Data format the measurement was received in (is inside the message from the tag)</span>
+<span class="sd">                movement_counter: increments on each detected movement</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">acc_x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">acc_x</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">acc_y</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">acc_y</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">acc_z</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">acc_z</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">acc</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">acc</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">sequence_number</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">data_format</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">movement_counter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">movement_counter</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">recorded_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">get_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot; Returns self object as a dict for serialization.</span>
+<span class="sd">                Returns:</span>
+<span class="sd">                    dict of properties</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="gatewayn.sensor.acceleration.AccelerationSensor.AccelerationMeasurement" class="doc doc-heading">
+        <code>AccelerationMeasurement</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><a class="autorefs autorefs-internal" title="gatewayn.sensor.measurement.Measurement" href="#gatewayn.sensor.measurement.Measurement">Measurement</a></code></p>
+
+  
+      <p>AccelerationMeasurements store data in a vector + acceleration force.</p>
+
+
+        <details class="quote">
+          <summary>Source code in <code>gatewayn/sensor/acceleration.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AccelerationMeasurement</span><span class="p">(</span><span class="n">Measurement</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; AccelerationMeasurements store data in a vector + acceleration force.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acc_x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">acc_y</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">acc_z</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">acc</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">movement_counter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates a new AccelerationMeasurements object.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            acc_x: x-vectorpart of the force</span>
+<span class="sd">            acc_y: y-vectorpart of the force</span>
+<span class="sd">            acc_z: z-vectorpart of the force</span>
+<span class="sd">            acc: acc-force scalar</span>
+<span class="sd">            sequence_number: Stores the index of the current measurement</span>
+<span class="sd">            data_format: Data format the measurement was received in (is inside the message from the tag)</span>
+<span class="sd">            movement_counter: increments on each detected movement</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">acc_x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">acc_x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">acc_y</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">acc_y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">acc_z</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">acc_z</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">acc</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">acc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">sequence_number</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">data_format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">movement_counter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">movement_counter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recorded_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Returns self object as a dict for serialization.</span>
+<span class="sd">            Returns:</span>
+<span class="sd">                dict of properties</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="gatewayn.sensor.acceleration.AccelerationSensor.AccelerationMeasurement.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">acc_x</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">acc_y</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">acc_z</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">acc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">movement_counter</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Creates a new AccelerationMeasurements object.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>acc_x</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td><p>x-vectorpart of the force</p></td>
+          <td>
+                <code>0.0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>acc_y</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td><p>y-vectorpart of the force</p></td>
+          <td>
+                <code>0.0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>acc_z</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td><p>z-vectorpart of the force</p></td>
+          <td>
+                <code>0.0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>acc</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td><p>acc-force scalar</p></td>
+          <td>
+                <code>0.0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>sequence_number</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>Stores the index of the current measurement</p></td>
+          <td>
+                <code>0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>data_format</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>Data format the measurement was received in (is inside the message from the tag)</p></td>
+          <td>
+                <code>0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>movement_counter</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>increments on each detected movement</p></td>
+          <td>
+                <code>0</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/acceleration.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acc_x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">acc_y</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">acc_z</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">acc</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">movement_counter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Creates a new AccelerationMeasurements object.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        acc_x: x-vectorpart of the force</span>
+<span class="sd">        acc_y: y-vectorpart of the force</span>
+<span class="sd">        acc_z: z-vectorpart of the force</span>
+<span class="sd">        acc: acc-force scalar</span>
+<span class="sd">        sequence_number: Stores the index of the current measurement</span>
+<span class="sd">        data_format: Data format the measurement was received in (is inside the message from the tag)</span>
+<span class="sd">        movement_counter: increments on each detected movement</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">acc_x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">acc_x</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">acc_y</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">acc_y</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">acc_z</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">acc_z</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">acc</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">acc</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sequence_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">sequence_number</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">data_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">data_format</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">movement_counter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">movement_counter</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">recorded_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="gatewayn.sensor.acceleration.AccelerationSensor.AccelerationMeasurement.get_props" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_props</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Returns self object as a dict for serialization.</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>dict</code>
+          </td>
+          <td><p>dict of properties</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/acceleration.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Returns self object as a dict for serialization.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            dict of properties</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.sensor.acceleration.AccelerationSensor.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">()</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Sets up a new AccelerationSensor object</p>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/acceleration.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Sets up a new AccelerationSensor object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">AccelerationSensor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;AccelerationSensor&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">AccelerationSensor</span><span class="o">.</span><span class="n">AccelerationMeasurement</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="gatewayn.sensor.acceleration.AccelerationSensor.read_data_from_advertisement" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">read_data_from_advertisement</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Reads data of an advertisement event onto the sensor's measurements and adds them to the list of Measurments.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>data</code></td>
+          <td>
+                <code>dict[str, any]</code>
+          </td>
+          <td><p>The advertisements data as a dict.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>gatewayn/sensor/acceleration.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">read_data_from_advertisement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot; Reads data of an advertisement event onto the sensor&#39;s measurements and adds them to the list of Measurments.</span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        data: The advertisements data as a dict.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">last_measurement</span> <span class="o">=</span> <span class="n">AccelerationSensor</span><span class="o">.</span><span class="n">AccelerationMeasurement</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;acceleration_x&quot;</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;acceleration_y&quot;</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;acceleration_z&quot;</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;acceleration&quot;</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;movement_counter&quot;</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">movement_counter</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;movement_counter&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_measurement</span><span class="p">)</span>
+    <span class="k">return</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../tag_ref/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Tag" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Tag
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../ble_conn_ref/" class="md-footer__link md-footer__link--next" aria-label="Next: Bluetooth Connection Driver" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Bluetooth Connection Driver
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.8492ddcf.min.js"></script>
+      
+    
+  </body>
+</html>
