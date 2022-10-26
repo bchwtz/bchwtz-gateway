@@ -15,7 +15,7 @@ markdown_extensions:
           format: !!python/name:pymdownx.superfences.fence_code_format
 
 nav:
-  - introduction.md
+  - index.md
   - Reference:
     - gateway_ref.md
     - config_ref.md
