@@ -23,7 +23,8 @@ jobs:
       image_name: ${{ github.repository }}/db-dumper
 
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: ["!deploy", "self-hosted"]
+
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
