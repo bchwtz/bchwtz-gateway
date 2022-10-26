@@ -6,9 +6,16 @@ theme:
 plugins:
   - mkdocstrings
 
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
 nav:
   - Gateway Documentation: index.md
-  - tutorials.md
+  - introduction.md
   - Reference:
     - gateway_ref.md
     - config_ref.md

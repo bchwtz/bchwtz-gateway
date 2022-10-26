@@ -6,6 +6,9 @@ This module consists of all hardware sensors on the tag's board. A sensor always
 # Sensor
 ::: gatewayn.sensor.sensor.Sensor
 
+# Measurement
+::: gatewayn.sensor.measurement.Measurement
+
 # TemperatureSensor
 ::: gatewayn.sensor.temperature.TemperatureSensor
 
