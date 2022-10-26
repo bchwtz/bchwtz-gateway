@@ -23,4 +23,5 @@ nav:
     - get_set_heartbeat_ref.md
   - explanation.md
   - test-documentation.md
-
+  - git_installation_on_raspberry.md
+  - link_to_readme.md
