@@ -14,7 +14,6 @@ markdown_extensions:
           format: !!python/name:pymdownx.superfences.fence_code_format
 
 nav:
-  - Gateway Documentation: index.md
   - introduction.md
   - Reference:
     - gateway_ref.md
@@ -31,4 +30,4 @@ nav:
   - explanation.md
   - test-documentation.md
   - git_installation_on_raspberry.md
-  - link_to_readme.md
+  - readme.md
