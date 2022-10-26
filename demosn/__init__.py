@@ -10,7 +10,7 @@ All demos are strucutred in a similar way to another.
 The first step is always to create a new asyncio eventloop in which the whole communication will
 be handled.
 On the mainloop the run_until_complete method gets called and this method gets the hub.discover_tags() callback,
-with a 5second timeout as parameter.
+with a 5-second timeout as parameter.
 When all the tags in the area are discovered, one of them get selected by the MAC-adress 
 you provide.
 

@@ -16,7 +16,11 @@ nav:
     - tag_ref.md
     - sensor_ref.md
     - ble_conn_ref.md
-  - Demos: how-to-guides.md
+  - Demos: 
+    - demos_overview.md
+    - analyse_heatbeats_ref.md
+    - current_time_demo_ref.md
+    - get_set_heartbeat_ref.md
   - explanation.md
   - test-documentation.md
 
