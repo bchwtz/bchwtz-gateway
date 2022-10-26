@@ -55,7 +55,7 @@ jobs:
           path: ${{ env.working-directory }}/build/gw.exe
       - uses: actions/upload-artifact@v3
         with:
-          name: gw.exe
+          name: gw_arm64
           path: ${{ env.working-directory }}/build/gw_arm64
 
   build-and-push-image:
