@@ -51,5 +51,26 @@ classDiagram
 ```
 In the diagram you can see the actual links and references of the different classes inside the library. If you need the implementation reference for a single class in this diagram, just click on its box and you will be forwarded to the correct page.
 
-You will find further information on workflows and states inside the gateway library in the following diagrams:
+This is how the gateway listens for advertisements and sets up new tags:
 
+``` mermaid
+sequenceDiagram
+  Gateway->>Hub: __init__()
+  activate Hub
+
+  loop listen_advertisements
+    Gateway->>Hub: listen_advertisements(timeout=20)
+    activate Hub
+    Hub->>Gateway: return None
+    Hub->>BLEConn: listen_advertisements(cb)
+    deactivate Hub
+  end
+  Note right of Hub: startup procedure
+  BLEConn-->>Hub: listen_advertisement_cb(msg)
+  activate Hub
+  Hub->>Tag: __devices_to_tags()
+  activate Tag
+  Tag->>Hub: adds the Tag to taglist of hub
+  deactivate Tag
+  deactivate Hub
+```
