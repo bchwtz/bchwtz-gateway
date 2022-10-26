@@ -38,6 +38,8 @@ jobs:
           go build -o build/gw cmd/cli/main.go
           go build -o build/gw-dumper cmd/dumper/main.go
           GOOS=windows go build -o build/gw.exe cmd/cli/main.go
+          GOOS=linux GOARCH=arm64 go build -o build/gw_arm64 cmd/cli/main.go
+          GOOS=linux GOARCH=arm64 go build -o build/gw-dumper_arm64 cmd/dumper/main.go
         working-directory: ${{ env.working-directory }}
       - uses: actions/upload-artifact@v3
         with:
@@ -51,6 +53,10 @@ jobs:
         with:
           name: gw.exe
           path: ${{ env.working-directory }}/build/gw.exe
+      - uses: actions/upload-artifact@v3
+        with:
+          name: gw.exe
+          path: ${{ env.working-directory }}/build/gw_arm64
 
   build-and-push-image:
     env:
