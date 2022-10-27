@@ -2,82 +2,92 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://bchwtz-fhswf.github.io/gateway/</loc>
-         <lastmod>2022-10-26</lastmod>
+         <lastmod>2022-10-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://bchwtz-fhswf.github.io/gateway/analyse_heatbeats_ref/</loc>
-         <lastmod>2022-10-26</lastmod>
+         <lastmod>2022-10-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://bchwtz-fhswf.github.io/gateway/ble_conn_ref/</loc>
-         <lastmod>2022-10-26</lastmod>
+         <lastmod>2022-10-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://bchwtz-fhswf.github.io/gateway/config_ref/</loc>
-         <lastmod>2022-10-26</lastmod>
+         <lastmod>2022-10-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://bchwtz-fhswf.github.io/gateway/current_time_demo_ref/</loc>
-         <lastmod>2022-10-26</lastmod>
+         <lastmod>2022-10-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://bchwtz-fhswf.github.io/gateway/demos_overview/</loc>
-         <lastmod>2022-10-26</lastmod>
+         <lastmod>2022-10-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://bchwtz-fhswf.github.io/gateway/documentation_ref/</loc>
-         <lastmod>2022-10-26</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://bchwtz-fhswf.github.io/gateway/explanation/</loc>
-         <lastmod>2022-10-26</lastmod>
+         <lastmod>2022-10-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://bchwtz-fhswf.github.io/gateway/gateway_ref/</loc>
-         <lastmod>2022-10-26</lastmod>
+         <lastmod>2022-10-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://bchwtz-fhswf.github.io/gateway/get_set_heartbeat_ref/</loc>
-         <lastmod>2022-10-26</lastmod>
+         <lastmod>2022-10-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://bchwtz-fhswf.github.io/gateway/git_installation_on_raspberry/</loc>
-         <lastmod>2022-10-26</lastmod>
+         <lastmod>2022-10-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://bchwtz-fhswf.github.io/gateway/hub_ref/</loc>
-         <lastmod>2022-10-26</lastmod>
+         <lastmod>2022-10-27</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://bchwtz-fhswf.github.io/gateway/hub_test_ref/</loc>
+         <lastmod>2022-10-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://bchwtz-fhswf.github.io/gateway/readme/</loc>
-         <lastmod>2022-10-26</lastmod>
+         <lastmod>2022-10-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://bchwtz-fhswf.github.io/gateway/sensor_ref/</loc>
-         <lastmod>2022-10-26</lastmod>
+         <lastmod>2022-10-27</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://bchwtz-fhswf.github.io/gateway/tag_config_test_ref/</loc>
+         <lastmod>2022-10-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://bchwtz-fhswf.github.io/gateway/tag_ref/</loc>
-         <lastmod>2022-10-26</lastmod>
+         <lastmod>2022-10-27</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://bchwtz-fhswf.github.io/gateway/tag_test_ref/</loc>
+         <lastmod>2022-10-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://bchwtz-fhswf.github.io/gateway/test-documentation/</loc>
-         <lastmod>2022-10-26</lastmod>
+         <lastmod>2022-10-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>

@@ -384,25 +384,85 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="explanation/" class="md-nav__link">
-        Explanation
-      </a>
-    </li>
-  
-
     
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
       
       
       
-
+      
+        <label class="md-nav__link" for="__nav_4">
+          Tests
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Tests" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Tests
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
   
   
   
     <li class="md-nav__item">
       <a href="test-documentation/" class="md-nav__link">
-        Test documentation
+        Test Documentation
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="hub_test_ref/" class="md-nav__link">
+        Hub Tests
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tag_test_ref/" class="md-nav__link">
+        Tag Test
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tag_config_test_ref/" class="md-nav__link">
+        Tag Config Tests
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -431,7 +491,7 @@
   
     <li class="md-nav__item">
       <a href="documentation_ref/" class="md-nav__link">
-        Documentation
+        MKDocs
       </a>
     </li>
   
@@ -494,13 +554,13 @@
   HumidityMeasurement "n" &lt;-- "1" HumiditySensor:has
   BLEConn "1" &lt;-- "1" Hub:uses
 
-  link Hub "/hub_ref/#gatewayn.hub.hub.Hub" "Hub"
-  link Tag "/tag_ref/#gatewayn.tag.tag.Tag" "Tag"
-  link Sensor "/sensor_ref/#gatewayn.sensor.sensor.Sensor" "Sensor"
-  link HumiditySensor "/sensor_ref/#gatewayn.sensor.humidity.HumiditySensor" "Sensor"
-  link Measurement "/sensor_ref/#gatewayn.sensor.measurement.Measurement" "Measurement"
-  link HumidityMeasurement "/sensor_ref/#gatewayn.sensor.humidity.HumiditySensor.HumidityMeasurement" "HumidityMeasurement"
-  link BLEConn "/ble_conn_ref/#gatewayn.drivers.bluetooth.ble_conn.ble_conn.BLEConn" "BLEConn"
+  link Hub "/hub_ref/#gateway.hub.hub.Hub" "Hub"
+  link Tag "/tag_ref/#gateway.tag.tag.Tag" "Tag"
+  link Sensor "/sensor_ref/#gateway.sensor.sensor.Sensor" "Sensor"
+  link HumiditySensor "/sensor_ref/#gateway.sensor.humidity.HumiditySensor" "Sensor"
+  link Measurement "/sensor_ref/#gateway.sensor.measurement.Measurement" "Measurement"
+  link HumidityMeasurement "/sensor_ref/#gateway.sensor.humidity.HumiditySensor.HumidityMeasurement" "HumidityMeasurement"
+  link BLEConn "/ble_conn_ref/#gateway.drivers.bluetooth.ble_conn.ble_conn.BLEConn" "BLEConn"
 
 
   Tag "n" &lt;-- "1" Hub:has

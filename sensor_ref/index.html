@@ -285,8 +285,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#gatewayn.sensor" class="md-nav__link">
-    gatewayn.sensor
+  <a href="#gateway.sensor" class="md-nav__link">
+    gateway.sensor
   </a>
   
 </li>
@@ -417,25 +417,85 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../explanation/" class="md-nav__link">
-        Explanation
-      </a>
-    </li>
-  
-
     
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
       
       
       
-
+      
+        <label class="md-nav__link" for="__nav_4">
+          Tests
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Tests" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Tests
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
   
   
   
     <li class="md-nav__item">
       <a href="../test-documentation/" class="md-nav__link">
-        Test documentation
+        Test Documentation
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hub_test_ref/" class="md-nav__link">
+        Hub Tests
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tag_test_ref/" class="md-nav__link">
+        Tag Test
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tag_config_test_ref/" class="md-nav__link">
+        Tag Config Tests
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -464,7 +524,7 @@
   
     <li class="md-nav__item">
       <a href="../documentation_ref/" class="md-nav__link">
-        Documentation
+        MKDocs
       </a>
     </li>
   
@@ -512,8 +572,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#gatewayn.sensor" class="md-nav__link">
-    gatewayn.sensor
+  <a href="#gateway.sensor" class="md-nav__link">
+    gateway.sensor
   </a>
   
 </li>
@@ -539,7 +599,7 @@
 <div class="doc doc-object doc-module">
 
 
-<a id="gatewayn.sensor"></a>
+<a id="gateway.sensor"></a>
   <div class="doc doc-contents first">
 
   
@@ -567,7 +627,7 @@
 <div class="doc doc-object doc-class">
 
 
-<a id="gatewayn.sensor.sensor.Sensor"></a>
+<a id="gateway.sensor.sensor.Sensor"></a>
   <div class="doc doc-contents first">
       <p class="doc doc-class-bases">
         Bases: <code>object</code></p>
@@ -578,7 +638,7 @@ sensor has a name and measurements of a defined class.</p>
 
 
         <details class="quote">
-          <summary>Source code in <code>gatewayn/sensor/sensor.py</code></summary>
+          <summary>Source code in <code>gateway/sensor/sensor.py</code></summary>
           <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 6</span>
 <span class="normal"> 7</span>
 <span class="normal"> 8</span>
@@ -675,7 +735,7 @@ sensor has a name and measurements of a defined class.</p>
 
 
 
-<h2 id="gatewayn.sensor.sensor.Sensor.__init__" class="doc doc-heading">
+<h2 id="gateway.sensor.sensor.Sensor.__init__" class="doc doc-heading">
 <code class="highlight language-python"><span class="fm">__init__</span><span class="p">()</span></code>
 
 </h2>
@@ -686,7 +746,7 @@ sensor has a name and measurements of a defined class.</p>
       <p>Sets up a new sensor</p>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/sensor.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/sensor.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span>
@@ -710,7 +770,7 @@ sensor has a name and measurements of a defined class.</p>
 
 
 
-<h2 id="gatewayn.sensor.sensor.Sensor.get_measurement_props" class="doc doc-heading">
+<h2 id="gateway.sensor.sensor.Sensor.get_measurement_props" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_measurement_props</span><span class="p">()</span></code>
 
 </h2>
@@ -739,7 +799,7 @@ sensor has a name and measurements of a defined class.</p>
   </table>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/sensor.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/sensor.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
 <span class="normal">29</span>
 <span class="normal">30</span>
@@ -773,7 +833,7 @@ sensor has a name and measurements of a defined class.</p>
 
 
 
-<h2 id="gatewayn.sensor.sensor.Sensor.read_data_from_advertisement" class="doc doc-heading">
+<h2 id="gateway.sensor.sensor.Sensor.read_data_from_advertisement" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">read_data_from_advertisement</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
 
 </h2>
@@ -808,7 +868,7 @@ sensor has a name and measurements of a defined class.</p>
   </table>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/sensor.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/sensor.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">19</span>
 <span class="normal">20</span>
 <span class="normal">21</span>
@@ -842,7 +902,7 @@ sensor has a name and measurements of a defined class.</p>
 <div class="doc doc-object doc-class">
 
 
-<a id="gatewayn.sensor.measurement.Measurement"></a>
+<a id="gateway.sensor.measurement.Measurement"></a>
   <div class="doc doc-contents first">
       <p class="doc doc-class-bases">
         Bases: <code>object</code></p>
@@ -853,7 +913,7 @@ measurement has measurements of a defined class.</p>
 
 
         <details class="quote">
-          <summary>Source code in <code>gatewayn/sensor/measurement.py</code></summary>
+          <summary>Source code in <code>gateway/sensor/measurement.py</code></summary>
           <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
@@ -892,7 +952,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h2 id="gatewayn.sensor.measurement.Measurement.get_props" class="doc doc-heading">
+<h2 id="gateway.sensor.measurement.Measurement.get_props" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_props</span><span class="p">()</span></code>
 
 </h2>
@@ -921,7 +981,7 @@ measurement has measurements of a defined class.</p>
   </table>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/measurement.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/measurement.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 5</span>
 <span class="normal"> 6</span>
 <span class="normal"> 7</span>
@@ -951,17 +1011,17 @@ measurement has measurements of a defined class.</p>
 <div class="doc doc-object doc-class">
 
 
-<a id="gatewayn.sensor.temperature.TemperatureSensor"></a>
+<a id="gateway.sensor.temperature.TemperatureSensor"></a>
   <div class="doc doc-contents first">
       <p class="doc doc-class-bases">
-        Bases: <code><a class="autorefs autorefs-internal" title="gatewayn.sensor.sensor.Sensor" href="#gatewayn.sensor.sensor.Sensor">Sensor</a></code></p>
+        Bases: <code><a class="autorefs autorefs-internal" title="gateway.sensor.sensor.Sensor" href="#gateway.sensor.sensor.Sensor">Sensor</a></code></p>
 
   
-      <p>An object of this class creates a digital representation of a temperature sensor. This sensor's measurements are of type gatewayn.sensor.temperature.TemperatureSensor.TemperatureMeasurement.</p>
+      <p>An object of this class creates a digital representation of a temperature sensor. This sensor's measurements are of type gateway.sensor.temperature.TemperatureSensor.TemperatureMeasurement.</p>
 
 
         <details class="quote">
-          <summary>Source code in <code>gatewayn/sensor/temperature.py</code></summary>
+          <summary>Source code in <code>gateway/sensor/temperature.py</code></summary>
           <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 5</span>
 <span class="normal"> 6</span>
 <span class="normal"> 7</span>
@@ -1005,7 +1065,7 @@ measurement has measurements of a defined class.</p>
 <span class="normal">45</span>
 <span class="normal">46</span>
 <span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">TemperatureSensor</span><span class="p">(</span><span class="n">Sensor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;An object of this class creates a digital representation of a temperature sensor. This sensor&#39;s measurements are of type gatewayn.sensor.temperature.TemperatureSensor.TemperatureMeasurement.</span>
+    <span class="sd">&quot;&quot;&quot;An object of this class creates a digital representation of a temperature sensor. This sensor&#39;s measurements are of type gateway.sensor.temperature.TemperatureSensor.TemperatureMeasurement.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -1065,7 +1125,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h2 id="gatewayn.sensor.temperature.TemperatureSensor.TemperatureMeasurement" class="doc doc-heading">
+<h2 id="gateway.sensor.temperature.TemperatureSensor.TemperatureMeasurement" class="doc doc-heading">
         <code>TemperatureMeasurement</code>
 
 
@@ -1074,14 +1134,14 @@ measurement has measurements of a defined class.</p>
 
   <div class="doc doc-contents ">
       <p class="doc doc-class-bases">
-        Bases: <code><a class="autorefs autorefs-internal" title="gatewayn.sensor.measurement.Measurement" href="#gatewayn.sensor.measurement.Measurement">Measurement</a></code></p>
+        Bases: <code><a class="autorefs autorefs-internal" title="gateway.sensor.measurement.Measurement" href="#gateway.sensor.measurement.Measurement">Measurement</a></code></p>
 
   
       <p>TemperatureMeasurements store data in degrees celsius.</p>
 
 
         <details class="quote">
-          <summary>Source code in <code>gatewayn/sensor/temperature.py</code></summary>
+          <summary>Source code in <code>gateway/sensor/temperature.py</code></summary>
           <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">24</span>
 <span class="normal">25</span>
 <span class="normal">26</span>
@@ -1148,7 +1208,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h3 id="gatewayn.sensor.temperature.TemperatureSensor.TemperatureMeasurement.__init__" class="doc doc-heading">
+<h3 id="gateway.sensor.temperature.TemperatureSensor.TemperatureMeasurement.__init__" class="doc doc-heading">
 <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
 
 </h3>
@@ -1203,7 +1263,7 @@ measurement has measurements of a defined class.</p>
   </table>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/temperature.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/temperature.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
 <span class="normal">29</span>
 <span class="normal">30</span>
@@ -1237,7 +1297,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h3 id="gatewayn.sensor.temperature.TemperatureSensor.TemperatureMeasurement.get_props" class="doc doc-heading">
+<h3 id="gateway.sensor.temperature.TemperatureSensor.TemperatureMeasurement.get_props" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_props</span><span class="p">()</span></code>
 
 </h3>
@@ -1266,7 +1326,7 @@ measurement has measurements of a defined class.</p>
   </table>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/temperature.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/temperature.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">42</span>
 <span class="normal">43</span>
 <span class="normal">44</span>
@@ -1297,7 +1357,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h2 id="gatewayn.sensor.temperature.TemperatureSensor.__init__" class="doc doc-heading">
+<h2 id="gateway.sensor.temperature.TemperatureSensor.__init__" class="doc doc-heading">
 <code class="highlight language-python"><span class="fm">__init__</span><span class="p">()</span></code>
 
 </h2>
@@ -1308,7 +1368,7 @@ measurement has measurements of a defined class.</p>
       <p>Sets up a new TemperatureSensor object</p>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/temperature.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/temperature.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 9</span>
 <span class="normal">10</span>
 <span class="normal">11</span>
@@ -1330,7 +1390,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h2 id="gatewayn.sensor.temperature.TemperatureSensor.read_data_from_advertisement" class="doc doc-heading">
+<h2 id="gateway.sensor.temperature.TemperatureSensor.read_data_from_advertisement" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">read_data_from_advertisement</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
 
 </h2>
@@ -1341,7 +1401,7 @@ measurement has measurements of a defined class.</p>
       <p>Reads data of an advertisement event onto the sensor's measurements and adds them to the list of Measurments.</p>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/temperature.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/temperature.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">16</span>
 <span class="normal">17</span>
 <span class="normal">18</span>
@@ -1373,17 +1433,17 @@ measurement has measurements of a defined class.</p>
 <div class="doc doc-object doc-class">
 
 
-<a id="gatewayn.sensor.humidity.HumiditySensor"></a>
+<a id="gateway.sensor.humidity.HumiditySensor"></a>
   <div class="doc doc-contents first">
       <p class="doc doc-class-bases">
-        Bases: <code><a class="autorefs autorefs-internal" title="gatewayn.sensor.sensor.Sensor" href="#gatewayn.sensor.sensor.Sensor">Sensor</a></code></p>
+        Bases: <code><a class="autorefs autorefs-internal" title="gateway.sensor.sensor.Sensor" href="#gateway.sensor.sensor.Sensor">Sensor</a></code></p>
 
   
-      <p>An object of this class creates a digital representation of a humidity sensor. This sensor's measurements are of type gatewayn.sensor.humidity.HumiditySensor.HumidityMeasurement.</p>
+      <p>An object of this class creates a digital representation of a humidity sensor. This sensor's measurements are of type gateway.sensor.humidity.HumiditySensor.HumidityMeasurement.</p>
 
 
         <details class="quote">
-          <summary>Source code in <code>gatewayn/sensor/humidity.py</code></summary>
+          <summary>Source code in <code>gateway/sensor/humidity.py</code></summary>
           <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 5</span>
 <span class="normal"> 6</span>
 <span class="normal"> 7</span>
@@ -1426,7 +1486,7 @@ measurement has measurements of a defined class.</p>
 <span class="normal">44</span>
 <span class="normal">45</span>
 <span class="normal">46</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">HumiditySensor</span><span class="p">(</span><span class="n">Sensor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; An object of this class creates a digital representation of a humidity sensor. This sensor&#39;s measurements are of type gatewayn.sensor.humidity.HumiditySensor.HumidityMeasurement.</span>
+    <span class="sd">&quot;&quot;&quot; An object of this class creates a digital representation of a humidity sensor. This sensor&#39;s measurements are of type gateway.sensor.humidity.HumiditySensor.HumidityMeasurement.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; Sets up a new HumiditySensor object</span>
@@ -1485,7 +1545,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h2 id="gatewayn.sensor.humidity.HumiditySensor.HumidityMeasurement" class="doc doc-heading">
+<h2 id="gateway.sensor.humidity.HumiditySensor.HumidityMeasurement" class="doc doc-heading">
         <code>HumidityMeasurement</code>
 
 
@@ -1494,14 +1554,14 @@ measurement has measurements of a defined class.</p>
 
   <div class="doc doc-contents ">
       <p class="doc doc-class-bases">
-        Bases: <code><a class="autorefs autorefs-internal" title="gatewayn.sensor.measurement.Measurement" href="#gatewayn.sensor.measurement.Measurement">Measurement</a></code></p>
+        Bases: <code><a class="autorefs autorefs-internal" title="gateway.sensor.measurement.Measurement" href="#gateway.sensor.measurement.Measurement">Measurement</a></code></p>
 
   
       <p>HumidityMeasurements store data in percent.</p>
 
 
         <details class="quote">
-          <summary>Source code in <code>gatewayn/sensor/humidity.py</code></summary>
+          <summary>Source code in <code>gateway/sensor/humidity.py</code></summary>
           <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">25</span>
 <span class="normal">26</span>
 <span class="normal">27</span>
@@ -1564,7 +1624,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h3 id="gatewayn.sensor.humidity.HumiditySensor.HumidityMeasurement.__init__" class="doc doc-heading">
+<h3 id="gateway.sensor.humidity.HumiditySensor.HumidityMeasurement.__init__" class="doc doc-heading">
 <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">humidity</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
 
 </h3>
@@ -1619,7 +1679,7 @@ measurement has measurements of a defined class.</p>
   </table>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/humidity.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/humidity.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
 <span class="normal">29</span>
 <span class="normal">30</span>
@@ -1653,7 +1713,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h3 id="gatewayn.sensor.humidity.HumiditySensor.HumidityMeasurement.get_props" class="doc doc-heading">
+<h3 id="gateway.sensor.humidity.HumiditySensor.HumidityMeasurement.get_props" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_props</span><span class="p">()</span></code>
 
 </h3>
@@ -1682,7 +1742,7 @@ measurement has measurements of a defined class.</p>
   </table>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/humidity.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/humidity.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">41</span>
 <span class="normal">42</span>
 <span class="normal">43</span>
@@ -1713,7 +1773,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h2 id="gatewayn.sensor.humidity.HumiditySensor.__init__" class="doc doc-heading">
+<h2 id="gateway.sensor.humidity.HumiditySensor.__init__" class="doc doc-heading">
 <code class="highlight language-python"><span class="fm">__init__</span><span class="p">()</span></code>
 
 </h2>
@@ -1724,7 +1784,7 @@ measurement has measurements of a defined class.</p>
       <p>Sets up a new HumiditySensor object</p>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/humidity.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/humidity.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
@@ -1746,7 +1806,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h2 id="gatewayn.sensor.humidity.HumiditySensor.read_data_from_advertisement" class="doc doc-heading">
+<h2 id="gateway.sensor.humidity.HumiditySensor.read_data_from_advertisement" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">read_data_from_advertisement</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
 
 </h2>
@@ -1781,7 +1841,7 @@ measurement has measurements of a defined class.</p>
   </table>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/humidity.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/humidity.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">15</span>
 <span class="normal">16</span>
 <span class="normal">17</span>
@@ -1817,17 +1877,17 @@ measurement has measurements of a defined class.</p>
 <div class="doc doc-object doc-class">
 
 
-<a id="gatewayn.sensor.battery.BatterySensor"></a>
+<a id="gateway.sensor.battery.BatterySensor"></a>
   <div class="doc doc-contents first">
       <p class="doc doc-class-bases">
-        Bases: <code><a class="autorefs autorefs-internal" title="gatewayn.sensor.sensor.Sensor" href="#gatewayn.sensor.sensor.Sensor">Sensor</a></code></p>
+        Bases: <code><a class="autorefs autorefs-internal" title="gateway.sensor.sensor.Sensor" href="#gateway.sensor.sensor.Sensor">Sensor</a></code></p>
 
   
-      <p>An object of this class creates a digital representation of a battery sensor. This sensors measurements are of type gatewayn.sensor.battery.BatterySensor.BatteryMeasurement.</p>
+      <p>An object of this class creates a digital representation of a battery sensor. This sensors measurements are of type gateway.sensor.battery.BatterySensor.BatteryMeasurement.</p>
 
 
         <details class="quote">
-          <summary>Source code in <code>gatewayn/sensor/battery.py</code></summary>
+          <summary>Source code in <code>gateway/sensor/battery.py</code></summary>
           <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 6</span>
 <span class="normal"> 7</span>
 <span class="normal"> 8</span>
@@ -1865,7 +1925,7 @@ measurement has measurements of a defined class.</p>
 <span class="normal">40</span>
 <span class="normal">41</span>
 <span class="normal">42</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BatterySensor</span><span class="p">(</span><span class="n">Sensor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;An object of this class creates a digital representation of a battery sensor. This sensors measurements are of type gatewayn.sensor.battery.BatterySensor.BatteryMeasurement.</span>
+    <span class="sd">&quot;&quot;&quot;An object of this class creates a digital representation of a battery sensor. This sensors measurements are of type gateway.sensor.battery.BatterySensor.BatteryMeasurement.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">BatterySensor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -1919,7 +1979,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h2 id="gatewayn.sensor.battery.BatterySensor.BatteryMeasurement" class="doc doc-heading">
+<h2 id="gateway.sensor.battery.BatterySensor.BatteryMeasurement" class="doc doc-heading">
         <code>BatteryMeasurement</code>
 
 
@@ -1928,14 +1988,14 @@ measurement has measurements of a defined class.</p>
 
   <div class="doc doc-contents ">
       <p class="doc doc-class-bases">
-        Bases: <code><a class="autorefs autorefs-internal" title="gatewayn.sensor.measurement.Measurement" href="#gatewayn.sensor.measurement.Measurement">Measurement</a></code></p>
+        Bases: <code><a class="autorefs autorefs-internal" title="gateway.sensor.measurement.Measurement" href="#gateway.sensor.measurement.Measurement">Measurement</a></code></p>
 
   
       <p>BatteryMeasurements store data in volts.</p>
 
 
         <details class="quote">
-          <summary>Source code in <code>gatewayn/sensor/battery.py</code></summary>
+          <summary>Source code in <code>gateway/sensor/battery.py</code></summary>
           <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">20</span>
 <span class="normal">21</span>
 <span class="normal">22</span>
@@ -2000,7 +2060,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h3 id="gatewayn.sensor.battery.BatterySensor.BatteryMeasurement.__init__" class="doc doc-heading">
+<h3 id="gateway.sensor.battery.BatterySensor.BatteryMeasurement.__init__" class="doc doc-heading">
 <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">voltage</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
 
 </h3>
@@ -2055,7 +2115,7 @@ measurement has measurements of a defined class.</p>
   </table>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/battery.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/battery.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">23</span>
 <span class="normal">24</span>
 <span class="normal">25</span>
@@ -2089,7 +2149,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h3 id="gatewayn.sensor.battery.BatterySensor.BatteryMeasurement.get_props" class="doc doc-heading">
+<h3 id="gateway.sensor.battery.BatterySensor.BatteryMeasurement.get_props" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_props</span><span class="p">()</span></code>
 
 </h3>
@@ -2118,7 +2178,7 @@ measurement has measurements of a defined class.</p>
   </table>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/battery.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/battery.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">37</span>
 <span class="normal">38</span>
 <span class="normal">39</span>
@@ -2157,17 +2217,17 @@ measurement has measurements of a defined class.</p>
 <div class="doc doc-object doc-class">
 
 
-<a id="gatewayn.sensor.barometer.BarometerSensor"></a>
+<a id="gateway.sensor.barometer.BarometerSensor"></a>
   <div class="doc doc-contents first">
       <p class="doc doc-class-bases">
-        Bases: <code><a class="autorefs autorefs-internal" title="gatewayn.sensor.sensor.Sensor" href="#gatewayn.sensor.sensor.Sensor">Sensor</a></code></p>
+        Bases: <code><a class="autorefs autorefs-internal" title="gateway.sensor.sensor.Sensor" href="#gateway.sensor.sensor.Sensor">Sensor</a></code></p>
 
   
-      <p>An object of this class creates a digital representation of a barometer sensor. This sensors measurements are of type gatewayn.sensor.barometer.BarometerSensor.PressureMeasurement.</p>
+      <p>An object of this class creates a digital representation of a barometer sensor. This sensors measurements are of type gateway.sensor.barometer.BarometerSensor.PressureMeasurement.</p>
 
 
         <details class="quote">
-          <summary>Source code in <code>gatewayn/sensor/barometer.py</code></summary>
+          <summary>Source code in <code>gateway/sensor/barometer.py</code></summary>
           <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 6</span>
 <span class="normal"> 7</span>
 <span class="normal"> 8</span>
@@ -2210,7 +2270,7 @@ measurement has measurements of a defined class.</p>
 <span class="normal">45</span>
 <span class="normal">46</span>
 <span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BarometerSensor</span><span class="p">(</span><span class="n">Sensor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;An object of this class creates a digital representation of a barometer sensor. This sensors measurements are of type gatewayn.sensor.barometer.BarometerSensor.PressureMeasurement.</span>
+    <span class="sd">&quot;&quot;&quot;An object of this class creates a digital representation of a barometer sensor. This sensors measurements are of type gateway.sensor.barometer.BarometerSensor.PressureMeasurement.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; Sets up a new BarometerSensor object</span>
@@ -2269,7 +2329,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h2 id="gatewayn.sensor.barometer.BarometerSensor.PressureMeasurement" class="doc doc-heading">
+<h2 id="gateway.sensor.barometer.BarometerSensor.PressureMeasurement" class="doc doc-heading">
         <code>PressureMeasurement</code>
 
 
@@ -2278,14 +2338,14 @@ measurement has measurements of a defined class.</p>
 
   <div class="doc doc-contents ">
       <p class="doc doc-class-bases">
-        Bases: <code><a class="autorefs autorefs-internal" title="gatewayn.sensor.measurement.Measurement" href="#gatewayn.sensor.measurement.Measurement">Measurement</a></code></p>
+        Bases: <code><a class="autorefs autorefs-internal" title="gateway.sensor.measurement.Measurement" href="#gateway.sensor.measurement.Measurement">Measurement</a></code></p>
 
   
       <p>PressureMeasurements store data in kilopascal.</p>
 
 
         <details class="quote">
-          <summary>Source code in <code>gatewayn/sensor/barometer.py</code></summary>
+          <summary>Source code in <code>gateway/sensor/barometer.py</code></summary>
           <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">26</span>
 <span class="normal">27</span>
 <span class="normal">28</span>
@@ -2348,7 +2408,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h3 id="gatewayn.sensor.barometer.BarometerSensor.PressureMeasurement.__init__" class="doc doc-heading">
+<h3 id="gateway.sensor.barometer.BarometerSensor.PressureMeasurement.__init__" class="doc doc-heading">
 <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">pressure</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
 
 </h3>
@@ -2403,7 +2463,7 @@ measurement has measurements of a defined class.</p>
   </table>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/barometer.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/barometer.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
 <span class="normal">30</span>
 <span class="normal">31</span>
@@ -2437,7 +2497,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h3 id="gatewayn.sensor.barometer.BarometerSensor.PressureMeasurement.get_props" class="doc doc-heading">
+<h3 id="gateway.sensor.barometer.BarometerSensor.PressureMeasurement.get_props" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_props</span><span class="p">()</span></code>
 
 </h3>
@@ -2466,7 +2526,7 @@ measurement has measurements of a defined class.</p>
   </table>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/barometer.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/barometer.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">42</span>
 <span class="normal">43</span>
 <span class="normal">44</span>
@@ -2497,7 +2557,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h2 id="gatewayn.sensor.barometer.BarometerSensor.__init__" class="doc doc-heading">
+<h2 id="gateway.sensor.barometer.BarometerSensor.__init__" class="doc doc-heading">
 <code class="highlight language-python"><span class="fm">__init__</span><span class="p">()</span></code>
 
 </h2>
@@ -2508,7 +2568,7 @@ measurement has measurements of a defined class.</p>
       <p>Sets up a new BarometerSensor object</p>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/barometer.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/barometer.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 9</span>
 <span class="normal">10</span>
 <span class="normal">11</span>
@@ -2530,7 +2590,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h2 id="gatewayn.sensor.barometer.BarometerSensor.read_data_from_advertisement" class="doc doc-heading">
+<h2 id="gateway.sensor.barometer.BarometerSensor.read_data_from_advertisement" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">read_data_from_advertisement</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
 
 </h2>
@@ -2565,7 +2625,7 @@ measurement has measurements of a defined class.</p>
   </table>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/barometer.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/barometer.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">16</span>
 <span class="normal">17</span>
 <span class="normal">18</span>
@@ -2601,17 +2661,17 @@ measurement has measurements of a defined class.</p>
 <div class="doc doc-object doc-class">
 
 
-<a id="gatewayn.sensor.acceleration.AccelerationSensor"></a>
+<a id="gateway.sensor.acceleration.AccelerationSensor"></a>
   <div class="doc doc-contents first">
       <p class="doc doc-class-bases">
-        Bases: <code><a class="autorefs autorefs-internal" title="gatewayn.sensor.sensor.Sensor" href="#gatewayn.sensor.sensor.Sensor">Sensor</a></code></p>
+        Bases: <code><a class="autorefs autorefs-internal" title="gateway.sensor.sensor.Sensor" href="#gateway.sensor.sensor.Sensor">Sensor</a></code></p>
 
   
-      <p>An object of this class creates a digital representation of a acceleration sensor. This sensors measurements are of type gatewayn.sensor.barometer.BarometerSensor.AccelerationMeasurement.</p>
+      <p>An object of this class creates a digital representation of a acceleration sensor. This sensors measurements are of type gateway.sensor.barometer.BarometerSensor.AccelerationMeasurement.</p>
 
 
         <details class="quote">
-          <summary>Source code in <code>gatewayn/sensor/acceleration.py</code></summary>
+          <summary>Source code in <code>gateway/sensor/acceleration.py</code></summary>
           <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 6</span>
 <span class="normal"> 7</span>
 <span class="normal"> 8</span>
@@ -2662,7 +2722,7 @@ measurement has measurements of a defined class.</p>
 <span class="normal">53</span>
 <span class="normal">54</span>
 <span class="normal">55</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AccelerationSensor</span><span class="p">(</span><span class="n">Sensor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;An object of this class creates a digital representation of a acceleration sensor. This sensors measurements are of type gatewayn.sensor.barometer.BarometerSensor.AccelerationMeasurement.</span>
+    <span class="sd">&quot;&quot;&quot;An object of this class creates a digital representation of a acceleration sensor. This sensors measurements are of type gateway.sensor.barometer.BarometerSensor.AccelerationMeasurement.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; Sets up a new AccelerationSensor object</span>
@@ -2729,7 +2789,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h2 id="gatewayn.sensor.acceleration.AccelerationSensor.AccelerationMeasurement" class="doc doc-heading">
+<h2 id="gateway.sensor.acceleration.AccelerationSensor.AccelerationMeasurement" class="doc doc-heading">
         <code>AccelerationMeasurement</code>
 
 
@@ -2738,14 +2798,14 @@ measurement has measurements of a defined class.</p>
 
   <div class="doc doc-contents ">
       <p class="doc doc-class-bases">
-        Bases: <code><a class="autorefs autorefs-internal" title="gatewayn.sensor.measurement.Measurement" href="#gatewayn.sensor.measurement.Measurement">Measurement</a></code></p>
+        Bases: <code><a class="autorefs autorefs-internal" title="gateway.sensor.measurement.Measurement" href="#gateway.sensor.measurement.Measurement">Measurement</a></code></p>
 
   
       <p>AccelerationMeasurements store data in a vector + acceleration force.</p>
 
 
         <details class="quote">
-          <summary>Source code in <code>gatewayn/sensor/acceleration.py</code></summary>
+          <summary>Source code in <code>gateway/sensor/acceleration.py</code></summary>
           <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">26</span>
 <span class="normal">27</span>
 <span class="normal">28</span>
@@ -2824,7 +2884,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h3 id="gatewayn.sensor.acceleration.AccelerationSensor.AccelerationMeasurement.__init__" class="doc doc-heading">
+<h3 id="gateway.sensor.acceleration.AccelerationSensor.AccelerationMeasurement.__init__" class="doc doc-heading">
 <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">acc_x</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">acc_y</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">acc_z</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">acc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">movement_counter</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sequence_number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">data_format</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
 
 </h3>
@@ -2919,7 +2979,7 @@ measurement has measurements of a defined class.</p>
   </table>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/acceleration.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/acceleration.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
 <span class="normal">30</span>
 <span class="normal">31</span>
@@ -2969,7 +3029,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h3 id="gatewayn.sensor.acceleration.AccelerationSensor.AccelerationMeasurement.get_props" class="doc doc-heading">
+<h3 id="gateway.sensor.acceleration.AccelerationSensor.AccelerationMeasurement.get_props" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_props</span><span class="p">()</span></code>
 
 </h3>
@@ -2998,7 +3058,7 @@ measurement has measurements of a defined class.</p>
   </table>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/acceleration.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/acceleration.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">50</span>
 <span class="normal">51</span>
 <span class="normal">52</span>
@@ -3029,7 +3089,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h2 id="gatewayn.sensor.acceleration.AccelerationSensor.__init__" class="doc doc-heading">
+<h2 id="gateway.sensor.acceleration.AccelerationSensor.__init__" class="doc doc-heading">
 <code class="highlight language-python"><span class="fm">__init__</span><span class="p">()</span></code>
 
 </h2>
@@ -3040,7 +3100,7 @@ measurement has measurements of a defined class.</p>
       <p>Sets up a new AccelerationSensor object</p>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/acceleration.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/acceleration.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 9</span>
 <span class="normal">10</span>
 <span class="normal">11</span>
@@ -3062,7 +3122,7 @@ measurement has measurements of a defined class.</p>
 
 
 
-<h2 id="gatewayn.sensor.acceleration.AccelerationSensor.read_data_from_advertisement" class="doc doc-heading">
+<h2 id="gateway.sensor.acceleration.AccelerationSensor.read_data_from_advertisement" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">read_data_from_advertisement</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
 
 </h2>
@@ -3097,7 +3157,7 @@ measurement has measurements of a defined class.</p>
   </table>
 
       <details class="quote">
-        <summary>Source code in <code>gatewayn/sensor/acceleration.py</code></summary>
+        <summary>Source code in <code>gateway/sensor/acceleration.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">16</span>
 <span class="normal">17</span>
 <span class="normal">18</span>
