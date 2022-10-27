@@ -10,4 +10,7 @@ docker-compose --env-file ../../.env -f docker-compose.yml up -d
 cd -
 echo "waiting for docker service startup..."
 sleep 20
+cd storage_and_control
+go run cmd/dumper/main.go
+cd -
 python3 demos/demo_gateway.py
