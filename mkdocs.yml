@@ -28,8 +28,11 @@ nav:
     - Analyse Heartbeat: analyse_heatbeats_ref.md
     - Time Demo: current_time_demo_ref.md
     - Heartbeat Demo: get_set_heartbeat_ref.md
-  - explanation.md
-  - test-documentation.md
+  - Tests:
+    - Test Documentation: test-documentation.md
+    - Hub Tests: hub_test_ref.md
+    - Tag Test: tag_test_ref.md
+    - Tag Config Tests: tag_config_test_ref.md
   - git_installation_on_raspberry.md
-  - Documentation: documentation_ref.md
+  - MKDocs: documentation_ref.md
   - readme.md

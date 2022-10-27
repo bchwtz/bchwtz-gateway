@@ -1,10 +1,14 @@
-"""Testing the tagconfig.py."""
+"""This module is testing various components of the tag config."""
 from gateway.tag.tagconfig import TagConfig
 
 
 
 
 class TestTagConfig:
+    """All tests in this class are similar in function.
+    They check for None if an invalid value is tried to be set
+    and for the value in the config if a valid value is set.
+    """
     test_config = TagConfig()
 #---------- sample rate tests -------------------
     def test_set_samplerate_invalid(self):
