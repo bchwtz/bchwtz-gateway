@@ -1,6 +1,6 @@
 name: documentation
 on:
-  merge:
+  pull_request:
     branches:
       - main
 jobs:
