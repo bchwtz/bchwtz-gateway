@@ -18,7 +18,7 @@ mkdocs serve
 in the directory where the .yml-file is located.
 The documentaion will be served at you localhost in the browser.
 Most changes will be quickloaded meaning that you do not have to reserve after minor changes.
-
+If you have any errors in your code, i.e. forgetting the colon (:) after a function definition, the process will fail and you will get an error message.
 
 # Inserting your docstrings into the documentation
 MKDocs allows you to use your docstrings directly inside the markdown-files.

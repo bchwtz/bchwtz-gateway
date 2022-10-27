@@ -2,7 +2,8 @@
 import asyncio
 from gateway.hub.hub import Hub
 
-def get_tag_heatbeat()
+
+def get_tag_heatbeat():
     """This demo shows how to get the currently set hearbeat from the tag.
 
     The first step is always to create a new asyncio eventloop in which the whole communication will be handled.

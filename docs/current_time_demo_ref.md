@@ -1,1 +1,1 @@
-::: demosn.current_time_demo
+::: demos.current_time_demo
