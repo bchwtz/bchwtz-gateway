@@ -1,25 +1,25 @@
 # Sensor module
-::: gatewayn.sensor
+::: gateway.sensor
 
 This module consists of all hardware sensors on the tag's board. A sensor always has measurements of its own type.
 
 # Sensor
-::: gatewayn.sensor.sensor.Sensor
+::: gateway.sensor.sensor.Sensor
 
 # Measurement
-::: gatewayn.sensor.measurement.Measurement
+::: gateway.sensor.measurement.Measurement
 
 # TemperatureSensor
-::: gatewayn.sensor.temperature.TemperatureSensor
+::: gateway.sensor.temperature.TemperatureSensor
 
 # HumiditySensor
-::: gatewayn.sensor.humidity.HumiditySensor
+::: gateway.sensor.humidity.HumiditySensor
 
 # BatterySensor
-::: gatewayn.sensor.battery.BatterySensor
+::: gateway.sensor.battery.BatterySensor
 
 # BarometerSensor
-::: gatewayn.sensor.barometer.BarometerSensor
+::: gateway.sensor.barometer.BarometerSensor
 
 # Accelerometer
-::: gatewayn.sensor.acceleration.AccelerationSensor
+::: gateway.sensor.acceleration.AccelerationSensor

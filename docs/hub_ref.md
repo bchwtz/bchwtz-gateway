@@ -1,2 +1,2 @@
 # Hub
-::: gatewayn.hub.hub.Hub
+::: gateway.hub.hub.Hub

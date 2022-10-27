@@ -10,13 +10,13 @@ classDiagram
   HumidityMeasurement "n" <-- "1" HumiditySensor:has
   BLEConn "1" <-- "1" Hub:uses
 
-  link Hub "/hub_ref/#gatewayn.hub.hub.Hub" "Hub"
-  link Tag "/tag_ref/#gatewayn.tag.tag.Tag" "Tag"
-  link Sensor "/sensor_ref/#gatewayn.sensor.sensor.Sensor" "Sensor"
-  link HumiditySensor "/sensor_ref/#gatewayn.sensor.humidity.HumiditySensor" "Sensor"
-  link Measurement "/sensor_ref/#gatewayn.sensor.measurement.Measurement" "Measurement"
-  link HumidityMeasurement "/sensor_ref/#gatewayn.sensor.humidity.HumiditySensor.HumidityMeasurement" "HumidityMeasurement"
-  link BLEConn "/ble_conn_ref/#gatewayn.drivers.bluetooth.ble_conn.ble_conn.BLEConn" "BLEConn"
+  link Hub "/hub_ref/#gateway.hub.hub.Hub" "Hub"
+  link Tag "/tag_ref/#gateway.tag.tag.Tag" "Tag"
+  link Sensor "/sensor_ref/#gateway.sensor.sensor.Sensor" "Sensor"
+  link HumiditySensor "/sensor_ref/#gateway.sensor.humidity.HumiditySensor" "Sensor"
+  link Measurement "/sensor_ref/#gateway.sensor.measurement.Measurement" "Measurement"
+  link HumidityMeasurement "/sensor_ref/#gateway.sensor.humidity.HumiditySensor.HumidityMeasurement" "HumidityMeasurement"
+  link BLEConn "/ble_conn_ref/#gateway.drivers.bluetooth.ble_conn.ble_conn.BLEConn" "BLEConn"
 
 
   Tag "n" <-- "1" Hub:has

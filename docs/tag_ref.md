@@ -1,8 +1,8 @@
 # Tag
-::: gatewayn.tag.tag.Tag
+::: gateway.tag.tag.Tag
 
 # TagConfig
-::: gatewayn.tag.tagconfig.TagConfig
+::: gateway.tag.tagconfig.TagConfig
 
 # TagBuilder
-::: gatewayn.tag.tag_builder.TagBuilder
+::: gateway.tag.tag_builder.TagBuilder

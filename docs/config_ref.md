@@ -1,2 +1,2 @@
 # Config
-::: gatewayn.config.Config
+::: gateway.config.Config
