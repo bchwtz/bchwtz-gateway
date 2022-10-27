@@ -11,6 +11,6 @@ cd -
 echo "waiting for docker service startup..."
 sleep 20
 cd storage_and_control
-go run cmd/dumper/main.go
+nohup go run cmd/dumper/main.go &> /dev/null
 cd -
 python3 demos/demo_gateway.py
