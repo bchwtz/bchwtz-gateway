@@ -4,6 +4,10 @@ on:
     branches:
       - main
       - refactoring-and-new-design
+  push:
+    branches:
+      - main
+      - refactoring-and-new-design
 jobs:
   deploy:
     runs-on: ubuntu-latest
