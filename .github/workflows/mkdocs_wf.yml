@@ -10,11 +10,21 @@ on:
       - refactoring-and-new-design
 jobs:
   deploy:
-    runs-on: fhswf
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
           python-version: 3.x
       - run: pip install mkdocs mkdocs-material mkdocstrings[python]
-      - run: mkdocs gh-deploy --force --clean --verbose
+      - run: mkdocs build
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload entire repository
+          path: 'site/*'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
