@@ -9,7 +9,7 @@ cd deployments/gateway
 docker-compose --env-file ../../.env -f docker-compose.yml up -d
 cd -
 echo "waiting for docker service startup..."
-sleep 20
+sleep 10
 cd storage_and_control
 nohup go run cmd/dumper/main.go &> /dev/null
 cd -
