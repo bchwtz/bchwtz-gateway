@@ -3,11 +3,11 @@ on:
   pull_request:
     branches:
       - main
-      - refactoring-and-new-design
+      - gh-pages
   push:
     branches:
       - main
-      - refactoring-and-new-design
+      - gh-pages
 permissions:
   contents: read
   pages: write
