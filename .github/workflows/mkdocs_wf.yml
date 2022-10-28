@@ -24,7 +24,7 @@ jobs:
         with:
           python-version: 3.x
       - run: pip install mkdocs mkdocs-material mkdocstrings[python]
-      - run: mkdocs build && ls -la
+      - run: mkdocs build
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
