@@ -3,6 +3,7 @@ on:
   pull_request:
     branches:
       - main
+      - refactoring-and-new-design
 jobs:
   deploy:
     runs-on: ubuntu-latest
