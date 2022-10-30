@@ -16,7 +16,7 @@ The MQTT-broker has four topics by default:
 
 As you are able to see the structure of the controller classes in the python-library is consistent to the topic structure in MQTT. To submit events to listening microservices new topics can be added following the same structure.  
 If there is a new topic to receive the results of a streaming-command, named stream-data, the topic-name should be structured like this:  
-gateway/tag/<mac_address>/stream-data  
+gateway/tag/&lt;mac_address&gt;/stream-data  
 If there are other streaming data events, they should follow the same pattern.
 ## Command and control interface
 
