@@ -39,3 +39,8 @@ nav:
   - git_installation_on_raspberry.md
   - MKDocs: documentation_ref.md
   - readme.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/bchwtz/
