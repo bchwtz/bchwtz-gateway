@@ -1,4 +1,7 @@
 __THIS IS THE README FROM THE GITHUB PAGE__
+![docs](https://github.com/bchwtz/bchwtz-gateway/actions/workflows/mkdocs_wf.yml/badge.svg)
+![microservices](https://github.com/bchwtz/bchwtz-gateway/actions/workflows/storage_and_control.yml/badge.svg)
+![ble-gateway](https://github.com/bchwtz/bchwtz-gateway/actions/workflows/ble-gateway.yml/badge.svg)
 
 __The whole new Project was developed in Python 3.10! Make sure to update the Python version installed on your PI!__
 # Nearly everything is deprecated!
