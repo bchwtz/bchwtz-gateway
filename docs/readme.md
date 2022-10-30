@@ -6,7 +6,7 @@ __THIS IS THE README FROM THE GITHUB PAGE__
 For the docs have a look at our [documentation page](https://bchwtz.github.io/bchwtz-gateway/)!
 
 __The whole new Project was developed in Python 3.10! Make sure to update the Python version installed on your PI!__
-# Nearly everything is deprecated!
+<# Nearly everything is deprecated!
 # Gateway-Library
 
 The gateway library serves as an interface between a `Bluetooth Low Energy` device (e.g. sensor like RuuviTag) and any backend. The library offers basic functionalities, such as searching for BLE devices, mutual communication and includes one-sided communication (`listen_advertisements`). The `gateway` contains the classes `hub`, `sensor` and `experimental`. The high-level idea behind this division is to create a twin of the hardware sensor with all possible functionalities and manage it via a hub. Thus the `hub` serves the search for possible sensors and the generation of the twin, as well as the recording of the cyclical advertisements. The `hub` saves a found sensor as an object of the class `sensor`. Via the `sensor object`, the functions described in the following, can be called as methods of `sensor object` and can be called by e.g. `sensor1.get_config()`.
@@ -198,3 +198,4 @@ The value will be encoded in two bytes.
 200 = 00 C8
 
 65.000 = FD E8
+>
