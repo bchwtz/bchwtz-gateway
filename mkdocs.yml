@@ -7,6 +7,8 @@ theme:
 plugins:
   - mkdocstrings
   - search
+  - minify:
+      minify_html: true
 
 markdown_extensions:
   - pymdownx.superfences:
