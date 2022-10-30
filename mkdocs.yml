@@ -1,5 +1,5 @@
 site_name: Gatway Documentation
-site_url: "https://bchwtz-fhswf.github.io/gateway/"
+site_url: "https://bchwtz.github.io/bchwtz-gateway/"
 
 theme:
   name: "material"
