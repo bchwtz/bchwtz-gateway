@@ -37,15 +37,15 @@ nav:
   - index.md
   - Reference:
     - Gateway Library:
-      - gateway_ref.md
-      - config_ref.md
-      - hub_ref.md
-      - tag_ref.md
-      - sensor_ref.md
-      - ble_conn_ref.md
+      - bluetooth-python-library/gateway_ref.md
+      - bluetooth-python-library/config_ref.md
+      - bluetooth-python-library/hub_ref.md
+      - bluetooth-python-library/tag_ref.md
+      - bluetooth-python-library/sensor_ref.md
+      - bluetooth-python-library/ble_conn_ref.md
     - Global Architecture:
       - mqtt_messages.md
-    - cli_ref.md
+    - go-services/cli_ref.md
   - Demos: 
     - Overview: demos_overview.md
     - Analyse Heartbeat: analyse_heatbeats_ref.md

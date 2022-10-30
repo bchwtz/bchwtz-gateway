@@ -32,13 +32,13 @@ classDiagram
   HumidityMeasurement "n" <-- "1" HumiditySensor:has
   BLEConn "1" <-- "1" Hub:uses
 
-  link Hub "/bchwtz-gateway/hub_ref/#gateway.hub.hub.Hub" "Hub"
-  link Tag "/bchwtz-gateway/tag_ref/#gateway.tag.tag.Tag" "Tag"
-  link Sensor "/bchwtz-gateway/sensor_ref/#gateway.sensor.sensor.Sensor" "Sensor"
-  link HumiditySensor "/bchwtz-gateway/sensor_ref/#gateway.sensor.humidity.HumiditySensor" "Sensor"
-  link Measurement "/bchwtz-gateway/sensor_ref/#gateway.sensor.measurement.Measurement" "Measurement"
-  link HumidityMeasurement "/bchwtz-gateway/sensor_ref/#gateway.sensor.humidity.HumiditySensor.HumidityMeasurement" "HumidityMeasurement"
-  link BLEConn "/bchwtz-gateway/ble_conn_ref/#gateway.drivers.bluetooth.ble_conn.ble_conn.BLEConn" "BLEConn"
+  link Hub "/bchwtz-gateway/bluetooth-python-library/hub_ref/#gateway.hub.hub.Hub" "Hub"
+  link Tag "/bchwtz-gateway/bluetooth-python-library/tag_ref/#gateway.tag.tag.Tag" "Tag"
+  link Sensor "/bchwtz-gateway/bluetooth-python-library/sensor_ref/#gateway.sensor.sensor.Sensor" "Sensor"
+  link HumiditySensor "/bchwtz-gateway/bluetooth-python-library/sensor_ref/#gateway.sensor.humidity.HumiditySensor" "Sensor"
+  link Measurement "/bchwtz-gateway/bluetooth-python-library/sensor_ref/#gateway.sensor.measurement.Measurement" "Measurement"
+  link HumidityMeasurement "/bchwtz-gateway/bluetooth-python-library/sensor_ref/#gateway.sensor.humidity.HumiditySensor.HumidityMeasurement" "HumidityMeasurement"
+  link BLEConn "/bchwtz-gateway/bluetooth-python-library/ble_conn_ref/#gateway.drivers.bluetooth.ble_conn.ble_conn.BLEConn" "BLEConn"
 
 
   Tag "n" <-- "1" Hub:has
