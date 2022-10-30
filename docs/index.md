@@ -1,8 +1,11 @@
 # Introduction
 ## What this project is about
+This project is working with bluetooth low energy devices that implement different sensors and propably even actors. It aims to make these devices available for different Internet of Things use cases. This project is open to support future devices and their sensors. As a sample device you might want to use a Ruuvi-tag, which is an open source hardware platform or other nordic nrf52-based devices, as they all use the same bluetooth stack.
+It is meant to run on a raspberry pi newer than 3b with integrated bluetooth 4.0 or similar linux-based platforms. It is also able to run on x86/amd64 hardware.
 
-## Basic software architecture
-To gather data from the sensortags, you will need a device running on linux with a bluetooth 4.0 compatible chipset on it. This software is used as a bluetooth low energy gateway (ble-gateway) that connects to your tags and a cloud solution to store the data of the tags and allows to send control events to them.
+## Structure of the project
+The software is split in different microservices and heavily depends on a message-broking system of any kind. This version is using MQTT but you can use any pubsub compatible broker (e.g. nats, AMQP, Kafka, etc.). All components are implemented with their own datamodels to make the broker protocols interchangeable. The main datamodel is defined by the python gateway library.
+The gateway's repository is structured in different directories for the different microservices.
 
 ## Microservices
 The gateway-software consists of three microservices:  
@@ -17,7 +20,7 @@ The microservices connect to each other using the MQTT protocol. RabbitMQ is use
 The block components of this diagram should be interpreted as functional blocks, not as the implementation itself. The functional blocks are either implemented as python classes or as a whole module.   
 
 ## Python ble-gateway implementation
-### classes
+### Classes
 As a brief introduction to the python library it makes sense to have a view on this class diagram of the library:
 
 ``` mermaid
@@ -71,7 +74,7 @@ classDiagram
 ```
 In the diagram you can see the actual links and references of the different classes inside the library. If you need the implementation reference for a single class in this diagram, just click on its box and you will be forwarded to the correct page.
 
-### scanning for ble-advertisements
+### How scanning for ble-advertisements works
 This is how the gateway listens for advertisements and sets up new tags:
 
 ``` mermaid
