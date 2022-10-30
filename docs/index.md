@@ -65,9 +65,7 @@ classDiagram
     +float humidity
   }
   class BLEConn{
-    +logging.logger loggerTo gather data from the sensortags, you will need a device running on linux with a bluetooth 4.0 compatible chipset on it. This software is used as a bluetooth low energy gateway (ble-gateway) that connects to your tags and a cloud solution to store the data of the tags and allows to send control events to them.
-
-
+    +logging.logger logger
     scan_tags(manufacturer_id: int = 0, timeout: float = 20.0)
     listen_advertisements(timeout: float = 5.0, cb: Callable[[BLEDevice, dict], None] = None)
   }
