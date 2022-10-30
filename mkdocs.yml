@@ -54,7 +54,7 @@ nav:
         - commandinterface-package: go-services/commandinterface_ref.md
   - Demos: 
     - Overview: demos_overview.md
-    - Analyse Heartbeat: analyse_heatbeats_ref.md
+    - Analyse Heartbeat: analyse_heartbeats_ref.md
     - Time Demo: current_time_demo_ref.md
     - Heartbeat Demo: get_set_heartbeat_ref.md
   - Tests:
