@@ -46,8 +46,11 @@ nav:
     - Global Architecture:
       - mqtt_messages.md
     - Additional Microservices:
-      - go-services/cli_ref.md
-      - go-services/db_dumper_ref.md
+      - CLI: go-services/cli_ref.md
+      - Dumper: go-services/dumper_ref.md
+      - gateway-package: go-services/gateway_ref.md
+      - model-package: go-services/model_ref.md
+      - commandinterface-package: go-services/commandinterface_ref.md
   - Demos: 
     - Overview: demos_overview.md
     - Analyse Heartbeat: analyse_heatbeats_ref.md
