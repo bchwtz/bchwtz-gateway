@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: 3.x
       - run: pip install mkdocs-material mkdocstrings[python] mkdocstrings[go] mkdocs-extra-sass-plugin "mkdocs-minify-plugin>=0.3" "mkdocs-redirects>=1.0" mike "jinja2==3.0.3"
-      - run: cd storage-and-control && ./generate_static_docs.sh
+      - run: cd storage_and_control && ./generate_static_docs.sh
       - run: mkdocs build
       - name: Setup Pages
         uses: actions/configure-pages@v2
