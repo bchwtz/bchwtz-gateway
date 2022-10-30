@@ -8,10 +8,11 @@ The software is split in different microservices and heavily depends on a messag
 The gateway's repository is structured in different directories for the different microservices.
 
 ## Microservices
-The gateway-software consists of three microservices:  
-- python bluetooth low energy implementation  
-- go connector to a mongo db  
-- go command and control commandline interface  
+The gateway-software consists of three microservices:
+
+* python bluetooth low energy implementation
+* go connector to a mongo db
+* go command and control commandline interface
 
 The microservices connect to each other using the MQTT protocol. RabbitMQ is used as a MQTT-broker.
 ![Bluetooth Low Energy Gateway Architecture](imgs/ble_gateway-actual_arch_semester_summer_2022.drawio.png)
