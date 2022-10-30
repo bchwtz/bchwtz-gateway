@@ -3,6 +3,8 @@ __THIS IS THE README FROM THE GITHUB PAGE__
 ![microservices](https://github.com/bchwtz/bchwtz-gateway/actions/workflows/storage_and_control.yml/badge.svg)
 ![ble-gateway](https://github.com/bchwtz/bchwtz-gateway/actions/workflows/ble-gateway.yml/badge.svg)
 
+For the docs have a look at our [documentation page](https://bchwtz.github.io/bchwtz-gateway/)
+
 __The whole new Project was developed in Python 3.10! Make sure to update the Python version installed on your PI!__
 # Nearly everything is deprecated!
 # Gateway-Library
