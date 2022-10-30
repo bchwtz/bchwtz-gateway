@@ -36,13 +36,16 @@ markdown_extensions:
 nav:
   - index.md
   - Reference:
-    - gateway_ref.md
-    - config_ref.md
-    - hub_ref.md
-    - tag_ref.md
-    - sensor_ref.md
-    - ble_conn_ref.md
-    - mqtt_messages.md
+    - Gateway Library:
+      - gateway_ref.md
+      - config_ref.md
+      - hub_ref.md
+      - tag_ref.md
+      - sensor_ref.md
+      - ble_conn_ref.md
+    - Global Architecture:
+      - mqtt_messages.md
+    - cli_ref.md
   - Demos: 
     - Overview: demos_overview.md
     - Analyse Heartbeat: analyse_heatbeats_ref.md
