@@ -91,7 +91,10 @@ sequenceDiagram
   activate BLEConn
   BLEConn->>Tag: None on success
   deactivate BLEConn
-  Tag->>Hub: cb on success
+  Tag-->>Hub: cb on success
+  Tag->>Decoder: decode cb
+  Decoder->>Tag: message as dict or primitive
+  Tag-->>Tag: update values
   deactivate Tag
   deactivate Hub
 ```
