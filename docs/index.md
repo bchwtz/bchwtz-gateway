@@ -82,7 +82,7 @@ sequenceDiagram
   Note right of Hub: startup procedure
   BLEConn-->>Hub: listen_advertisement_cb(msg)
   activate Hub
-  Hub->>Hub: check if this Tag already existed - if yes, add new data to the tag, if not add a new tag
+  Hub-->>Hub: check if this Tag already existed - if yes, add new data to the tag, if not add a new tag
   Hub->>Tag: __devices_to_tags()
   activate Tag
   Tag->>Hub: adds the Tag to taglist of hub
