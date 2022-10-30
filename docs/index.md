@@ -69,6 +69,12 @@ This is how the gateway listens for advertisements and sets up new tags:
 
 ``` mermaid
 sequenceDiagram
+  participant Gateway
+  participant Hub
+  participant Tag
+  participant BLEConn
+  participant Encoder
+  participant Decoder
   Gateway->>Hub: __init__()
   activate Hub
 
@@ -87,14 +93,20 @@ sequenceDiagram
   activate Tag
   Tag->>Hub: adds the Tag to taglist of hub
   Hub->>Tag: get_config()
-  Tag->>BLEConn: run_single_ble_command()
+  deactivate Hub
+  Tag->>Encoder: encode message as bytearr
+  activate Encoder
+  Encoder->>Tag: return encoded bytearr
+  deactivate Encoder
+  Tag->>BLEConn: run_single_ble_command(cmd as bytearr)
   activate BLEConn
   BLEConn->>Tag: None on success
+  BLEConn-->>Tag: cb on success
   deactivate BLEConn
-  Tag-->>Hub: cb on success
   Tag->>Decoder: decode cb
+  activate Decoder
   Decoder->>Tag: message as dict or primitive
+  deactivate Decoder
   Tag-->>Tag: update values
   deactivate Tag
-  deactivate Hub
 ```
