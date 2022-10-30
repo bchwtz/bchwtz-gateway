@@ -1,5 +1,6 @@
 package model
 
+// represents a tag
 type Tag struct {
 	Address  string        `json:"address"`
 	BLEDev   BLEDevice     `json:"ble_device"`

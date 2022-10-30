@@ -11,17 +11,20 @@ import (
 	"github.com/systematiccaos/going-forward/mqtt"
 )
 
+// manages the database and MQTT-functions for the dumping-service
 type GatewayDumper struct {
 	gateway
 	database *db.Database
 }
 
+// creates a new dumper object
 func NewDumper() GatewayDumper {
 	gw := GatewayDumper{}
 	gw.run()
 	return gw
 }
 
+// loop to run the gateway-dumper-service
 func (gw *GatewayDumper) run() {
 	gw.mqclient = mqtt.Client{}
 	if err := godotenv.Load("../.env"); err != nil {
@@ -38,6 +41,7 @@ func (gw *GatewayDumper) run() {
 	<-donech
 }
 
+// listens for advertisements on MQTT-topic and sends them to the internal get_advertisement_channel
 func (gw *GatewayDumper) listenAdvertisements() {
 	topic := os.Getenv("TOPIC_LISTEN_ADV")
 
@@ -47,6 +51,7 @@ func (gw *GatewayDumper) listenAdvertisements() {
 	logrus.Infoln("subscribing on topic " + topic)
 }
 
+// listens for new messages on the logs MQTT-topic and sends them to the internal get_advertisement_channel
 func (gw *GatewayDumper) listenLogs() {
 	topic := os.Getenv("TOPIC_LOG")
 
@@ -56,6 +61,7 @@ func (gw *GatewayDumper) listenLogs() {
 	logrus.Infoln("subscribing to logs on topic " + topic)
 }
 
+// writes received advertisements to mongo
 func (gw *GatewayDumper) writeAdvertisementsToDB() {
 	for {
 		adv, more := <-gw.get_advertisement_channel
@@ -75,6 +81,7 @@ func (gw *GatewayDumper) writeAdvertisementsToDB() {
 	}
 }
 
+// establishes the connection to the mongodb and saves the resulting connection object in its internal gateway struct
 func (gw *GatewayDumper) ConnectMongo() {
 	db, err := db.ConnectMongo()
 	if err != nil {

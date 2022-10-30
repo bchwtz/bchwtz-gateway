@@ -1,3 +1,4 @@
+// The cli-application for the ble_gateway can be run on any linux system, connects to MQTT and sends messages to the gateway to configure or contact ble-tags.
 package main
 
 import (

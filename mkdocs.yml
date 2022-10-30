@@ -45,7 +45,9 @@ nav:
       - bluetooth-python-library/ble_conn_ref.md
     - Global Architecture:
       - mqtt_messages.md
-    - go-services/cli_ref.md
+    - Additional Microservices:
+      - go-services/cli_ref.md
+      - go-services/db_dumper_ref.md
   - Demos: 
     - Overview: demos_overview.md
     - Analyse Heartbeat: analyse_heatbeats_ref.md

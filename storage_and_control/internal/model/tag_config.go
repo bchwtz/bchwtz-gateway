@@ -1,5 +1,6 @@
 package model
 
+// complies to the python-implementation of a tag_config
 type TagConfig struct {
 	Samplerate   int    `json:"samplerate"`
 	Resolution   int    `json:"resolution"`

@@ -1,10 +1,12 @@
 package model
 
+// Sensor is an interface all referenced sensors have to comply to.
 type Sensor interface {
 	GetName() string
 	GetMeasurements() []interface{}
 }
 
+// BaseStructure for all sensors
 type BasicSensor struct {
 	Name         string        `json:"name"`
 	Measurements []interface{} `json:"measurements"`
@@ -24,22 +26,27 @@ func (s *TemperatureSensor) GetMeasurements() []interface{}  { return s.Measurem
 func (s *HumiditySensor) GetMeasurements() []interface{}     { return s.Measurements }
 func (s *BatterySensor) GetMeasurements() []interface{}      { return s.Measurements }
 
+// contains measurements for acceleration events
 type AccelerationSensor struct {
 	BasicSensor
 }
 
+// contains pressure measurements
 type BarometerSensor struct {
 	BasicSensor
 }
 
+// contains temperature measurements
 type TemperatureSensor struct {
 	BasicSensor
 }
 
+// contains humidity measurements
 type HumiditySensor struct {
 	BasicSensor
 }
 
+// contains battery measurements
 type BatterySensor struct {
 	BasicSensor
 }

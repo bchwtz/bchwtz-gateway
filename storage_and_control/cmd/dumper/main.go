@@ -1,3 +1,4 @@
+// This dumper expects data on the log and advertisement topics on MQTT and saves them to a given mongodb.
 package main
 
 import (
