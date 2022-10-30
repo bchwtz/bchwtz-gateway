@@ -1,4 +1,4 @@
-module github.com/bchwtz-fhswf/gateway/client
+module github.com/bchwtz/bchwtz-gateway/client
 
 go 1.19
 

@@ -1,4 +1,4 @@
-module github.com/bchwtz-fhswf/gateway/storage_and_control
+module github.com/bchwtz/bchwtz-gateway/storage_and_control
 
 go 1.19
 

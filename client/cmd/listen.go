@@ -6,7 +6,7 @@ package cmd
 import (
 	"fmt"
 
-	client "github.com/bchwtz-fhswf/gateway/client/internal/client"
+	client "github.com/bchwtz/bchwtz-gateway/client/internal/client"
 	"github.com/spf13/cobra"
 )
 

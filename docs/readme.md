@@ -33,7 +33,7 @@ If the installation was successful, a large output follows. The last line should
 The software can be installed via command line.
 
 ```{code-block} python
-pip3 install -e git+https://<access token>@github.com/bchwtz-fhswf/gateway.git@develop#egg=gateway
+pip3 install -e git+https://<access token>@github.com/bchwtz/bchwtz-gateway.git@develop#egg=gateway
 ```
 ```{admonition} Note
 The token is displayed by github only once for copy in plain text.

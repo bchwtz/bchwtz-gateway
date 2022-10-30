@@ -1,7 +1,7 @@
 package gateway
 
 import (
-	"github.com/bchwtz-fhswf/gateway/storage_and_control/internal/model"
+	"github.com/bchwtz/bchwtz-gateway/storage_and_control/internal/model"
 	"github.com/systematiccaos/going-forward/mqtt"
 )
 

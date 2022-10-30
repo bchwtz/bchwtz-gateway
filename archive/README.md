@@ -1,5 +1,5 @@
-[![gateway unittest](https://github.com/bchwtz-fhswf/gateway/actions/workflows/gateway_unittest.yml/badge.svg?branch=main)](https://github.com/bchwtz-fhswf/gateway/actions/workflows/gateway_unittest.yml)
-[![docs](https://github.com/bchwtz-fhswf/gateway/actions/workflows/docs.yml/badge.svg)](https://github.com/bchwtz-fhswf/gateway/actions/workflows/docs.yml)
+[![gateway unittest](https://github.com/bchwtz/bchwtz-gateway/actions/workflows/gateway_unittest.yml/badge.svg?branch=main)](https://github.com/bchwtz/bchwtz-gateway/actions/workflows/gateway_unittest.yml)
+[![docs](https://github.com/bchwtz/bchwtz-gateway/actions/workflows/docs.yml/badge.svg)](https://github.com/bchwtz/bchwtz-gateway/actions/workflows/docs.yml)
 # Gateway-Library
 
 The gateway library serves as an interface between a `Bluetooth Low Energy` device (e.g. sensor like RuuviTag) and any backend. The library offers basic functionalities, such as searching for BLE devices, mutual communication and includes one-sided communication (`listen_advertisements`). The `gateway` contains the classes `hub`, `sensor` and `experimental`. The high-level idea behind this division is to create a twin of the hardware sensor with all possible functionalities and manage it via a hub. Thus the `hub` serves the search for possible sensors and the generation of the twin, as well as the recording of the cyclical advertisements. The `hub` saves a found sensor as an object of the class `sensor`. Via the `sensor object`, the functions described in the following, can be called as methods of `sensor object` and can be called by e.g. `sensor1.get_config()`.
@@ -31,7 +31,7 @@ If the installation was successful, a large output follows. The last line should
 The software can be installed via command line.
 
 ```{code-block} python
-pip3 install -e git+https://<access token>@github.com/bchwtz-fhswf/gateway.git@develop#egg=gateway
+pip3 install -e git+https://<access token>@github.com/bchwtz/bchwtz-gateway.git@develop#egg=gateway
 ```
 ```{admonition} Note
 The token is displayed by github only once for copy in plain text.

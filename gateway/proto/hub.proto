@@ -3,7 +3,7 @@ syntax = "proto3";
 // Not necessary for Python but should still be declared to avoid name collisions 
 // in the Protocol Buffers namespace and non-Python languages
 package gateway;
-option go_package = "github.com/bchwtz-fhswf/gateway/client/generated;generated";
+option go_package = "github.com/bchwtz/bchwtz-gateway/client/generated;generated";
 
 import "tag.proto";
 

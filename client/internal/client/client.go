@@ -3,7 +3,7 @@ package cmd
 import (
 	"context"
 
-	pb "github.com/bchwtz-fhswf/gateway/client/generated"
+	pb "github.com/bchwtz/bchwtz-gateway/client/generated"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

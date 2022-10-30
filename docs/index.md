@@ -1,4 +1,5 @@
 # Introduction
+To gather data from the sensortags, you will need a device running on linux with a bluetooth 4.0 compatible chipset on it. This software is used as a bluetooth low energy gateway (ble-gateway) that connects to your tags and a cloud solution to store the data of the tags and allows to send control events to them.
 
 As a brief introduction to the python library it makes sense to have a view on this class diagram of the library:
 
