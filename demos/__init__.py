@@ -2,7 +2,7 @@
 All demos assume that a working and turned on tag is close to your raspberry pi.
 A general note, if the connections seem very slow, check if another user accidentaly is
 already connected to the tag you are trying to work with.
-They are all prefilled with one specific tag-ma. This will have to be changed to the
+Currently all demos use a hard coded MAC-Adress for finding the tag. This will have to be changed to the
 MAC-adress your current tag has. Your current tag-MAC has to be inserted into the get_tag_by_mac() method.
 
 
@@ -17,6 +17,7 @@ you provide.
 On this selected tag all special operations, which are to be shon in a given demo, are executed.
 
 So in general the loop is:
+
 1. Create an Event-loop.
 2. Find the tags near to you.
 3. Grab one of the found tags by the MAC-adress.
