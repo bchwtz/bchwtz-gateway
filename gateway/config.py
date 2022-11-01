@@ -103,3 +103,9 @@ class Config:
         status: list[dict] = [{0: 0x22, 2: 0xF2}]
         heartbeat: list[dict] = [{0: 0x22, 2: 0xF3}]
         time: list[dict] = [{0: 0x21, 2: 0x09}, {0: 0x4A, 2: 0x09}]
+        logging_status: list[dict] = [{0: 0xFB, 1: 0x0D}]
+    class ReturnSignalsLoggingMode(Enum):
+        """ These are configs for the sigscanner-class from drivers. Keys are the required offset in the bytearray, values are the values required at the offsets to get a match. Don't change this, if you are not certain what you are doing! This might lead to completely missinterpreted values from your tag.
+        """
+        logging_data: list[dict] = [{0: 0x11}]
+        logging_data_end: list[dict] = [{0: 0x4a, 1: 0x4a, 2: 0x11, 3: 0x00}]

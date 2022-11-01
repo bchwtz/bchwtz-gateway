@@ -338,7 +338,7 @@ class sensor(object):
                 AccelorationData = process_data_10(self.sensordata, value[6], value[4])
             elif (value[5] == 8):
                 # 8 Bit
-                logger.info("Start processing reveived data with process_sensor_data_10")
+                logger.info("Start processing reveived data with process_sensor_data_8")
                 AccelorationData = process_data_8(self.sensordata, value[6], value[4])
             else:
                 logger.error('Cant process bytearray! Unknwon sensor resolution!')

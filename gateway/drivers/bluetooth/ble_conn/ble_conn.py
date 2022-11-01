@@ -7,6 +7,7 @@ from termcolor import colored
 from typing import Callable
 from binascii import hexlify
 import time
+
 class BLEConn():
     """ Wraps bleak to be easily accessible for the gateway's usecase and to be able to use custom logging.
     """
@@ -15,7 +16,9 @@ class BLEConn():
         """
         logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         self.logger: logging.Logger = logging.getLogger("BLEConn")
-        self.logger.setLevel(logging.ERROR)
+        self.logger.setLevel(logging.WARNING)
+        self.stopEvent: asyncio.Event = asyncio.Event()
+        self.stopEvent.clear()
 
     # cof - bleak adscanning seems broken - have to investigate further later... muuuuuch later...
     async def listen_advertisements(self, timeout: float = 5.0, cb: Callable[[BLEDevice, dict], None] = None) -> None:
@@ -43,7 +46,7 @@ class BLEConn():
         devicelist = self.validate_manufacturer(devices, manufacturer_id)
         return devicelist
 
-    async def run_single_ble_command(self, tag: BLEDevice, read_chan: str, write_chan: str, cmd: str = "", timeout = 20.0, cb: Callable[[int, bytearray], None] = None, retries: int = 0, max_retries: int = 5):
+    async def run_single_ble_command(self, tag: BLEDevice, read_chan: str, write_chan: str, cmd: str = "", timeout = 20.0, cb: Callable[[int, bytearray], None] = None, retries: int = 0, max_retries: int = 5, disconnect: bool = True):
         """ Connects to a given tag and starts notification of the given callback
         Arguments:
             tag: communication device abstraction
@@ -53,15 +56,22 @@ class BLEConn():
         try:
             async with BleakClient(tag, timeout = timeout) as client:
                 await client.start_notify(char_specifier = read_chan, callback = cb)
-                await client.write_gatt_char(write_chan, bytearray.fromhex(cmd), True)
+                await client.write_gatt_char(write_chan, bytearray.fromhex(cmd), disconnect)
                 time.sleep(timeout)
                 # await client.stop_notify(char_specifier = read_chan)
-                await client.disconnect()
+                if disconnect:
+                    self.logger.warn("disconnecting...")
+                    await client.disconnect()
+                else:
+                    self.logger.warn("waiting...")
+                    await self.stopEvent.wait()
+                    self.logger.warn("ending...")
+                    await client.disconnect()
+                    await self.stopEvent.clear()
 
         except Exception as e:
             if retries < max_retries:
                 self.logger.warn(f"{e} - retrying...")
-                time.sleep(timeout)
                 await self.run_single_ble_command(tag, read_chan, write_chan, cmd, timeout, cb, retries+1, max_retries)
             return
 

@@ -1,6 +1,7 @@
 import asyncio
+from binascii import hexlify
 from datetime import datetime
-from typing import Callable
+from typing import Callable, Type
 import time
 from typing_extensions import Self
 from xmlrpc.client import DateTime
@@ -45,7 +46,11 @@ class Tag(object):
         self.ble_device: BLEDevice = device
         self.ble_conn: BLEConn = BLEConn()
         self.logger = logging.getLogger("Tag")
-        self.logger.setLevel(logging.ERROR)
+        self.logger.setLevel(logging.WARNING)
+        formatter = logging.Formatter('[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s','%m-%d %H:%M:%S')
+        streamHandler = logging.StreamHandler()
+        streamHandler.setFormatter(formatter)
+        self.logger.addHandler(streamHandler)
         # TODO: add sensors as ble caps on firmware side to autoload sensor classes by names
         self.sensors: list[Sensor] = [
             AccelerationSensor(),
@@ -65,18 +70,50 @@ class Tag(object):
         self.publisher: aiopubsub.Publisher = aiopubsub.Publisher(self.pubsub_hub, prefix = aiopubsub.Key("TAG"))
 
     async def get_acceleration_log(self, cb: Callable[[int, bytearray], None] = None) -> None:
+        if cb is None:
+            cb = self.acceleration_log_callback
+        
+        await self.activate_logging(cb)
+        await self.get_acceleration_data(cb)
+        # await self.deactivate_logging(cb)
+
+    async def activate_logging(self, cb: Callable[[int, bytearray], None] = None) -> None:
+        if cb is None:
+            cb = self.multi_communication_callback
+        await self.ble_conn.run_single_ble_command(
+            tag = self.ble_device,
+            read_chan = Config.CommunicationChannels.rx.value,
+            write_chan = Config.CommunicationChannels.tx.value,
+            cmd = Config.Commands.activate_logging_at_tag.value,
+            cb = cb
+        )
+
+    async def deactivate_logging(self, cb: Callable[[int, bytearray], None] = None) -> None:
+        if cb is None:
+            cb = self.multi_communication_callback
+        await self.ble_conn.run_single_ble_command(
+            tag = self.ble_device,
+            read_chan = Config.CommunicationChannels.rx.value,
+            write_chan = Config.CommunicationChannels.tx.value,
+            cmd = Config.Commands.deactivate_logging_at_tag.value,
+            cb = cb
+        )
+
+    async def get_acceleration_data(self, cb: Callable[[int, bytearray], None] = None) -> None:
         """ Will get the acceleration log_data of the sensors and store it inside their measurements
             Arguments:
                 cb: A callback that is invoked, once the answer to this call is received (default: multi_comm_callback)
         """
         if cb is None:
-            cb = self.default_log_callback
+            cb = self.logging
         await self.ble_conn.run_single_ble_command(
             tag = self.ble_device,
             read_chan = Config.CommunicationChannels.rx.value,
             write_chan = Config.CommunicationChannels.tx.value,
             cmd = Config.Commands.get_acceleration_data.value,
-            cb = cb
+            timeout = 30,
+            cb = cb,
+            disconnect = False,
         )
 
     async def get_config(self, cb: Callable[[int, bytearray], None] = None) -> None:
@@ -153,6 +190,16 @@ class Tag(object):
         self.logger.info(f"status {status_code}")
         self.logger.info(f"msg: {res}")
 
+    def acceleration_log_callback(self, status_code: int, rx_bt: bytearray) -> None:
+        caught_signals = None
+        caught_signals = SigScanner.scan_signals(rx_bt, Config.ReturnSignalsLoggingMode)
+        if caught_signals == None:
+            return
+        if "logging_data" in caught_signals:
+            self.handle_logging_data_cb(rx_bt)
+        elif "logging_data_end" in caught_signals:
+            self.handle_logging_data_end_cb(rx_bt)
+
     def multi_communication_callback(self, status_code: int, rx_bt: bytearray) -> None:
         """ Handles a message and forwards it to the correct callback. This is needed so that if a call has multiple messages that will be received, the following message to the first received message won't be ignored.
             Arguments:
@@ -170,6 +217,10 @@ class Tag(object):
             self.handle_time_cb(rx_bt)
         elif "heartbeat" in caught_signals:
             self.handle_heartbeat_cb(rx_bt)
+        elif "logging_status" in caught_signals:
+            self.handle_logging_status_cb(rx_bt)
+        else:
+            self.logger.warn("got non-implemented function callback")
         
         self.publisher.publish(aiopubsub.Key("log"), self)
 
@@ -215,6 +266,32 @@ class Tag(object):
         self.publisher.publish(aiopubsub.Key("log", "TIME"), self)
         print(self.time)
 
+    def handle_logging_status_cb(self, rx_bt: bytearray):
+        self.logger.debug("logging status:")
+        self.logger.debug(rx_bt)
+
+    def handle_logging_data_cb(self, rx_bt: bytearray):
+        self.logger.debug("logging data:")
+        self.logger.debug(rx_bt)
+        acc: AccelerationSensor = self.get_sensor_by_type(AccelerationSensor)
+        if acc is None:
+            self.logger.error("No accelerometer detected - cannot log acceleration data!")
+            self.ble_conn.stopEvent.set()
+            return
+        self.dec.build_acc_log_crc(rx_bt = rx_bt, acceleration_sensor = acc)
+
+
+    def handle_logging_data_end_cb(self, rx_bt: bytearray):
+        self.logger.warn("logging data:")
+        self.logger.warn(hexlify(rx_bt))
+        acc: AccelerationSensor = self.get_sensor_by_type(AccelerationSensor)
+        if acc is None:
+            self.logger.error("No accelerometer detected - cannot log acceleration data!")
+            # self.ble_conn.stopEvent.set()
+            return
+        self.dec.decode_acc_log_crc(rx_bt = rx_bt, acceleration_sensor = acc)
+        # self.ble_conn.stopEvent.set()
+
     async def set_time(self, custom_time: float = 0.0, cb: Callable[[int, bytearray], None] = None) -> None:
         """ Sets the time of the tag to a specified time or the current time of the gateway (default).
             Arguments:
@@ -233,7 +310,7 @@ class Tag(object):
             write_chan = Config.CommunicationChannels.tx.value,
             cmd = cmd,
             cb = cb,
-            timeout=30
+            timeout = 20
         )
 
     # TODO : move to enc
@@ -286,6 +363,18 @@ class Tag(object):
         for s in self.sensors:
             sensors.append(s.get_props())
         return sensors
+    
+    def get_sensor_by_type(self, T: Type) -> Sensor:
+        """ Gets a sensor by its type, e.g. AccelerationSensor and returns it
+            Arguments:
+                T: type of the searched sensor
+            Returns:
+                either None or the sensor object
+        """
+        for sensor in self.sensors:
+            if type(sensor) is T:
+                return sensor
+        return None
 
     def get_props(self) -> dict:
         """ Making the tag serializable.

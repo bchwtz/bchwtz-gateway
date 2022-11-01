@@ -3,8 +3,12 @@ from binascii import hexlify # built-in
 import logging
 import time
 from xmlrpc.client import DateTime
+from attr import dataclass
 from bleak.backends.scanner import AdvertisementData
 from ruuvitag_sensor.decoder import Df3Decoder, get_decoder
+from gateway.sensor.acceleration import AccelerationSensor
+from copy import copy
+import crcmod
 
 from gateway.tag.tagconfig import TagConfig
 
@@ -532,3 +536,118 @@ class Decoder():
         heartbeat = int.from_bytes(bytearr[4:6], byteorder='big', signed=False)
         logger.info("Received heartbeat: %s" % heartbeat)
         return heartbeat
+
+    def build_acc_log_crc(self, rx_bt: bytearray, acceleration_sensor: AccelerationSensor) -> None:
+        datablock = rx_bt[1:]
+        acceleration_sensor.crc.extend(datablock)
+        # self.start_time = time.time()
+        logger.info("Received data block: %s" % hexlify(datablock))
+
+    def decode_acc_log_crc(self, rx_bt: bytearray, acceleration_sensor: AccelerationSensor) -> None:
+        crc = rx_bt[12:14]
+        # Redundancy check
+        crcfn = crcmod.mkCrcFun(0x11021, rev=False, 
+                                        initCrc=0xffff, xorOut=0)
+
+        logger.warn(hexlify(acceleration_sensor.crc))
+        # CRC validation
+        crcdata = crcfn(acceleration_sensor.crc)
+
+        logger.info("Status: %s" % str(self.ri_error_to_string(rx_bt[3])))
+
+        if hexlify(crc) == bytearray():
+            logger.error("No crc received")
+            return None
+
+        if int(hexlify(crc), 16) != crcdata:
+            logger.error("CRC are unequal: %s - %s" % (int(hexlify(crc), 16), crcdata))
+            return None
+
+        enc_mode = rx_bt[5]
+        scale = rx_bt[6]
+        rate = rx_bt[4]
+        # Start data
+        # Timestamp hier wird genutzt um zu den acceleration daten die Zeit zu haben 
+        # Timestamp wird vom Sensor nicht jede Nachricht mitgeschickt. 
+        # Time für acceleration data ergibt sich aus letztem timestamp + sampling frequenz * anzahl samples seit letztem timestamp
+        # Hier gibt noch Fehler, die beim Sensor liegen könnten -> Abweichungen zwischen Interpolierten Zeitstempel und geschickten nächsten TimeStamp
+        if (enc_mode == 12):
+            # 12 Bit
+            logger.info("Start processing received data with process_sensor_data_12")
+            data = self.__process_data_12(acceleration_sensor.crc, scale, rate)
+        elif (enc_mode == 10):
+            # 10 Bit
+            logger.info("Start processing received data with process_sensor_data_10")
+            data = self.__process_data_10(acceleration_sensor.crc, scale, rate)
+        elif (enc_mode == 8):
+            # 8 Bit
+            logger.info("Start processing received data with process_sensor_data_8")
+            data = self.__process_data_8(acceleration_sensor.crc, scale, rate)
+        else:
+            logger.error('Cannot process bytearray! Unknwon sensor resolution!')
+        if data != None:
+            logger.info("got data:")
+            logger.info(data)
+            # dataList=message_return_value.from_get_accelorationdata(accelorationdata=AccelorationData,mac=self.mac)
+            # self.data.append(dataList.return_value.__dict__)
+
+        return
+
+    def ri_error_to_string(self, error):
+        """Decodes the Tag error, if it was raised.
+
+        :param error: Error value in hex.
+        :type error: byte
+        :return: Result with decoded error code
+        :rtype: set
+        """
+        result = set()
+        if (error == 0):
+            result.add("RD_SUCCESS")
+        elif(error == 1):
+            result.add("RD_ERROR_INTERNAL")
+        elif(error == 2):
+            result.add("RD_ERROR_NO_MEM")
+        elif(error == 3):
+            result.add("RD_ERROR_NOT_FOUND")
+        elif(error == 4):
+            result.add("RD_ERROR_NOT_SUPPORTED")
+        elif(error == 5):
+            result.add("RD_ERROR_INVALID_PARAM")
+        elif(error == 6):
+            result.add("RD_ERROR_INVALID_STATE")
+        elif(error == 7):
+            result.add("RD_ERROR_INVALID_LENGTH")
+        elif(error == 8):
+            result.add("RD_ERROR_INVALID_FLAGS")
+        elif(error == 9):
+            result.add("RD_ERROR_INVALID_DATA")
+        elif(error == 10):
+            result.add("RD_ERROR_DATA_SIZE")
+        elif(error == 11):
+            result.add("RD_ERROR_TIMEOUT")
+        elif(error == 12):
+            result.add("RD_ERROR_NULL")
+        elif(error == 13):
+            result.add("RD_ERROR_FORBIDDEN")
+        elif(error == 14):
+            result.add("RD_ERROR_INVALID_ADDR")
+        elif(error == 15):
+            result.add("RD_ERROR_BUSY")
+        elif(error == 16):
+            result.add("RD_ERROR_RESOURCES")
+        elif(error == 17):
+            result.add("RD_ERROR_NOT_IMPLEMENTED")
+        elif(error == 18):
+            result.add("RD_ERROR_SELFTEST")
+        elif(error == 19):
+            result.add("RD_STATUS_MORE_AVAILABLE")
+        elif(error == 20):
+            result.add("RD_ERROR_NOT_INITIALIZED")
+        elif(error == 21):
+            result.add("RD_ERROR_NOT_ACKNOWLEDGED")
+        elif(error == 22):
+            result.add("RD_ERROR_NOT_ENABLED")
+        elif(error == 31):
+            result.add("RD_ERROR_FATAL")
+        return result

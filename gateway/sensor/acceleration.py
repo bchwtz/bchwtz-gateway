@@ -12,6 +12,7 @@ class AccelerationSensor(Sensor):
         super(AccelerationSensor, self).__init__()
         self.name: str = "AccelerationSensor"
         self.measurements: list[AccelerationSensor.AccelerationMeasurement] = []
+        self.crc: bytearray = bytearray()
 
     def read_data_from_advertisement(self, data: dict[str, any]):
         """ Reads data of an advertisement event onto the sensor's measurements and adds them to the list of Measurments.
