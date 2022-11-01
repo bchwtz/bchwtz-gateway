@@ -55,7 +55,7 @@ class BLEConn():
                 await client.start_notify(char_specifier = read_chan, callback = cb)
                 await client.write_gatt_char(write_chan, bytearray.fromhex(cmd), True)
                 time.sleep(timeout)
-                await client.stop_notify(char_specifier = read_chan)
+                # await client.stop_notify(char_specifier = read_chan)
                 await client.disconnect()
 
         except Exception as e:
