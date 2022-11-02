@@ -4,17 +4,17 @@ import "github.com/google/uuid"
 
 // CommandRequest - Message for MQTT broker
 type CommandRequest struct {
-	Name    string      `json:"name"`
+	Topic   string      `json:"-"`
 	ID      uuid.UUID   `json:"id"`
 	Payload interface{} `json:"payload"`
 }
 
 // NewCommandRequest - issues a new CommandRequest
-func NewCommandRequest(name string, payload interface{}) CommandRequest {
+func NewCommandRequest(topic string, payload interface{}) CommandRequest {
 	uid := uuid.New()
 	cr := CommandRequest{
 		ID:      uid,
-		Name:    name,
+		Topic:   topic,
 		Payload: payload,
 	}
 	return cr

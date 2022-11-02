@@ -71,6 +71,17 @@ class Config:
         topic_command_res: str = "2"
         topic_log: str = "3"
         topic_listen_adv: str = "4"
+        topic_tag_prefix: str = "gateway/tag/"
+        topic_tag_cmd_get_acceleration_log: str = "/get-acceleration-log"
+        tag_commands: list[str] = [
+            "get_config",
+            "set_config",
+            "get_time",
+            "set_time"
+        ]
+        hub_commands: list[str] = [
+            "get_all",
+        ]
 
     class AllowedValues(Enum):
         """ Has allowed values for specific commandstrings. The gateway will check for non-allowed values automatically.

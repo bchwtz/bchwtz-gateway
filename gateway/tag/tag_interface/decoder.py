@@ -39,16 +39,16 @@ class Decoder():
         time_between_samples = 1 / rate
         if (scale == 2):
             # logger.info("Scale: 2G")
-            faktor = 16 / (256 * 1000)
+            factor = 16 / (256 * 1000)
         elif (scale == 4):
             # logger.info("Scale: 4G")
-            faktor = 32 / (256 * 1000)
+            factor = 32 / (256 * 1000)
         elif (scale == 8):
             # logger.info("Scale: 8G")
-            faktor = 64 / (256 * 1000)
+            factor = 64 / (256 * 1000)
         elif (scale == 16):
             # logger.info("Scale: 16G")
-            faktor = 192 / (256 * 1000)
+            factor = 192 / (256 * 1000)
         while (pos < len(bytes)):
             """Read and store timestamp. This is little endian again"""
             t = bytes[pos:pos + 8]
@@ -60,13 +60,13 @@ class Decoder():
                 value = bytes[pos] << 8
                 pos += 1
                 if (value & 0x8000 == 0x8000):
-                    # negative Zahl
-                    # 16Bit Zweierkomplement zurückrechnen
+                    # negative number
+                    # calculate 16Bit pair complement
                     value = value ^ 0xffff
                     value += 1
-                    # negieren
+                    # negate
                     value = -value
-                value *= faktor
+                value *= factor
                 if j % 3 == 0:
                     x_vector.append(value)
                 if j % 3 == 1:
@@ -99,13 +99,13 @@ class Decoder():
         timestamp_list = list()
         time_between_samples = 1 / rate
         if (scale == 2):
-            faktor = 4 / (64 * 1000)
+            factor = 4 / (64 * 1000)
         elif (scale == 4):
-            faktor = 8 / (64 * 1000)
+            factor = 8 / (64 * 1000)
         elif (scale == 8):
-            faktor = 16 / (64 * 1000)
+            factor = 16 / (64 * 1000)
         elif (scale == 16):
-            faktor = 48 / (64 * 1000)
+            factor = 48 / (64 * 1000)
         while (pos < len(bytes)):
             t = bytes[pos:pos + 8]
             inv_t = t[::-1]
@@ -117,13 +117,13 @@ class Decoder():
                 pos += 1
                 value |= (bytes[pos] & 0xc0) << 2
                 if (value & 0x8000 == 0x8000):
-                    # negative Zahl
-                    # 16Bit Zweierkomplement zurückrechnen
+                    # negative number
+                    # calculate calculate 16Bit pair complement
                     value = value ^ 0xffff
                     value += 1
-                    # negieren
+                    # negate
                     value = -value
-                value *= faktor
+                value *= factor
                 if j % 3 == 0:
                     x_vector.append(value)
                 if j % 3 == 1:
@@ -138,13 +138,13 @@ class Decoder():
                 pos += 1
                 value |= (bytes[pos] & 0xf0) << 4
                 if (value & 0x8000 == 0x8000):
-                    # negative Zahl
-                    # 16Bit Zweierkomplement zurückrechnen
+                    # negative number
+                    # calculate calculate 16Bit pair complement
                     value = value ^ 0xffff
                     value += 1
-                    # negieren
+                    # negate
                     value = -value
-                value *= faktor
+                value *= factor
                 if j % 3 == 0:
                     x_vector.append(value)
                 if j % 3 == 1:
@@ -159,13 +159,13 @@ class Decoder():
                 pos += 1
                 value |= (bytes[pos] & 0xfc) << 6
                 if (value & 0x8000 == 0x8000):
-                    # negative Zahl
-                    # 16Bit Zweierkomplement zurückrechnen
+                    # negative number
+                    # calculate 16Bit pair complement
                     value = value ^ 0xffff
                     value += 1
-                    # negieren
+                    # negate
                     value = -value
-                value *= faktor
+                value *= factor
                 if j % 3 == 0:
                     x_vector.append(value)
                 if j % 3 == 1:
@@ -180,13 +180,13 @@ class Decoder():
                 value |= (bytes[pos]) << 8
                 pos += 1
                 if (value & 0x8000 == 0x8000):
-                    # negative Zahl
-                    # 16Bit Zweierkomplement zurückrechnen
+                    # negative number
+                    # calculate 16Bit pair complement
                     value = value ^ 0xffff
                     value += 1
-                    # negieren
+                    # negate
                     value = -value
-                value *= faktor
+                value *= factor
                 if j % 3 == 0:
                     x_vector.append(value)
                 if j % 3 == 1:
@@ -219,16 +219,16 @@ class Decoder():
         time_between_samples = 1 / rate
         if (scale == 2):
             # logger.info("Scale: 2G")
-            faktor = 1 / (16 * 1000)
+            factor = 1 / (16 * 1000)
         elif (scale == 4):
             # logger.info("Scale: 4G")
-            faktor = 2 / (16 * 1000)
+            factor = 2 / (16 * 1000)
         elif (scale == 8):
             # logger.info("Scale: 8G")
-            faktor = 4 / (16 * 1000)
+            factor = 4 / (16 * 1000)
         elif (scale == 16):
             # logger.info("Scale: 16G")
-            faktor = 12 / (16 * 1000)
+            factor = 12 / (16 * 1000)
         while (pos < len(bytes)):
             t = bytes[pos:pos + 8]
             inv_t = t[::-1]
@@ -240,13 +240,13 @@ class Decoder():
                 pos += 1
                 value |= (bytes[pos] & 0xf0) << 4
                 if (value & 0x8000 == 0x8000):
-                    # negative Zahl
-                    # 16Bit Zweierkomplement zurückrechnen
+                    # negative number
+                    # calculate calculate 16Bit pair complement
                     value = value ^ 0xffff
                     value += 1
-                    # negieren
+                    # negate
                     value = -value
-                value *= faktor
+                value *= factor
                 if j % 3 == 0:
                     x_vector.append(value)
                 if j % 3 == 1:
@@ -261,13 +261,13 @@ class Decoder():
                 value |= bytes[pos] << 8
                 pos += 1
                 if (value & 0x8000 == 0x8000):
-                    # negative Zahl
-                    # 16Bit Zweierkomplement zurückrechnen
+                    # negative number
+                    # calculate calculate 16Bit pair complement
                     value = value ^ 0xffff
                     value += 1
-                    # negieren
+                    # negate
                     value = -value
-                value *= faktor
+                value *= factor
                 if j % 3 == 0:
                     x_vector.append(value)
                 if j % 3 == 1:
@@ -281,7 +281,7 @@ class Decoder():
 
 
 
-    def __unpack8(self, bytes, samplingrate, scale, csvfile) -> list:
+    def __unpack8(self, bytes, samplingrate, scale) -> list:
         """unpacks the 8 byte sequences of the sensor to hex-strings
         :param bytes: the bytes from your sensor
         :type bytes: bytes
@@ -292,18 +292,19 @@ class Decoder():
         """
         j = 0
         pos = 0
-        res = []
+        # res = []
+        measurements: list[AccelerationSensor.AccelerationMeasurement] = []
         accvalues = [0, 0, 0]
         timestamp = 0
         timeBetweenSamples = 1000/samplingrate
         if(scale == 2):
-            faktor = 16/(256*1000)
+            factor = 16/(256*1000)
         elif(scale == 4):
-            faktor = 32/(256*1000)
+            factor = 32/(256*1000)
         elif(scale == 8):
-            faktor = 64/(256*1000)
+            factor = 64/(256*1000)
         elif(scale == 16):
-            faktor = 192/(256*1000)
+            factor = 192/(256*1000)
         while(pos < len(bytes)):
             # Ein Datenblock bei 8 Bit Auflösung ist 104 Bytes lang
             # Jeder Datenblock beginnt mit einem Zeitstempel
@@ -315,32 +316,27 @@ class Decoder():
             value = bytes[pos] << 8
             pos += 1
             if(value & 0x8000 == 0x8000):
-                # negative Zahl
-                # 16Bit Zweierkomplement zurückrechnen
+                # negative number
+                # calculate 16Bit pair complement
                 value = value ^ 0xffff
                 value += 1
-                # negieren
+                # negate
                 value = -value
             # save value
-            accvalues[j] = value * faktor
+            accvalues[j] = value * factor
             # Write to CSV
-            if(csvfile != None and j % 3 == 2):
-                if(csvfile != None):
-                    csvfile.write("%d;%f;%f;%f\n" % (
-                        timestamp, accvalues[0], accvalues[1], accvalues[1]))
-                else:
-                    print("%d;%f;%f;%f\n" %
-                        (timestamp, accvalues[0], accvalues[1], accvalues[1]))
+            if(j % 3 == 2):
                 timestamp += timeBetweenSamples
                 j = 0
-                res.append(f"{timestamp, accvalues[0], accvalues[1], accvalues[2]}")
+                # res.append(f"{timestamp, accvalues[0], accvalues[1], accvalues[2]}")
+                measurements.append(AccelerationSensor.AccelerationMeasurement(acc_x = accvalues[0], acc_y = accvalues[1], acc_z = accvalues[2], recorded_time = timestamp, gathering_type = "logging_data"))
             else:
                 j += 1
-        return res
+        return measurements
 
 
 
-    def __unpack10(self, bytes, samplingrate, scale, csvfile) -> list:
+    def __unpack10(self, bytes, samplingrate, scale) -> list:
         """unpacks the 10 byte sequences of the sensor to hex-strings
         :param bytes: the bytes from your sensor
         :type bytes: bytes
@@ -355,15 +351,15 @@ class Decoder():
         accvalues = [0, 0, 0]
         timestamp = 0
         timeBetweenSamples = 1000/samplingrate
-        res = []
+        measurements: list[AccelerationSensor.AccelerationMeasurement] = []
         if(scale == 2):
-            faktor = 4/(64*1000)
+            factor = 4/(64*1000)
         elif(scale == 4):
-            faktor = 8/(64*1000)
+            factor = 8/(64*1000)
         elif(scale == 8):
-            faktor = 16/(64*1000)
+            factor = 16/(64*1000)
         elif(scale == 16):
-            faktor = 48/(64*1000)
+            factor = 48/(64*1000)
         while(pos < len(bytes)-1):
             # Ein Datenblock bei 10 Bit Auflösung ist 128 Bytes lang
             # Jeder Datenblock beginnt mit einem Zeitstempel
@@ -399,29 +395,25 @@ class Decoder():
                     pos += 1
                     i = 0
                 if(value & 0x8000 == 0x8000):
-                    # negative Zahl
-                    # 16Bit Zweierkomplement zurückrechnen
+                    # negative number
+                    # calculate 16Bit pair complement
                     value = value ^ 0xffff
                     value += 1
-                    # negieren
+                    # negate
                     value = -value
                 # save value
-                accvalues[j] = value * faktor
+                accvalues[j] = value * factor
                 j += 1
                 # Write to CSV
                 if(j == 3):
-                    if(csvfile != None):
-                        csvfile.write("%d;%f;%f;%f\n" % (
-                            timestamp, accvalues[0], accvalues[1], accvalues[2]))
-                    else:
-                        print("%d;%f;%f;%f" %
-                            (timestamp, accvalues[0], accvalues[1], accvalues[2]))
+
                     timestamp += timeBetweenSamples
                     j = 0
-                    res.append(f"{timestamp, accvalues[0], accvalues[1], accvalues[2]}")
-        return res
+                    measurements.append(AccelerationSensor.AccelerationMeasurement(acc_x = accvalues[0], acc_y = accvalues[1], acc_z = accvalues[2], recorded_time = timestamp, gathering_type = "logging_data"))
 
-    def __unpack12(self, bytes, samplingrate, scale, csvfile) -> list:
+        return measurements
+
+    def __unpack12(self, bytes, samplingrate, scale) -> list:
         """unpacks the 12 byte sequences of the sensor to hex-strings
         :param bytes: the bytes from your sensor
         :type bytes: bytes
@@ -436,15 +428,16 @@ class Decoder():
         accvalues = [0, 0, 0]
         timestamp = 0
         timeBetweenSamples = 1000/samplingrate
-        res = []
+        measurements: list[AccelerationSensor.AccelerationMeasurement] = []
+        logger.warn("scale: %d" % scale)
         if(scale == 2):
-            faktor = 1/(16*1000)
+            factor = 1/(16*1000)
         elif(scale == 4):
-            faktor = 2/(16*1000)
+            factor = 2/(16*1000)
         elif(scale == 8):
-            faktor = 4/(16*1000)
+            factor = 4/(16*1000)
         elif(scale == 16):
-            faktor = 12/(16*1000)
+            factor = 12/(16*1000)
         while(pos < len(bytes)-1):
             # Ein Datenblock bei 12 Bit Auflösung ist 152 Bytes lang
             # Jeder Datenblock beginnt mit einem Zeitstempel
@@ -468,27 +461,21 @@ class Decoder():
                     pos += 1
                     i = 0
                 if(value & 0x8000 == 0x8000):
-                    # negative Zahl
-                    # 16Bit Zweierkomplement zurückrechnen
+                    # negative number
+                    # calculate 16Bit pair complement
                     value = value ^ 0xffff
                     value += 1
-                    # negieren
+                    # negate
                     value = -value
                 # save value
-                accvalues[j] = value * faktor
+                accvalues[j] = value * factor
                 j += 1
                 # Write to CSV
                 if(j == 3):
-                    if(csvfile != None):
-                        csvfile.write("%d;%f;%f;%f\n" % (
-                            timestamp, accvalues[0], accvalues[1], accvalues[2]))
-                    else:
-                        print("%d;%f;%f;%f" %
-                            (timestamp, accvalues[0], accvalues[1], accvalues[2]))
-                    timestamp += timeBetweenSamples
                     j = 0
-                    res.append([timestamp, accvalues[0], accvalues[1], accvalues[2]])
-        return res
+                    measurements.append(AccelerationSensor.AccelerationMeasurement(acc_x = accvalues[0], acc_y = accvalues[1], acc_z = accvalues[2], recorded_time = timestamp, gathering_type = "logging_data"))
+
+        return measurements
 
     def decode_data(self, bytearr: Bytes = None, resolution: int = 12, samplerate: int = 10, scale: float = 2):
         self.resolution = resolution
@@ -566,6 +553,8 @@ class Decoder():
         enc_mode = rx_bt[5]
         scale = rx_bt[6]
         rate = rx_bt[4]
+
+        logger.warn("scale: %d" % rx_bt[6])
         # Start data
         # Timestamp hier wird genutzt um zu den acceleration daten die Zeit zu haben 
         # Timestamp wird vom Sensor nicht jede Nachricht mitgeschickt. 
@@ -574,15 +563,15 @@ class Decoder():
         if (enc_mode == 12):
             # 12 Bit
             logger.info("Start processing received data with process_sensor_data_12")
-            data = self.__process_data_12(acceleration_sensor.crc, scale, rate)
+            data = self.__unpack12(acceleration_sensor.crc, rate, scale)
         elif (enc_mode == 10):
             # 10 Bit
             logger.info("Start processing received data with process_sensor_data_10")
-            data = self.__process_data_10(acceleration_sensor.crc, scale, rate)
+            data = self.__unpack10(acceleration_sensor.crc, rate, scale)
         elif (enc_mode == 8):
             # 8 Bit
             logger.info("Start processing received data with process_sensor_data_8")
-            data = self.__process_data_8(acceleration_sensor.crc, scale, rate)
+            data = self.__unpack8(acceleration_sensor.crc, rate, scale)
         else:
             logger.error('Cannot process bytearray! Unknwon sensor resolution!')
         if data != None:

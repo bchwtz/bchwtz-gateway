@@ -8,6 +8,8 @@ from gateway.sensor.temperature import TemperatureSensor
 from gateway.sensor.humidity import HumiditySensor
 from gateway.sensor.acceleration import AccelerationSensor
 from gateway.sensor.barometer import BarometerSensor
+from gateway.config import Config
+from paho.mqtt.client import Client
 
 class TagBuilder:
     """ Helper to be able to easily build Tags
@@ -22,7 +24,7 @@ class TagBuilder:
         self.tag_sensors = []
         self.tag_pubsub_hub: aiopubsub.Hub = None
 
-    def from_device(self, device: BLEDevice, pubsub_hub: aiopubsub.Hub = None) -> Self:
+    def from_device(self, device: BLEDevice, pubsub_hub: aiopubsub.Hub = None, mqtt_client: Client = None) -> Self:
         """ Creates a new tag from its ble_device
             Arguments:
                 device: the ble_device gained by discovery or an advertisement
@@ -39,6 +41,7 @@ class TagBuilder:
         ]
         self.tag_online = True
         self.tag_pubsub_hub = pubsub_hub
+        self.tag_mqtt_client = mqtt_client
         return self
 
     def name(self, name: str = "") -> Self:
@@ -78,5 +81,12 @@ class TagBuilder:
             Returns:
                 A new tag
         """
-        tag = Tag(name=self.tag_name, address=self.tag_address, device=self.tag_ble_device, online=self.tag_online, pubsub_hub=self.tag_pubsub_hub)
+        tag = Tag(
+            name=self.tag_name,
+            address=self.tag_address,
+            device=self.tag_ble_device,
+            online=self.tag_online,
+            pubsub_hub=self.tag_pubsub_hub,
+            mqtt_client = self.tag_mqtt_client,
+        )
         return tag

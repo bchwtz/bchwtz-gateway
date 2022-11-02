@@ -27,7 +27,7 @@ class AccelerationSensor(Sensor):
     class AccelerationMeasurement(Measurement):
         """ AccelerationMeasurements store data in a vector + acceleration force.
         """
-        def __init__(self, acc_x: float = 0.0, acc_y: float = 0.0, acc_z: float = 0.0, acc: float = 0.0, movement_counter: int = 0, sequence_number: int = 0, data_format: int = 0) -> None:
+        def __init__(self, acc_x: float = 0.0, acc_y: float = 0.0, acc_z: float = 0.0, acc: float = 0.0, movement_counter: int = 0, sequence_number: int = 0, data_format: int = 0, recorded_time: float = 0.0, gathering_type: str = "advertisement") -> None:
             """ Creates a new AccelerationMeasurements object.
             
             Arguments:
@@ -39,14 +39,17 @@ class AccelerationSensor(Sensor):
                 data_format: Data format the measurement was received in (is inside the message from the tag)
                 movement_counter: increments on each detected movement
             """
+            if recorded_time == 0.0:
+                recorded_time = time.time()
             self.acc_x: float = acc_x
             self.acc_y: float = acc_y
             self.acc_z: float = acc_z
             self.acc: float = acc
+            self.gathering_type = gathering_type
             self.sequence_number: int = sequence_number
             self.data_format: int = data_format
             self.movement_counter: int = movement_counter
-            self.recorded_time: float = time.time()
+            self.recorded_time: float = recorded_time
 
         def get_props(self) -> dict:
             """ Returns self object as a dict for serialization.

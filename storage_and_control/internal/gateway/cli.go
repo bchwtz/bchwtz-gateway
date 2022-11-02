@@ -22,6 +22,10 @@ type CLI struct {
 	topic string
 	// current MQTT-command result Topic
 	restopic string
+	// current MQTT-command result Topic
+	tag_topic_pre string
+	// current MQTT-command result Topic
+	tags_topic_pre string
 }
 
 // enum containing the environment-variables for the MQTT-config
@@ -32,6 +36,10 @@ const (
 	COMMAND_TOPIC topicenv = "TOPIC_COMMAND"
 	// the environment-variable of the MQTT-topic that should be used to receive command responses
 	COMMAND_RES_TOPIC topicenv = "TOPIC_COMMAND_RES"
+	// the environment-variable of the MQTT-topic-prefix that should be used to send commands to specific tags
+	COMMAND_TOPIC_TAG_PREFIX topicenv = "TOPIC_TAG_PREFIX"
+	// the environment-variable of the MQTT-topic-prefix that should be used to send commands to specific tags
+	COMMAND_TOPIC_TAGS_PREFIX topicenv = "TOPIC_TAGS_PREFIX"
 )
 
 // returns a new CLI app that it creates - if any errors occur the program will quit faulty
@@ -50,7 +58,7 @@ func NewCLI() CLI {
 // waits for a response and handles it (prints it)
 func (c *CLI) handleComms(req commandinterface.CommandRequest) error {
 	logrus.Infoln("waiting for a response from the gateway...")
-	logrus.Println("topic: " + c.topic)
+	logrus.Println("topic: " + req.Topic)
 	reqbt, err := json.Marshal(&req)
 	if err != nil {
 		logrus.Errorln(err)
@@ -60,7 +68,7 @@ func (c *CLI) handleComms(req commandinterface.CommandRequest) error {
 	answerch := make(chan mqtt.MQTTSubscriptionMessage)
 	logrus.Info("subscribing to " + c.restopic)
 	c.mqclient.Subscribe(c.restopic, answerch)
-	tk := c.mqclient.Publish(c.topic, reqbt)
+	tk := c.mqclient.Publish(req.Topic, reqbt)
 	if tk.Wait() && tk.Error() != nil {
 		logrus.Errorln(tk.Error())
 		return tk.Error()
@@ -96,10 +104,29 @@ func (c *CLI) resHasErr(res commandinterface.CommandResponse) error {
 	return nil
 }
 
+// constructs a topic name by the given parameters and returns it
+func (c *CLI) getTopicByAddressAndCommand(cCtx *cli.Context, cmd string) string {
+	topic := ""
+	address := ""
+	if cCtx.NumFlags() > 0 {
+		address = cCtx.String("address")
+	}
+	if address != "" {
+		topic += c.tag_topic_pre + "/" + address
+	} else {
+		topic += c.tags_topic_pre
+	}
+	topic += "/" + cmd
+	return topic
+}
+
 // configure the cli-app
 func (c *CLI) configure() {
 	c.topic = os.Getenv(string(COMMAND_TOPIC))
 	c.restopic = os.Getenv(string(COMMAND_RES_TOPIC))
+	c.tag_topic_pre = os.Getenv(string(COMMAND_TOPIC_TAG_PREFIX))
+	c.tags_topic_pre = os.Getenv(string(COMMAND_TOPIC_TAGS_PREFIX))
+
 	c.App = &cli.App{
 		Name:  "gateway command line interface",
 		Usage: "This is a cli for the ble_gateway project. Please use --help to get to know more about the commands!",
@@ -113,6 +140,7 @@ func (c *CLI) configure() {
 				Name: "tags",
 				Aliases: []string{
 					"tag",
+					"hub",
 				},
 				Subcommands: []cli.Command{
 					{
@@ -120,13 +148,21 @@ func (c *CLI) configure() {
 						Subcommands: []cli.Command{
 							{
 								Name: "time",
+								Flags: []cli.Flag{
+									&cli.StringFlag{
+										Name:  "address",
+										Value: "",
+										Usage: "address to trigger a specific tag",
+									},
+								},
 								Action: func(cCtx *cli.Context) error {
 									var args []string
 									if cCtx.Args().Present() {
 										args = append(args, cCtx.Args().First())
 										args = append(args, cCtx.Args().Get(1))
 									}
-									req := commandinterface.NewCommandRequest("set_time", args)
+									topic := c.getTopicByAddressAndCommand(cCtx, "set_time")
+									req := commandinterface.NewCommandRequest(topic, args)
 									return c.handleComms(req)
 								},
 							},
@@ -140,7 +176,7 @@ func (c *CLI) configure() {
 							if cCtx.Args().Present() {
 								args = cCtx.Args().First()
 							}
-							req := commandinterface.NewCommandRequest("get_tags", args)
+							req := commandinterface.NewCommandRequest("gateway/hub/get_all", args)
 							return c.handleComms(req)
 						},
 						Subcommands: []cli.Command{

@@ -21,18 +21,17 @@ import logging
 from gateway.tag.tag_interface.decoder import Decoder
 from bleak.backends.scanner import AdvertisementData
 import aiopubsub
+from paho.mqtt.client import Client, MQTTMessage
+import json
+
 
 from gateway.sensor.sensor import Sensor
 from gateway.tag.tag_interface.signals import SigScanner
-import mongox
 
-
-client = mongox.Client("mongodb://localhost:27017", get_event_loop=asyncio.get_running_loop)
-db = client.get_database("gateway")
 class Tag(object):
     """ Shadow of a hardware tag. What is a tag compared to a sensor? A tag has different kinds of sensors, a microcontroller (NRF52) and additional hardware like the battery-holder etc. A sensor is simply one device on the tag, responsible of measuring something.
     """
-    def __init__(self, name: str = "", address: str = "", device: BLEDevice = None, online: bool = True, pubsub_hub: aiopubsub.Hub = None) -> None:
+    def __init__(self, name: str = "", address: str = "", device: BLEDevice = None, online: bool = True, pubsub_hub: aiopubsub.Hub = None, mqtt_client: Client = None) -> None:
         """ Initializes a new tag.
             Arguments:
                 name: the bluetooth-name of the tag
@@ -46,7 +45,7 @@ class Tag(object):
         self.ble_device: BLEDevice = device
         self.ble_conn: BLEConn = BLEConn()
         self.logger = logging.getLogger("Tag")
-        self.logger.setLevel(logging.WARNING)
+        self.logger.setLevel(logging.INFO)
         formatter = logging.Formatter('[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s','%m-%d %H:%M:%S')
         streamHandler = logging.StreamHandler()
         streamHandler.setFormatter(formatter)
@@ -68,6 +67,9 @@ class Tag(object):
         self.last_seen: float = time.time()
         self.pubsub_hub: aiopubsub.Hub = pubsub_hub
         self.publisher: aiopubsub.Publisher = aiopubsub.Publisher(self.pubsub_hub, prefix = aiopubsub.Key("TAG"))
+        self.mqtt_client: Client = mqtt_client
+        if self.mqtt_client is not None:
+            self.subscribe_to_mqtt_chans()
 
     async def get_acceleration_log(self, cb: Callable[[int, bytearray], None] = None) -> None:
         if cb is None:
@@ -75,7 +77,7 @@ class Tag(object):
         
         await self.activate_logging(cb)
         await self.get_acceleration_data(cb)
-        # await self.deactivate_logging(cb)
+        await self.deactivate_logging(cb)
 
     async def activate_logging(self, cb: Callable[[int, bytearray], None] = None) -> None:
         if cb is None:
@@ -111,7 +113,7 @@ class Tag(object):
             read_chan = Config.CommunicationChannels.rx.value,
             write_chan = Config.CommunicationChannels.tx.value,
             cmd = Config.Commands.get_acceleration_data.value,
-            timeout = 30,
+            timeout = 60,
             cb = cb,
             disconnect = False,
         )
@@ -382,3 +384,51 @@ class Tag(object):
                 self as dict
         """
         return {'name': self.name, 'address': self.address, 'sensors': self.get_sensors_props(), 'time': self.time, 'config': self.config, 'online': self.online, 'last_seen': self.last_seen}
+
+    def handle_mqtt_cmd(self, mqtt_client: Client, command: str, msg: MQTTMessage):
+        msg_dct: dict = json.loads(msg.payload)
+        payload = msg_dct["payload"]
+
+
+        if command == "get_time":
+            self.logger.info("running get_time on tag: %s", self.address)
+            asyncio.run_coroutine_threadsafe(self.get_time(), self.main_loop)
+
+        elif command == "set_time":
+            self.logger.info("running set_time on tag: %s", self.address)
+            asyncio.run_coroutine_threadsafe(self.set_time(), self.main_loop)
+
+        elif command == "get_config":
+            self.logger.info("running get_config on tag: %s", self.address)
+            asyncio.run_coroutine_threadsafe(self.get_config(), self.main_loop)
+
+        elif command == "set_config":
+            self.logger.info("running set_config on tag: %s", self.address)
+            resolution = payload.get("resolution", None)
+            rate = payload.get("rate", None)
+            scale = payload.get("scale", None)
+            divider = payload.get("divider", None)
+            if resolution is not None:
+                self.config.set_resolution(resolution)
+            if scale is not None:
+                self.config.set_scale(scale)
+            if rate is not None:
+                self.config.set_samplerate(rate)
+            if divider is not None:
+                self.config.set_divider(divider)
+            asyncio.run_coroutine_threadsafe(self.set_config(), self.main_loop)
+
+        elif command == "get_acceleration_log":
+            asyncio.run_coroutine_threadsafe(self.get_acceleration_log(), self.main_loop)
+
+    def subscribe_to_mqtt_chans(self):
+        """ Connect callback for mqtt.
+        """
+        self.logger.info("connected to mqtt")
+        pre = Config.MQTTConfig.topic_tag_prefix.value
+        ownprefix = pre + self.address + "/"
+        commands = Config.MQTTConfig.tag_commands.value
+        for cmd in commands:
+            sub = ownprefix + cmd
+            self.mqtt_client.subscribe(sub, 0)
+            self.logger.info(sub)

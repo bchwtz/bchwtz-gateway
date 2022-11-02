@@ -27,6 +27,7 @@ class Hub(object):
         self.mqtt_client: Client = None
         self.pubsub_hub: aiopubsub.Hub = aiopubsub.Hub()
         self.main_loop: asyncio.BaseEventLoop = asyncio.get_event_loop()
+        self.mqtt_topics: list[str] = []
 
     async def discover_tags(self, timeout: float = 5.0, rediscover: bool = False, autoload_config: bool = True) -> None:
         """ Starts a classic bluetooth scan and search for any tags matching our manufacturer_id.
@@ -70,7 +71,7 @@ class Hub(object):
         device = devices[0]
         tag = self.get_tag_by_address(devices[0].address)
         if tag is None:
-            tag = Tag(device.name, device.address, device, True, self.pubsub_hub)
+            tag = TagBuilder().from_device(device = device, pubsub_hub = self.pubsub_hub, mqtt_client = self.mqtt_client).build()
             self.tags.append(tag)
             await tag.get_config()
             if Config.GlobalConfig.forced_time_sync.value:
@@ -137,7 +138,7 @@ class Hub(object):
         return None
 
     def __devices_to_tags(self, devices: list[BLEDevice]) -> list[Tag]:
-        self.tags = [TagBuilder().from_device(dev, self.pubsub_hub).build() for dev in devices]
+        self.tags = [TagBuilder().from_device(dev, self.pubsub_hub, self.mqtt_client).build() for dev in devices]
         return self.tags
 
     def __has_new_devices(self, devices: list[BLEDevice]) -> bool:
@@ -183,6 +184,8 @@ class Hub(object):
         self.logger.debug("result: %s"%rc)
         sub = Config.MQTTConfig.topic_command.value
         res = self.mqtt_client.subscribe(sub, 0)
+        sub = "gateway/hub/get_all"
+        res = self.mqtt_client.subscribe(sub, 0)
         self.logger.info(sub)
 
     def mqtt_on_command(self, client, userdata, message: MQTTMessage):
@@ -194,35 +197,45 @@ class Hub(object):
         """
         msg_dct: dict = json.loads(message.payload)
         self.logger.info(msg_dct)
-        name = msg_dct["name"]
         id = msg_dct["id"]
         payload = msg_dct["payload"]
         tags = []
         for t in self.tags:
             tags.append(t.get_props())
         # print(self.internal_command_publisher.__dict__)
-        if name == "get_time":
-            for t in self.tags:
-                self.logger.info("running get_time on tag: %s", t.address)
-                asyncio.run_coroutine_threadsafe(t.get_time(), self.main_loop)
 
-        elif name == "set_time":
-            for t in self.tags:
-                self.logger.info("running set_time on tag: %s", t.address)
-                asyncio.run_coroutine_threadsafe(t.set_time(), self.main_loop)
+        self.forward_mqtt_functions_to_ns_handler(topic_name = message.topic, client = client, msg = message)
+        
 
-        elif name == "get_config":
-            for t in self.tags:
-                self.logger.info("running get_config on tag: %s", t.address)
-                asyncio.run_coroutine_threadsafe(t.get_config(), self.main_loop)
+        self.logger.debug("sent payload")
+        res = {"id": str(uuid.uuid4()), "request_id": id, "payload": {"status": "success", "tags": None}, "name": message.topic}
+        self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps(res, skipkeys=True))
 
-        elif name == "get_tags":
-            self.logger.info("printing tags to mqtt")
+
+    def forward_mqtt_functions_to_ns_handler(self, topic_name: str, client: Client, msg: MQTTMessage) -> None:
+        self.logger.warn(topic_name)
+        parts = topic_name.split("/")
+        namespace = parts[1]
+        if namespace == "tag":
+            tag_address = parts[2]
+            command = parts[3]
+            tag = self.get_tag_by_address(tag_address)
+            if tag is None:
+                self.logger.error("tag with address %s not found!" % tag_address)
+            tag.handle_mqtt_cmd(mqtt_client=client, command=command, msg=msg)
+        elif namespace == "tags":
+            for tag in self.tags:
+                command = parts[2]
+                tag.handle_mqtt_cmd(mqtt_client=client, command=command, msg=msg)
+        elif namespace == "hub":
+            command = parts[2]
+            self.handle_mqtt_cmd(cmd=command, msg=msg)
+
+    def handle_mqtt_cmd(self, cmd: str, msg: MQTTMessage):
+        if cmd == "get_all":
+            self.logger.error("printing tags to mqtt")
+            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps(self, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
         else:
             self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": id, "payload": {"status": "error", "msg": "did not find any fitting command for your request"}}))
             return
-
-        self.logger.debug("sent payload")
-        res = {"id": str(uuid.uuid4()), "request_id": id, "payload": {"status": "success", "tags": None}, "name": name}
-        self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps(res, skipkeys=True))
