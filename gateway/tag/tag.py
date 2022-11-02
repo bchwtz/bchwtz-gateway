@@ -107,7 +107,7 @@ class Tag(object):
                 cb: A callback that is invoked, once the answer to this call is received (default: multi_comm_callback)
         """
         if cb is None:
-            cb = self.logging
+            cb = self.acceleration_log_callback
         await self.ble_conn.run_single_ble_command(
             tag = self.ble_device,
             read_chan = Config.CommunicationChannels.rx.value,
@@ -289,10 +289,9 @@ class Tag(object):
         acc: AccelerationSensor = self.get_sensor_by_type(AccelerationSensor)
         if acc is None:
             self.logger.error("No accelerometer detected - cannot log acceleration data!")
-            # self.ble_conn.stopEvent.set()
             return
         self.dec.decode_acc_log_crc(rx_bt = rx_bt, acceleration_sensor = acc)
-        # self.ble_conn.stopEvent.set()
+        self.publisher.publish(aiopubsub.Key("log"), self)
 
     async def set_time(self, custom_time: float = 0.0, cb: Callable[[int, bytearray], None] = None) -> None:
         """ Sets the time of the tag to a specified time or the current time of the gateway (default).

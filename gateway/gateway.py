@@ -36,3 +36,10 @@ class Gateway:
             print("running")
             await self.hub.listen_for_advertisements()
             # sleep(20)
+
+    async def run_discovery(self) -> None:
+        """ Runs the get_advertisements command as a loop. Should consider to rename this method to run.
+        """
+        while True:
+            print("running")
+            await self.hub.discover_tags()
