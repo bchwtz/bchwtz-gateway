@@ -208,9 +208,6 @@ class Hub(object):
         
 
         self.logger.debug("sent payload")
-        res = {"id": str(uuid.uuid4()), "request_id": id, "payload": {"status": "success", "tags": None}, "name": message.topic}
-        self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps(res, skipkeys=True))
-
 
     def forward_mqtt_functions_to_ns_handler(self, topic_name: str, client: Client, msg: MQTTMessage) -> None:
         self.logger.warn(topic_name)
@@ -232,10 +229,12 @@ class Hub(object):
             self.handle_mqtt_cmd(cmd=command, msg=msg)
 
     def handle_mqtt_cmd(self, cmd: str, msg: MQTTMessage):
+        msg_dct: dict = json.loads(msg.payload)
+        req_id = msg_dct["id"]
         if cmd == "get_all":
             self.logger.error("printing tags to mqtt")
-            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps(self, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "payload": {"status": "success", "tags": self.tags}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
         else:
-            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": id, "payload": {"status": "error", "msg": "did not find any fitting command for your request"}}))
+            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "payload": {"status": "error", "msg": "did not find any fitting command for your request"}}))
             return
