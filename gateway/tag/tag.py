@@ -425,7 +425,7 @@ class Tag(object):
         """
         self.logger.info("connected to mqtt")
         pre = Config.MQTTConfig.topic_tag_prefix.value
-        ownprefix = pre + self.address + "/"
+        ownprefix = pre + "/" + self.address + "/"
         commands = Config.MQTTConfig.tag_commands.value
         for cmd in commands:
             sub = ownprefix + cmd
