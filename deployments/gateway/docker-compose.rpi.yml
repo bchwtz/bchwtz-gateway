@@ -1,9 +1,8 @@
 version: "3.5"
 services:
   ble-gateway:
-    image: ghcr.io/bchwtz-fhswf/gateway/ble-gateway:refactoring-and-new-design
-    devices:
-      - /dev/hci1
+    image: ghcr.io/bchwtz-fhswf/gateway/ble-gateway:main
+    privileged: true
 
   db-dumper:
-    image: ghcr.io/bchwtz-fhswf/gateway/db-dumper:refactoring-and-new-design
+    image: ghcr.io/bchwtz-fhswf/gateway/db-dumper:main
