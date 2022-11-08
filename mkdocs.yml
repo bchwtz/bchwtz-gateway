@@ -64,7 +64,7 @@ nav:
     - Tag Config Tests: bluetooth-python-library/tag_config_test_ref.md
   - git_installation_on_raspberry.md
   - MKDocs: documentation_ref.md
-  - Developer Setup: index.md
+  - Developer Setup: developer_setup.md
   - readme.md
 
 extra:
