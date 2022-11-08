@@ -16,9 +16,12 @@ To run the software you will need:
 
 In any case you should install git and docker on your platform:
 ```{bash}
-apt update
-apt install git docker.io
+sudo apt update
+sudo apt install git docker.io
+# adding pi to docker group now, so we can use docker without root
+sudo usermod -aG docker pi
 ```
+After this step you have to logout and login.
 
 ## Cloning the repository
 ```{bash}
