@@ -38,7 +38,7 @@ The following should work then:
 ```{bash}
 mkdir -p bin
 # moves the binary of the cli to a new folder named bin
-mv gw_arm64 bin/gw
+mv gw-arm64 bin/gw
 # changes the execution rights
 chmod +x bin/gw
 ```
