@@ -23,5 +23,31 @@ If there are other streaming data events, they should follow the same pattern.
 The command and control interface is implemented as a commandline interface in go. Its pattern is quite simple: It sends a command with a requestid as uuid to the MQTT-command topic. Next the bluetooth-gateway is going to respond to the MQTT-response topic with a response message with the requestid so the responses can be mapped to the requests.  
 For further details have a look at its [implementation reference](/bchwtz-gateway/cli_ref).
 
+## Command request and response flow
+This graph shows how a typical command is processed inbetween the microservices.
+``` mermaid
+sequenceDiagram
+  participant Gateway
+  participant MQTT_Broker
+  participant CLI
+
+  Gateway-->>MQTT_Broker: subscribing on tag/<tag_address>/get_config
+  activate Gateway
+
+  CLI-->>MQTT_Broker: subscribe on gateway/tag/commandres and wait for response with request_id
+  activate CLI
+  CLI->>MQTT_Broker: publish on tag/<tag_address>/get_config with request_id
+  activate MQTT_Broker
+  MQTT_Broker-->>Gateway: forwarding message
+  deactivate MQTT_Broker
+  Gateway->>Gateway: run the ble_command
+  Gateway->>MQTT_Broker: send response to gateway/tag/commandres with request_id
+  deactivate Gateway
+  activate MQTT_Broker
+  MQTT_Broker-->>CLI: forwarding response
+  deactivate MQTT_Broker
+  deactivate CLI
+```
+
 ## TODO
-The messages should be implemented via protobuf in the future, so all code refering to the MQTT-messages can be generated automatically.
+The messages should be implemented via protobuf in the future, so all code refering to the MQTT-messages can be generated automatically on all clients.

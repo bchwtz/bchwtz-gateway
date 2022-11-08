@@ -47,7 +47,8 @@ nav:
       - bluetooth-python-library/sensor_ref.md
       - bluetooth-python-library/ble_conn_ref.md
     - Global Architecture:
-      - mqtt_messages.md
+      - global_architecture/mqtt_messages.md
+      - global_architecture/docker_architecture.md
     - Additional Microservices:
       - CLI: go-services/cli_ref.md
       - Dumper: go-services/dumper_ref.md
