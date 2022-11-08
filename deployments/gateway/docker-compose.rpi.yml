@@ -1,8 +1,8 @@
 version: "3.5"
 services:
   ble-gateway:
-    image: ghcr.io/bchwtz-fhswf/gateway/ble-gateway:main
+    image: ghcr.io/bchwtz/bchwtz-gateway/ble-gateway:main
     privileged: true
 
   db-dumper:
-    image: ghcr.io/bchwtz-fhswf/gateway/db-dumper:main
+    image: ghcr.io/bchwtz/bchwtz-gateway/db-dumper:main
