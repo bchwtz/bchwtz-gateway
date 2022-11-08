@@ -66,7 +66,7 @@ nav:
         - Hub Tests: bluetooth-python-library/hub_test_ref.md
         - Tag Test: bluetooth-python-library/tag_test_ref.md
         - Tag Config Tests: bluetooth-python-library/tag_config_test_ref.md
-    - Misc:
+    - Further tutorials:
       - git_installation_on_raspberry.md
       - MKDocs: documentation_ref.md
 
