@@ -25,7 +25,7 @@ After this step you have to logout and login.
 
 ## Cloning the repository
 ```{bash}
-git clone https://github.com/bchwtz/bchwtz-gateway.git && cd gateway
+git clone https://github.com/bchwtz/bchwtz-gateway.git gateway && cd gateway
 ```
 
 ## Running the software in docker (recommended)
