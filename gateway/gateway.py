@@ -25,7 +25,7 @@ class Gateway:
         self.logger.info("connecting to mqtt")
         asyncio.get_event_loop().create_task(self.hub.subscribe_to_log_events())
 
-        self.hub.mqtt_client.connect(host=Config.GlobalConfig.mqtt_address.value)
+        self.hub.mqtt_client.connect(host=Config.GlobalConfig.mqtt_broker.value)
         self.hub.mqtt_client.loop_start()
 
 
