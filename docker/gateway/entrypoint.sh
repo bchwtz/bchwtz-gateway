@@ -3,4 +3,4 @@
 service dbus start
 bluetoothd &
 
-env > .env && python demos/demo_gateway.py
+env > .env && python gateway.py
