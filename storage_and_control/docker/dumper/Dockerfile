@@ -1,6 +1,9 @@
 FROM alpine:latest
 RUN env > /.env
-ADD gw-dumper /usr/bin/dumper
-RUN chmod +x /usr/bin/dumper
+RUN apk update
+RUN apk add libc6-compat
+ADD gw-dumper dumper
+RUN chmod +x dumper
+RUN mv dumper /usr/bin/
 
 CMD env > /.env && dumper
