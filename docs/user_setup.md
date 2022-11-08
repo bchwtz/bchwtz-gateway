@@ -42,3 +42,5 @@ mv gw_arm64 bin/gw
 # changes the execution rights
 chmod +x bin/gw
 ```
+
+You're all set!
