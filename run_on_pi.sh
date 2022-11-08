@@ -8,6 +8,6 @@ fi
 
 export PATH=$PATH:$(pwd)/bin
 cd deployments/gateway
-sudo killall -9 bluetoothd
 docker-compose --env-file ../../.env -f docker-compose.yml -f docker-compose.rpi.yml pull
+sudo killall -9 bluetoothd
 docker-compose --env-file ../../.env -f docker-compose.yml -f docker-compose.rpi.yml up -d

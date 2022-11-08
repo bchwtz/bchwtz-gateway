@@ -1,8 +1,56 @@
 version: "3.5"
 services:
   ble-gateway:
+    depends_on: 
+      - mqtt-broker
     image: ghcr.io/bchwtz/bchwtz-gateway/ble-gateway:main
     privileged: true
+    environment:
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DB: ${MONGO_DB}
+      MONGO_HOST: ${MONGO_HOST}
+      MONGO_PORT: ${MONGO_PORT}
+      MONGO_CONNECTION: ${MONGO_CONNECTION}
+
+      MQTT_BROKER: ${MQTT_BROKER}
+      MQTT_CLIENTID: ${MQTT_CLIENTID}
+      MQTT_USER: ${MQTT_USER}
+      MQTT_PORT: ${MQTT_PORT}
+      MQTT_PASSWORD: ${MQTT_PASSWORD}
+
+      TOPIC_LISTEN_ADV: ${TOPIC_LISTEN_ADV}
+      TOPIC_LOG: ${TOPIC_LOG}
+      TOPIC_TAG_SETTIME: ${TOPIC_TAG_SETTIME}
+      TOPIC_COMMAND: ${TOPIC_COMMAND}
+      TOPIC_COMMAND_RES: ${TOPIC_COMMAND_RES}
+      TOPIC_TAG_PREFIX: ${TOPIC_TAG_PREFIX}
+      TOPIC_TAGS_PREFIX: ${TOPIC_TAGS_PREFIX}
 
   db-dumper:
+    restart: "always"
+    depends_on:
+      - mqtt-broker
+      - mongo
     image: ghcr.io/bchwtz/bchwtz-gateway/db-dumper:main
+    environment:
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DB: ${MONGO_DB}
+      MONGO_HOST: ${MONGO_HOST}
+      MONGO_PORT: ${MONGO_PORT}
+      MONGO_CONNECTION: ${MONGO_CONNECTION}
+
+      MQTT_BROKER: ${MQTT_BROKER}
+      MQTT_CLIENTID: ${MQTT_CLIENTID}
+      MQTT_USER: ${MQTT_USER}
+      MQTT_PORT: ${MQTT_PORT}
+      MQTT_PASSWORD: ${MQTT_PASSWORD}
+
+      TOPIC_LISTEN_ADV: ${TOPIC_LISTEN_ADV}
+      TOPIC_LOG: ${TOPIC_LOG}
+      TOPIC_TAG_SETTIME: ${TOPIC_TAG_SETTIME}
+      TOPIC_COMMAND: ${TOPIC_COMMAND}
+      TOPIC_COMMAND_RES: ${TOPIC_COMMAND_RES}
+      TOPIC_TAG_PREFIX: ${TOPIC_TAG_PREFIX}
+      TOPIC_TAGS_PREFIX: ${TOPIC_TAGS_PREFIX}

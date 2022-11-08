@@ -32,7 +32,10 @@ func (gw *GatewayDumper) run() {
 	}
 	gw.ConnectMongo()
 	donech := make(chan bool)
-	gw.mqclient.Connect(os.Getenv("MQTT_BROKER")+":"+os.Getenv("MQTT_PORT"), os.Getenv("MQTT_CLIENTID"), os.Getenv("MQTT_USER"), os.Getenv("MQTT_PASSWORD"), true)
+	err := gw.mqclient.Connect(os.Getenv("MQTT_BROKER")+":"+os.Getenv("MQTT_PORT"), os.Getenv("MQTT_CLIENTID"), os.Getenv("MQTT_USER"), os.Getenv("MQTT_PASSWORD"), true)
+	if err != nil {
+		logrus.Fatalln(err)
+	}
 	gw.get_advertisement_channel = make(chan mqtt.MQTTSubscriptionMessage)
 	gw.hub = model.Hub{}
 	gw.listenAdvertisements()
