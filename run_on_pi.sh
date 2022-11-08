@@ -5,5 +5,7 @@ then
     echo "env did not exist, will copy sample values!"
     cp .env-default .env
 fi
+
+export PATH=$PATH:$(pwd)/bin
 cd deployments/gateway
 docker-compose --env-file ../../.env -f docker-compose.yml -f docker-compose.rpi.yml up -d

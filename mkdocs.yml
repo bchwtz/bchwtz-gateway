@@ -35,6 +35,9 @@ markdown_extensions:
 
 nav:
   - Introduction: index.md
+  - Getting Started:
+    - user_setup.md
+    - developer_setup.md
   - Reference:
     - Gateway Library:
       - bluetooth-python-library/gateway_ref.md
@@ -52,20 +55,20 @@ nav:
         - gateway-package: go-services/gateway_ref.md
         - model-package: go-services/model_ref.md
         - commandinterface-package: go-services/commandinterface_ref.md
-  - Demos: 
-    - Overview: demos_overview.md
-    - Analyse Heartbeat: analyse_heartbeats_ref.md
-    - Time Demo: current_time_demo_ref.md
-    - Heartbeat Demo: get_set_heartbeat_ref.md
-  - Tests:
-    - Test Documentation: bluetooth-python-library/test-documentation.md
-    - Hub Tests: bluetooth-python-library/hub_test_ref.md
-    - Tag Test: bluetooth-python-library/tag_test_ref.md
-    - Tag Config Tests: bluetooth-python-library/tag_config_test_ref.md
-  - git_installation_on_raspberry.md
-  - MKDocs: documentation_ref.md
-  - Developer Setup: developer_setup.md
-  - readme.md
+    - Examples:
+      - Demos: 
+        - Overview: demos_overview.md
+        - Analyse Heartbeat: analyse_heartbeats_ref.md
+        - Time Demo: current_time_demo_ref.md
+        - Heartbeat Demo: get_set_heartbeat_ref.md
+      - Tests:
+        - Test Documentation: bluetooth-python-library/test-documentation.md
+        - Hub Tests: bluetooth-python-library/hub_test_ref.md
+        - Tag Test: bluetooth-python-library/tag_test_ref.md
+        - Tag Config Tests: bluetooth-python-library/tag_config_test_ref.md
+    - Misc:
+      - git_installation_on_raspberry.md
+      - MKDocs: documentation_ref.md
 
 extra:
   social:
