@@ -13,7 +13,7 @@ import crcmod
 from gateway.tag.tagconfig import TagConfig
 
 logger = logging.getLogger("Decoder")
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.WARNING)
 class Decoder():
     def __init__(self) -> None:
         self.resolution = 0

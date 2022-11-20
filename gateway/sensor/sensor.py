@@ -34,7 +34,6 @@ class Sensor(object):
         measurements = []
         for m in self.measurements:
             if type(m) is not dict:
-                print(m)
                 m = m.get_props()
             measurements.append(m)
         return measurements

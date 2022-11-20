@@ -184,7 +184,7 @@ class Hub(object):
         self.logger.debug("result: %s"%rc)
         sub = Config.MQTTConfig.topic_command.value
         res = self.mqtt_client.subscribe(sub, 0)
-        sub = "gateway/hub/get_all"
+        sub = "gateway/tags/get"
         res = self.mqtt_client.subscribe(sub, 0)
         self.logger.info(sub)
 
@@ -210,9 +210,11 @@ class Hub(object):
         self.logger.debug("sent payload")
 
     def forward_mqtt_functions_to_ns_handler(self, topic_name: str, client: Client, msg: MQTTMessage) -> None:
-        self.logger.warn(topic_name)
+        self.logger.info(topic_name)
         parts = topic_name.split("/")
         namespace = parts[1]
+        msg_dct: dict = json.loads(msg.payload)
+        req_id = msg_dct["id"]
         if namespace == "tag":
             tag_address = parts[2]
             command = parts[3]
@@ -224,6 +226,8 @@ class Hub(object):
             for tag in self.tags:
                 command = parts[2]
                 tag.handle_mqtt_cmd(mqtt_client=client, command=command, msg=msg)
+            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "success", "tags": self.tags}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+
         elif namespace == "hub":
             command = parts[2]
             self.handle_mqtt_cmd(cmd=command, msg=msg)
@@ -231,7 +235,7 @@ class Hub(object):
     def handle_mqtt_cmd(self, cmd: str, msg: MQTTMessage):
         msg_dct: dict = json.loads(msg.payload)
         req_id = msg_dct["id"]
-        if cmd == "get_all":
+        if cmd == "get":
             self.logger.error("printing tags to mqtt")
             self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "payload": {"status": "success", "tags": self.tags}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 

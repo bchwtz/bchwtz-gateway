@@ -3,6 +3,7 @@ package gateway
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
 	"reflect"
 
@@ -26,6 +27,8 @@ type CLI struct {
 	tag_topic_pre string
 	// current MQTT-command result Topic
 	tags_topic_pre string
+	// outputFile
+	output_file string
 }
 
 // enum containing the environment-variables for the MQTT-config
@@ -56,7 +59,7 @@ func NewCLI() CLI {
 }
 
 // waits for a response and handles it (prints it)
-func (c *CLI) handleComms(req commandinterface.CommandRequest) error {
+func (c *CLI) handleComms(req commandinterface.CommandRequest, outputfile string) error {
 	logrus.Infoln("waiting for a response from the gateway...")
 	logrus.Println("topic: " + req.Topic)
 	reqbt, err := json.Marshal(&req)
@@ -66,6 +69,7 @@ func (c *CLI) handleComms(req commandinterface.CommandRequest) error {
 	}
 	// opens an internal answerchannel
 	answerch := make(chan mqtt.MQTTSubscriptionMessage)
+	payloads := []interface{}{}
 	logrus.Info("subscribing to " + c.restopic)
 	c.mqclient.Subscribe(c.restopic, answerch)
 	tk := c.mqclient.Publish(req.Topic, reqbt)
@@ -86,9 +90,33 @@ func (c *CLI) handleComms(req commandinterface.CommandRequest) error {
 		// it has to be our message now - let us acknowledge the reception
 		answer.Message.Ack()
 		logrus.Infoln(res.Payload)
+		if res.OngoingRequest {
+			if err := c.resHasErr(res); err != nil {
+				logrus.Errorln(err)
+				return err
+			}
+			payloads = append(payloads, res.Payload)
+			continue
+		}
 		// let us check if the message was an error
-		return c.resHasErr(res)
+		if err := c.resHasErr(res); err != nil {
+			logrus.Errorln(err)
+			return err
+		}
+		break
 	}
+	if outputfile != "" {
+		if jout, err := json.MarshalIndent(payloads, "", "	"); jout != nil && err == nil {
+			if err := os.WriteFile(outputfile, jout, 0775); err != nil {
+				logrus.Errorln(err)
+				return err
+			}
+		} else {
+			logrus.Errorln(err)
+			return err
+		}
+	}
+	return nil
 }
 
 // traverse through the message and check if it contains a soft error
@@ -112,11 +140,11 @@ func (c *CLI) getTopicByAddressAndCommand(cCtx *cli.Context, cmd string) string 
 		address = cCtx.String("address")
 	}
 	if address != "" {
-		topic += c.tag_topic_pre + "/" + address
+		topic += fmt.Sprintf("%s/%s", c.tag_topic_pre, address)
 	} else {
-		topic += c.tags_topic_pre
+		topic += fmt.Sprintf("%ss", c.tag_topic_pre)
 	}
-	topic += "/" + cmd
+	topic += fmt.Sprintf("/%s", cmd)
 	return topic
 }
 
@@ -163,7 +191,7 @@ func (c *CLI) configure() {
 									}
 									topic := c.getTopicByAddressAndCommand(cCtx, "set_time")
 									req := commandinterface.NewCommandRequest(topic, args)
-									return c.handleComms(req)
+									return c.handleComms(req, "")
 								},
 							},
 						},
@@ -171,13 +199,16 @@ func (c *CLI) configure() {
 					{
 						Name:      "get",
 						ArgsUsage: "first arg is the tags name - if none is set every tag will be asked for its time and config",
+						Flags: []cli.Flag{
+							cli.StringFlag{
+								Name:  "file",
+								Usage: "file to output the received json to",
+							},
+						},
 						Action: func(cCtx *cli.Context) error {
-							args := ""
-							if cCtx.Args().Present() {
-								args = cCtx.Args().First()
-							}
-							req := commandinterface.NewCommandRequest("gateway/hub/get_all", args)
-							return c.handleComms(req)
+							filename := cCtx.String("file")
+							req := commandinterface.NewCommandRequest(c.getTopicByAddressAndCommand(cCtx, "get"), nil)
+							return c.handleComms(req, filename)
 						},
 						Subcommands: []cli.Command{
 							{
@@ -188,7 +219,7 @@ func (c *CLI) configure() {
 										args = cCtx.Args().First()
 									}
 									req := commandinterface.NewCommandRequest("get_time", args)
-									return c.handleComms(req)
+									return c.handleComms(req, "")
 								},
 							},
 							{
@@ -200,7 +231,7 @@ func (c *CLI) configure() {
 										args = cCtx.Args().First()
 									}
 									req := commandinterface.NewCommandRequest("get_config", args)
-									return c.handleComms(req)
+									return c.handleComms(req, "")
 								},
 							},
 						},

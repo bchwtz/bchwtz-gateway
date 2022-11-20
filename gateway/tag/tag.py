@@ -264,9 +264,9 @@ class Tag(object):
         """
         time = self.dec.decode_time_rx(rx_bt)
         self.time = time
-        print("got time - sending...")
+        self.logger.debug("got time - sending...")
         self.publisher.publish(aiopubsub.Key("log", "TIME"), self)
-        print(self.time)
+        self.logger.debug(self.time)
 
     def handle_logging_status_cb(self, rx_bt: bytearray):
         self.logger.debug("logging status:")
@@ -388,6 +388,12 @@ class Tag(object):
         msg_dct: dict = json.loads(msg.payload)
         payload = msg_dct["payload"]
 
+        if command == "get":
+            self.logger.info("running get on tag: %s", self.address)
+            msg_dct: dict = json.loads(msg.payload)
+            req_id = msg_dct["id"]
+            mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"ongoing_request": True, "request_id": req_id, "payload": {"status": "success", "tag": self}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+            return
 
         if command == "get_time":
             self.logger.info("running get_time on tag: %s", self.address)
