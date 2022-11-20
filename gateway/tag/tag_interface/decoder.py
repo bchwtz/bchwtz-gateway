@@ -577,8 +577,9 @@ class Decoder():
         if data != None:
             logger.info("got data:")
             logger.info(data)
-            # dataList=message_return_value.from_get_accelorationdata(accelorationdata=AccelorationData,mac=self.mac)
+            # dataList=message_return_value.from_get_accelorationdata(accelorationdata=AccelerationData,mac=self.mac)
             # self.data.append(dataList.return_value.__dict__)
+            acceleration_sensor.measurements.extend(data)
 
         return
 

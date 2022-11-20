@@ -25,8 +25,8 @@ print(tag.config.get_props())
 # get the log
 main_loop.run_until_complete(tag.get_acceleration_log())
 # generate a json string
-tagjs = json.dumps(hub, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4)
 # output file
+tagjs = json.dumps(hub, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4)
 file = open("./acceleration_log.json", "w")
 file.write(tagjs)
 file.close()
