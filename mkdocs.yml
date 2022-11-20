@@ -62,6 +62,7 @@ nav:
         - Analyse Heartbeat: analyse_heartbeats_ref.md
         - Time Demo: current_time_demo_ref.md
         - Heartbeat Demo: get_set_heartbeat_ref.md
+        - Acceleration Log Demo: demo_get_acc_log_ref.md
       - Tests:
         - Test Documentation: bluetooth-python-library/test-documentation.md
         - Hub Tests: bluetooth-python-library/hub_test_ref.md
