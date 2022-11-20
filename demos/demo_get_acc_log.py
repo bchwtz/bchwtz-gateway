@@ -1,29 +1,32 @@
 from time import sleep
 
 import asyncio
+import json
 import uuid
+import os
 from gateway.config import Config
 from gateway.hub.hub import Hub
-# Config.load_from_environ()
 
+# starting out with a new hub
 hub = Hub()
-print("spawned gw")
+# since we are running outside asyncio, we need a main_loop
 main_loop = asyncio.get_event_loop()
-# main_loop.run_until_complete(gw.hub.discover_tags())
-
-# main_loop.run_until_complete(gw.hub.tags[0].get_config())
-# for tag in gw.hub.tags:
-#     print(tag.name)
-#     main_loop.run_until_complete(tag.get_time())
-# sleep(20)
-# print(gw.hub.tags[0].time)
+# discover new tags
 main_loop.run_until_complete(hub.discover_tags())
 print(hub.tags)
+if len(hub.tags) < 0:
+    print("sorry - no tags discovered")
+    os.Exit(0)
+# select the first discovered tag - you should rather use hub.getTagByName("your-address")
 tag = hub.tags[0]
-
-
+# get the tags config - important to be able to decode the messages from the tag
 main_loop.run_until_complete(tag.get_config())
 print(tag.config.get_props())
-# tag.config.scale = 2
-# main_loop.run_until_complete(tag.set_config())
+# get the log
 main_loop.run_until_complete(tag.get_acceleration_log())
+# generate a json string
+tagjs = json.dumps(hub, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4)
+# output file
+file = open("./acceleration_log.json", "w")
+file.write(tagjs)
+file.close()
