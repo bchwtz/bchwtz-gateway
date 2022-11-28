@@ -38,6 +38,7 @@ nav:
   - Getting Started:
     - user_setup.md
     - developer_setup.md
+    - go_cli.md
   - Reference:
     - Gateway Library:
       - bluetooth-python-library/gateway_ref.md
