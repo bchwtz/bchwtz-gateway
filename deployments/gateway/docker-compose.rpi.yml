@@ -5,6 +5,8 @@ services:
       - mqtt-broker
     image: ghcr.io/bchwtz/bchwtz-gateway/ble-gateway:main
     privileged: true
+    volumes:
+      - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
     environment:
       MONGO_USER: ${MONGO_USER}
       MONGO_PASSWORD: ${MONGO_PASSWORD}
