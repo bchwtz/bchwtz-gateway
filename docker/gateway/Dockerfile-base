@@ -2,7 +2,7 @@ FROM python:3.10
 
 WORKDIR /opt/gateway
 
-ADD ./requirements .
+ADD ./requirements.txt .
 ENV PYTHONPATH=/opt/gateway
 
 RUN apt-get update -y
