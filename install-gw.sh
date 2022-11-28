@@ -10,7 +10,7 @@ if [ -f $BINARY_PATH$BINARY_NAME ]; then
     echo "executable $BINARY_PATH$BINARY_NAME already exists - aborting installation"
     exit
 fi
-sudo apt update && sudo apt install -y docker-ce docker-compose
+sudo apt update && sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 if [ ! -d $DIST_DIR ]; then
     mkdir -p $DIST_DIR
     cd $DIST_DIR
