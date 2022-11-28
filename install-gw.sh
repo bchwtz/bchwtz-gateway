@@ -31,7 +31,7 @@ then
     awk '!/^$/{print "export " $0}' .env-default | sed -e 's/\(MQTT_PASSWORD=\).*/\1"'$MQTT_PASSW'"/g' | sed -e 's/\(MONGO_PASSWORD=\).*/\1"'$MONGO_PASSW'"/g' > gateway-vars.sh
     source $(pwd)/gateway-vars.sh
     sudo cp gateway-vars.sh /etc/profile.d/
+    sudo mv $(pwd)/gw-arm64 $BINARY_PATH$BINARY_NAME
 fi
-sudo mv $(pwd)/gw-arm64 $BINARY_PATH$BINARY_NAME
 echo "generating docker-compose"
 docker-compose --project-name gateway -f docker-compose.std.yml -f docker-compose.rpi.yml config > docker-compose.yml
