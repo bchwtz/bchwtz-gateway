@@ -20,6 +20,7 @@ if [ ! -d $DIST_DIR ]; then
     wget https://bchwtz.github.io/bchwtz-gateway/dist/.env-default
     wget https://bchwtz.github.io/bchwtz-gateway/dist/uninstall-gw.sh
     mv docker-compose.yml docker-compose.std.yml
+    sed -i -e 's/image: mongo$/image: apcheamitru\/arm32v7-mongo/' docker-compose.yml
 fi
 if [ -f .env-default ]
 then
