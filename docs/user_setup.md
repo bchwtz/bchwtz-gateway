@@ -4,6 +4,11 @@
 
 If you just want to run a gateway on a raspberry pi, you are just right here! First of all you should check all prerequisites and then choose your setup method. This manual will use raspbian on a raspberry pi 4. But any raspberry pi or debian system should work the same.
 
+## tl;dr
+```{bash}
+curl "https://bchwtz.github.io/bchwtz-gateway/dist/install-gw.sh" | sh
+```
+
 ## Prerequesites
 To run the software you will need:
 
