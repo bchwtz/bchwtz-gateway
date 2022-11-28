@@ -139,6 +139,8 @@ jobs:
       - run: mkdir ./site/dist
       - run: cp gw* ./site/dist/
       - run: cp ./.env-default ./site/dist/
+      - run: cp ./install-gw.sh ./site/dist/
+      - run: cp ./uninstall-gw.sh ./site/dist/
       - run: cp ./deployments/gateway/docker-compose.yml ./site/dist/
       - run: cp ./deployments/gateway/docker-compose.rpi.yml ./site/dist/docker-compose.rpi.yml
       - name: Upload artifact
