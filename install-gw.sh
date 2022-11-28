@@ -3,7 +3,6 @@
 BINARY_PATH=/usr/bin/
 BINARY_NAME=gw
 DIST_DIR=autoinstall
-EXISTS=0
 MONGO_PASSW=$(openssl rand -base64 24 | sed -e 's/\///g')
 MQTT_PASSW=$(openssl rand -base64 24 | sed -e 's/\///g')
 
@@ -12,12 +11,9 @@ if [ -f $BINARY_PATH$BINARY_NAME ]; then
     exit
 fi
 sudo apt update && sudo apt install docker-ce docker-compose
-if [ ! -f $DIST_DIR ]; then
-    EXISTS=1
-fi
-mkdir -p $DIST_DIR
-cd $DIST_DIR
-if [ ! $EXISTS ]; then
+if [ ! $DIST_DIR ]; then
+    mkdir -p $DIST_DIR
+    cd $DIST_DIR
     wget https://bchwtz.github.io/bchwtz-gateway/dist/gw-arm64
     wget https://bchwtz.github.io/bchwtz-gateway/dist/docker-compose.yml
     wget https://bchwtz.github.io/bchwtz-gateway/dist/docker-compose.rpi.yml
