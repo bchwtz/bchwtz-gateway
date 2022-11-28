@@ -13,10 +13,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-  permissions:
-    contents: read
-    pages: write
-    id-token: write
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 # A workflow run is artifactmade up of one or more jobs that can run sequentially or in parallel
 jobs:
