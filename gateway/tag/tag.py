@@ -13,8 +13,6 @@ from gateway.sensor.humidity import HumiditySensor
 from gateway.sensor.battery import BatterySensor
 from gateway.tag.tag_interface.encoder import Encoder
 from gateway.tag.tagconfig import TagConfig
-from nbformat import write
-from numpy import byte
 from gateway.drivers.bluetooth.ble_conn.ble_conn import BLEConn
 from gateway.config import Config
 import logging

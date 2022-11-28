@@ -4,7 +4,6 @@ attrs==22.1.0
 bleak==0.12.1
 crcmod==1.7
 nbformat==5.2.0
-numpy==1.23.4
 paho_mqtt==1.6.1
 protobuf==4.21.9
 python-dotenv==0.21.0
