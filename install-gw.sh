@@ -11,7 +11,7 @@ if [ -f $BINARY_PATH$BINARY_NAME ]; then
     exit
 fi
 sudo apt update && sudo apt install docker-ce docker-compose
-if [ ! autoinstall ]; then
+if [ ! -d autoinstall ]; then
     mkdir -p autoinstall
     cd autoinstall
     wget https://bchwtz.github.io/bchwtz-gateway/dist/gw-arm64
