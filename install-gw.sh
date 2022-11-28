@@ -23,7 +23,7 @@ if [ ! -d $DIST_DIR ]; then
     IS_32=$(uname -a | grep -i armv7l)
     if [ ! -z "$IS_32" ] ; then
         echo "Patching mongo image to comply to 32bits - consider using a 64bit-os!"
-        sed -i -e 's/image: mongo$/image: apcheamitru\/arm32v7-mongo/' docker-compose.yml
+        sed -i -e 's/image: mongo$/image: apcheamitru\/arm32v7-mongo/' docker-compose.std.yml
     fi
     chmod +x uninstall-gw.sh
 fi
