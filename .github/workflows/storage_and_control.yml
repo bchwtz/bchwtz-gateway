@@ -136,7 +136,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: build-artifacts
-      - run: cp build-artifacts/* ./site/
+      - run: gw* ./site/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
