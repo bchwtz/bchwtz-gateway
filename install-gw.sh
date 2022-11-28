@@ -2,7 +2,7 @@
 
 BINARY_PATH=/usr/bin/
 BINARY_NAME=gw
-DIST_DIR=autoinstall
+DIST_DIR=gateway-autoinstall
 MONGO_PASSW=$(openssl rand -base64 24 | sed -e 's/\///g')
 MQTT_PASSW=$(openssl rand -base64 24 | sed -e 's/\///g')
 
