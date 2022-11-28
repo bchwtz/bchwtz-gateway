@@ -11,14 +11,14 @@ if [ -f $BINARY_PATH$BINARY_NAME ]; then
     exit
 fi
 sudo apt update && sudo apt install docker-ce docker-compose
-if [ ! -d autoinstall ]; then
-    mkdir -p autoinstall
-    cd autoinstall
+if [ ! -d $DIST_DIR ]; then
+    mkdir -p $DIST_DIR
+    cd $DIST_DIR
     wget https://bchwtz.github.io/bchwtz-gateway/dist/gw-arm64
     wget https://bchwtz.github.io/bchwtz-gateway/dist/docker-compose.yml
     wget https://bchwtz.github.io/bchwtz-gateway/dist/docker-compose.rpi.yml
     wget https://bchwtz.github.io/bchwtz-gateway/dist/.env-default
-    wget https://bchwtz.github.io/bchwtz-gateway/dist/uninstall.sh
+    wget https://bchwtz.github.io/bchwtz-gateway/dist/uninstall-gw.sh
     mv docker-compose.yml docker-compose.std.yml
 fi
 if [ -f .env-default ]
