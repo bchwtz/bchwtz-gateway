@@ -131,12 +131,12 @@ jobs:
       - run: pip install mkdocs-material mkdocstrings[python] mkdocstrings[go] mkdocs-extra-sass-plugin "mkdocs-minify-plugin>=0.3" "mkdocs-redirects>=1.0" mike "jinja2==3.0.3"
       - run: cd storage_and_control && ./generate_static_docs.sh
       - run: mkdocs build
-      - run: cp build-artifacts.zip ./site/
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - uses: actions/download-artifact@v3
         with:
           name: build-artifacts
+      - run: cp build-artifacts/* ./site/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
