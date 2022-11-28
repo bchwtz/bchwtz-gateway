@@ -136,3 +136,4 @@ dmypy.json
 temp/
 docs/go-services
 bin
+autoinstall

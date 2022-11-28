@@ -138,6 +138,7 @@ jobs:
           name: build-artifacts
       - run: mkdir ./site/dist
       - run: cp gw* ./site/dist/
+      - run: cp ./.env-default ./site/dist/
       - run: cp ./deployments/gateway/docker-compose.yml ./site/dist/
       - run: cp ./deployments/gateway/docker-compose.rpi.yml ./site/dist/docker-compose.rpi.yml
       - name: Upload artifact
@@ -148,39 +149,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
-  # deploy:
-  #   needs: build
-  #   runs-on: deploy
-  #   env:
-  #     working-directory: ./deployments
-  #     env-file: .env
-  #     MF_AUTH_DB_PASS: ${{ secrets.MF_AUTH_DB_PASS }}
-  #     MF_USERS_DB_PASS: ${{ secrets.MF_USERS_DB_PASS }}
-  #     MF_USERS_ADMIN_PASSWORD: ${{ secrets.MF_USERS_ADMIN_PASSWORD }}
-  #     MF_EMAIL_PASSWORD: ${{ secrets.MF_EMAIL_PASSWORD }}
-  #     MF_THINGS_DB_PASS: ${{ secrets.MF_THINGS_DB_PASS }}
-  #     MF_THINGS_ES_PASS: ${{ secrets.MF_THINGS_ES_PASS }}
-  #     MF_MQTT_ADAPTER_ES_PASS: ${{ secrets.MF_MQTT_ADAPTER_ES_PASS }}
-  #     MF_BOOTSTRAP_DB_PASS: ${{ secrets.MF_BOOTSTRAP_DB_PASS }}
-  #     MF_PROVISION_PASS: ${{ secrets.MF_PROVISION_PASS }}
-  #     MF_OPCUA_ADAPTER_ROUTE_MAP_PASS: ${{ secrets.MF_OPCUA_ADAPTER_ROUTE_MAP_PASS }}
-  #     MF_INFLUX_WRITER_DB_PASS: ${{ secrets.MF_INFLUX_WRITER_DB_PASS }}
-  #     MF_INFLUX_READER_DB_PASS: ${{ secrets.MF_INFLUX_READER_DB_PASS }}
-  #     MF_TWINS_CACHE_PASS: ${{ secrets.MF_TWINS_CACHE_PASS }}
-
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: docker-pull
-  #       run: /usr/local/bin/docker-compose pull
-  #       working-directory: ${{env.working-directory}}
-
-      
-  #     - name: load-env
-  #       run: |
-  #         while read line; do
-  #           echo "$line" >> $GITHUB_ENV
-  #         done < ${{ env.env-file }}
-  #       working-directory: ${{env.working-directory}}
-  #     - name: docker up
-  #       working-directory: ${{env.working-directory}}
-  #       run: /usr/local/bin/docker-compose up -d
