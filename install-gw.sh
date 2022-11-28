@@ -32,6 +32,6 @@ then
     source $(pwd)/gateway-vars.sh
     sudo cp gateway-vars.sh /etc/profile.d/
 fi
-sudo mv gw-arm64 $BINARY_PATH$BINARY_NAME
+sudo mv $(pwd)/gw-arm64 $BINARY_PATH$BINARY_NAME
 echo "generating docker-compose"
 docker-compose --project-name gateway -f docker-compose.std.yml -f docker-compose.rpi.yml config > docker-compose.yml
