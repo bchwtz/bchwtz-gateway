@@ -118,6 +118,8 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    needs: build
+
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
