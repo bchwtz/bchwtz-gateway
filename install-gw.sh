@@ -30,7 +30,7 @@ then
     echo "configuring auto-load of env-variables"
     awk '!/^$/{print "export " $0}' .env-default | sed -e 's/\(MQTT_PASSWORD=\).*/\1"'$MQTT_PASSW'"/g' | sed -e 's/\(MONGO_PASSWORD=\).*/\1"'$MONGO_PASSW'"/g' > gateway-vars.sh
     source $(pwd)/gateway-vars.sh
-    cp gateway-vars.sh /etc/profile.d/
+    sudo cp gateway-vars.sh /etc/profile.d/
 fi
 sudo mv gw-arm64 $BINARY_PATH$BINARY_NAME
 echo "generating docker-compose"
