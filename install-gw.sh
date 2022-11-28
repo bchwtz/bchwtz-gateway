@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 BINARY_PATH=/usr/bin/
 BINARY_NAME=gw
@@ -10,7 +10,7 @@ if [ -f $BINARY_PATH$BINARY_NAME ]; then
     echo "executable $BINARY_PATH$BINARY_NAME already exists - aborting installation"
     exit
 fi
-sudo apt update && sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+sudo apt update && sudo apt install -y docker.io docker-compose
 if [ ! -d $DIST_DIR ]; then
     mkdir -p $DIST_DIR
     cd $DIST_DIR
@@ -25,7 +25,7 @@ if [ -f .env-default ]
 then
     echo "configuring auto-load of env-variables"
     awk '!/^$/{print "export " $0}' .env-default | sed -e 's/\(MQTT_PASSWORD=\).*/\1"'$MQTT_PASSW'"/g' | sed -e 's/\(MONGO_PASSWORD=\).*/\1"'$MONGO_PASSW'"/g' > gateway-vars.sh
-    source $(pwd)/gateway-vars.sh
+    . $(pwd)/gateway-vars.sh
     sudo cp gateway-vars.sh /etc/profile.d/
     sudo mv $(pwd)/gw-arm64 $BINARY_PATH$BINARY_NAME
     mv .env-default .env
