@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 BINARY_PATH=/usr/bin/
 BINARY_NAME=gw
@@ -33,4 +33,4 @@ fi
 echo "generating docker-compose"
 docker-compose --project-name gateway -f docker-compose.std.yml -f docker-compose.rpi.yml config > docker-compose.yml
 rm docker-compose.std.yml docker-compose.rpi.yml
-docker-compose docker-compose.yml up
+docker-compose up
