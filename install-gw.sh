@@ -11,6 +11,7 @@ if [ -f $BINARY_PATH$BINARY_NAME ]; then
     exit
 fi
 curl -fsSL https://get.Docker.com -o get-Docker.sh
+. get-Docker.sh
 
 if [ ! -d $DIST_DIR ]; then
     mkdir -p $DIST_DIR
