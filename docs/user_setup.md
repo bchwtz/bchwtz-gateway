@@ -13,14 +13,15 @@ Now you have to do docker login with your github username like this:
 ```{bash}
 echo $CR_PAT | docker login ghcr.io -u <your_username> --password_stdin
 ```
+To install the services and cli run:
 ```{bash}
 curl "https://bchwtz.github.io/bchwtz-gateway/dist/install-gw.sh" | sh
 ```
-
+This step spins up a local gateway-cluster and installs all necessary packages on your pi.
 ## Prerequesites
 To run the software you will need:
 
-* a debian-based linux (or arch)
+* a debian-based linux
 * a raspberry pi 4
 * docker
 * git
