@@ -11,7 +11,7 @@ echo "CR_PAT=<your copied token>" >> ~/.bash_profile
 ```
 Now you have to do docker login with your github username like this:
 ```{bash}
-echo $CR_PAT | docker login ghcr.io -u <your_username> --password_stdin
+echo $CR_PAT | docker login ghcr.io -u <your_username> --password-stdin
 ```
 To install the services and cli run:
 ```{bash}
