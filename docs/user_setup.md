@@ -51,7 +51,14 @@ git clone https://github.com/bchwtz/bchwtz-gateway.git gateway && cd gateway
 
 ### Running the software in docker (recommended)
 This step will run all required components inside a docker container.
-
+First, head over to [your github settings](https://github.com/settings/tokens){:target="_blank"} and generate a new classic token with only "read:packages" permission set. You should set the generated token as environment variable to persist it (you will only see it once):
+```{bash}
+echo "CR_PAT=<your copied token>" >> ~/.bash_profile
+```
+Now you have to do docker login with your github username like this:
+```{bash}
+echo $CR_PAT | docker login ghcr.io -u <your_username> --password_stdin
+```
 ```{bash}
 ./run_on_pi.sh
 ```
