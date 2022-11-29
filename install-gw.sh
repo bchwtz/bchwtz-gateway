@@ -10,12 +10,12 @@ if [ -f $BINARY_PATH$BINARY_NAME ]; then
     echo "Executable $BINARY_PATH$BINARY_NAME already exists - aborting installation"
     exit
 fi
-curl -fsSL https://get.Docker.com -o get-Docker.sh
-. get-Docker.sh
 
 if [ ! -d $DIST_DIR ]; then
     mkdir -p $DIST_DIR
     cd $DIST_DIR
+    curl -fsSL https://get.Docker.com -o get-Docker.sh
+    bash get-Docker.sh
     wget https://bchwtz.github.io/bchwtz-gateway/dist/gw-arm
     wget https://bchwtz.github.io/bchwtz-gateway/dist/docker-compose.yml
     wget https://bchwtz.github.io/bchwtz-gateway/dist/docker-compose.rpi.yml
