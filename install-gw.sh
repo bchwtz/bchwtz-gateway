@@ -32,15 +32,18 @@ fi
 if [ -f .env-default ]
 then
     echo "Configuring auto-load of env-variables"
-    awk '!/^$/{print "export " $0}' .env-default | sed -e 's/\(MQTT_PASSWORD=\).*/\1"'$MQTT_PASSW'"/g' | sed -e 's/\(MONGO_PASSWORD=\).*/\1"'$MONGO_PASSW'"/g' > gateway-vars.sh
+    sed -i -e 's/\(MQTT_PASSWORD=\).*/\1"'$MQTT_PASSW'"/g' .env-default
+    sed -i -e 's/\(MONGO_PASSWORD=\).*/\1"'$MONGO_PASSW'"/g' .env-default
+    cp .env-default .env-local
+    sed -i -e 's/\(MQTT_BROKER=\).*/\1"localhost"/g' .env-local
+    awk '!/^$/{print "export " $0}' .env-local > gateway-vars.sh
     . $(pwd)/gateway-vars.sh
     sudo cp gateway-vars.sh /etc/profile.d/
     sudo mv $(pwd)/gw-arm $BINARY_PATH$BINARY_NAME
     sudo chmod +x $BINARY_PATH$BINARY_NAME
-    mv .env-default .env
 fi
 echo "Generating docker-compose"
-docker-compose --project-name gateway -f docker-compose.std.yml -f docker-compose.rpi.yml config > docker-compose.yml
+docker-compose --env-file .env-default --project-name gateway -f docker-compose.std.yml -f docker-compose.rpi.yml config > docker-compose.yml
 rm docker-compose.std.yml docker-compose.rpi.yml
 docker-compose pull
 docker-compose up -d
