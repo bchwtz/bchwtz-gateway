@@ -37,13 +37,16 @@ then
     cp .env-default .env-local
     sed -i -e 's/\(MQTT_BROKER=\).*/\1"localhost"/g' .env-local
     awk '!/^$/{print "export " $0}' .env-local > gateway-vars.sh
-    . $(pwd)/gateway-vars.sh
+    cat .env-local | sed -e 's/\(.*\)=.*$/unset \1/g' > unset-gateway-vars.sh
+
     sudo cp gateway-vars.sh /etc/profile.d/
     sudo mv $(pwd)/gw-arm $BINARY_PATH$BINARY_NAME
     sudo chmod +x $BINARY_PATH$BINARY_NAME
+    chmod +x unset-gateway-vars.sh
 fi
 echo "Generating docker-compose"
 docker compose --env-file .env-default --project-name gateway -f docker-compose.std.yml -f docker-compose.rpi.yml config > docker-compose.yml
+. $(pwd)/gateway-vars.sh
 rm docker-compose.std.yml docker-compose.rpi.yml
 docker compose pull
 docker compose up -d
