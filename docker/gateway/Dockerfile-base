@@ -6,6 +6,6 @@ ADD ./requirements.txt .
 ENV PYTHONPATH=/opt/gateway
 
 RUN apt-get update -y
-RUN apt-get install -y bluez bluetooth
+# RUN apt-get install -y bluez bluetooth
 
 RUN pip install -r requirements.txt
