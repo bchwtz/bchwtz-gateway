@@ -10,7 +10,8 @@ if [ -f $BINARY_PATH$BINARY_NAME ]; then
     echo "Executable $BINARY_PATH$BINARY_NAME already exists - aborting installation"
     exit
 fi
-sudo apt update && sudo apt install -y docker.io docker-compose
+curl -fsSL https://get.Docker.com -o get-Docker.sh
+
 if [ ! -d $DIST_DIR ]; then
     mkdir -p $DIST_DIR
     cd $DIST_DIR
