@@ -5,7 +5,7 @@
 If you just want to run a gateway on a raspberry pi, you are just right here! First of all you should check all prerequisites and then choose your setup method. This manual will use raspbian on a raspberry pi 4. But any raspberry pi or debian system should work the same.
 
 ## tl;dr
-Head over to [your github settings](https://github.com/settings/tokens) and generate a new classic token with only "packages read" permission set. You should set the generated token as environment variable to persist it (you will only see it once):
+Head over to ![your github settings](https://github.com/settings/tokens) and generate a new classic token with only "packages read" permission set. You should set the generated token as environment variable to persist it (you will only see it once):
 ```{bash}
 echo "CR_PAT=<your copied token>" >> ~/.bash_profile
 ```
