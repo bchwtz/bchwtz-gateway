@@ -14,7 +14,7 @@ sudo apt update && sudo apt install -y docker.io docker-compose
 if [ ! -d $DIST_DIR ]; then
     mkdir -p $DIST_DIR
     cd $DIST_DIR
-    wget https://bchwtz.github.io/bchwtz-gateway/dist/gw-arm64
+    wget https://bchwtz.github.io/bchwtz-gateway/dist/gw-arm
     wget https://bchwtz.github.io/bchwtz-gateway/dist/docker-compose.yml
     wget https://bchwtz.github.io/bchwtz-gateway/dist/docker-compose.rpi.yml
     wget https://bchwtz.github.io/bchwtz-gateway/dist/.env-default
@@ -35,7 +35,8 @@ then
     awk '!/^$/{print "export " $0}' .env-default | sed -e 's/\(MQTT_PASSWORD=\).*/\1"'$MQTT_PASSW'"/g' | sed -e 's/\(MONGO_PASSWORD=\).*/\1"'$MONGO_PASSW'"/g' > gateway-vars.sh
     . $(pwd)/gateway-vars.sh
     sudo cp gateway-vars.sh /etc/profile.d/
-    sudo mv $(pwd)/gw-arm64 $BINARY_PATH$BINARY_NAME
+    sudo mv $(pwd)/gw-arm $BINARY_PATH$BINARY_NAME
+    sudo chmod +x $BINARY_PATH$BINARY_NAME
     mv .env-default .env
 fi
 echo "Generating docker-compose"
