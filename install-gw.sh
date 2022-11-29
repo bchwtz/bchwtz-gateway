@@ -45,5 +45,5 @@ fi
 echo "Generating docker-compose"
 docker compose --env-file .env-default --project-name gateway -f docker-compose.std.yml -f docker-compose.rpi.yml config > docker-compose.yml
 rm docker-compose.std.yml docker-compose.rpi.yml
-docker-compose pull
-docker-compose up -d
+docker compose pull
+docker compose up -d
