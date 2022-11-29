@@ -7,7 +7,7 @@ If you just want to run a gateway on a raspberry pi, you are just right here! Fi
 ## tl;dr
 Head over to [your github settings](https://github.com/settings/tokens){:target="_blank"} and generate a new classic token with only "read:packages" permission set. You should set the generated token as environment variable to persist it (you will only see it once):
 ```{bash}
-echo "CR_PAT=<your copied token>" >> ~/.bash_profile
+echo "CR_PAT=<your copied token>" >> ~/.bash_profile && source ~/.bash_profile
 ```
 Now you have to do docker login with your github username like this:
 ```{bash}
