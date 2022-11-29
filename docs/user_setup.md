@@ -18,7 +18,14 @@ To install the services and cli run:
 curl "https://bchwtz.github.io/bchwtz-gateway/dist/install-gw.sh" | sh
 ```
 This step spins up a local gateway-cluster and installs all necessary packages on your pi.
-## Prerequesites
+## Uninstalling auto installed packages
+To remove the gateway-service from your device change to the folder you installed the gateway-autoinstall to and cd into the gateway-autoinstall directory. From there you have to run:
+```{bash}
+./uninstall-gw.sh
+```
+This script will require sudo priviledge.
+## Manual install of the repository (old way)
+### Prerequesites
 To run the software you will need:
 
 * a debian-based linux
@@ -26,7 +33,7 @@ To run the software you will need:
 * docker
 * git
 
-## Install requirements
+### Install requirements
 
 In any case you should install git and docker on your platform:
 ```{bash}
@@ -37,19 +44,19 @@ sudo usermod -aG docker pi
 ```
 After this step you have to logout and login.
 
-## Cloning the repository
+### Cloning the repository
 ```{bash}
 git clone https://github.com/bchwtz/bchwtz-gateway.git gateway && cd gateway
 ```
 
-## Running the software in docker (recommended)
+### Running the software in docker (recommended)
 This step will run all required components inside a docker container.
 
 ```{bash}
 ./run_on_pi.sh
 ```
 
-## Download the go client
+### Download the go client
 To be able to run the go client on a raspberry pi please head to the [releases page](https://github.com/bchwtz/bchwtz-gateway/releases) and download the gw_arm64 bin to your projects folder on the pi.  
 The following should work then:
 ```{bash}
