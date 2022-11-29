@@ -45,7 +45,7 @@ jobs:
           GOOS=windows go build -o build/gw.exe cmd/cli/main.go
           GOOS=linux GOARCH=arm64 go build -o build/gw-arm64 cmd/cli/main.go
           GOOS=linux GOARCH=arm64 go build -o build/gw-dumper-arm64 cmd/dumper/main.go
-          GOOS=linux GOARCH=arm go build -o build/gw-arm cmd/dumper/main.go
+          GOOS=linux GOARCH=arm go build -o build/gw-arm cmd/cli/main.go
           GOOS=linux GOARCH=arm go build -o build/gw-dumper-arm cmd/dumper/main.go
         working-directory: ${{ env.working-directory }}
       - uses: actions/upload-artifact@v3
