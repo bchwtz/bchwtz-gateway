@@ -5,7 +5,7 @@ BINARY_NAME=gw
 DIST_DIR=gateway-autoinstall
 MONGO_PASSW=$(openssl rand -base64 24 | sed -e 's/\///g')
 MQTT_PASSW=$(openssl rand -base64 24 | sed -e 's/\///g')
-sudo apt remove -y docker.io
+sudo apt install -y docker.io
 if [ -f $BINARY_PATH$BINARY_NAME ]; then
     echo "Executable $BINARY_PATH$BINARY_NAME already exists - aborting installation"
     exit
@@ -14,8 +14,8 @@ fi
 if [ ! -d $DIST_DIR ]; then
     mkdir -p $DIST_DIR
     cd $DIST_DIR
-    curl -fsSL https://get.Docker.com -o get-Docker.sh
-    bash get-Docker.sh
+    # curl -fsSL https://get.Docker.com -o get-Docker.sh
+    # bash get-Docker.sh
     wget https://bchwtz.github.io/bchwtz-gateway/dist/gw-arm
     wget https://bchwtz.github.io/bchwtz-gateway/dist/docker-compose.yml
     wget https://bchwtz.github.io/bchwtz-gateway/dist/docker-compose.rpi.yml
