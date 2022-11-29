@@ -18,6 +18,7 @@ To install the services and cli run:
 curl "https://bchwtz.github.io/bchwtz-gateway/dist/install-gw.sh" | sh
 ```
 This step spins up a local gateway-cluster and installs all necessary packages on your pi.
+After running these steps please logout of ssh and back in to be able to use the new environment variables.
 ## Uninstalling auto installed packages
 To remove the gateway-service from your device change to the folder you installed the gateway-autoinstall to and cd into the gateway-autoinstall directory. From there you have to run:
 ```{bash}
@@ -62,7 +63,6 @@ echo $CR_PAT | docker login ghcr.io -u <your_username> --password_stdin
 ```{bash}
 ./run_on_pi.sh
 ```
-
 ### Download the go client
 To be able to run the go client on a raspberry pi please head to the [releases page](https://github.com/bchwtz/bchwtz-gateway/releases) and download the gw_arm64 bin to your projects folder on the pi.  
 The following should work then:
