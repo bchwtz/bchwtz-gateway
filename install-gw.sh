@@ -24,8 +24,8 @@ if [ ! -d $DIST_DIR ]; then
     if [ ! -z "$IS_32" ] ; then
         echo "Patching mongo image to comply to 32bits - consider using a 64bit-os!"
         sed -i 's/image: mongo$/image: apcheamitru\/arm32v7-mongo/' docker-compose.std.yml
-        sed -i 's/\/lib\/libdbus-1\.so/\/lib\/arm-linux-gnueabihf\/libdbus-1.so.3/g' docker-compose.std.yml
-        sed -i 's/\/lib\/libreadline\.so/\/lib\/arm-linux-gnueabihf\/libreadline.so.7/g' docker-compose.std.yml
+        sed -i 's/\/lib\/libdbus-1\.so/\/lib\/arm-linux-gnueabihf\/libdbus-1.so.3/g' docker-compose.rpi.yml
+        sed -i 's/\/lib\/libreadline\.so/\/lib\/arm-linux-gnueabihf\/libreadline.so.7/g' docker-compose.rpi.yml
     fi
     chmod +x uninstall-gw.sh
 fi
