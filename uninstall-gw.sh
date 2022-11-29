@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
 docker-compose down
-. unset-gateway-vars.sh
+. $(pwd)/unset-gateway-vars.sh
 cd ..
 rm -rf gateway-autoinstall
 sudo rm -f /usr/bin/gw
