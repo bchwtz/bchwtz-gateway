@@ -5,6 +5,7 @@ services:
       - mqtt-broker
     image: ghcr.io/bchwtz/bchwtz-gateway/ble-gateway:main
     privileged: true
+    restart: always
     volumes:
       - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
     environment:
