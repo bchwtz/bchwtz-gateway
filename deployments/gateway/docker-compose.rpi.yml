@@ -7,7 +7,13 @@ services:
     privileged: true
     restart: always
     volumes:
-      - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
+      - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket:rw
+      - /usr/bin/bluetoothctl:/usr/bin/bluetoothctl:rw
+      - /lib/libdbus-1.so:/lib/libdbus-1.so
+      - /lib/libreadline.so:/lib/libreadline.so
+      # - /lib/arm-linux-gnueabihf/libdbus-1.so.3:/lib/arm-linux-gnueabihf/libdbus-1.so.3:rw
+      # - /lib/arm-linux-gnueabihf/libreadline.so.7:/lib/arm-linux-gnueabihf/libreadline.so.7
+      - /usr/bin/bluetoothd:/usr/bin/bluetoothd:rw
     environment:
       MONGO_USER: ${MONGO_USER}
       MONGO_PASSWORD: ${MONGO_PASSWORD}
