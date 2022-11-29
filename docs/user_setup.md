@@ -19,6 +19,12 @@ curl "https://bchwtz.github.io/bchwtz-gateway/dist/install-gw.sh" | sh
 ```
 This step spins up a local gateway-cluster and installs all necessary packages on your pi.
 After running these steps please logout of ssh and back in to be able to use the new environment variables.
+
+Give the cluster a little spinup-time and afterwards run:
+```{bash}
+gw tags get --file test.json
+```
+to proof that everything is running.
 ## Uninstalling auto installed packages
 To remove the gateway-service from your device change to the folder you installed the gateway-autoinstall to and cd into the gateway-autoinstall directory. From there you have to run:
 ```{bash}
