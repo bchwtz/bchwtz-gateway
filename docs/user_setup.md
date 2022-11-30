@@ -5,6 +5,18 @@
 If you just want to run a gateway on a raspberry pi, you are just right here! First of all you should check all prerequisites and then choose your setup method. This manual will use raspbian on a raspberry pi 4. But any raspberry pi or debian system should work the same.
 
 ## tl;dr
+First, if you installed docker via apt before, make sure to delete anything that was on your system:
+```{bash}
+sudo apt remove docker docker.io
+```
+Make sure you have the newest docker version installed:
+```{bash}
+curl -fsSL https://get.docker.com | sh
+```
+Insert your user into the docker group, afterwards logout and login:
+```{bash}
+sudo usermod -aG docker pi
+```
 Head over to [your github settings](https://github.com/settings/tokens){:target="_blank"} and generate a new classic token with only "read:packages" permission set. You should set the generated token as environment variable to persist it (you will only see it once):
 ```{bash}
 echo "CR_PAT=<your copied token>" >> ~/.bash_profile && source ~/.bash_profile
