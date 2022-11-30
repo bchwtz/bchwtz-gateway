@@ -1,6 +1,6 @@
 #!/bin/sh
 
-docker-compose down -v
+docker compose down -v
 bash $(pwd)/unset-gateway-vars.sh
 cd ..
 rm -rf gateway-autoinstall
