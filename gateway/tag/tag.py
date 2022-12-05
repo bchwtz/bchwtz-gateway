@@ -44,6 +44,8 @@ class Tag(object):
         self.ble_conn: BLEConn = BLEConn()
         self.logger = logging.getLogger("Tag")
         self.logger.setLevel(logging.INFO)
+        self.configured: bool = False
+        self.logging_active: bool = False
         formatter = logging.Formatter('[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s','%m-%d %H:%M:%S')
         streamHandler = logging.StreamHandler()
         streamHandler.setFormatter(formatter)
@@ -72,12 +74,13 @@ class Tag(object):
     async def get_acceleration_log(self, cb: Callable[[int, bytearray], None] = None) -> None:
         if cb is None:
             cb = self.acceleration_log_callback
-        
         await self.activate_logging(cb)
         await self.get_acceleration_data(cb)
-        await self.deactivate_logging(cb)
 
     async def activate_logging(self, cb: Callable[[int, bytearray], None] = None) -> None:
+        if self.activate_logging:
+            self.logger.warn("logging already active")
+            return
         if cb is None:
             cb = self.multi_communication_callback
         await self.ble_conn.run_single_ble_command(
@@ -87,6 +90,8 @@ class Tag(object):
             cmd = Config.Commands.activate_logging_at_tag.value,
             cb = cb
         )
+        self.logging_active = True
+
 
     async def deactivate_logging(self, cb: Callable[[int, bytearray], None] = None) -> None:
         if cb is None:
@@ -98,6 +103,19 @@ class Tag(object):
             cmd = Config.Commands.deactivate_logging_at_tag.value,
             cb = cb
         )
+        self.logging_active = False
+
+    async def activate_streaming_mode(self, cb: Callable[[int, bytearray], None] = None) -> None:
+        if cb is None:
+            cb = self.acceleration_log_callback
+        await self.ble_conn.run_single_ble_command(
+            tag = self,
+            read_chan=Config.CommunicationChannels.rx.value,
+            write_chan=Config.CommunicationChannels.tx.value,
+            cmd=Config.Commands.activate_acc_streaming.value,
+            cb=cb
+        )
+
 
     async def get_acceleration_data(self, cb: Callable[[int, bytearray], None] = None) -> None:
         """ Will get the acceleration log_data of the sensors and store it inside their measurements
@@ -200,6 +218,18 @@ class Tag(object):
         elif "logging_data_end" in caught_signals:
             self.handle_logging_data_end_cb(rx_bt)
 
+    def acceleration_stream_callback(self, status_code: int, rx_bt: bytearray) -> None:
+        caught_signals = None
+        caught_signals = SigScanner.scan_signals(rx_bt, Config.ReturnSignalsLoggingMode)
+        acc: AccelerationSensor = self.get_sensor_by_type(AccelerationSensor)
+        if acc is None:
+            self.logger.error("No accelerometer detected - cannot log acceleration data!")
+            return
+        if caught_signals == None:
+            return
+        if "logging_data" in caught_signals:
+            self.dec.decode_acc_stream_pack(rx_bt, config=self.config, acceleration_sensor=acc)
+
     def multi_communication_callback(self, status_code: int, rx_bt: bytearray) -> None:
         """ Handles a message and forwards it to the correct callback. This is needed so that if a call has multiple messages that will be received, the following message to the first received message won't be ignored.
             Arguments:
@@ -245,6 +275,7 @@ class Tag(object):
                 rx_bt: The ble-message as bytearray.
         """
         self.config = self.dec.decode_config_rx(rx_bt)
+        self.configured = True
         self.publisher.publish(aiopubsub.Key("log", "CONFIG"), self)
 
     def handle_heartbeat_cb(self, rx_bt: bytearray) -> None:

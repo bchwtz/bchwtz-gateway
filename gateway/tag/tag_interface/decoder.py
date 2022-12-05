@@ -281,7 +281,7 @@ class Decoder():
 
 
 
-    def __unpack8(self, bytes, samplingrate, scale) -> list:
+    def __unpack8(self, bytes, samplingrate, scale, gathering_type="logging_data") -> list:
         """unpacks the 8 byte sequences of the sensor to hex-strings
         :param bytes: the bytes from your sensor
         :type bytes: bytes
@@ -329,14 +329,14 @@ class Decoder():
                 timestamp += timeBetweenSamples
                 j = 0
                 # res.append(f"{timestamp, accvalues[0], accvalues[1], accvalues[2]}")
-                measurements.append(AccelerationSensor.AccelerationMeasurement(acc_x = accvalues[0], acc_y = accvalues[1], acc_z = accvalues[2], recorded_time = timestamp, gathering_type = "logging_data"))
+                measurements.append(AccelerationSensor.AccelerationMeasurement(acc_x = accvalues[0], acc_y = accvalues[1], acc_z = accvalues[2], recorded_time = timestamp, gathering_type = gathering_type))
             else:
                 j += 1
         return measurements
 
 
 
-    def __unpack10(self, bytes, samplingrate, scale) -> list:
+    def __unpack10(self, bytes, samplingrate, scale, gathering_type="logging_data") -> list:
         """unpacks the 10 byte sequences of the sensor to hex-strings
         :param bytes: the bytes from your sensor
         :type bytes: bytes
@@ -409,11 +409,11 @@ class Decoder():
 
                     timestamp += timeBetweenSamples
                     j = 0
-                    measurements.append(AccelerationSensor.AccelerationMeasurement(acc_x = accvalues[0], acc_y = accvalues[1], acc_z = accvalues[2], recorded_time = timestamp, gathering_type = "logging_data"))
+                    measurements.append(AccelerationSensor.AccelerationMeasurement(acc_x = accvalues[0], acc_y = accvalues[1], acc_z = accvalues[2], recorded_time = timestamp, gathering_type = gathering_type))
 
         return measurements
 
-    def __unpack12(self, bytes, samplingrate, scale) -> list:
+    def __unpack12(self, bytes, samplingrate, scale, gathering_type="logging_data") -> list:
         """unpacks the 12 byte sequences of the sensor to hex-strings
         :param bytes: the bytes from your sensor
         :type bytes: bytes
@@ -473,7 +473,7 @@ class Decoder():
                 # Write to CSV
                 if(j == 3):
                     j = 0
-                    measurements.append(AccelerationSensor.AccelerationMeasurement(acc_x = accvalues[0], acc_y = accvalues[1], acc_z = accvalues[2], recorded_time = timestamp, gathering_type = "logging_data"))
+                    measurements.append(AccelerationSensor.AccelerationMeasurement(acc_x = accvalues[0], acc_y = accvalues[1], acc_z = accvalues[2], recorded_time = timestamp, gathering_type = gathering_type))
 
         return measurements
 
@@ -572,6 +572,31 @@ class Decoder():
             # 8 Bit
             logger.info("Start processing received data with process_sensor_data_8")
             data = self.__unpack8(acceleration_sensor.crc, rate, scale)
+        else:
+            logger.error('Cannot process bytearray! Unknwon sensor resolution!')
+        if data != None:
+            logger.info("got data:")
+            logger.info(data)
+            # dataList=message_return_value.from_get_accelorationdata(accelorationdata=AccelerationData,mac=self.mac)
+            # self.data.append(dataList.return_value.__dict__)
+            acceleration_sensor.measurements.extend(data)
+
+        return
+
+
+    def decode_acc_stream_pack(self, rx_bt: bytearray, config: TagConfig, acceleration_sensor: AccelerationSensor) -> None:
+        if (config.resolution == 12):
+            # 12 Bit
+            logger.info("Start processing received data with process_sensor_data_12")
+            data = self.__unpack12(rx_bt, config.samplerate, config.scale, gathering_type="stream")
+        elif (config.resolution == 10):
+            # 10 Bit
+            logger.info("Start processing received data with process_sensor_data_10")
+            data = self.__unpack10(rx_bt, config.samplerate, config.scale, gathering_type="stream")
+        elif (config.resolution == 8):
+            # 8 Bit
+            logger.info("Start processing received data with process_sensor_data_8")
+            data = self.__unpack8(rx_bt, config.samplerate, config.scale, gathering_type="stream")
         else:
             logger.error('Cannot process bytearray! Unknwon sensor resolution!')
         if data != None:
