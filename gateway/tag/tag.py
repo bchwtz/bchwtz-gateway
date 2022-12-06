@@ -105,17 +105,29 @@ class Tag(object):
         )
         self.logging_active = False
 
-    async def activate_streaming_mode(self, cb: Callable[[int, bytearray], None] = None) -> None:
+    async def activate_streaming_mode(self, cb: Callable[[int, bytearray], None] = None, retries: int = 5) -> None:
         if cb is None:
-            cb = self.acceleration_log_callback
+            cb = self.acceleration_stream_callback
+        if not self.configured:
+            if retries < 0:
+                self.logger.error("failed activate_streaming_mode: maximum retries reached")
+                return
+            self.logger.warn("tag was not configured yet - sleeping 20 seconds and trying again")
+            time.sleep(20)
+            self.activate_streaming_mode(self, cb=cb, retries=retries-1)
         await self.ble_conn.run_single_ble_command(
-            tag = self,
+            tag = self.ble_device,
             read_chan=Config.CommunicationChannels.rx.value,
             write_chan=Config.CommunicationChannels.tx.value,
             cmd=Config.Commands.activate_acc_streaming.value,
-            cb=cb
+            cb=cb,
+            await_response=False
         )
-
+        self.logger.info("activated streaming!")
+    
+    async def deactivate_streaming_mode(self) -> None:
+        self.ble_conn.stopEvent.set()
+        await self.ble_conn.client.disconnect()
 
     async def get_acceleration_data(self, cb: Callable[[int, bytearray], None] = None) -> None:
         """ Will get the acceleration log_data of the sensors and store it inside their measurements
@@ -131,7 +143,7 @@ class Tag(object):
             cmd = Config.Commands.get_acceleration_data.value,
             timeout = 60,
             cb = cb,
-            disconnect = False,
+            await_response = False,
         )
 
     async def get_config(self, cb: Callable[[int, bytearray], None] = None) -> None:
@@ -146,7 +158,8 @@ class Tag(object):
             read_chan = Config.CommunicationChannels.rx.value,
             write_chan = Config.CommunicationChannels.tx.value,
             cmd = Config.Commands.get_tag_config.value,
-            cb = cb
+            cb = cb,
+            await_response=False
         )
 
     async def get_time(self, cb: Callable[[int, bytearray], None] = None) -> None:
@@ -220,15 +233,20 @@ class Tag(object):
 
     def acceleration_stream_callback(self, status_code: int, rx_bt: bytearray) -> None:
         caught_signals = None
+        rx_bt = rx_bt[1:]
+        self.logger.warn(rx_bt)
+
         caught_signals = SigScanner.scan_signals(rx_bt, Config.ReturnSignalsLoggingMode)
         acc: AccelerationSensor = self.get_sensor_by_type(AccelerationSensor)
         if acc is None:
             self.logger.error("No accelerometer detected - cannot log acceleration data!")
             return
         if caught_signals == None:
+            self.logger.warn("no signals detected!")
             return
         if "logging_data" in caught_signals:
             self.dec.decode_acc_stream_pack(rx_bt, config=self.config, acceleration_sensor=acc)
+            self.logger.error(acc.get_measurement_props())
 
     def multi_communication_callback(self, status_code: int, rx_bt: bytearray) -> None:
         """ Handles a message and forwards it to the correct callback. This is needed so that if a call has multiple messages that will be received, the following message to the first received message won't be ignored.
@@ -238,6 +256,7 @@ class Tag(object):
         """
         caught_signals = None
         caught_signals = SigScanner.scan_signals(rx_bt, Config.ReturnSignals)
+        self.logger.warn(str(hexlify(rx_bt)))
         self.logger.debug(caught_signals)
         if caught_signals == None:
             return
@@ -251,7 +270,7 @@ class Tag(object):
             self.handle_logging_status_cb(rx_bt)
         else:
             self.logger.warn("got non-implemented function callback")
-        
+        self.ble_conn.stopEvent.set()
         self.publisher.publish(aiopubsub.Key("log"), self)
 
     async def get_heartbeat(self, max_retries: int = 5) -> None:

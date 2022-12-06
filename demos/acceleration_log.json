@@ -3,15 +3,15 @@
         {
             "address": "C1:FC:9B:69:04:8B",
             "config": {
-                "divider": 1,
+                "divider": 0,
                 "dsp_function": 0,
                 "dsp_parameter": 1,
                 "mode": "f4",
-                "resolution": 12,
-                "samplerate": 1,
+                "resolution": 10,
+                "samplerate": 10,
                 "scale": 2
             },
-            "last_seen": 1670275448.139212,
+            "last_seen": 1670288846.3106,
             "name": "Ruuvi 048B",
             "online": true,
             "sensors": [
