@@ -54,3 +54,4 @@ bash $(pwd)/gateway-vars.sh
 rm docker-compose.std.yml docker-compose.rpi.yml
 docker compose pull
 docker compose up -d
+echo "Congratulations - your gateway is up and running! Please logout and login again, to load the required environment variables!"
