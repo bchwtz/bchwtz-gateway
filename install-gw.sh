@@ -39,7 +39,9 @@ then
     cp .env-default .env-local
     sed -i -e 's/\(MQTT_BROKER=\).*/\1"localhost"/g' .env-local
     awk '!/^$/{print "export " $0}' .env-local > gateway-vars.sh
+    echo "INSTALLDIR=$(pwd)" >> gateway-vars.sh
     cat .env-local | sed -e 's/\(.*\)=.*$/unset \1/g' > unset-gateway-vars.sh
+    echo "unset INSTALLDIR" >> unset-gateway-vars.sh
 
     sudo cp gateway-vars.sh /etc/profile.d/
     sudo mv $(pwd)/gw-arm $BINARY_PATH$BINARY_NAME
@@ -52,3 +54,4 @@ bash $(pwd)/gateway-vars.sh
 rm docker-compose.std.yml docker-compose.rpi.yml
 docker compose pull
 docker compose up -d
+echo "Congratulations - your gateway is up and running! Please logout and login again, to load the required environment variables!"

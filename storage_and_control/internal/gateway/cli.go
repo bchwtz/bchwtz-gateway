@@ -48,7 +48,7 @@ const (
 // returns a new CLI app that it creates - if any errors occur the program will quit faulty
 func NewCLI() CLI {
 	if err := godotenv.Load("../.env"); err != nil {
-		logrus.Errorln(err)
+		logrus.Infoln(err)
 	}
 	cliapp := CLI{}
 	if err := cliapp.mqclient.Connect(os.Getenv("MQTT_BROKER")+":"+os.Getenv("MQTT_PORT"), os.Getenv("MQTT_CLIENTID"+"_cmd_ctrl"), os.Getenv("MQTT_USER"), os.Getenv("MQTT_PASSWORD"), true); err != nil {

@@ -13,7 +13,7 @@ Make sure you have the newest docker version installed:
 ```{bash}
 curl -fsSL https://get.docker.com | sh
 ```
-Insert your user into the docker group, afterwards logout and login:
+Insert your user into the docker group, afterwards **logout and login**:
 ```{bash}
 sudo usermod -aG docker pi
 ```
