@@ -3,12 +3,14 @@ import logging
 from threading import Thread
 import time
 import uuid
+import sys
 from gateway.tag.tag import Tag
 from gateway.tag.tag_builder import TagBuilder
 from gateway.drivers.bluetooth.ble_conn.ble_conn import BLEConn
 from bleak.backends.device import BLEDevice
 from bleak.backends.scanner import AdvertisementData
 from gateway.config import Config
+from gateway.util.signal_last import signal_last
 import json
 from paho.mqtt.client import Client, MQTTMessage
 import aiopubsub
@@ -23,7 +25,12 @@ class Hub(object):
         self.tags: list[Tag] = []
         self.ble_conn = BLEConn()
         self.logger = logging.getLogger("Hub")
+        formatter = logging.Formatter('[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s','%m-%d %H:%M:%S')
         self.logger.setLevel(logging.DEBUG)
+        ch = logging.StreamHandler(sys.stdout)
+        ch.setFormatter(formatter)
+        ch.setLevel(logging.DEBUG)
+        self.logger.addHandler(ch)
         self.mqtt_client: Client = None
         self.pubsub_hub: aiopubsub.Hub = aiopubsub.Hub()
         self.main_loop: asyncio.BaseEventLoop = asyncio.get_event_loop()
@@ -223,21 +230,35 @@ class Hub(object):
                 self.logger.error("tag with address %s not found!" % tag_address)
             tag.handle_mqtt_cmd(mqtt_client=client, command=command, msg=msg)
         elif namespace == "tags":
-            for tag in self.tags:
+            for is_last, tag in signal_last(self.tags):
                 command = parts[2]
-                tag.handle_mqtt_cmd(mqtt_client=client, command=command, msg=msg)
-            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "success", "tags": self.tags}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+                tag.handle_mqtt_cmd(mqtt_client=client, command=command, msg=msg, last_in_list=is_last)
+            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "success"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
         elif namespace == "hub":
             command = parts[2]
             self.handle_mqtt_cmd(cmd=command, msg=msg)
+
+
+    def __return_paged_measurements_all_tags(self, req_id: int):
+        for tag in self.tags:
+            for sensor in tag.sensors:
+                for measurement in sensor.measurements:
+                    self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value + "_" + tag.address + "_" + sensor.name, json.dumps({"request_id": req_id, "payload": {"status": "success", "measurement": measurement}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+
 
     def handle_mqtt_cmd(self, cmd: str, msg: MQTTMessage):
         msg_dct: dict = json.loads(msg.payload)
         req_id = msg_dct["id"]
         if cmd == "get":
             self.logger.error("printing tags to mqtt")
-            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "payload": {"status": "success", "tags": self.tags}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+            for tag in self.tags:
+                channels: list[str] = ""
+                for sensor in tag.sensors:
+                    channels.append(Config.MQTTConfig.topic_command_res.value + "_" + tag.address + "_" + sensor.name)
+                self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "attachment_channels": channels, "has_attachments": True, "payload": {"status": "success", "tag": tag}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+
+            self.__return_paged_measurements_all_tags(req_id=req_id)
 
         else:
             self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "payload": {"status": "error", "msg": "did not find any fitting command for your request"}}))

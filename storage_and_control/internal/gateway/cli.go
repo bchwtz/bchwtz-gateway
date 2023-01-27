@@ -78,23 +78,40 @@ func (c *CLI) handleComms(req commandinterface.CommandRequest, outputfile string
 		return tk.Error()
 	}
 	for {
-		answer := <-answerch
+		answer, more := <-answerch
+		if !more {
+			break
+		}
 		res := commandinterface.CommandResponse{}
 		if err := json.Unmarshal(answer.Message.Payload(), &res); err != nil {
+			return err
+		}
+		logrus.Println(string(answer.Message.Payload()))
+		if err := c.resHasErr(res); err != nil {
+			logrus.Errorln(err)
 			return err
 		}
 		// let's compare the received RequestID with the one we are waiting for... - if it is not ours listen for the next message
 		if res.RequestID.String() != req.ID.String() {
 			continue
 		}
+
 		// it has to be our message now - let us acknowledge the reception
 		answer.Message.Ack()
 		logrus.Infoln(res.Payload)
-		if res.OngoingRequest {
-			if err := c.resHasErr(res); err != nil {
-				logrus.Errorln(err)
-				return err
+		if res.HasAttachments {
+			for _, topic := range res.AttachmentChannels {
+				logrus.Info("subscribing to " + topic)
+				if err := c.mqclient.Subscribe(topic, answerch); err != nil {
+					logrus.Warnln(err)
+					continue
+				}
 			}
+			payloads = append(payloads, res.Payload)
+			continue
+
+		}
+		if res.OngoingRequest {
 			payloads = append(payloads, res.Payload)
 			continue
 		}
@@ -103,7 +120,7 @@ func (c *CLI) handleComms(req commandinterface.CommandRequest, outputfile string
 			logrus.Errorln(err)
 			return err
 		}
-		break
+		close(answerch)
 	}
 	if outputfile != "" {
 		if jout, err := json.MarshalIndent(payloads, "", "	"); jout != nil && err == nil {

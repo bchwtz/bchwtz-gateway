@@ -382,7 +382,7 @@ class Tag(object):
         """
         return {'name': self.name, 'address': self.address, 'sensors': self.get_sensors_props(), 'time': self.time, 'config': self.config, 'online': self.online, 'last_seen': self.last_seen}
 
-    def handle_mqtt_cmd(self, mqtt_client: Client, command: str, msg: MQTTMessage):
+    def handle_mqtt_cmd(self, mqtt_client: Client, command: str, msg: MQTTMessage, last_in_list: bool):
         msg_dct: dict = json.loads(msg.payload)
         payload = msg_dct["payload"]
 
@@ -390,7 +390,32 @@ class Tag(object):
             self.logger.info("running get on tag: %s", self.address)
             msg_dct: dict = json.loads(msg.payload)
             req_id = msg_dct["id"]
-            mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"ongoing_request": True, "request_id": req_id, "payload": {"status": "success", "tag": self}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+            atch = []
+            for sensor in self.sensors:
+                if sensor is None or len(sensor.measurements) < 1:
+                    continue
+                atch.append(Config.MQTTConfig.topic_command_res.value + "_" + self.address + "_" + sensor.name)
+            
+            mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({
+                "attachment_channels": atch,
+                "object_type": "tag",
+                "has_attachments": len(atch) > 0,
+                "ongoing_request": True,
+                "request_id": req_id,
+                "payload": {
+                    "status": "success",
+                    "tag": self
+                    }
+                },
+                default=lambda o: o.get_props()
+                if getattr(o, "get_props", None) is not None
+                else None,
+                skipkeys=True,
+                check_circular=False,
+                sort_keys=True, indent=4)
+            )
+            self.logger.debug("loading measurements")
+            self.__return_paged_measurements(req_id=req_id)
             return
 
         if command == "get_time":
@@ -435,3 +460,14 @@ class Tag(object):
             sub = ownprefix + cmd
             self.mqtt_client.subscribe(sub, 0)
             self.logger.info(sub)
+
+    def __return_paged_measurements(self, req_id: int):
+        for sensor in self.sensors:
+            measurements = []
+            for idx, measurement in enumerate(sensor.measurements):
+                measurements.append(measurement)
+                if idx % 10 == 0 or len(sensor.measurements) - idx < 10:
+                    self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value + "_" + self.address + "_" + sensor.name, json.dumps({"obj_type": "measurement","ongoing_request": True, "request_id": req_id, "payload": {"status": "success", "tag_address": self.address, "measurement": measurements}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+                    measurements = []
+        # self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"obj_type": "empty", "ongoing_request": False, "request_id": req_id, "payload": {"status": "success"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+
