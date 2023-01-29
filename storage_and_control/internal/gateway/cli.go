@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"reflect"
+	"time"
 
 	"github.com/bchwtz/bchwtz-gateway/storage_and_control/internal/commandinterface"
 	"github.com/joho/godotenv"
@@ -29,6 +31,11 @@ type CLI struct {
 	tags_topic_pre string
 	// outputFile
 	output_file string
+	// running workerloops
+	workerloops int
+	// answerchannels
+	answerch chan mqtt.MQTTSubscriptionMessage
+	endedch  chan []interface{}
 }
 
 // enum containing the environment-variables for the MQTT-config
@@ -62,65 +69,29 @@ func NewCLI() CLI {
 func (c *CLI) handleComms(req commandinterface.CommandRequest, outputfile string) error {
 	logrus.Infoln("waiting for a response from the gateway...")
 	logrus.Println("topic: " + req.Topic)
+	c.workerloops = 1
 	reqbt, err := json.Marshal(&req)
 	if err != nil {
 		logrus.Errorln(err)
 		return err
 	}
 	// opens an internal answerchannel
-	answerch := make(chan mqtt.MQTTSubscriptionMessage)
-	payloads := []interface{}{}
+	c.answerch = make(chan mqtt.MQTTSubscriptionMessage)
+
 	logrus.Info("subscribing to " + c.restopic)
-	c.mqclient.Subscribe(c.restopic, answerch)
+	c.mqclient.Subscribe("#", c.answerch)
 	tk := c.mqclient.Publish(req.Topic, reqbt)
 	if tk.Wait() && tk.Error() != nil {
 		logrus.Errorln(tk.Error())
 		return tk.Error()
 	}
-	for {
-		answer, more := <-answerch
-		if !more {
-			break
-		}
-		res := commandinterface.CommandResponse{}
-		if err := json.Unmarshal(answer.Message.Payload(), &res); err != nil {
-			return err
-		}
-		logrus.Println(string(answer.Message.Payload()))
-		if err := c.resHasErr(res); err != nil {
-			logrus.Errorln(err)
-			return err
-		}
-		// let's compare the received RequestID with the one we are waiting for... - if it is not ours listen for the next message
-		if res.RequestID.String() != req.ID.String() {
-			continue
-		}
-
-		// it has to be our message now - let us acknowledge the reception
-		answer.Message.Ack()
-		logrus.Infoln(res.Payload)
-		if res.HasAttachments {
-			for _, topic := range res.AttachmentChannels {
-				logrus.Info("subscribing to " + topic)
-				if err := c.mqclient.Subscribe(topic, answerch); err != nil {
-					logrus.Warnln(err)
-					continue
-				}
-			}
-			payloads = append(payloads, res.Payload)
-			continue
-
-		}
-		if res.OngoingRequest {
-			payloads = append(payloads, res.Payload)
-			continue
-		}
-		// let us check if the message was an error
-		if err := c.resHasErr(res); err != nil {
-			logrus.Errorln(err)
-			return err
-		}
-		close(answerch)
+	c.endedch = make(chan []interface{})
+	payloads := []interface{}{}
+	go c.handleCallback(req)
+	for i := 0; i < c.workerloops; i++ {
+		payload := <-c.endedch
+		payloads = append(payloads, payload)
+		log.Printf("ended %s", payload)
 	}
 	if outputfile != "" {
 		if jout, err := json.MarshalIndent(payloads, "", "	"); jout != nil && err == nil {
@@ -136,9 +107,64 @@ func (c *CLI) handleComms(req commandinterface.CommandRequest, outputfile string
 	return nil
 }
 
+// waits for answers on channels we subscribed to earlier
+func (c *CLI) handleCallback(req commandinterface.CommandRequest) error {
+	payloads := []interface{}{}
+	ended := false
+	for {
+		answer := <-c.answerch
+		res := commandinterface.CommandResponse{}
+		if err := json.Unmarshal(answer.Message.Payload(), &res); err != nil {
+			return err
+		}
+		// logrus.Println(string(answer.Message.Payload()))
+		if err := c.resHasErr(res); err != nil {
+			logrus.Errorln(err)
+			return err
+		}
+		// let's compare the received RequestID with the one we are waiting for... - if it is not ours listen for the next message
+		if res.RequestID.String() != req.ID.String() {
+			continue
+		}
+
+		// it has to be our message now - let us acknowledge the reception
+		answer.Message.Ack()
+		// logrus.Infoln(res.Payload)
+		// if res.HasAttachments {
+		// 	for _, topic := range res.AttachmentChannels {
+		// 		logrus.Info("incrementing workloops to " + topic)
+		// 		// c.workerloops++
+		// 		// if err := c.mqclient.Subscribe(topic, c.answerch); err != nil {
+		// 		// 	logrus.Warnln(err)
+		// 		// 	continue
+		// 		// }
+		// 	}
+		// 	payloads = append(payloads, res.Payload)
+		// 	continue
+
+		// }
+		if res.OngoingRequest {
+			payloads = append(payloads, res.Payload)
+			continue
+		}
+		// let us check if the message was an error
+		if err := c.resHasErr(res); err != nil {
+			logrus.Errorln(err)
+			return err
+		}
+		if !ended {
+			c.endedch <- payloads
+		}
+		ended = true
+		time.Sleep(10 * time.Second)
+	}
+
+	return nil
+}
+
 // traverse through the message and check if it contains a soft error
 func (c *CLI) resHasErr(res commandinterface.CommandResponse) error {
-	if reflect.TypeOf(res.Payload).Kind() == reflect.Map {
+	if res.Payload != nil && reflect.TypeOf(res.Payload).Kind() == reflect.Map {
 		resmap := res.Payload.(map[string]interface{})
 		if resmap["status"] == "error" {
 			err := errors.New(resmap["msg"].(string))

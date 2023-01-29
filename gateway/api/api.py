@@ -3,7 +3,7 @@ import logging
 import time
 import asyncio
 from gateway.api.services.hub_service import HubService
-import gateway.proto_generated.hub_pb2_grpc as hub_service
+import gateway.proto_generated.hub_pb2 as hub_service
 from gateway.hub.hub import Hub
 from purerpc import Server
 import grpc

@@ -394,7 +394,7 @@ class Tag(object):
             for sensor in self.sensors:
                 if sensor is None or len(sensor.measurements) < 1:
                     continue
-                atch.append(Config.MQTTConfig.topic_command_res.value + "_" + self.address + "_" + sensor.name)
+                atch.append(Config.MQTTConfig.topic_tag_prefix.value + "/" + self.address + "/" + sensor.name + "/" + req_id)
             
             mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({
                 "attachment_channels": atch,
@@ -467,7 +467,21 @@ class Tag(object):
             for idx, measurement in enumerate(sensor.measurements):
                 measurements.append(measurement)
                 if idx % 10 == 0 or len(sensor.measurements) - idx < 10:
-                    self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value + "_" + self.address + "_" + sensor.name, json.dumps({"obj_type": "measurement","ongoing_request": True, "request_id": req_id, "payload": {"status": "success", "tag_address": self.address, "measurement": measurements}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+                    self.mqtt_client.publish(
+                        Config.MQTTConfig.topic_tag_prefix.value + "/" + self.address + "/" + sensor.name + "/" + req_id,
+                        payload=json.dumps({
+                            "obj_type": "measurement",
+                            "ongoing_request": True,
+                            "request_id": req_id,
+                            "payload": {
+                                "status": "success",
+                                "tag_address": self.address,
+                                "measurement": measurements
+                        }}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4), retain=True)
                     measurements = []
+            print("sending success on {}", Config.MQTTConfig.topic_tag_prefix.value + "/" + self.address + "/" + sensor.name + "/" + req_id)
+            self.mqtt_client.publish(Config.MQTTConfig.topic_tag_prefix.value + "/" + self.address + "/" + sensor.name + "/" + req_id, payload=json.dumps({"ongoing_request": False, "payload": {"status": "success"}}), retain=True)
+
+        # self.mqtt_client.
         # self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"obj_type": "empty", "ongoing_request": False, "request_id": req_id, "payload": {"status": "success"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
