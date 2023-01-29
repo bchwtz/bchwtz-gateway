@@ -1,0 +1,537 @@
+[
+	{
+		"status": "success",
+		"tag": {
+			"address": "C1:FC:9B:69:04:8B",
+			"config": null,
+			"last_seen": 1674793510.1287081,
+			"name": "Ruuvi 048B",
+			"online": true,
+			"sensors": [
+				null,
+				{
+					"name": "AccelerationSensor"
+				},
+				{
+					"name": "BarometerSensor"
+				},
+				{
+					"name": "TemperatureSensor"
+				},
+				{
+					"name": "HumiditySensor"
+				},
+				{
+					"name": "BatterySensor"
+				}
+			],
+			"time": 0
+		}
+	},
+	{
+		"measurement": [
+			{
+				"acc": 1035.2816042024508,
+				"acc_x": 40,
+				"acc_y": -72,
+				"acc_z": 1032,
+				"data_format": 0,
+				"gathering_type": "advertisement",
+				"measurements": "",
+				"movement_counter": 92,
+				"recorded_time": 1674793504.9396374,
+				"sequence_number": 0
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"acc": 1027.0267766713778,
+				"acc_x": 32,
+				"acc_y": -72,
+				"acc_z": 1024,
+				"data_format": 0,
+				"gathering_type": "advertisement",
+				"measurements": "",
+				"movement_counter": 92,
+				"recorded_time": 1674793506.2377021,
+				"sequence_number": 0
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"acc": 1035.420687450275,
+				"acc_x": 36,
+				"acc_y": -76,
+				"acc_z": 1032,
+				"data_format": 0,
+				"gathering_type": "advertisement",
+				"measurements": "",
+				"movement_counter": 92,
+				"recorded_time": 1674793507.5388565,
+				"sequence_number": 0
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"acc": 1026.6294365543977,
+				"acc_x": 36,
+				"acc_y": -64,
+				"acc_z": 1024,
+				"data_format": 0,
+				"gathering_type": "advertisement",
+				"measurements": "",
+				"movement_counter": 92,
+				"recorded_time": 1674793508.838636,
+				"sequence_number": 0
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"acc": 1027.3071595194886,
+				"acc_x": 40,
+				"acc_y": -72,
+				"acc_z": 1024,
+				"data_format": 0,
+				"gathering_type": "advertisement",
+				"measurements": "",
+				"movement_counter": 92,
+				"recorded_time": 1674793510.1286879,
+				"sequence_number": 0
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 0,
+				"measurements": "",
+				"pressure": 1007.89,
+				"recorded_time": 1674793501.0428638,
+				"sequence_number": 0
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 0,
+				"measurements": "",
+				"pressure": 1007.91,
+				"recorded_time": 1674793502.3447475,
+				"sequence_number": 0
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 0,
+				"measurements": "",
+				"pressure": 1007.91,
+				"recorded_time": 1674793503.6368563,
+				"sequence_number": 0
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 0,
+				"measurements": "",
+				"pressure": 1007.89,
+				"recorded_time": 1674793504.9396427,
+				"sequence_number": 0
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 0,
+				"measurements": "",
+				"pressure": 1007.9,
+				"recorded_time": 1674793506.2377076,
+				"sequence_number": 0
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 0,
+				"measurements": "",
+				"pressure": 1007.89,
+				"recorded_time": 1674793507.5388615,
+				"sequence_number": 0
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 0,
+				"measurements": "",
+				"pressure": 1007.87,
+				"recorded_time": 1674793508.838641,
+				"sequence_number": 0
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 0,
+				"measurements": "",
+				"pressure": 1007.89,
+				"recorded_time": 1674793510.128693,
+				"sequence_number": 0
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"measurements": "",
+				"recorded_time": 1674793501.0428848,
+				"sequence_number": 0,
+				"temperature": 21.42
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"measurements": "",
+				"recorded_time": 1674793502.3447533,
+				"sequence_number": 0,
+				"temperature": 21.39
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"measurements": "",
+				"recorded_time": 1674793503.6368625,
+				"sequence_number": 0,
+				"temperature": 21.42
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"measurements": "",
+				"recorded_time": 1674793504.939649,
+				"sequence_number": 0,
+				"temperature": 21.43
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"measurements": "",
+				"recorded_time": 1674793506.237713,
+				"sequence_number": 0,
+				"temperature": 21.41
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"measurements": "",
+				"recorded_time": 1674793507.5388677,
+				"sequence_number": 0,
+				"temperature": 21.45
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"measurements": "",
+				"recorded_time": 1674793508.8386464,
+				"sequence_number": 0,
+				"temperature": 21.4
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"measurements": "",
+				"recorded_time": 1674793510.1286988,
+				"sequence_number": 0,
+				"temperature": 21.42
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"humidity": 56.23,
+				"measurements": "",
+				"recorded_time": 1674793501.0428941,
+				"sequence_number": null
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"humidity": 56.27,
+				"measurements": "",
+				"recorded_time": 1674793502.3447564,
+				"sequence_number": null
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"humidity": 56.24,
+				"measurements": "",
+				"recorded_time": 1674793503.636866,
+				"sequence_number": null
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"humidity": 56.23,
+				"measurements": "",
+				"recorded_time": 1674793504.9396532,
+				"sequence_number": null
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"humidity": 56.2,
+				"measurements": "",
+				"recorded_time": 1674793506.2377164,
+				"sequence_number": null
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"humidity": 56.24,
+				"measurements": "",
+				"recorded_time": 1674793507.5388713,
+				"sequence_number": null
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"humidity": 56.23,
+				"measurements": "",
+				"recorded_time": 1674793508.8386507,
+				"sequence_number": null
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"humidity": 56.23,
+				"measurements": "",
+				"recorded_time": 1674793510.1287029,
+				"sequence_number": null
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"measurements": "",
+				"recorded_time": 1674793501.042904,
+				"sequence_number": 0,
+				"voltage": 2.939
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"measurements": "",
+				"recorded_time": 1674793502.3447595,
+				"sequence_number": 0,
+				"voltage": 2.939
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"measurements": "",
+				"recorded_time": 1674793503.6368692,
+				"sequence_number": 0,
+				"voltage": 2.939
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"measurements": "",
+				"recorded_time": 1674793504.9396565,
+				"sequence_number": 0,
+				"voltage": 2.939
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"measurements": "",
+				"recorded_time": 1674793506.23772,
+				"sequence_number": 0,
+				"voltage": 2.939
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"measurements": "",
+				"recorded_time": 1674793507.5388744,
+				"sequence_number": 0,
+				"voltage": 2.939
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"measurements": "",
+				"recorded_time": 1674793508.8386533,
+				"sequence_number": 0,
+				"voltage": 2.939
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	},
+	{
+		"measurement": [
+			{
+				"data_format": 5,
+				"measurements": "",
+				"recorded_time": 1674793510.128706,
+				"sequence_number": 0,
+				"voltage": 2.939
+			}
+		],
+		"status": "success",
+		"tag_address": "C1:FC:9B:69:04:8B"
+	}
+]

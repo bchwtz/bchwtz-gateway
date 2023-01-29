@@ -44,4 +44,6 @@ class TemperatureSensor(Sensor):
                 Returns:
                     dict of properties
             """
-            return self.__dict__
+            props: dict = self.__dict__
+            props["measurements"] = ""
+            return props
