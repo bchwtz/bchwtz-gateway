@@ -66,13 +66,14 @@ echo "Congratulations - your gateway is up and running! Please logout and login 
 }
 
 update() {
-    echo "Gateway already detected. Do you wish to update all components?"
-    select yn in "Yes" "No"; do
-        case $yn in
-            Yes ) downloadSources;run; break;;
-            No ) exit;;
-        esac
-    done
+    read -p "Gateway already detected. Do you wish to update all components?" -n 1 -r
+    echo ""
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        downloadSources
+        run
+    else
+        exit
+    fi
 }
 
 if [ ! -d $DIST_DIR ]; then
