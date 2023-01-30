@@ -6,10 +6,7 @@ DIST_DIR=/opt/gateway-autoinstall
 MONGO_PASSW=$(openssl rand -base64 24 | sed -e 's/\///g')
 MQTT_PASSW=$(openssl rand -base64 24 | sed -e 's/\///g')
 # sudo apt install -y docker.io
-if [ -f $BINARY_PATH$BINARY_NAME ]; then
-    echo "Executable $BINARY_PATH$BINARY_NAME already exists - aborting installation"
-    exit
-fi
+
 
 downloadSources() {
     mkdir -p $DIST_DIR
@@ -76,7 +73,7 @@ update() {
     fi
 }
 
-if [ ! -d $DIST_DIR ]; then
+if [ ! -f $BINARY_PATH$BINARY_NAME ] && [ ! -d $DIST_DIR ]; then
     downloadSources
     setupEnv
     run
