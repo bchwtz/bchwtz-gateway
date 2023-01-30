@@ -65,18 +65,21 @@ docker compose up -d
 echo "Congratulations - your gateway is up and running! Please logout and login again, to load the required environment variables!"
 }
 
-if [ ! -d $DIST_DIR ]; then
-    downloadSources
-    setupEnv
-    run
-else
-    echo "Gateway already detected. Do you wish to update all components??"
+update() {
+    echo "Gateway already detected. Do you wish to update all components?"
     select yn in "Yes" "No"; do
         case $yn in
             Yes ) downloadSources;run; break;;
             No ) exit;;
         esac
     done
-    
+}
+
+if [ ! -d $DIST_DIR ]; then
+    downloadSources
+    setupEnv
+    run
+else
+    update
 fi
 
