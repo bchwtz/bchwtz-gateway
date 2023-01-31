@@ -63,8 +63,16 @@ echo "Congratulations - your gateway is up and running! Please logout and login 
 }
 
 update() {
-    read -p "Gateway already detected. Do you wish to update all components?" -r
-    echo
+    echo "Gateway already detected. Do you wish to update all components?"
+    read -p "Do you want to proceed? (yes/no) " yn
+
+    case $yn in 
+        yes ) echo ok, update started;;
+        no ) echo exiting...;
+            exit;;
+        * ) echo invalid response;
+            exit 1;;
+    esac
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         downloadSources
         run
