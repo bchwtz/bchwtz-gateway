@@ -63,7 +63,7 @@ echo "Congratulations - your gateway is up and running! Please logout and login 
 }
 
 update() {
-    read -p "Gateway already detected. Do you wish to update all components?" -n 1 -r
+    read -p "Gateway already detected. Do you wish to update all components?" -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         downloadSources
