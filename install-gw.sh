@@ -74,7 +74,7 @@ update() {
             no ) echo exiting...
                 exit;;
             * ) echo invalid response
-                exit 1;;
+                continue;;
         esac
         if [ $REPLY == "y" ] || [ $REPLY == "Y"]; then
             downloadSources
