@@ -64,21 +64,25 @@ echo "Congratulations - your gateway is up and running! Please logout and login 
 
 update() {
     echo "Gateway already detected. Do you wish to update all components?"
-    read -p "Do you want to proceed? (yes/no) " yn
+    echo "Do you want to proceed? (yes/no) "
 
-    case $yn in 
-        yes ) echo ok, update started;;
-        no ) echo exiting...;
-            exit;;
-        * ) echo invalid response;
-            exit 1;;
-    esac
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        downloadSources
-        run
-    else
-        exit
-    fi
+    while :
+    do
+        read yn
+        case $yn in 
+            yes ) echo ok, update started;;
+            no ) echo exiting...
+                exit;;
+            * ) echo invalid response
+                exit 1;;
+        esac
+        if [ $REPLY == "y" ] || [ $REPLY == "Y"]; then
+            downloadSources
+            run
+        else
+            exit
+        fi
+    done
 }
 
 if [ ! -f $BINARY_PATH$BINARY_NAME ] && [ ! -d $DIST_DIR ]; then
