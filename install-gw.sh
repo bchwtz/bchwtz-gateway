@@ -65,7 +65,7 @@ run() {
 
 update() {
     echo "Gateway already detected. Updating all components..."
-
+    rm -rf $DIST_DIR/*
     downloadSources
     run
 
