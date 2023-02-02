@@ -7,10 +7,11 @@ MONGO_PASSW=$(openssl rand -base64 24 | sed -e 's/\///g')
 MQTT_PASSW=$(openssl rand -base64 24 | sed -e 's/\///g')
 # sudo apt install -y docker.io
 
+sudo mkdir -p $DIST_DIR
+sudo chown -R $(whoami):$(whoami) $DIST_DIR
+cd $DIST_DIR
 
 downloadSources() {
-    mkdir -p $DIST_DIR
-    cd $DIST_DIR
     # curl -fsSL https://get.Docker.com -o get-Docker.sh
     # bash get-Docker.sh
     wget https://bchwtz.github.io/bchwtz-gateway/dist/gw-arm
