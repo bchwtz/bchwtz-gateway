@@ -44,7 +44,7 @@ setupEnv() {
         echo "unset INSTALLDIR" >> unset-gateway-vars.sh
 
         sudo cp gateway-vars.sh /etc/profile.d/
-        sudo mv $(pwd)/gw-arm $BINARY_PATH$BINARY_NAME
+        sudo mv gw-arm $BINARY_PATH$BINARY_NAME
         sudo chmod +x $BINARY_PATH$BINARY_NAME
         chmod +x unset-gateway-vars.sh
     else
