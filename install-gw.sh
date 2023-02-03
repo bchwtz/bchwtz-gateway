@@ -21,6 +21,8 @@ downloadSources() {
         BIN_ARCH="gw-arm64"
     fi
     wget https://bchwtz.github.io/bchwtz-gateway/dist/$BIN_ARCH
+    sudo mv $BIN_ARCH $BINARY_PATH$BINARY_NAME
+    sudo chmod +x $BINARY_PATH$BINARY_NAME
     wget https://bchwtz.github.io/bchwtz-gateway/dist/docker-compose.yml
     wget https://bchwtz.github.io/bchwtz-gateway/dist/docker-compose.rpi.yml
     wget https://bchwtz.github.io/bchwtz-gateway/dist/.env-default
@@ -33,8 +35,6 @@ downloadSources() {
         sed -i 's/\/lib\/libreadline\.so/\/lib\/arm-linux-gnueabihf\/libreadline.so.7/g' docker-compose.rpi.yml
     fi
     chmod +x uninstall-gw.sh
-    sudo mv $BIN_ARCH $BINARY_PATH$BINARY_NAME
-    sudo chmod +x $BINARY_PATH$BINARY_NAME
 }
 
 setupEnv() {
