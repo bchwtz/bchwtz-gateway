@@ -56,12 +56,12 @@ setupEnv() {
         echo "error - could not find required .env-default - please check if it is on your filesystem!"
         exit
     fi
+    bash $(pwd)/gateway-vars.sh
 }
 
 run() {
     echo "Generating docker-compose"
     docker compose --env-file .env-default --project-name gateway -f docker-compose.std.yml -f docker-compose.rpi.yml config > docker-compose.yml
-    bash $(pwd)/gateway-vars.sh
     rm docker-compose.std.yml docker-compose.rpi.yml
     sudo systemctl stop bluetooth
     docker compose pull
