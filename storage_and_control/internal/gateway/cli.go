@@ -277,6 +277,18 @@ func (c *CLI) configure() {
 									return c.handleComms(req, "")
 								},
 							},
+							{
+								Name: "acceleration_log",
+								Action: func(cCtx *cli.Context) error {
+									logrus.Infoln("getting acceleration log")
+									args := ""
+									if cCtx.Args().Present() {
+										args = cCtx.Args().First()
+									}
+									req := commandinterface.NewCommandRequest("get_acceleration_log", args)
+									return c.handleComms(req, "")
+								},
+							},
 						},
 					},
 				},
