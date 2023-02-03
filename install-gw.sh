@@ -14,13 +14,18 @@ cd $DIST_DIR
 downloadSources() {
     # curl -fsSL https://get.Docker.com -o get-Docker.sh
     # bash get-Docker.sh
-    wget https://bchwtz.github.io/bchwtz-gateway/dist/gw-arm
+    IS_32=$(uname -a | grep -i armv7l)
+    if [ ! -z "$IS_32" ] ; then
+        BIN_ARCH="gw-arm"
+    else
+        BIN_ARCH="gw-arm64"
+    fi
+    wget https://bchwtz.github.io/bchwtz-gateway/dist/$BIN_ARCH
     wget https://bchwtz.github.io/bchwtz-gateway/dist/docker-compose.yml
     wget https://bchwtz.github.io/bchwtz-gateway/dist/docker-compose.rpi.yml
     wget https://bchwtz.github.io/bchwtz-gateway/dist/.env-default
     wget https://bchwtz.github.io/bchwtz-gateway/dist/uninstall-gw.sh
     mv docker-compose.yml docker-compose.std.yml
-    IS_32=$(uname -a | grep -i armv7l)
     if [ ! -z "$IS_32" ] ; then
         echo "Patching mongo image to comply to 32bits - consider using a 64bit-os!"
         sed -i 's/image: mongo$/image: apcheamitru\/arm32v7-mongo/' docker-compose.std.yml
@@ -28,7 +33,7 @@ downloadSources() {
         sed -i 's/\/lib\/libreadline\.so/\/lib\/arm-linux-gnueabihf\/libreadline.so.7/g' docker-compose.rpi.yml
     fi
     chmod +x uninstall-gw.sh
-    sudo mv gw-arm $BINARY_PATH$BINARY_NAME
+    sudo mv $BIN_ARCH $BINARY_PATH$BINARY_NAME
     sudo chmod +x $BINARY_PATH$BINARY_NAME
 }
 
