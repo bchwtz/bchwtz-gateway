@@ -28,6 +28,8 @@ downloadSources() {
         sed -i 's/\/lib\/libreadline\.so/\/lib\/arm-linux-gnueabihf\/libreadline.so.7/g' docker-compose.rpi.yml
     fi
     chmod +x uninstall-gw.sh
+    sudo mv gw-arm $BINARY_PATH$BINARY_NAME
+    sudo chmod +x $BINARY_PATH$BINARY_NAME
 }
 
 setupEnv() {
@@ -44,8 +46,6 @@ setupEnv() {
         echo "unset INSTALLDIR" >> unset-gateway-vars.sh
 
         sudo cp gateway-vars.sh /etc/profile.d/
-        sudo mv gw-arm $BINARY_PATH$BINARY_NAME
-        sudo chmod +x $BINARY_PATH$BINARY_NAME
         chmod +x unset-gateway-vars.sh
     else
         echo "error - could not find required .env-default - please check if it is on your filesystem!"
