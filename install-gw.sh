@@ -77,7 +77,7 @@ update() {
 
 }
 
-if [ ! -f $BINARY_PATH$BINARY_NAME ] && [ ! -d $DIST_DIR ]; then
+if [ ! -f $BINARY_PATH$BINARY_NAME ]; then
     downloadSources
     setupEnv
     run
