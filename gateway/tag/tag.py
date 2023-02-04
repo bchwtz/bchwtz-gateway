@@ -256,7 +256,7 @@ class Tag(object):
         """
         caught_signals = None
         caught_signals = SigScanner.scan_signals(rx_bt, Config.ReturnSignals)
-        self.logger.warn(str(hexlify(rx_bt)))
+        self.logger.debug(str(hexlify(rx_bt)))
         self.logger.debug(caught_signals)
         if caught_signals == None:
             return
@@ -435,11 +435,11 @@ class Tag(object):
     async def handle_mqtt_cmd(self, mqtt_client: Client, command: str, msg: MQTTMessage, last_in_list: bool):
         msg_dct: dict = json.loads(msg.payload)
         payload = msg_dct["payload"]
+        req_id = msg_dct["id"]
 
         if command == "get":
             self.logger.info("running get on tag: %s", self.address)
             msg_dct: dict = json.loads(msg.payload)
-            req_id = msg_dct["id"]
             atch = []
             for sensor in self.sensors:
                 if sensor is None or len(sensor.measurements) < 1:
@@ -470,17 +470,19 @@ class Tag(object):
 
         if command == "get_time":
             self.logger.info("running get_time on tag: %s", self.address)
-            asyncio.run_coroutine_threadsafe(self.get_time(), self.main_loop)
+            await self.get_time()
+            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "success"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
         elif command == "set_time":
             self.logger.info("running set_time on tag: %s", self.address)
-            asyncio.run_coroutine_threadsafe(self.set_time(), self.main_loop)
+            await self.set_time()
+            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "success"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+
 
         elif command == "get_config":
             self.logger.info("running get_config on tag: %s", self.address)
             await self.get_config()
-            self.logger.info(json.dumps({"request_id": req_id, "ongoing_request": True, "payload": {"status": "success"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
-            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": True, "payload": {"status": "success"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"old_config": self.config}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
         elif command == "set_config":
             self.logger.info("running set_config on tag: %s", self.address)
@@ -496,10 +498,14 @@ class Tag(object):
                 self.config.set_samplerate(rate)
             if divider is not None:
                 self.config.set_divider(divider)
-            asyncio.run_coroutine_threadsafe(self.set_config(), self.main_loop)
+            await self.set_config()
+            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"old_config": self.config}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+
 
         elif command == "get_acceleration_log":
-            asyncio.run_coroutine_threadsafe(self.get_acceleration_log(), self.main_loop)
+            await self.get_acceleration_log()
+            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "success"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+
 
     def subscribe_to_mqtt_chans(self):
         """ Connect callback for mqtt.

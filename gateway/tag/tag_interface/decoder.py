@@ -13,7 +13,7 @@ import crcmod
 from gateway.tag.tagconfig import TagConfig
 
 logger = logging.getLogger("Decoder")
-logger.setLevel(logging.WARNING)
+logger.setLevel(logging.INFO)
 class Decoder():
     def __init__(self) -> None:
         self.resolution = 0
@@ -536,11 +536,11 @@ class Decoder():
         crcfn = crcmod.mkCrcFun(0x11021, rev=False, 
                                         initCrc=0xffff, xorOut=0)
 
-        logger.warn(hexlify(acceleration_sensor.crc))
+        logger.debug(hexlify(acceleration_sensor.crc))
         # CRC validation
         crcdata = crcfn(acceleration_sensor.crc)
 
-        logger.info("Status: %s" % str(self.ri_error_to_string(rx_bt[3])))
+        logger.warn("Status: %s" % str(self.ri_error_to_string(rx_bt[3])))
 
         if hexlify(crc) == bytearray():
             logger.error("No crc received")

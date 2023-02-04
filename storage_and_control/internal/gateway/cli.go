@@ -91,7 +91,7 @@ func (c *CLI) handleComms(req commandinterface.CommandRequest, outputfile string
 	for i := 0; i < c.workerloops; i++ {
 		payload := <-c.endedch
 		payloads = append(payloads, payload)
-		log.Printf("ended %s", payload)
+		log.Printf("ended %s", payloads)
 	}
 	if outputfile != "" {
 		if jout, err := json.MarshalIndent(payloads, "", "	"); jout != nil && err == nil {
@@ -143,8 +143,8 @@ func (c *CLI) handleCallback(req commandinterface.CommandRequest) error {
 		// 	continue
 
 		// }
+		payloads = append(payloads, res.Payload)
 		if res.OngoingRequest {
-			payloads = append(payloads, res.Payload)
 			continue
 		}
 		// let us check if the message was an error

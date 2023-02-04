@@ -77,7 +77,8 @@ class Config:
             "get_config",
             "set_config",
             "get_time",
-            "set_time"
+            "set_time",
+            "get_acceleration_log"
         ]
         hub_commands: list[str] = [
             "get_all",
