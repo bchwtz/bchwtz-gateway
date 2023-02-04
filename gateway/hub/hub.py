@@ -190,9 +190,13 @@ class Hub(object):
         self.logger.info("connected to mqtt")
         self.logger.debug("result: %s"%rc)
         sub = Config.MQTTConfig.topic_command.value
-        res = self.mqtt_client.subscribe(sub, 0)
-        sub = "gateway/tags/commands/get"
-        res = self.mqtt_client.subscribe(sub, 0)
+        self.mqtt_client.subscribe(sub, 0)
+        commands = Config.MQTTConfig.tag_commands.value
+        ownprefix = "gateway/tags/commands/"
+        for cmd in commands:
+            sub = ownprefix + cmd
+            self.mqtt_client.subscribe(sub, 0)
+            self.logger.info(sub)
         self.logger.info(sub)
 
     def mqtt_on_command(self, client, userdata, message: MQTTMessage):
@@ -227,6 +231,7 @@ class Hub(object):
             tag = self.get_tag_by_address(tag_address)
             if tag is None:
                 self.logger.error("tag with address %s not found!" % tag_address)
+                return
             await tag.handle_mqtt_cmd(mqtt_client=client, command=command, msg=msg, last_in_list=True), self.main_loop
         elif namespace == "tags":
             for is_last, tag in signal_last(self.tags):
