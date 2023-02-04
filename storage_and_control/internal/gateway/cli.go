@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"reflect"
 	"time"
@@ -75,6 +74,7 @@ func (c *CLI) handleComms(req commandinterface.CommandRequest, outputfile string
 		logrus.Errorln(err)
 		return err
 	}
+	logrus.Warnln(string(reqbt))
 	// opens an internal answerchannel
 	c.answerch = make(chan mqtt.MQTTSubscriptionMessage)
 
@@ -91,7 +91,7 @@ func (c *CLI) handleComms(req commandinterface.CommandRequest, outputfile string
 	for i := 0; i < c.workerloops; i++ {
 		payload := <-c.endedch
 		payloads = append(payloads, payload)
-		log.Printf("ended %s", payloads)
+		logrus.Infof("ended %s", payloads)
 	}
 	if outputfile != "" {
 		if jout, err := json.MarshalIndent(payloads, "", "	"); jout != nil && err == nil {
@@ -234,6 +234,30 @@ func (c *CLI) configure() {
 									}
 									topic := c.getTopicByAddressAndCommand(cCtx, "set_time")
 									req := commandinterface.NewCommandRequest(topic, args)
+									return c.handleComms(req, "")
+								},
+							},
+							{
+								Name: "config",
+								Flags: []cli.Flag{
+									&cli.StringFlag{
+										Name:  "address",
+										Value: "",
+										Usage: "address to trigger a specific tag",
+									},
+									&cli.StringFlag{
+										Name:  "config",
+										Value: "",
+										Usage: "Enter the config as a json object like: {\"samplerate\": 10, \"resolution\": 10, \"scale\": 1, \"dsp_function\": 1, \"dsp_parameter\": 0, \"mode\": \"f4\", \"divider\": 1}",
+									},
+								},
+								Action: func(cCtx *cli.Context) error {
+									config := make(map[string]interface{})
+									if err := json.Unmarshal([]byte(cCtx.String("config")), &config); err != nil {
+										logrus.Fatalln("no valid json in config!")
+									}
+									topic := c.getTopicByAddressAndCommand(cCtx, "set_config")
+									req := commandinterface.NewCommandRequest(topic, config)
 									return c.handleComms(req, "")
 								},
 							},

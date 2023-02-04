@@ -1,6 +1,8 @@
 package commandinterface
 
-import "github.com/google/uuid"
+import (
+	"github.com/google/uuid"
+)
 
 // CommandRequest - Message for MQTT broker
 type CommandRequest struct {

@@ -61,6 +61,36 @@ class TagConfig(object):
             return
         self.divider = divider
 
+    def set_dsp_function(self, dsp_function: int) -> None:
+        """ Sets the tag's dsp_function
+            Arguments:
+                dsp_function: selects the dsp_function for the tags data
+        """
+        if dsp_function > 254 or dsp_function < 0:
+            self.logger.error("dsp_function is too big or too small (0-254)")
+            return
+        self.dsp_function = dsp_function
+
+    def set_dsp_parameter(self, dsp_parameter: int) -> None:
+        """ Sets the tag's dsp_parameter
+            Arguments:
+                dsp_parameter: additional parameters for dsp_function
+        """
+        if dsp_parameter > 254 or dsp_parameter < 0:
+            self.logger.error("dsp_parameter is too big or too small (0-254)")
+            return
+        self.dsp_parameter = dsp_parameter
+
+    def set_mode(self, mode: str) -> None:
+        """ Sets the tag's mode
+            Arguments:
+                mode: divides the samplerate to reach more accurate samplerates
+        """
+        if mode != "":
+            self.logger.error("mode is empty")
+            return
+        self.mode = mode
+
     def get_props(self) -> dict:
         """ Serializable representation of this type.
             Returns:

@@ -490,19 +490,29 @@ class Tag(object):
         elif command == "set_config":
             self.logger.info("running set_config on tag: %s", self.address)
             resolution = payload.get("resolution", None)
-            rate = payload.get("rate", None)
+            samplerate = payload.get("samplerate", None)
             scale = payload.get("scale", None)
             divider = payload.get("divider", None)
+            dsp_function = payload.get("dsp_function", None)
+            dsp_parameter = payload.get("dsp_parameter", None)
+            mode = payload.get("mode", None)
             if resolution is not None:
                 self.config.set_resolution(resolution)
             if scale is not None:
                 self.config.set_scale(scale)
-            if rate is not None:
-                self.config.set_samplerate(rate)
+            if samplerate is not None:
+                self.config.set_samplerate(samplerate)
             if divider is not None:
                 self.config.set_divider(divider)
+            if dsp_function is not None:
+                self.config.set_dsp_function(dsp_function)
+            if dsp_parameter is not None:
+                self.config.set_dsp_parameter(dsp_parameter)
+            if mode is not None:
+                self.config.set_mode(mode)
             await self.set_config()
-            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"old_config": self.config}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+            await self.get_config()
+            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"requested_config": self.config}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
 
         elif command == "get_acceleration_log":
