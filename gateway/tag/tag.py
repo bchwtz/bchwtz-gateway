@@ -221,7 +221,7 @@ class Tag(object):
         self.logger.info(f"status {status_code}")
         self.logger.info(f"msg: {res}")
 
-    def acceleration_log_callback(self, status_code: int, rx_bt: bytearray) -> None:
+    async def acceleration_log_callback(self, status_code: int, rx_bt: bytearray) -> None:
         caught_signals = None
         caught_signals = SigScanner.scan_signals(rx_bt, Config.ReturnSignalsLoggingMode)
         if caught_signals == None:
@@ -230,6 +230,8 @@ class Tag(object):
             self.handle_logging_data_cb(rx_bt)
         elif "logging_data_end" in caught_signals:
             self.handle_logging_data_end_cb(rx_bt)
+            await self.deactivate_logging(self.multi_communication_callback)
+
 
     def acceleration_stream_callback(self, status_code: int, rx_bt: bytearray) -> None:
         caught_signals = None
