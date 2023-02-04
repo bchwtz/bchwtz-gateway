@@ -5,6 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python: Gateway",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/gateway.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "/home/caos/workspace/gateway:/home/caos/miniconda3/lib/python3.10/site-packages"
+            }
+        },
+        {
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",

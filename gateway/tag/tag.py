@@ -159,7 +159,7 @@ class Tag(object):
             write_chan = Config.CommunicationChannels.tx.value,
             cmd = Config.Commands.get_tag_config.value,
             cb = cb,
-            await_response=False
+            await_response=True
         )
 
     async def get_time(self, cb: Callable[[int, bytearray], None] = None) -> None:
@@ -432,7 +432,7 @@ class Tag(object):
         """
         return {'name': self.name, 'address': self.address, 'sensors': self.get_sensors_props(), 'time': self.time, 'config': self.config, 'online': self.online, 'last_seen': self.last_seen}
 
-    def handle_mqtt_cmd(self, mqtt_client: Client, command: str, msg: MQTTMessage, last_in_list: bool):
+    async def handle_mqtt_cmd(self, mqtt_client: Client, command: str, msg: MQTTMessage, last_in_list: bool):
         msg_dct: dict = json.loads(msg.payload)
         payload = msg_dct["payload"]
 
@@ -478,7 +478,9 @@ class Tag(object):
 
         elif command == "get_config":
             self.logger.info("running get_config on tag: %s", self.address)
-            asyncio.run_coroutine_threadsafe(self.get_config(), self.main_loop)
+            await self.get_config()
+            self.logger.info(json.dumps({"request_id": req_id, "ongoing_request": True, "payload": {"status": "success"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": True, "payload": {"status": "success"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
         elif command == "set_config":
             self.logger.info("running set_config on tag: %s", self.address)
@@ -504,7 +506,7 @@ class Tag(object):
         """
         self.logger.info("connected to mqtt")
         pre = Config.MQTTConfig.topic_tag_prefix.value
-        ownprefix = pre + self.address + "/"
+        ownprefix = pre + "/" + self.address + "/commands/"
         commands = Config.MQTTConfig.tag_commands.value
         for cmd in commands:
             sub = ownprefix + cmd

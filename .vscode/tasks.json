@@ -1,0 +1,9 @@
+{
+    "version": "2.0.0",
+    "tasks": [{
+        "label": "pip_install",
+        "command": "pip", // Could be any other shell command
+        "args": ["install", "-r", "requirements.txt"],
+        "type": "shell"
+    }]
+}

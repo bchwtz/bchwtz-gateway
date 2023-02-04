@@ -35,7 +35,7 @@ class BLEConn():
                     await self.get_client(dev=dev, timeout=timeout+5.0)
             self.logger.info("successfully connected to %s", dev.address)
         else:
-            self.logger.info("already was connected to %s", dev.address)
+            self.logger.info("was already connected to %s", dev.address)
         return self.client
 
     async def disconnect(self):

@@ -191,7 +191,7 @@ class Hub(object):
         self.logger.debug("result: %s"%rc)
         sub = Config.MQTTConfig.topic_command.value
         res = self.mqtt_client.subscribe(sub, 0)
-        sub = "gateway/tags/get"
+        sub = "gateway/tags/commands/get"
         res = self.mqtt_client.subscribe(sub, 0)
         self.logger.info(sub)
 
@@ -211,32 +211,31 @@ class Hub(object):
             tags.append(t.get_props())
         # print(self.internal_command_publisher.__dict__)
 
-        self.forward_mqtt_functions_to_ns_handler(topic_name = message.topic, client = client, msg = message)
+        self.main_loop.create_task(self.forward_mqtt_functions_to_ns_handler(topic_name = message.topic, client = client, msg = message, req_id = id))
         
 
         self.logger.debug("sent payload")
 
-    def forward_mqtt_functions_to_ns_handler(self, topic_name: str, client: Client, msg: MQTTMessage) -> None:
+    async def forward_mqtt_functions_to_ns_handler(self, topic_name: str, client: Client, msg: MQTTMessage, req_id: str) -> None:
         self.logger.info(topic_name)
         parts = topic_name.split("/")
         namespace = parts[1]
         msg_dct: dict = json.loads(msg.payload)
-        req_id = msg_dct["id"]
         if namespace == "tag":
             tag_address = parts[2]
-            command = parts[3]
+            command = parts[4]
             tag = self.get_tag_by_address(tag_address)
             if tag is None:
                 self.logger.error("tag with address %s not found!" % tag_address)
-            tag.handle_mqtt_cmd(mqtt_client=client, command=command, msg=msg)
+            await tag.handle_mqtt_cmd(mqtt_client=client, command=command, msg=msg, last_in_list=True), self.main_loop
         elif namespace == "tags":
             for is_last, tag in signal_last(self.tags):
-                command = parts[2]
-                tag.handle_mqtt_cmd(mqtt_client=client, command=command, msg=msg, last_in_list=is_last)
+                command = parts[3]
+                await tag.handle_mqtt_cmd(mqtt_client=client, command=command, msg=msg, last_in_list=is_last)
             self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "success"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
         elif namespace == "hub":
-            command = parts[2]
+            command = parts[3]
             self.handle_mqtt_cmd(cmd=command, msg=msg)
 
 

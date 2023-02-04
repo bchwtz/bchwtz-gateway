@@ -187,7 +187,7 @@ func (c *CLI) getTopicByAddressAndCommand(cCtx *cli.Context, cmd string) string 
 	} else {
 		topic += fmt.Sprintf("%ss", c.tag_topic_pre)
 	}
-	topic += fmt.Sprintf("/%s", cmd)
+	topic += fmt.Sprintf("/commands/%s", cmd)
 	return topic
 }
 
@@ -256,36 +256,42 @@ func (c *CLI) configure() {
 						Subcommands: []cli.Command{
 							{
 								Name: "time",
+								Flags: []cli.Flag{
+									cli.StringFlag{
+										Name:  "address",
+										Usage: "address to query a specific tag",
+									},
+								},
 								Action: func(cCtx *cli.Context) error {
-									args := ""
-									if cCtx.Args().Present() {
-										args = cCtx.Args().First()
-									}
-									req := commandinterface.NewCommandRequest("get_time", args)
+									req := commandinterface.NewCommandRequest(c.getTopicByAddressAndCommand(cCtx, "get_time"), nil)
 									return c.handleComms(req, "")
 								},
 							},
 							{
 								Name: "config",
+								Flags: []cli.Flag{
+									cli.StringFlag{
+										Name:  "address",
+										Usage: "address to query a specific tag",
+									},
+								},
 								Action: func(cCtx *cli.Context) error {
 									logrus.Infoln("getting config")
-									args := ""
-									if cCtx.Args().Present() {
-										args = cCtx.Args().First()
-									}
-									req := commandinterface.NewCommandRequest("get_config", args)
+									req := commandinterface.NewCommandRequest(c.getTopicByAddressAndCommand(cCtx, "get_config"), nil)
 									return c.handleComms(req, "")
 								},
 							},
 							{
 								Name: "acceleration_log",
+								Flags: []cli.Flag{
+									cli.StringFlag{
+										Name:  "address",
+										Usage: "address to query a specific tag",
+									},
+								},
 								Action: func(cCtx *cli.Context) error {
 									logrus.Infoln("getting acceleration log")
-									args := ""
-									if cCtx.Args().Present() {
-										args = cCtx.Args().First()
-									}
-									req := commandinterface.NewCommandRequest("get_acceleration_log", args)
+									req := commandinterface.NewCommandRequest(c.getTopicByAddressAndCommand(cCtx, "get_acceleration_log"), nil)
 									return c.handleComms(req, "")
 								},
 							},
