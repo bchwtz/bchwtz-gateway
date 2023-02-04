@@ -19,6 +19,9 @@ class AccelerationSensor(Sensor):
         Arguments:
             data: The advertisements data as a dict.
         """
+        if data is None:
+            self.logger.warn("data was none!")
+            return
         self.last_measurement = AccelerationSensor.AccelerationMeasurement(data.get("acceleration_x"), data.get("acceleration_y"), data.get("acceleration_z"), data.get("acceleration"), data.get("movement_counter"))
         self.movement_counter = data.get("movement_counter")
         self.measurements.append(self.last_measurement)

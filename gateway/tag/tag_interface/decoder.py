@@ -548,6 +548,7 @@ class Decoder():
 
         if int(hexlify(crc), 16) != crcdata:
             logger.error("CRC are unequal: %s - %s" % (int(hexlify(crc), 16), crcdata))
+            acceleration_sensor.crc = bytearray()
             return None
 
         enc_mode = rx_bt[5]
@@ -580,7 +581,7 @@ class Decoder():
             # dataList=message_return_value.from_get_accelorationdata(accelorationdata=AccelerationData,mac=self.mac)
             # self.data.append(dataList.return_value.__dict__)
             acceleration_sensor.measurements.extend(data)
-
+        acceleration_sensor.crc = bytearray()
         return
 
 

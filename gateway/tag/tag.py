@@ -80,7 +80,7 @@ class Tag(object):
     async def activate_logging(self, cb: Callable[[int, bytearray], None] = None) -> None:
         if self.activate_logging:
             self.logger.warn("logging already active")
-            return
+            # return
         if cb is None:
             cb = self.multi_communication_callback
         await self.ble_conn.run_single_ble_command(
@@ -227,10 +227,9 @@ class Tag(object):
         if caught_signals == None:
             return
         if "logging_data" in caught_signals:
-            self.handle_logging_data_cb(rx_bt)
+            await self.handle_logging_data_cb(rx_bt)
         elif "logging_data_end" in caught_signals:
-            self.handle_logging_data_end_cb(rx_bt)
-            await self.deactivate_logging(self.multi_communication_callback)
+            await self.handle_logging_data_end_cb(rx_bt)
 
 
     def acceleration_stream_callback(self, status_code: int, rx_bt: bytearray) -> None:
@@ -322,7 +321,7 @@ class Tag(object):
         self.logger.debug("logging status:")
         self.logger.debug(rx_bt)
 
-    def handle_logging_data_cb(self, rx_bt: bytearray):
+    async def handle_logging_data_cb(self, rx_bt: bytearray):
         self.logger.debug("logging data:")
         self.logger.debug(rx_bt)
         acc: AccelerationSensor = self.get_sensor_by_type(AccelerationSensor)
@@ -333,7 +332,7 @@ class Tag(object):
         self.dec.build_acc_log_crc(rx_bt = rx_bt, acceleration_sensor = acc)
 
 
-    def handle_logging_data_end_cb(self, rx_bt: bytearray):
+    async def handle_logging_data_end_cb(self, rx_bt: bytearray):
         self.logger.warn("logging data:")
         self.logger.warn(hexlify(rx_bt))
         acc: AccelerationSensor = self.get_sensor_by_type(AccelerationSensor)
@@ -342,6 +341,8 @@ class Tag(object):
             return
         self.dec.decode_acc_log_crc(rx_bt = rx_bt, acceleration_sensor = acc)
         self.publisher.publish(aiopubsub.Key("log"), self)
+        # await self.deactivate_logging()
+        # self.logging_active = False
 
     async def set_time(self, custom_time: float = 0.0, cb: Callable[[int, bytearray], None] = None) -> None:
         """ Sets the time of the tag to a specified time or the current time of the gateway (default).
@@ -505,8 +506,8 @@ class Tag(object):
 
 
         elif command == "get_acceleration_log":
+            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "started - wait for the results and fetch them via tags get!"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
             await self.get_acceleration_log()
-            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "success"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
 
     def subscribe_to_mqtt_chans(self):
