@@ -42,4 +42,5 @@ class Encoder():
     def encode_heartbeat(self, interval: int = 0) -> str:
         hex_beat = hex(interval)[2:]
         hex_msg = f"{Config.Commands.set_heartbeat_substr.value}{'0000'[:4 - len(hex_beat)]}{hex_beat}000000000000"
+        self.logger.warn(hex_msg)
         return hex_msg

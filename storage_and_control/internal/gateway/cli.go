@@ -261,6 +261,27 @@ func (c *CLI) configure() {
 									return c.handleComms(req, "")
 								},
 							},
+							{
+								Name: "heartbeat",
+								Flags: []cli.Flag{
+									&cli.StringFlag{
+										Name:  "address",
+										Value: "",
+										Usage: "address to trigger a specific tag",
+									},
+									&cli.Int64Flag{
+										Name:  "heartbeat",
+										Value: 5,
+										Usage: "sets the heartbeat of the given tag",
+									},
+								},
+								Action: func(cCtx *cli.Context) error {
+									heartbeat := cCtx.Int64("heartbeat")
+									topic := c.getTopicByAddressAndCommand(cCtx, "set_heartbeat")
+									req := commandinterface.NewCommandRequest(topic, heartbeat)
+									return c.handleComms(req, "")
+								},
+							},
 						},
 					},
 					{

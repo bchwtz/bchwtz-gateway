@@ -487,6 +487,11 @@ class Tag(object):
             await self.get_config()
             self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"old_config": self.config}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
+        elif command == "set_heartbeat":
+            self.logger.info("running set_heartbeat on tag: %s", self.address)
+            await self.set_heartbeat(payload)
+            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "setting heartbeat"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+
         elif command == "set_config":
             self.logger.info("running set_config on tag: %s", self.address)
             resolution = payload.get("resolution", None)
