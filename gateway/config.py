@@ -75,6 +75,7 @@ class Config:
         topic_tag_cmd_get_acceleration_log: str = "/get-acceleration-log"
         tag_commands: list[str] = [
             "get_config",
+            "get",
             "set_config",
             "get_time",
             "set_time",
