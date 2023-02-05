@@ -334,6 +334,25 @@ func (c *CLI) configure() {
 							},
 						},
 					},
+					{
+						Name: "stop",
+						Subcommands: []cli.Command{
+							{
+								Name: "acceleration_log",
+								Flags: []cli.Flag{
+									cli.StringFlag{
+										Name:  "address",
+										Usage: "address to query a specific tag",
+									},
+								},
+								Action: func(cCtx *cli.Context) error {
+									logrus.Infoln("stopping acceleration logging")
+									req := commandinterface.NewCommandRequest(c.getTopicByAddressAndCommand(cCtx, "deactivate_logging"), nil)
+									return c.handleComms(req, "")
+								},
+							},
+						},
+					},
 				},
 				Usage: "attributes of the tags",
 			},

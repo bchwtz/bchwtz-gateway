@@ -83,8 +83,8 @@ class Tag(object):
         await self.get_acceleration_data(cb)
 
     async def activate_logging(self, cb: Callable[[int, bytearray], None] = None) -> None:
-        if self.activate_logging:
-            self.logger.warn("logging already active")
+        # if self.activate_logging:
+            # self.logger.warn("logging already active")
             # return
         if cb is None:
             cb = self.multi_communication_callback
@@ -545,6 +545,10 @@ class Tag(object):
 
 
         # TODO: add deactivate_logging
+        elif command == "deactivate_logging":
+            await self.deactivate_logging()
+            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "deactivated logging!"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+
         # TODO: add streaming_data
 
 

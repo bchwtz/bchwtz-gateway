@@ -80,7 +80,8 @@ class Config:
             "get_time",
             "set_time",
             "get_acceleration_log",
-            "set_heartbeat"
+            "set_heartbeat",
+            "deactivate_logging"
         ]
         hub_commands: list[str] = [
             "get_all",
