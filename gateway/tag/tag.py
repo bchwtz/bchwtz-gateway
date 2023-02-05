@@ -21,6 +21,7 @@ from bleak.backends.scanner import AdvertisementData
 import aiopubsub
 from paho.mqtt.client import Client, MQTTMessage
 import json
+from gateway.util.signal_last import signal_last
 
 
 from gateway.sensor.sensor import Sensor
@@ -64,6 +65,9 @@ class Tag(object):
         self.heartbeat: int = 0
         self.time: float = 0.0
         self.online: bool = online
+        self.acc_log_res_topic: str = Config.MQTTConfig.topic_tag_prefix.value + "/" + self.address + Config.MQTTConfig.topic_tag_cmd_get_acceleration_log_res.value
+        self.acc_log_req_id: str = ""
+        self.seen_in_last_iter: bool = False
         self.last_seen: float = time.time()
         self.pubsub_hub: aiopubsub.Hub = pubsub_hub
         self.publisher: aiopubsub.Publisher = aiopubsub.Publisher(self.pubsub_hub, prefix = aiopubsub.Key("TAG"))
@@ -72,6 +76,7 @@ class Tag(object):
             self.subscribe_to_mqtt_chans()
 
     async def get_acceleration_log(self, cb: Callable[[int, bytearray], None] = None) -> None:
+        # await self.ble_conn.disconnect()
         if cb is None:
             cb = self.acceleration_log_callback
         await self.activate_logging(cb)
@@ -225,6 +230,7 @@ class Tag(object):
         caught_signals = None
         caught_signals = SigScanner.scan_signals(rx_bt, Config.ReturnSignalsLoggingMode)
         if caught_signals == None:
+            self.logger.debug("no signal caught on: %s", hexlify(rx_bt))
             return
         if "logging_data" in caught_signals:
             await self.handle_logging_data_cb(rx_bt)
@@ -233,6 +239,8 @@ class Tag(object):
 
 
     def acceleration_stream_callback(self, status_code: int, rx_bt: bytearray) -> None:
+        """ Handles and decodes received streaming data
+        """
         caught_signals = None
         rx_bt = rx_bt[1:]
         self.logger.warn(rx_bt)
@@ -318,10 +326,14 @@ class Tag(object):
         self.logger.debug(self.time)
 
     def handle_logging_status_cb(self, rx_bt: bytearray):
+        """ Helper to be able to determine the logging status of a tag
+        """
         self.logger.debug("logging status:")
         self.logger.debug(rx_bt)
 
     async def handle_logging_data_cb(self, rx_bt: bytearray):
+        """ attaches all logging data into crc
+        """
         self.logger.debug("logging data:")
         self.logger.debug(rx_bt)
         acc: AccelerationSensor = self.get_sensor_by_type(AccelerationSensor)
@@ -333,14 +345,18 @@ class Tag(object):
 
 
     async def handle_logging_data_end_cb(self, rx_bt: bytearray):
-        self.logger.warn("logging data:")
-        self.logger.warn(hexlify(rx_bt))
+        """ The end hook for acceleration logging - is called as soon as all data has been received
+        """
+        self.logger.debug("logging data:")
+        self.logger.debug(hexlify(rx_bt))
         acc: AccelerationSensor = self.get_sensor_by_type(AccelerationSensor)
         if acc is None:
             self.logger.error("No accelerometer detected - cannot log acceleration data!")
             return
         self.dec.decode_acc_log_crc(rx_bt = rx_bt, acceleration_sensor = acc)
         self.publisher.publish(aiopubsub.Key("log"), self)
+        for is_last, measurement in signal_last(acc.measurements):
+            self.mqtt_client.publish(self.acc_log_res_topic, json.dumps({"request_id": self.acc_log_req_id,"ongoing_request": not is_last, "payload": {"status": "success", "measurement": measurement.get_props()}}))
         # await self.deactivate_logging()
         # self.logging_active = False
 
@@ -436,6 +452,8 @@ class Tag(object):
         return {'name': self.name, 'address': self.address, 'sensors': self.get_sensors_props(), 'time': self.time, 'config': self.config, 'online': self.online, 'last_seen': self.last_seen}
 
     async def handle_mqtt_cmd(self, mqtt_client: Client, command: str, msg: MQTTMessage, last_in_list: bool):
+        """ Handles mqtt-cmds that were redirected from hub to this tag
+        """
         msg_dct: dict = json.loads(msg.payload)
         payload = msg_dct["payload"]
         req_id = msg_dct["id"]
@@ -521,8 +539,13 @@ class Tag(object):
 
 
         elif command == "get_acceleration_log":
-            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "started - wait for the results and fetch them via tags get!"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+            self.acc_log_req_id = req_id
+            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"has_attachments": True, "attachment_channels": [self.acc_log_res_topic], "request_id": req_id, "ongoing_request": True, "payload": {"status": "started - wait for the results and fetch them via tags get!"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
             await self.get_acceleration_log()
+
+
+        # TODO: add deactivate_logging
+        # TODO: add streaming_data
 
 
     def subscribe_to_mqtt_chans(self):

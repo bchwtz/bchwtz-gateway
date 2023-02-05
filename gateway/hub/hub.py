@@ -91,6 +91,7 @@ class Hub(object):
         tag.read_sensor_data(data.manufacturer_data.get(Config.GlobalConfig.bluetooth_manufacturer_id.value))
         tag.last_seen = time.time()
         tag.online = True
+        tag.seen_in_last_iter = True
         self.log_mqtt()
 
     def log_mqtt(self):
@@ -245,13 +246,15 @@ class Hub(object):
 
 
     def __return_paged_measurements_all_tags(self, req_id: int):
+        """ Returns paged measurements of tags
+        """
         for tag in self.tags:
-            for sensor in tag.sensors:
-                for measurement in sensor.measurements:
-                    self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value + "_" + tag.address + "_" + sensor.name, json.dumps({"request_id": req_id, "payload": {"status": "success", "measurement": measurement}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+            tag.__return_paged_measurements(req_id)
 
 
     def handle_mqtt_cmd(self, cmd: str, msg: MQTTMessage):
+        """ Redirects mqtt commands to the correct methods on hub and sensors
+        """
         msg_dct: dict = json.loads(msg.payload)
         req_id = msg_dct["id"]
         if cmd == "get":
@@ -267,3 +270,11 @@ class Hub(object):
         else:
             self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "payload": {"status": "error", "msg": "did not find any fitting command for your request"}}))
             return
+
+    def reset_seen_status(self):
+        """ Checks if we lost connection to a tag for at least two cycles - will be set to online: False then.
+        """
+        for idx, tag in enumerate(self.tags):
+            if not tag.seen_in_last_iter:
+                self.tags[idx].online = False
+            self.tags[idx].seen_in_last_iter = False

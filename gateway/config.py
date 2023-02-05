@@ -72,7 +72,7 @@ class Config:
         topic_log: str = "3"
         topic_listen_adv: str = "4"
         topic_tag_prefix: str = "gateway/tag/"
-        topic_tag_cmd_get_acceleration_log: str = "/get-acceleration-log"
+        topic_tag_cmd_get_acceleration_log_res: str = "/acceleration_log_res"
         tag_commands: list[str] = [
             "get_config",
             "get",

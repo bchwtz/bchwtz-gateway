@@ -74,7 +74,7 @@ func (c *CLI) handleComms(req commandinterface.CommandRequest, outputfile string
 		logrus.Errorln(err)
 		return err
 	}
-	logrus.Warnln(string(reqbt))
+	// logrus.Warnln(string(reqbt))
 	// opens an internal answerchannel
 	c.answerch = make(chan mqtt.MQTTSubscriptionMessage)
 
@@ -117,7 +117,6 @@ func (c *CLI) handleCallback(req commandinterface.CommandRequest) error {
 		if err := json.Unmarshal(answer.Message.Payload(), &res); err != nil {
 			return err
 		}
-		// logrus.Println(string(answer.Message.Payload()))
 		if err := c.resHasErr(res); err != nil {
 			logrus.Errorln(err)
 			return err
@@ -126,23 +125,9 @@ func (c *CLI) handleCallback(req commandinterface.CommandRequest) error {
 		if res.RequestID.String() != req.ID.String() {
 			continue
 		}
-
-		// it has to be our message now - let us acknowledge the reception
+		// ack the message to tell the broker everything is fine
 		answer.Message.Ack()
-		// logrus.Infoln(res.Payload)
-		// if res.HasAttachments {
-		// 	for _, topic := range res.AttachmentChannels {
-		// 		logrus.Info("incrementing workloops to " + topic)
-		// 		// c.workerloops++
-		// 		// if err := c.mqclient.Subscribe(topic, c.answerch); err != nil {
-		// 		// 	logrus.Warnln(err)
-		// 		// 	continue
-		// 		// }
-		// 	}
-		// 	payloads = append(payloads, res.Payload)
-		// 	continue
 
-		// }
 		payloads = append(payloads, res.Payload)
 		if res.OngoingRequest {
 			continue
@@ -158,8 +143,6 @@ func (c *CLI) handleCallback(req commandinterface.CommandRequest) error {
 		ended = true
 		time.Sleep(10 * time.Second)
 	}
-
-	return nil
 }
 
 // traverse through the message and check if it contains a soft error
@@ -289,6 +272,10 @@ func (c *CLI) configure() {
 						ArgsUsage: "first arg is the tags name - if none is set every tag will be asked for its time and config",
 						Flags: []cli.Flag{
 							cli.StringFlag{
+								Name:  "address",
+								Usage: "address to query a specific tag",
+							},
+							cli.StringFlag{
 								Name:  "file",
 								Usage: "file to output the received json to",
 							},
@@ -333,11 +320,16 @@ func (c *CLI) configure() {
 										Name:  "address",
 										Usage: "address to query a specific tag",
 									},
+									cli.StringFlag{
+										Name:  "file",
+										Usage: "file to output the received json to",
+									},
 								},
 								Action: func(cCtx *cli.Context) error {
+									filename := cCtx.String("file")
 									logrus.Infoln("getting acceleration log")
 									req := commandinterface.NewCommandRequest(c.getTopicByAddressAndCommand(cCtx, "get_acceleration_log"), nil)
-									return c.handleComms(req, "")
+									return c.handleComms(req, filename)
 								},
 							},
 						},

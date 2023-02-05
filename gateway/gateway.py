@@ -34,6 +34,7 @@ class Gateway:
         """
         while True:
             print("running")
+            self.hub.reset_seen_status()
             await self.hub.listen_for_advertisements()
             # sleep(20)
 
