@@ -65,3 +65,9 @@ Sets the heartbeat on one or more tags - depends on --address. --heartbeat is ma
 ```{bash}
 gw tags set heartbeat --address ff:ff:ff:ff:ff:ff --heartbeat 10
 ```
+
+## stop
+Commands that are able to stop processes on a tag. Until now you can only stop acceleration logging
+```{bash}
+gw tags stop acceleration_log --address ff:ff:ff:ff:ff:ff
+```
