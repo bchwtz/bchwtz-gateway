@@ -188,6 +188,8 @@ class Hub(object):
                 flags: MQTT flags
                 rc: MQTT result
         """
+        if self.mqtt_client is None:
+            return
         self.logger.info("connected to mqtt")
         self.logger.debug("result: %s"%rc)
         sub = Config.MQTTConfig.topic_command.value
@@ -238,6 +240,8 @@ class Hub(object):
             for is_last, tag in signal_last(self.tags):
                 command = parts[3]
                 await tag.handle_mqtt_cmd(mqtt_client=client, command=command, msg=msg, last_in_list=is_last)
+            if self.mqtt_client is None:
+                return
             self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "success"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
         elif namespace == "hub":
@@ -263,12 +267,15 @@ class Hub(object):
                 channels: list[str] = ""
                 for sensor in tag.sensors:
                     channels.append(Config.MQTTConfig.topic_command_res.value + "_" + tag.address + "_" + sensor.name)
+                if self.mqtt_client is None:
+                    continue
                 self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "attachment_channels": channels, "has_attachments": True, "payload": {"status": "success", "tag": tag}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
             self.__return_paged_measurements_all_tags(req_id=req_id)
 
         else:
-            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "payload": {"status": "error", "msg": "did not find any fitting command for your request"}}))
+            if self.mqtt_client is not None:
+                self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "payload": {"status": "error", "msg": "did not find any fitting command for your request"}}))
             return
 
     def reset_seen_status(self):

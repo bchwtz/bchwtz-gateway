@@ -355,6 +355,8 @@ class Tag(object):
             return
         self.dec.decode_acc_log_crc(rx_bt = rx_bt, acceleration_sensor = acc)
         self.publisher.publish(aiopubsub.Key("log"), self)
+        if self.mqtt_client is None:
+            return
         for is_last, measurement in signal_last(acc.measurements):
             self.mqtt_client.publish(self.acc_log_res_topic, json.dumps({"request_id": self.acc_log_req_id,"ongoing_request": not is_last, "payload": {"status": "success", "measurement": measurement.get_props()}}))
         # await self.deactivate_logging()
@@ -492,23 +494,27 @@ class Tag(object):
         if command == "get_time":
             self.logger.info("running get_time on tag: %s", self.address)
             await self.get_time()
-            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "success"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+            if self.mqtt_client is not None:
+                self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "success"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
         elif command == "set_time":
             self.logger.info("running set_time on tag: %s", self.address)
             await self.set_time()
-            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "success"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+            if self.mqtt_client is not None:
+                self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "success"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
 
         elif command == "get_config":
             self.logger.info("running get_config on tag: %s", self.address)
             await self.get_config()
-            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"old_config": self.config}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+            if self.mqtt_client is not None:
+                self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"old_config": self.config}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
         elif command == "set_heartbeat":
             self.logger.info("running set_heartbeat on tag: %s", self.address)
             await self.set_heartbeat(payload)
-            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "setting heartbeat"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+            if self.mqtt_client is not None:
+                self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "setting heartbeat"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
         elif command == "set_config":
             self.logger.info("running set_config on tag: %s", self.address)
@@ -535,19 +541,22 @@ class Tag(object):
                 self.config.set_mode(mode)
             await self.set_config()
             await self.get_config()
-            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"requested_config": self.config}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+            if self.mqtt_client is not None:
+                self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"requested_config": self.config}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
 
         elif command == "get_acceleration_log":
             self.acc_log_req_id = req_id
-            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"has_attachments": True, "attachment_channels": [self.acc_log_res_topic], "request_id": req_id, "ongoing_request": True, "payload": {"status": "started - wait for the results and fetch them via tags get!"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+            if self.mqtt_client is not None:
+                self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"has_attachments": True, "attachment_channels": [self.acc_log_res_topic], "request_id": req_id, "ongoing_request": True, "payload": {"status": "started - wait for the results and fetch them via tags get!"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
             await self.get_acceleration_log()
 
 
         # TODO: add deactivate_logging
         elif command == "deactivate_logging":
             await self.deactivate_logging()
-            self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "deactivated logging!"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+            if self.mqtt_client is not None:
+                self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "deactivated logging!"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
         # TODO: add streaming_data
 
@@ -561,7 +570,8 @@ class Tag(object):
         commands = Config.MQTTConfig.tag_commands.value
         for cmd in commands:
             sub = ownprefix + cmd
-            self.mqtt_client.subscribe(sub, 0)
+            if self.mqtt_client is not None:
+                self.mqtt_client.subscribe(sub, 0)
             self.logger.info(sub)
 
     def __return_paged_measurements(self, req_id: int):
@@ -570,17 +580,18 @@ class Tag(object):
             for idx, measurement in enumerate(sensor.measurements):
                 measurements.append(measurement)
                 if idx % 10 == 0 or len(sensor.measurements) - idx < 10:
-                    self.mqtt_client.publish(
-                        Config.MQTTConfig.topic_tag_prefix.value + "/" + self.address + "/" + sensor.name + "/" + req_id,
-                        payload=json.dumps({
-                            "obj_type": "measurement",
-                            "ongoing_request": True,
-                            "request_id": req_id,
-                            "payload": {
-                                "status": "success",
-                                "tag_address": self.address,
-                                "measurement": measurements
-                        }}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4), retain=True)
+                    if self.mqtt_client is not None:
+                        self.mqtt_client.publish(
+                            Config.MQTTConfig.topic_tag_prefix.value + "/" + self.address + "/" + sensor.name + "/" + req_id,
+                            payload=json.dumps({
+                                "obj_type": "measurement",
+                                "ongoing_request": True,
+                                "request_id": req_id,
+                                "payload": {
+                                    "status": "success",
+                                    "tag_address": self.address,
+                                    "measurement": measurements
+                            }}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4), retain=True)
                     measurements = []
             # print("sending success on {}", Config.MQTTConfig.topic_tag_prefix.value + "/" + self.address + "/" + sensor.name + "/" + req_id)
             # self.mqtt_client.publish(Config.MQTTConfig.topic_tag_prefix.value + "/" + self.address + "/" + sensor.name + "/" + req_id, payload=json.dumps({"ongoing_request": False, "payload": {"status": "success"}}), retain=True)
