@@ -51,3 +51,4 @@ go run cmd/cli/main.go tags get
 ```
 
 Congratulations! You're all set!
+READ THE [DEVELOPMENT PRINCIPLES](global_architecture/development_principles) FOR THIS PROJECT - ALL COMMITS NOT COMPLYING WILL BE DELETED IMMEDIATLY!

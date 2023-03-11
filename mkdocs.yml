@@ -51,6 +51,7 @@ nav:
     - Global Architecture:
       - global_architecture/mqtt_messages.md
       - global_architecture/docker_architecture.md
+      - global_architecture/development_principles.md
     - Additional Microservices:
       - CLI: go-services/cli_ref.md
       - Dumper: go-services/dumper_ref.md
