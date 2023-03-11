@@ -320,7 +320,7 @@ class Tag(object):
                 rx_bt: The ble-message as bytearray.
         """
         time = self.dec.decode_time_rx(rx_bt)
-        self.time = time
+        self.time = time * 1000
         self.logger.debug("got time - sending...")
         self.publisher.publish(aiopubsub.Key("log", "TIME"), self)
         self.logger.debug(self.time)
@@ -374,6 +374,7 @@ class Tag(object):
             custom_time = datetime.now().timestamp()
         cmd = self.enc.encode_time(time = custom_time)
         self.logger.debug(cmd)
+        self.time = custom_time * 1000
         await self.ble_conn.run_single_ble_command(
             tag = self.ble_device,
             read_chan = Config.CommunicationChannels.rx.value,
