@@ -243,7 +243,7 @@ class Tag(object):
         """
         caught_signals = None
         rx_bt = rx_bt[1:]
-        self.logger.warn(rx_bt)
+        self.logger.debug(rx_bt)
 
         caught_signals = SigScanner.scan_signals(rx_bt, Config.ReturnSignalsLoggingMode)
         acc: AccelerationSensor = self.get_sensor_by_type(AccelerationSensor)
@@ -427,13 +427,16 @@ class Tag(object):
         if data is None:
             return
         tag_data = self.dec.decode_advertisement(data)
+        if tag_data == None:
+            return
         for sensor in self.sensors:
             sensor.read_data_from_advertisement(tag_data)
             # submit mqtt vals for accelerometer
             accelerometer = self.get_sensor_by_type(AccelerationSensor)
-            self.mqtt_client.publish("%s/%s/%s/acc_x" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, accelerometer.__class__.__name__), next(reversed(accelerometer.measurements)).acc_x)
-            self.mqtt_client.publish("%s/%s/%s/acc_y" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, accelerometer.__class__.__name__), next(reversed(accelerometer.measurements)).acc_y)
-            self.mqtt_client.publish("%s/%s/%s/acc_z" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, accelerometer.__class__.__name__), next(reversed(accelerometer.measurements)).acc_z)
+            if len(accelerometer.measurements) > 0:
+                self.mqtt_client.publish("%s/%s/%s/acc_x" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, accelerometer.__class__.__name__), next(reversed(accelerometer.measurements)).acc_x)
+                self.mqtt_client.publish("%s/%s/%s/acc_y" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, accelerometer.__class__.__name__), next(reversed(accelerometer.measurements)).acc_y)
+                self.mqtt_client.publish("%s/%s/%s/acc_z" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, accelerometer.__class__.__name__), next(reversed(accelerometer.measurements)).acc_z)
             # submit mqtt vals for voltage
             vbat = self.get_sensor_by_type(BatterySensor)
             if len(vbat.measurements) > 0:
