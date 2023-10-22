@@ -255,7 +255,12 @@ class Tag(object):
             return
         if "logging_data" in caught_signals:
             self.dec.decode_acc_stream_pack(rx_bt, config=self.config, acceleration_sensor=acc)
-            self.logger.error(acc.get_measurement_props())
+            # self.logger.error(acc.get_measurement_props())
+            # submit mqtt vals for accelerometer
+            # accelerometer = self.get_sensor_by_type(AccelerationSensor)
+            self.mqtt_client.publish("%s/%s/streamed/%s/acc_x" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, acc.__class__.__name__), next(reversed(acc.measurements)).acc_x)
+            self.mqtt_client.publish("%s/%s/streamed/%s/acc_y" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, acc.__class__.__name__), next(reversed(acc.measurements)).acc_y)
+            self.mqtt_client.publish("%s/%s/streamed/%s/acc_z" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, acc.__class__.__name__), next(reversed(acc.measurements)).acc_z)
 
     def multi_communication_callback(self, status_code: int, rx_bt: bytearray) -> None:
         """ Handles a message and forwards it to the correct callback. This is needed so that if a call has multiple messages that will be received, the following message to the first received message won't be ignored.
@@ -424,6 +429,27 @@ class Tag(object):
         tag_data = self.dec.decode_advertisement(data)
         for sensor in self.sensors:
             sensor.read_data_from_advertisement(tag_data)
+            # submit mqtt vals for accelerometer
+            accelerometer = self.get_sensor_by_type(AccelerationSensor)
+            self.mqtt_client.publish("%s/%s/%s/acc_x" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, accelerometer.__class__.__name__), next(reversed(accelerometer.measurements)).acc_x)
+            self.mqtt_client.publish("%s/%s/%s/acc_y" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, accelerometer.__class__.__name__), next(reversed(accelerometer.measurements)).acc_y)
+            self.mqtt_client.publish("%s/%s/%s/acc_z" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, accelerometer.__class__.__name__), next(reversed(accelerometer.measurements)).acc_z)
+            # submit mqtt vals for voltage
+            vbat = self.get_sensor_by_type(BatterySensor)
+            if len(vbat.measurements) > 0:
+                self.mqtt_client.publish("%s/%s/%s/voltage" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, vbat.__class__.__name__), next(reversed(vbat.measurements)).voltage)
+            # submit mqtt vals for athmospheric pressure
+            press = self.get_sensor_by_type(BarometerSensor)
+            if len(press.measurements) > 0:
+                self.mqtt_client.publish("%s/%s/%s/pressure" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, press.__class__.__name__), next(reversed(press.measurements)).pressure)
+            # submit mqtt vals for humidity
+            hum = self.get_sensor_by_type(HumiditySensor)
+            if len(hum.measurements) > 0:
+                self.mqtt_client.publish("%s/%s/%s/humidity" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, hum.__class__.__name__), next(reversed(hum.measurements)).humidity)
+            # submit mqtt vals for temperature
+            temp = self.get_sensor_by_type(TemperatureSensor)
+            if len(temp.measurements) > 0:
+                self.mqtt_client.publish("%s/%s/%s/temperature" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, temp.__class__.__name__), next(reversed(temp.measurements)).temperature)
 
     def get_sensors_props(self) -> list[dict]:
         """ Making the object's sensors serializable.
@@ -560,6 +586,21 @@ class Tag(object):
                 self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "deactivated logging!"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
         # TODO: add streaming_data
+        elif command == "start_streaming":
+            self.acc_log_req_id = req_id
+            if self.mqtt_client is not None:
+                self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"has_attachments": False, "attachment_channels": [self.acc_log_res_topic], "request_id": req_id, "ongoing_request": False, "payload": {"status": "started - wait for the results and fetch them via tags get!"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+                await self.activate_streaming_mode()
+            else:
+                self.logger.log("cannot activate streaming mode without mqtt connection.")
+
+        elif command == "stop_streaming":
+            self.acc_log_req_id = req_id
+            if self.mqtt_client is not None:
+                self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"has_attachments": False, "attachment_channels": [self.acc_log_res_topic], "request_id": req_id, "ongoing_request": False, "payload": {"status": "stopped - wait for the results and fetch them via tags get!"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+                await self.deactivate_streaming_mode()
+            else:
+                self.logger.log("cannot activate streaming mode without mqtt connection.")
 
 
     def subscribe_to_mqtt_chans(self):

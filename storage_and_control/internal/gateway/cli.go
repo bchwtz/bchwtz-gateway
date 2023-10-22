@@ -338,7 +338,7 @@ func (c *CLI) configure() {
 						Name: "stop",
 						Subcommands: []cli.Command{
 							{
-								Name: "acceleration_log",
+								Name: "stream",
 								Flags: []cli.Flag{
 									cli.StringFlag{
 										Name:  "address",
@@ -346,8 +346,27 @@ func (c *CLI) configure() {
 									},
 								},
 								Action: func(cCtx *cli.Context) error {
-									logrus.Infoln("stopping acceleration logging")
-									req := commandinterface.NewCommandRequest(c.getTopicByAddressAndCommand(cCtx, "deactivate_logging"), nil)
+									logrus.Infoln("stopping acceleration streaming")
+									req := commandinterface.NewCommandRequest(c.getTopicByAddressAndCommand(cCtx, "stop_streaming"), nil)
+									return c.handleComms(req, "")
+								},
+							},
+						},
+					},
+					{
+						Name: "start",
+						Subcommands: []cli.Command{
+							{
+								Name: "stream",
+								Flags: []cli.Flag{
+									cli.StringFlag{
+										Name:  "address",
+										Usage: "address to query a specific tag",
+									},
+								},
+								Action: func(cCtx *cli.Context) error {
+									logrus.Infoln("starting acceleration streaming")
+									req := commandinterface.NewCommandRequest(c.getTopicByAddressAndCommand(cCtx, "start_streaming"), nil)
 									return c.handleComms(req, "")
 								},
 							},

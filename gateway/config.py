@@ -81,7 +81,9 @@ class Config:
             "set_time",
             "get_acceleration_log",
             "set_heartbeat",
-            "deactivate_logging"
+            "deactivate_logging",
+            "start_streaming",
+            "stop_streaming"
         ]
         hub_commands: list[str] = [
             "get_all",
