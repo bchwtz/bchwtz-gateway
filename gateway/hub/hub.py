@@ -71,7 +71,7 @@ class Hub(object):
                 device: ble_device that was discovered
                 data: AdvertismentData as dit
         """
-        device.metadata = data.__dict__
+        device.metadata = {'manufacturer_data': data.manufacturer_data}
         devices = self.ble_conn.validate_manufacturer([device], Config.GlobalConfig.bluetooth_manufacturer_id.value)
         if len(devices) <= 0:
             return

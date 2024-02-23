@@ -29,11 +29,11 @@ class BLEConn():
             if not self.client.is_connected:
                 try:
                     await self.client.connect(timeout=30.0)
+                    self.logger.info("successfully connected to %s", dev.address)
                 except:
                     self.logger.error("could not connect to %s - retry pending...", dev.address)
                     await self.client.disconnect()
                     await self.get_client(dev=dev, timeout=timeout+5.0)
-            self.logger.info("successfully connected to %s", dev.address)
         else:
             self.logger.info("was already connected to %s", dev.address)
         return self.client
@@ -113,6 +113,7 @@ class BLEConn():
         """
         devicelist = []
         for i in devices:
+            self.logger.debug(i.metadata)
             if "manufacturer_data" in i.metadata:
                 if manufacturer_id in i.metadata["manufacturer_data"]:
                     self.logger.info(colored('Device: %s with Address %s discovered!' % (i.name, i.address), "green", attrs=['bold']) )
