@@ -3,7 +3,6 @@ from bleak import BleakScanner, BleakClient
 from bleak.backends.device import BLEDevice
 import asyncio
 import logging
-from termcolor import colored
 from typing import Callable
 from binascii import hexlify
 import time
@@ -103,19 +102,3 @@ class BLEConn():
             # await client.stop_notify(char_specifier = read_chan)
             await client.stop_notify(char_specifier=read_chan)
 
-    def validate_manufacturer(self, devices: list[BLEDevice], manufacturer_id: int = 0) -> list[BLEDevice]:
-        """ This funcion updates the internal mac_list. If a MAC address passed the
-        checked_mac_address process, it will extend the list 'mac'.
-        Arguments:
-            devices: device passed by the BleakScanner function
-
-        TODO: check for vendor name or some other idempotent information
-        """
-        devicelist = []
-        for i in devices:
-            self.logger.debug(i.metadata)
-            if "manufacturer_data" in i.metadata:
-                if manufacturer_id in i.metadata["manufacturer_data"]:
-                    self.logger.info(colored('Device: %s with Address %s discovered!' % (i.name, i.address), "green", attrs=['bold']) )
-                    devicelist.append(i)
-        return devicelist

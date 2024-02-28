@@ -42,6 +42,7 @@ class Tag(object):
         self.name: str = name
         self.address: str = address
         self.ble_device: BLEDevice = device
+        self.metadata: dict[str, dict[int, bytes]] = None
         self.ble_conn: BLEConn = BLEConn()
         self.logger = logging.getLogger("Tag")
         self.logger.setLevel(logging.INFO)
@@ -250,17 +251,18 @@ class Tag(object):
         if acc is None:
             self.logger.error("No accelerometer detected - cannot log acceleration data!")
             return
-        if caught_signals == None:
-            self.logger.warn("no signals detected!")
-            return
-        if "logging_data" in caught_signals:
-            self.dec.decode_acc_stream_pack(rx_bt, config=self.config, acceleration_sensor=acc)
-            # self.logger.error(acc.get_measurement_props())
-            # submit mqtt vals for accelerometer
-            # accelerometer = self.get_sensor_by_type(AccelerationSensor)
-            self.mqtt_client.publish("%s/%s/streamed/%s/acc_x" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, acc.__class__.__name__), next(reversed(acc.measurements)).acc_x)
-            self.mqtt_client.publish("%s/%s/streamed/%s/acc_y" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, acc.__class__.__name__), next(reversed(acc.measurements)).acc_y)
-            self.mqtt_client.publish("%s/%s/streamed/%s/acc_z" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, acc.__class__.__name__), next(reversed(acc.measurements)).acc_z)
+        # if caught_signals == None:
+        #     self.logger.warn(rx_bt)
+        #     self.logger.warn("no signals detected!")
+        #     return
+        # if "stream_data" in caught_signals:
+        self.dec.decode_acc_stream_pack(rx_bt, config=self.config, acceleration_sensor=acc)
+        # self.logger.error(acc.get_measurement_props())
+        # submit mqtt vals for accelerometer
+        # accelerometer = self.get_sensor_by_type(AccelerationSensor)
+        self.mqtt_client.publish("%s/%s/streamed/%s/acc_x" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, acc.__class__.__name__), next(reversed(acc.measurements)).acc_x)
+        self.mqtt_client.publish("%s/%s/streamed/%s/acc_y" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, acc.__class__.__name__), next(reversed(acc.measurements)).acc_y)
+        self.mqtt_client.publish("%s/%s/streamed/%s/acc_z" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, acc.__class__.__name__), next(reversed(acc.measurements)).acc_z)
 
     def multi_communication_callback(self, status_code: int, rx_bt: bytearray) -> None:
         """ Handles a message and forwards it to the correct callback. This is needed so that if a call has multiple messages that will be received, the following message to the first received message won't be ignored.
