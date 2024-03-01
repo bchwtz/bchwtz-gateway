@@ -6,4 +6,4 @@ then
     cp .env-default .env
 fi
 cd deployments/gateway
-docker compose --env-file ../../.env -f docker-compose.dev-rpi.yml up -d
+docker-compose --env-file ../../.env -f docker-compose.dev-rpi.yml up -d

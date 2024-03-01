@@ -67,6 +67,7 @@ class Tag(object):
         self.time: float = 0.0
         self.online: bool = online
         self.acc_log_res_topic: str = Config.MQTTConfig.topic_tag_prefix.value + "/" + self.address + Config.MQTTConfig.topic_tag_cmd_get_acceleration_log_res.value
+        self.acc_stream_topic: str = Config.MQTTConfig.topic_tag_prefix.value + "/" + self.address + Config.MQTTConfig.topic_tag_cmd_get_acceleration_stream_res.value
         self.acc_log_req_id: str = ""
         self.seen_in_last_iter: bool = False
         self.last_seen: float = time.time()
@@ -546,6 +547,7 @@ class Tag(object):
             self.logger.info("running set_heartbeat on tag: %s", self.address)
             await self.set_heartbeat(payload)
             if self.mqtt_client is not None:
+                await asyncio.sleep(2)
                 self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "setting heartbeat"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
         elif command == "set_config":
@@ -594,7 +596,7 @@ class Tag(object):
         elif command == "start_streaming":
             self.acc_log_req_id = req_id
             if self.mqtt_client is not None:
-                self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"has_attachments": False, "attachment_channels": [self.acc_log_res_topic], "request_id": req_id, "ongoing_request": False, "payload": {"status": "started - wait for the results and fetch them via tags get!"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+                self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"has_attachments": False, "attachment_channels": [self.acc_stream_topic], "request_id": req_id, "ongoing_request": False, "payload": {"status": "started - wait for the results and fetch them via tags get!"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
                 await self.activate_streaming_mode()
             else:
                 self.logger.log("cannot activate streaming mode without mqtt connection.")
