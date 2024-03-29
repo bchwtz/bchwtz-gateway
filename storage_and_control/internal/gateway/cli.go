@@ -66,7 +66,7 @@ func NewCLI() CLI {
 
 // waits for a response and handles it (prints it)
 func (c *CLI) handleComms(req commandinterface.CommandRequest, outputfile string) error {
-	logrus.Infoln("waiting for a response from the gateway...")
+	logrus.Infoln("waiting for a response from the gateway for request_id ", req.ID)
 	logrus.Println("topic: " + req.Topic)
 	c.workerloops = 1
 	reqbt, err := json.Marshal(&req)
@@ -108,18 +108,20 @@ func (c *CLI) handleComms(req commandinterface.CommandRequest, outputfile string
 }
 
 // waits for answers on channels we subscribed to earlier
-func (c *CLI) handleCallback(req commandinterface.CommandRequest) error {
+func (c *CLI) handleCallback(req commandinterface.CommandRequest) {
 	payloads := []interface{}{}
 	ended := false
 	for {
 		answer := <-c.answerch
+		if answer.Message.Topic() != c.restopic {
+			continue
+		}
 		res := commandinterface.CommandResponse{}
 		if err := json.Unmarshal(answer.Message.Payload(), &res); err != nil {
-			return err
+			logrus.Errorln(err)
 		}
 		if err := c.resHasErr(res); err != nil {
 			logrus.Errorln(err)
-			return err
 		}
 		// let's compare the received RequestID with the one we are waiting for... - if it is not ours listen for the next message
 		if res.RequestID.String() != req.ID.String() {
@@ -135,7 +137,6 @@ func (c *CLI) handleCallback(req commandinterface.CommandRequest) error {
 		// let us check if the message was an error
 		if err := c.resHasErr(res); err != nil {
 			logrus.Errorln(err)
-			return err
 		}
 		if !ended {
 			c.endedch <- payloads
@@ -348,6 +349,20 @@ func (c *CLI) configure() {
 								Action: func(cCtx *cli.Context) error {
 									logrus.Infoln("stopping acceleration streaming")
 									req := commandinterface.NewCommandRequest(c.getTopicByAddressAndCommand(cCtx, "stop_streaming"), nil)
+									return c.handleComms(req, "")
+								},
+							},
+							{
+								Name: "log",
+								Flags: []cli.Flag{
+									cli.StringFlag{
+										Name:  "address",
+										Usage: "address to query a specific tag",
+									},
+								},
+								Action: func(cCtx *cli.Context) error {
+									logrus.Infoln("stopping acceleration streaming")
+									req := commandinterface.NewCommandRequest(c.getTopicByAddressAndCommand(cCtx, "deactivate_logging"), nil)
 									return c.handleComms(req, "")
 								},
 							},
