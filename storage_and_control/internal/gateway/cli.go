@@ -351,6 +351,20 @@ func (c *CLI) configure() {
 									return c.handleComms(req, "")
 								},
 							},
+							{
+								Name: "log",
+								Flags: []cli.Flag{
+									cli.StringFlag{
+										Name:  "address",
+										Usage: "address to query a specific tag",
+									},
+								},
+								Action: func(cCtx *cli.Context) error {
+									logrus.Infoln("stopping acceleration streaming")
+									req := commandinterface.NewCommandRequest(c.getTopicByAddressAndCommand(cCtx, "deactivate_logging"), nil)
+									return c.handleComms(req, "")
+								},
+							},
 						},
 					},
 					{
