@@ -8,11 +8,55 @@ services:
     ports:
       - "${MQTT_PORT}:1883"
     restart: always
+    networks:
+      - broker
     volumes:
       - "rabbitmq:/etc/rabbitmq"
     environment:
       - "RABBITMQ_DEFAULT_USER=${MQTT_USER}"
       - "RABBITMQ_DEFAULT_PASS=${MQTT_PASSWORD}"
 
+  telegraf:
+    image: "telegraf:latest"
+    restart: always
+    depends_on:
+      - influx
+    networks:
+      - influx
+      - broker
+    volumes:
+      - "/home/caos/workspace/bchwtz-gateway/deployments/gateway/telegraf.conf:/etc/telegraf/telegraf.conf:ro"
+  influx:
+    restart: always
+    image: "influxdb:1.8"
+    networks:
+      - influx
+    environment:
+      - INFLUXDB_DB=acc
+      - INFLUXDB_USER=acc
+      - INFLUXDB_USER_PASSWORD=DCpxNN0wYV8cEuV16bdph7gPDu1vjKILVzEnMv0xPJd7g3x3HdlGSRxOK2ohW
+      - INFLUXDB_HTTP_FLUX_ENABLED=true
+    volumes:
+      - influx-data:/var/lib/influxdb
+
+  grafana:
+    restart: always
+    image: "grafana/grafana:latest"
+    networks:
+      - broker
+      - influx
+    ports:
+      - 3000:3000
+    volumes:
+    - grafana-data:/var/lib/grafana
+    environment:
+    - GF_INSTALL_PLUGINS=grafana-mqtt-datasource
+
 volumes:
   rabbitmq:
+  influx-data:
+  grafana-data:
+
+networks:
+  influx:
+  broker:
