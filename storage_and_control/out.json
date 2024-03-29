@@ -3,18 +3,18 @@
 		{
 			"status": "success",
 			"tag": {
-				"address": "CB:7F:8F:E3:C5:6E",
+				"address": "C1:FC:9B:69:04:8B",
 				"config": {
 					"divider": 0,
 					"dsp_function": 0,
 					"dsp_parameter": 1,
 					"mode": "f4",
-					"resolution": 10,
-					"samplerate": 10,
+					"resolution": 12,
+					"samplerate": 400,
 					"scale": 2
 				},
-				"last_seen": 1695458235.146758,
-				"name": "Ruuvi C56E",
+				"last_seen": 1709153380.5258439,
+				"name": "Ruuvi 048B",
 				"online": true,
 				"sensors": [
 					null,
@@ -34,1768 +34,4898 @@
 						"name": "BatterySensor"
 					}
 				],
-				"time": 131000
+				"time": 1709153306000
 			}
 		},
 		{
 			"measurement": [
 				{
-					"acc": 980.6528437729634,
-					"acc_x": 32,
-					"acc_y": 16,
-					"acc_z": 980,
+					"acc": 1042.8652837255634,
+					"acc_x": 100,
+					"acc_y": -112,
+					"acc_z": 1032,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 2,
-					"recorded_time": 1695457962.8383102,
+					"movement_counter": 0,
+					"recorded_time": 1709153257.0781565,
 					"sequence_number": 0
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
-					"acc": 980.6528437729634,
-					"acc_x": 32,
-					"acc_y": 16,
-					"acc_z": 980,
+					"acc": 1042.8652837255634,
+					"acc_x": 100,
+					"acc_y": -112,
+					"acc_z": 1032,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 2,
-					"recorded_time": 1695457970.94954,
+					"movement_counter": 0,
+					"recorded_time": 1709153257.1844094,
 					"sequence_number": 0
 				},
 				{
-					"acc": 980.5304686749922,
-					"acc_x": 28,
-					"acc_y": 16,
-					"acc_z": 980,
+					"acc": 1042.8652837255634,
+					"acc_x": 100,
+					"acc_y": -112,
+					"acc_z": 1032,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 2,
-					"recorded_time": 1695457974.8859904,
+					"movement_counter": 0,
+					"recorded_time": 1709153276.623741,
 					"sequence_number": 0
 				},
 				{
-					"acc": 972.6582133514321,
-					"acc_x": 32,
-					"acc_y": 16,
-					"acc_z": 972,
+					"acc": 1034.5240451531322,
+					"acc_x": 100,
+					"acc_y": -108,
+					"acc_z": 1024,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 2,
-					"recorded_time": 1695457976.4051821,
+					"movement_counter": 0,
+					"recorded_time": 1709153282.4648786,
 					"sequence_number": 0
 				},
 				{
-					"acc": 984.3332768935529,
-					"acc_x": 16,
-					"acc_y": 20,
-					"acc_z": 984,
+					"acc": 1034.5240451531322,
+					"acc_x": 100,
+					"acc_y": -108,
+					"acc_z": 1024,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 2,
-					"recorded_time": 1695457977.6974263,
+					"movement_counter": 0,
+					"recorded_time": 1709153282.569318,
 					"sequence_number": 0
 				},
 				{
-					"acc": 980.4733550688667,
-					"acc_x": 28,
-					"acc_y": 12,
-					"acc_z": 980,
+					"acc": 1034.5240451531322,
+					"acc_x": 100,
+					"acc_y": -108,
+					"acc_z": 1024,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 2,
-					"recorded_time": 1695457978.1550746,
+					"movement_counter": 0,
+					"recorded_time": 1709153289.4900615,
 					"sequence_number": 0
 				},
 				{
-					"acc": 984.6501916924609,
-					"acc_x": 32,
-					"acc_y": 16,
-					"acc_z": 984,
+					"acc": 1030.153386637155,
+					"acc_x": 100,
+					"acc_y": -104,
+					"acc_z": 1020,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 2,
-					"recorded_time": 1695457980.7223232,
+					"movement_counter": 0,
+					"recorded_time": 1709153294.3055615,
 					"sequence_number": 0
 				},
 				{
-					"acc": 980.3264762312605,
-					"acc_x": 24,
-					"acc_y": 8,
-					"acc_z": 980,
+					"acc": 1030.153386637155,
+					"acc_x": 100,
+					"acc_y": -104,
+					"acc_z": 1020,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 2,
-					"recorded_time": 1695457984.5851862,
+					"movement_counter": 0,
+					"recorded_time": 1709153294.4060977,
 					"sequence_number": 0
 				},
 				{
-					"acc": 984.8614115701762,
-					"acc_x": 36,
-					"acc_y": 20,
-					"acc_z": 984,
+					"acc": 1030.153386637155,
+					"acc_x": 100,
+					"acc_y": -104,
+					"acc_z": 1020,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 2,
-					"recorded_time": 1695457985.868704,
+					"movement_counter": 0,
+					"recorded_time": 1709153303.687208,
 					"sequence_number": 0
 				},
 				{
-					"acc": 992.4273273141969,
-					"acc_x": 28,
-					"acc_y": 8,
-					"acc_z": 992,
+					"acc": 1029.7727904737044,
+					"acc_x": 96,
+					"acc_y": -104,
+					"acc_z": 1020,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 2,
-					"recorded_time": 1695458025.7019174,
+					"movement_counter": 0,
+					"recorded_time": 1709153307.0693643,
 					"sequence_number": 0
 				},
 				{
-					"acc": 964.937303662782,
-					"acc_x": 28,
-					"acc_y": 32,
-					"acc_z": 964,
+					"acc": 1029.7727904737044,
+					"acc_x": 96,
+					"acc_y": -104,
+					"acc_z": 1020,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 2,
-					"recorded_time": 1695458026.9857445,
+					"movement_counter": 0,
+					"recorded_time": 1709153307.2764819,
 					"sequence_number": 0
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
-					"acc": 996.7146030835507,
-					"acc_x": 32,
-					"acc_y": 20,
-					"acc_z": 996,
+					"acc": 1029.7727904737044,
+					"acc_x": 96,
+					"acc_y": -104,
+					"acc_z": 1020,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 2,
-					"recorded_time": 1695458029.5570617,
+					"movement_counter": 0,
+					"recorded_time": 1709153307.798027,
 					"sequence_number": 0
 				},
 				{
-					"acc": 976.6555175700386,
-					"acc_x": 32,
-					"acc_y": 16,
-					"acc_z": 976,
+					"acc": 1029.7727904737044,
+					"acc_x": 96,
+					"acc_y": -104,
+					"acc_z": 1020,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 2,
-					"recorded_time": 1695458032.126364,
+					"movement_counter": 0,
+					"recorded_time": 1709153308.214205,
 					"sequence_number": 0
 				},
 				{
-					"acc": 976.671899872214,
-					"acc_x": 36,
-					"acc_y": 4,
-					"acc_z": 976,
+					"acc": 1029.7727904737044,
+					"acc_x": 96,
+					"acc_y": -104,
+					"acc_z": 1020,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 2,
-					"recorded_time": 1695458034.6889353,
+					"movement_counter": 0,
+					"recorded_time": 1709153308.3159983,
 					"sequence_number": 0
 				},
 				{
-					"acc": 968.2396397586705,
-					"acc_x": 8,
-					"acc_y": 20,
-					"acc_z": 968,
+					"acc": 1034.5240451531322,
+					"acc_x": 100,
+					"acc_y": -108,
+					"acc_z": 1024,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 2,
-					"recorded_time": 1695458037.2674093,
+					"movement_counter": 0,
+					"recorded_time": 1709153308.7589257,
 					"sequence_number": 0
 				},
 				{
-					"acc": 984.5933170603993,
-					"acc_x": 32,
-					"acc_y": 12,
-					"acc_z": 984,
+					"acc": 1029.7727904737044,
+					"acc_x": 96,
+					"acc_y": -104,
+					"acc_z": 1020,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 3,
-					"recorded_time": 1695458075.810352,
+					"movement_counter": 0,
+					"recorded_time": 1709153308.8271897,
 					"sequence_number": 0
 				},
 				{
-					"acc": 988.5990086986735,
-					"acc_x": 28,
-					"acc_y": 20,
-					"acc_z": 988,
+					"acc": 1029.7727904737044,
+					"acc_x": 96,
+					"acc_y": -104,
+					"acc_z": 1020,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 3,
-					"recorded_time": 1695458078.3797712,
+					"movement_counter": 0,
+					"recorded_time": 1709153309.3599608,
 					"sequence_number": 0
 				},
 				{
-					"acc": 992.4918135682531,
-					"acc_x": 20,
-					"acc_y": 24,
-					"acc_z": 992,
+					"acc": 1029.7727904737044,
+					"acc_x": 96,
+					"acc_y": -104,
+					"acc_z": 1020,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 3,
-					"recorded_time": 1695458080.9505928,
+					"movement_counter": 0,
+					"recorded_time": 1709153309.7658937,
 					"sequence_number": 0
 				},
 				{
-					"acc": 996.5219515896275,
-					"acc_x": 28,
-					"acc_y": 16,
-					"acc_z": 996,
+					"acc": 1029.7727904737044,
+					"acc_x": 96,
+					"acc_y": -104,
+					"acc_z": 1020,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 3,
-					"recorded_time": 1695458083.5173247,
+					"movement_counter": 0,
+					"recorded_time": 1709153309.868093,
 					"sequence_number": 0
 				},
 				{
-					"acc": 988.80938506873,
-					"acc_x": 32,
-					"acc_y": 24,
-					"acc_z": 988,
+					"acc": 1029.7727904737044,
+					"acc_x": 96,
+					"acc_y": -104,
+					"acc_z": 1020,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 3,
-					"recorded_time": 1695458086.0915523,
+					"movement_counter": 0,
+					"recorded_time": 1709153310.299944,
 					"sequence_number": 0
 				},
 				{
-					"acc": 984.5283134577695,
-					"acc_x": 28,
-					"acc_y": 16,
-					"acc_z": 984,
+					"acc": 1029.7727904737044,
+					"acc_x": 96,
+					"acc_y": -104,
+					"acc_z": 1020,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 3,
-					"recorded_time": 1695458125.9312484,
+					"movement_counter": 0,
+					"recorded_time": 1709153310.815829,
 					"sequence_number": 0
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
-					"acc": 980.4080783020916,
-					"acc_x": 20,
-					"acc_y": 20,
-					"acc_z": 980,
+					"acc": 1029.7727904737044,
+					"acc_x": 96,
+					"acc_y": -104,
+					"acc_z": 1020,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 3,
-					"recorded_time": 1695458127.2081563,
+					"movement_counter": 0,
+					"recorded_time": 1709153311.3463435,
 					"sequence_number": 0
 				},
 				{
-					"acc": 984.4958100469498,
-					"acc_x": 24,
-					"acc_y": 20,
-					"acc_z": 984,
+					"acc": 1026.1929643103192,
+					"acc_x": 100,
+					"acc_y": -104,
+					"acc_z": 1016,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 3,
-					"recorded_time": 1695458131.0647871,
+					"movement_counter": 0,
+					"recorded_time": 1709153311.6949267,
 					"sequence_number": 0
 				},
 				{
-					"acc": 992.2338434058778,
-					"acc_x": 20,
-					"acc_y": 8,
-					"acc_z": 992,
+					"acc": 1026.1929643103192,
+					"acc_x": 100,
+					"acc_y": -104,
+					"acc_z": 1016,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 3,
-					"recorded_time": 1695458132.3472395,
+					"movement_counter": 0,
+					"recorded_time": 1709153312.9879413,
 					"sequence_number": 0
 				},
 				{
-					"acc": 992.4273273141969,
-					"acc_x": 28,
-					"acc_y": 8,
-					"acc_z": 992,
+					"acc": 1034.5085789881107,
+					"acc_x": 104,
+					"acc_y": -104,
+					"acc_z": 1024,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 3,
-					"recorded_time": 1695458134.9194412,
+					"movement_counter": 0,
+					"recorded_time": 1709153314.2866812,
 					"sequence_number": 0
 				},
 				{
-					"acc": 992.5240551241063,
-					"acc_x": 28,
-					"acc_y": 16,
-					"acc_z": 992,
+					"acc": 1034.5240451531322,
+					"acc_x": 108,
+					"acc_y": -100,
+					"acc_z": 1024,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 3,
-					"recorded_time": 1695458176.0364716,
+					"movement_counter": 0,
+					"recorded_time": 1709153315.5870872,
 					"sequence_number": 0
 				},
 				{
-					"acc": 980.4080783020916,
-					"acc_x": 20,
-					"acc_y": 20,
-					"acc_z": 980,
+					"acc": 1034.5085789881107,
+					"acc_x": 104,
+					"acc_y": -104,
+					"acc_z": 1024,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 3,
-					"recorded_time": 1695458178.6056302,
+					"movement_counter": 0,
+					"recorded_time": 1709153316.8879855,
 					"sequence_number": 0
-				}
-			],
-			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
-		},
-		{
-			"measurement": [
+				},
 				{
-					"acc": 980.5304686749922,
-					"acc_x": 28,
-					"acc_y": 16,
-					"acc_z": 980,
+					"acc": 1033.7349757070233,
+					"acc_x": 96,
+					"acc_y": -104,
+					"acc_z": 1024,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 3,
-					"recorded_time": 1695458181.1791785,
+					"movement_counter": 0,
+					"recorded_time": 1709153318.1922023,
 					"sequence_number": 0
-				}
-			],
-			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
-		},
-		{
-			"measurement": [
+				},
 				{
-					"acc": 988.2590753441124,
-					"acc_x": 16,
-					"acc_y": 16,
-					"acc_z": 988,
+					"acc": 1033.7349757070233,
+					"acc_x": 96,
+					"acc_y": -104,
+					"acc_z": 1024,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 3,
-					"recorded_time": 1695458183.753532,
+					"movement_counter": 0,
+					"recorded_time": 1709153319.4810183,
 					"sequence_number": 0
-				}
-			],
-			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
-		},
-		{
-			"measurement": [
+				},
 				{
-					"acc": 980.6528437729634,
-					"acc_x": 32,
-					"acc_y": 16,
-					"acc_z": 980,
+					"acc": 1034.1141136257643,
+					"acc_x": 100,
+					"acc_y": -104,
+					"acc_z": 1024,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 3,
-					"recorded_time": 1695458186.3165684,
+					"movement_counter": 0,
+					"recorded_time": 1709153320.772386,
 					"sequence_number": 0
-				}
-			],
-			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
-		},
-		{
-			"measurement": [
+				},
 				{
-					"acc": 988.4938037236248,
-					"acc_x": 24,
-					"acc_y": 20,
-					"acc_z": 988,
+					"acc": 1034.5085789881107,
+					"acc_x": 104,
+					"acc_y": -104,
+					"acc_z": 1024,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 3,
-					"recorded_time": 1695458226.1578183,
+					"movement_counter": 0,
+					"recorded_time": 1709153322.0863495,
 					"sequence_number": 0
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
-					"acc": 988.728476377615,
-					"acc_x": 36,
-					"acc_y": 12,
-					"acc_z": 988,
+					"acc": 1034.5085789881107,
+					"acc_x": 104,
+					"acc_y": -104,
+					"acc_z": 1024,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 3,
-					"recorded_time": 1695458227.4383416,
+					"movement_counter": 0,
+					"recorded_time": 1709153323.3775287,
 					"sequence_number": 0
-				}
-			],
-			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
-		},
-		{
-			"measurement": [
+				},
 				{
-					"acc": 992.5240551241063,
-					"acc_x": 28,
-					"acc_y": 16,
-					"acc_z": 992,
+					"acc": 0,
+					"acc_x": -0.097,
+					"acc_y": 0.068,
+					"acc_z": 0.112,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 238344383494162,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0,
+					"acc_z": 1.232,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 238344383494162,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.097,
+					"acc_y": 0.052000000000000005,
+					"acc_z": -0.897,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 243842025520402,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0,
+					"acc_z": 1.248,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 243842025520402,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1029.7727904737044,
+					"acc_x": 96,
+					"acc_y": -104,
+					"acc_z": 1020,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 3,
-					"recorded_time": 1695458230.0094094,
+					"movement_counter": 0,
+					"recorded_time": 1709153324.6786084,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.097,
+					"acc_y": 0.07200000000000001,
+					"acc_z": 0.112,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 243841874522898,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0,
+					"acc_z": 1.264,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 243841874522898,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.097,
+					"acc_y": 0.056,
+					"acc_z": -0.897,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 238344517711122,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0,
+					"acc_z": 1.28,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 238344517711122,
 					"sequence_number": 0
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
-					"acc": 984.6014422089783,
-					"acc_x": 28,
-					"acc_y": 20,
-					"acc_z": 984,
+					"acc": 1030.5648936384355,
+					"acc_x": 100,
+					"acc_y": -108,
+					"acc_z": 1020,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 3,
-					"recorded_time": 1695458232.5788865,
+					"movement_counter": 0,
+					"recorded_time": 1709153325.968641,
 					"sequence_number": 0
-				}
-			],
-			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
-		},
-		{
-			"measurement": [
+				},
 				{
-					"acc": 984.5933170603993,
-					"acc_x": 32,
-					"acc_y": 12,
-					"acc_z": 984,
+					"acc": 1034.1450575233632,
+					"acc_x": 96,
+					"acc_y": -108,
+					"acc_z": 1024,
 					"data_format": 0,
 					"gathering_type": "advertisement",
 					"measurements": "",
-					"movement_counter": 3,
-					"recorded_time": 1695458235.1466942,
+					"movement_counter": 0,
+					"recorded_time": 1709153327.2715292,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.097,
+					"acc_y": 0.07200000000000001,
+					"acc_z": 0.112,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 238344450600722,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0,
+					"acc_z": 1.296,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 238344450600722,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.097,
+					"acc_y": 0.056,
+					"acc_z": -0.897,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 237244905419282,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0,
+					"acc_z": 1.312,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 237244905419282,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1030.5648936384355,
+					"acc_x": 100,
+					"acc_y": -108,
+					"acc_z": 1020,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 1709153328.565676,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.097,
+					"acc_y": 0.052000000000000005,
+					"acc_z": -1.921,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 238344450602514,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0,
+					"acc_z": 1.328,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 238344450602514,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1029.7727904737044,
+					"acc_x": 96,
+					"acc_y": -104,
+					"acc_z": 1020,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 1709153329.8598547,
 					"sequence_number": 0
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"acc": 1030.153386637155,
+					"acc_x": 100,
+					"acc_y": -104,
+					"acc_z": 1020,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 1709153331.164563,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.097,
+					"acc_y": 0.052000000000000005,
+					"acc_z": -0.897,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 242742597777938,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0,
+					"acc_z": 1.344,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 242742597777938,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1030.5648936384355,
+					"acc_x": 100,
+					"acc_y": -108,
+					"acc_z": 1020,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 1709153333.7645707,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.177,
+					"acc_y": 0.068,
+					"acc_z": 0.112,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 243842293954834,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0,
+					"acc_z": 1.36,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 243842293954834,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.289,
+					"acc_y": 0.048,
+					"acc_z": -0.898,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 243842159674131,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": -1.28,
+					"acc_z": 1.3760000000000001,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 243842159674131,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.88,
+					"acc_y": 0.068,
+					"acc_z": 0.124,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 72029853755439630,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": -0.768,
+					"acc_z": 1.3920000000000001,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 72029853755439630,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"acc": 1045.5314438121889,
+					"acc_x": 96,
+					"acc_y": -188,
+					"acc_z": 1024,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 1709153335.0621283,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.785,
+					"acc_y": 0.024,
+					"acc_z": 1.137,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 72025456782608140,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": -0.512,
+					"acc_z": 1.424,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 72025456782608140,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.6880000000000001,
+					"acc_y": 0.008,
+					"acc_z": -0.897,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 71761574579144210,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": -0.512,
+					"acc_z": 1.44,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 71761574579144210,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1505.7117918114343,
+					"acc_x": -84,
+					"acc_y": 884,
+					"acc_z": 1216,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 13,
+					"recorded_time": 1709153336.3568575,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1049.19778878913,
+					"acc_x": -252,
+					"acc_y": 736,
+					"acc_z": 704,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 14,
+					"recorded_time": 1709153337.6551816,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.737,
+					"acc_y": 0.012,
+					"acc_z": -0.9,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 71747281599071760,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": -0.512,
+					"acc_z": 1.456,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 71747281599071760,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.496,
+					"acc_y": 0.024,
+					"acc_z": 0.11800000000000001,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 71497696670650640,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": -0.512,
+					"acc_z": 1.472,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 71497696670650640,
+					"sequence_number": 0
+				},
+				{
+					"acc": 870.2091702573583,
+					"acc_x": -232,
+					"acc_y": -792,
+					"acc_z": 276,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 14,
+					"recorded_time": 1709153338.952169,
+					"sequence_number": 0
+				},
+				{
+					"acc": 863.7314397427015,
+					"acc_x": -396,
+					"acc_y": -740,
+					"acc_z": 204,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 14,
+					"recorded_time": 1709153340.2517564,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.833,
+					"acc_y": 0.024,
+					"acc_z": -0.908,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 71754978633453580,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.001,
+					"acc_z": 1.488,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 71754978633453580,
+					"sequence_number": 0
+				},
+				{
+					"acc": 767.8020578248016,
+					"acc_x": -460,
+					"acc_y": 504,
+					"acc_z": 352,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 14,
+					"recorded_time": 1709153341.5476944,
+					"sequence_number": 0
+				},
+				{
+					"acc": 975.3194348519874,
+					"acc_x": -368,
+					"acc_y": -840,
+					"acc_z": 332,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 16,
+					"recorded_time": 1709153342.8430645,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.736,
+					"acc_y": 0.052000000000000005,
+					"acc_z": -1.928,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 72040851858002700,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.001,
+					"acc_z": 1.504,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 72040851858002700,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.001,
+					"acc_y": 0.056,
+					"acc_z": 1.147,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 71759377132951060,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.001,
+					"acc_z": 1.52,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 71759377132951060,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.112,
+					"acc_y": 0.068,
+					"acc_z": 1.149,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 72048544882695440,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 1.537,
+					"acc_z": 1.552,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 72048544882695440,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1173.998296421251,
+					"acc_x": -116,
+					"acc_y": 740,
+					"acc_z": 904,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 16,
+					"recorded_time": 1709153344.1369572,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1256.8086568766146,
+					"acc_x": -196,
+					"acc_y": 116,
+					"acc_z": 1236,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 22,
+					"recorded_time": 1709153345.4522321,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.768,
+					"acc_y": 0.016,
+					"acc_z": -1.928,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 275724926789139,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": -1.7910000000000001,
+					"acc_z": 1.584,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 275724926789139,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1256.8086568766146,
+					"acc_x": -196,
+					"acc_y": 116,
+					"acc_z": 1236,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 22,
+					"recorded_time": 1709153346.7483308,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.849,
+					"acc_y": -0.028,
+					"acc_z": 1.151,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 71760473171765520,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": -1.2790000000000001,
+					"acc_z": 1.6,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 71760473171765520,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"acc": 1080.8145076746518,
+					"acc_x": -32,
+					"acc_y": -1020,
+					"acc_z": 356,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 22,
+					"recorded_time": 1709153348.0474,
+					"sequence_number": 0
+				},
+				{
+					"acc": 958.0897661492894,
+					"acc_x": -796,
+					"acc_y": 404,
+					"acc_z": 348,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 27,
+					"recorded_time": 1709153349.357412,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.4,
+					"acc_y": 0.02,
+					"acc_z": -0.907,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 70932545378790670,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": -1.2790000000000001,
+					"acc_z": 1.616,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 70932545378790670,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.4,
+					"acc_y": 0.04,
+					"acc_z": -0.904,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 71482297300363540,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": -1.2790000000000001,
+					"acc_z": 1.6320000000000001,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 71482297300363540,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.8320000000000001,
+					"acc_y": 0.028,
+					"acc_z": 1.1420000000000001,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 268028362174483,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": -1.2790000000000001,
+					"acc_z": 1.6480000000000001,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 268028362174483,
+					"sequence_number": 0
+				},
+				{
+					"acc": 958.0897661492894,
+					"acc_x": -796,
+					"acc_y": 404,
+					"acc_z": 348,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 27,
+					"recorded_time": 1709153350.6516461,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.369,
+					"acc_y": 0.052000000000000005,
+					"acc_z": 0.116,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 71482296646053650,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": -1.0230000000000001,
+					"acc_z": 1.68,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 71482296646053650,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.076,
+					"acc_z": -1.936,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 5248723792403,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 1.696,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 5248723792403,
+					"sequence_number": 0
+				},
+				{
+					"acc": 995.4858110490576,
+					"acc_x": -632,
+					"acc_y": 408,
+					"acc_z": 652,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 27,
+					"recorded_time": 1709153351.9485939,
+					"sequence_number": 0
+				},
+				{
+					"acc": 947.9493657363773,
+					"acc_x": 244,
+					"acc_y": 844,
+					"acc_z": 356,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 27,
+					"recorded_time": 1709153353.2488532,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.064,
+					"acc_z": 0.112,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 277923396398611,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 1.712,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 277923396398611,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.07200000000000001,
+					"acc_z": 0.112,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 274628703431443,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 1.728,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 274628703431443,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1107.2488428533127,
+					"acc_x": -624,
+					"acc_y": -380,
+					"acc_z": 832,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 28,
+					"recorded_time": 1709153354.5468612,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.07200000000000001,
+					"acc_z": 0.112,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 263632983174675,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 1.744,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 263632983174675,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.07200000000000001,
+					"acc_z": 0.112,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 251537818398739,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 1.76,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 251537818398739,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1038.8147091757992,
+					"acc_x": 84,
+					"acc_y": -84,
+					"acc_z": 1032,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 35,
+					"recorded_time": 1709153355.845021,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1031.8837143787084,
+					"acc_x": 92,
+					"acc_y": -88,
+					"acc_z": 1024,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 35,
+					"recorded_time": 1709153357.1521416,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.068,
+					"acc_z": 0.112,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 246039454953491,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 1.776,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 246039454953491,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1031.8837143787084,
+					"acc_x": 92,
+					"acc_y": -88,
+					"acc_z": 1024,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 35,
+					"recorded_time": 1709153358.440836,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.052000000000000005,
+					"acc_z": -0.897,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 239440405475859,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 1.792,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 239440405475859,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.052000000000000005,
+					"acc_z": -0.897,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 239440321591059,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 1.808,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 239440321591059,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.068,
+					"acc_z": 0.112,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 235046033109011,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 1.824,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 235046033109011,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1032.5967267040894,
+					"acc_x": 96,
+					"acc_y": -92,
+					"acc_z": 1024,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 35,
+					"recorded_time": 1709153359.7412703,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1032.5967267040894,
+					"acc_x": 96,
+					"acc_y": -92,
+					"acc_z": 1024,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 35,
+					"recorded_time": 1709153361.0289044,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.052000000000000005,
+					"acc_z": -0.897,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 230647315510547,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 1.84,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 230647315510547,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.064,
+					"acc_z": 0.112,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 232845701230867,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 1.856,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 232845701230867,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1028.6301570535447,
+					"acc_x": 96,
+					"acc_y": -92,
+					"acc_z": 1020,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 35,
+					"recorded_time": 1709153362.339287,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.052000000000000005,
+					"acc_z": -0.897,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 229546847581971,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 1.872,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 229546847581971,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.068,
+					"acc_z": 0.112,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 227347170014995,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 1.8880000000000001,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 227347170014995,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1032.5967267040894,
+					"acc_x": 96,
+					"acc_y": -92,
+					"acc_z": 1024,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 35,
+					"recorded_time": 1709153363.6332297,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1028.26455739756,
+					"acc_x": 92,
+					"acc_y": -92,
+					"acc_z": 1020,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 35,
+					"recorded_time": 1709153364.9259148,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.068,
+					"acc_z": 0.112,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 227346834469907,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 1.9040000000000001,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 227346834469907,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.056,
+					"acc_z": -1.921,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 224048014375955,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 1.92,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 224048014375955,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1027.9143933227124,
+					"acc_x": 88,
+					"acc_y": -92,
+					"acc_z": 1020,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 35,
+					"recorded_time": 1709153366.2224438,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.07200000000000001,
+					"acc_z": 0.112,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 221848638801171,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 1.936,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 221848638801171,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.056,
+					"acc_z": -0.897,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 221848504580115,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 1.952,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 221848504580115,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1032.2325319422944,
+					"acc_x": 92,
+					"acc_y": -92,
+					"acc_z": 1024,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 35,
+					"recorded_time": 1709153367.528933,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1032.2325319422944,
+					"acc_x": 92,
+					"acc_y": -92,
+					"acc_z": 1024,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 35,
+					"recorded_time": 1709153368.8183422,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.064,
+					"acc_z": 0.112,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 220748623853843,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 1.968,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 220748623853843,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.068,
+					"acc_z": 1.1360000000000001,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 219648994786323,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 1.984,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 219648994786323,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1032.2480322093136,
+					"acc_x": 96,
+					"acc_y": -88,
+					"acc_z": 1024,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 35,
+					"recorded_time": 1709153370.1155126,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.064,
+					"acc_z": 0.112,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 214155563777043,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 2,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 214155563777043,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.056,
+					"acc_z": -0.897,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 216354519925011,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 2.016,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 216354519925011,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1032.2480322093136,
+					"acc_x": 88,
+					"acc_y": -96,
+					"acc_z": 1024,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 35,
+					"recorded_time": 1709153371.4168677,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1032.2480322093136,
+					"acc_x": 88,
+					"acc_y": -96,
+					"acc_z": 1024,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 35,
+					"recorded_time": 1709153372.7035568,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.068,
+					"acc_z": 1.1360000000000001,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 216354268266515,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": 0.359,
+					"acc_y": 0.77,
+					"acc_z": 2.032,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 216354268266515,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.068,
+					"acc_z": 0.128,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 218553291521299,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.158,
+					"acc_y": 0.77,
+					"acc_z": -2.048,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 218553291521299,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1036.200752750161,
+					"acc_x": 92,
+					"acc_y": -92,
+					"acc_z": 1028,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 35,
+					"recorded_time": 1709153374.0072322,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.068,
+					"acc_z": 0.128,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 217453528234515,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.158,
+					"acc_y": 0.77,
+					"acc_z": -2.032,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 217453528234515,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1028.280117477723,
+					"acc_x": 96,
+					"acc_y": -88,
+					"acc_z": 1020,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 35,
+					"recorded_time": 1709153375.3116255,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1035.8532714627106,
+					"acc_x": 88,
+					"acc_y": -92,
+					"acc_z": 1028,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 35,
+					"recorded_time": 1709153376.6055777,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.052000000000000005,
+					"acc_z": -0.881,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 208657082891795,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"acc": 0,
+					"acc_x": -0.158,
+					"acc_y": 0.77,
+					"acc_z": -2.016,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 208657082891795,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.052000000000000005,
+					"acc_z": -0.881,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 208657032561171,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.158,
+					"acc_y": 0.77,
+					"acc_z": -2,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 208657032561171,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.068,
+					"acc_z": 0.128,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 213055112626707,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.158,
+					"acc_y": 0.77,
+					"acc_z": -1.984,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 213055112626707,
+					"sequence_number": 0
+				},
+				{
+					"acc": 1032.2325319422944,
+					"acc_x": 92,
+					"acc_y": -92,
+					"acc_z": 1024,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 35,
+					"recorded_time": 1709153377.9132411,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.068,
+					"acc_z": 1.1520000000000001,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 209756409970963,
+					"sequence_number": 0
+				},
+				{
+					"acc": 0,
+					"acc_x": -0.158,
+					"acc_y": 0.77,
+					"acc_z": -1.968,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 209756409970963,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.068,
+					"acc_z": 1.1520000000000001,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 209756376416787,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"acc": 0,
+					"acc_x": -0.158,
+					"acc_y": 0.77,
+					"acc_z": -1.952,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 209756376416787,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"acc": 1028.26455739756,
+					"acc_x": 92,
+					"acc_y": -92,
+					"acc_z": 1020,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 35,
+					"recorded_time": 1709153379.2121933,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"acc": 1028.26455739756,
+					"acc_x": 92,
+					"acc_y": -92,
+					"acc_z": 1020,
+					"data_format": 0,
+					"gathering_type": "advertisement",
+					"measurements": "",
+					"movement_counter": 35,
+					"recorded_time": 1709153380.5077722,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.056,
+					"acc_z": -0.881,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 209756175088403,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"acc": 0,
+					"acc_x": -0.158,
+					"acc_y": 0.77,
+					"acc_z": -1.936,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 209756175088403,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"acc": 0,
+					"acc_x": -0.081,
+					"acc_y": 0.056,
+					"acc_z": -0.881,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 208656680239635,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"acc": 0,
+					"acc_x": -0.158,
+					"acc_y": 0.77,
+					"acc_z": -1.92,
+					"data_format": 0,
+					"gathering_type": "stream",
+					"measurements": "",
+					"movement_counter": 0,
+					"recorded_time": 208656680239635,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.75,
-					"recorded_time": 1695457962.8383338,
+					"pressure": 1006.49,
+					"recorded_time": 1709153257.0830288,
 					"sequence_number": 0
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.75,
-					"recorded_time": 1695457970.9495742,
+					"pressure": 1006.49,
+					"recorded_time": 1709153257.1924207,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.75,
-					"recorded_time": 1695457974.885996,
+					"pressure": 1006.49,
+					"recorded_time": 1709153276.6289227,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.76,
-					"recorded_time": 1695457976.4051986,
+					"pressure": 1006.48,
+					"recorded_time": 1709153282.470406,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.76,
-					"recorded_time": 1695457977.6974423,
+					"pressure": 1006.48,
+					"recorded_time": 1709153282.5711944,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.77,
-					"recorded_time": 1695457978.1550891,
+					"pressure": 1006.48,
+					"recorded_time": 1709153289.497358,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.76,
-					"recorded_time": 1695457980.7223387,
+					"pressure": 1006.41,
+					"recorded_time": 1709153294.3103402,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.77,
-					"recorded_time": 1695457984.585205,
+					"pressure": 1006.41,
+					"recorded_time": 1709153294.4080985,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.77,
-					"recorded_time": 1695457985.8687184,
+					"pressure": 1006.41,
+					"recorded_time": 1709153303.6966832,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.77,
-					"recorded_time": 1695458025.7019207,
+					"pressure": 1006.45,
+					"recorded_time": 1709153307.0797572,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.77,
-					"recorded_time": 1695458026.9857533,
+					"pressure": 1006.45,
+					"recorded_time": 1709153307.2784655,
 					"sequence_number": 0
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.77,
-					"recorded_time": 1695458029.5570705,
+					"pressure": 1006.45,
+					"recorded_time": 1709153307.8024435,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.77,
-					"recorded_time": 1695458032.1263726,
+					"pressure": 1006.45,
+					"recorded_time": 1709153308.2186375,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.77,
-					"recorded_time": 1695458034.6889443,
+					"pressure": 1006.45,
+					"recorded_time": 1709153308.3203125,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.77,
-					"recorded_time": 1695458037.2674189,
+					"pressure": 1006.52,
+					"recorded_time": 1709153308.7629406,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.78,
-					"recorded_time": 1695458075.810355,
+					"pressure": 1006.45,
+					"recorded_time": 1709153308.8304758,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.77,
-					"recorded_time": 1695458078.3797815,
+					"pressure": 1006.45,
+					"recorded_time": 1709153309.367234,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.77,
-					"recorded_time": 1695458080.9506056,
+					"pressure": 1006.45,
+					"recorded_time": 1709153309.781639,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.78,
-					"recorded_time": 1695458083.517334,
+					"pressure": 1006.45,
+					"recorded_time": 1709153309.870788,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.78,
-					"recorded_time": 1695458086.0915663,
+					"pressure": 1006.45,
+					"recorded_time": 1709153310.3099747,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.79,
-					"recorded_time": 1695458125.9312515,
+					"pressure": 1006.45,
+					"recorded_time": 1709153310.8189716,
 					"sequence_number": 0
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.8,
-					"recorded_time": 1695458127.2081695,
+					"pressure": 1006.45,
+					"recorded_time": 1709153311.3495588,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.79,
-					"recorded_time": 1695458131.0648003,
+					"pressure": 1006.43,
+					"recorded_time": 1709153311.6990612,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.8,
-					"recorded_time": 1695458132.34725,
+					"pressure": 1006.43,
+					"recorded_time": 1709153312.9919736,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.79,
-					"recorded_time": 1695458134.9194527,
+					"pressure": 1006.43,
+					"recorded_time": 1709153314.2908463,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.79,
-					"recorded_time": 1695458176.0364745,
+					"pressure": 1006.43,
+					"recorded_time": 1709153315.5906506,
 					"sequence_number": 0
 				},
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.79,
-					"recorded_time": 1695458178.605633,
+					"pressure": 1006.43,
+					"recorded_time": 1709153316.8914506,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.47,
+					"recorded_time": 1709153318.1970568,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.47,
+					"recorded_time": 1709153319.4854178,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.48,
+					"recorded_time": 1709153320.7769825,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.48,
+					"recorded_time": 1709153322.0949452,
 					"sequence_number": 0
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
-		},
-		{
-			"measurement": [
-				{
-					"data_format": 0,
-					"measurements": "",
-					"pressure": 979.8,
-					"recorded_time": 1695458181.1791842,
-					"sequence_number": 0
-				}
-			],
-			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
-		},
-		{
-			"measurement": [
-				{
-					"data_format": 0,
-					"measurements": "",
-					"pressure": 979.8,
-					"recorded_time": 1695458183.7535408,
-					"sequence_number": 0
-				}
-			],
-			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
-		},
-		{
-			"measurement": [
-				{
-					"data_format": 0,
-					"measurements": "",
-					"pressure": 979.8,
-					"recorded_time": 1695458186.3165808,
-					"sequence_number": 0
-				}
-			],
-			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.82,
-					"recorded_time": 1695458226.1578212,
+					"pressure": 1006.48,
+					"recorded_time": 1709153323.378683,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.46,
+					"recorded_time": 1709153324.6850784,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.48,
+					"recorded_time": 1709153325.9784694,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.48,
+					"recorded_time": 1709153327.2780704,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.53,
+					"recorded_time": 1709153328.569014,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.48,
+					"recorded_time": 1709153329.861792,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.47,
+					"recorded_time": 1709153331.1736162,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.52,
+					"recorded_time": 1709153333.7683618,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.53,
+					"recorded_time": 1709153335.0650806,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.62,
+					"recorded_time": 1709153336.3656573,
 					"sequence_number": 0
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.82,
-					"recorded_time": 1695458227.4383512,
+					"pressure": 1006.67,
+					"recorded_time": 1709153337.6647017,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.58,
+					"recorded_time": 1709153338.9594223,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.61,
+					"recorded_time": 1709153340.263083,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.9,
+					"recorded_time": 1709153341.5513375,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.68,
+					"recorded_time": 1709153342.848351,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.72,
+					"recorded_time": 1709153344.1403654,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.79,
+					"recorded_time": 1709153345.4552886,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.79,
+					"recorded_time": 1709153346.757122,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.77,
+					"recorded_time": 1709153348.0550022,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.88,
+					"recorded_time": 1709153349.3605504,
 					"sequence_number": 0
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.82,
-					"recorded_time": 1695458230.00942,
+					"pressure": 1006.88,
+					"recorded_time": 1709153350.6561403,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.76,
+					"recorded_time": 1709153351.9531674,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.75,
+					"recorded_time": 1709153353.2519011,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.76,
+					"recorded_time": 1709153354.5510716,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.92,
+					"recorded_time": 1709153355.8472514,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.71,
+					"recorded_time": 1709153357.1602004,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.71,
+					"recorded_time": 1709153358.4514303,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.55,
+					"recorded_time": 1709153359.7460349,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.55,
+					"recorded_time": 1709153361.038646,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.49,
+					"recorded_time": 1709153362.345352,
 					"sequence_number": 0
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.82,
-					"recorded_time": 1695458232.5789008,
+					"pressure": 1006.45,
+					"recorded_time": 1709153363.636777,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.41,
+					"recorded_time": 1709153364.9302316,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.4,
+					"recorded_time": 1709153366.2269404,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.38,
+					"recorded_time": 1709153367.5396593,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.38,
+					"recorded_time": 1709153368.8210328,
+					"sequence_number": 0
+				},
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.33,
+					"recorded_time": 1709153370.120717,
 					"sequence_number": 0
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 0,
 					"measurements": "",
-					"pressure": 979.81,
-					"recorded_time": 1695458235.1467047,
+					"pressure": 1006.32,
+					"recorded_time": 1709153371.4257302,
 					"sequence_number": 0
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
-					"data_format": 5,
+					"data_format": 0,
 					"measurements": "",
-					"recorded_time": 1695457962.8383687,
-					"sequence_number": 0,
-					"temperature": 24.05
+					"pressure": 1006.32,
+					"recorded_time": 1709153372.7078533,
+					"sequence_number": 0
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
-					"data_format": 5,
+					"data_format": 0,
 					"measurements": "",
-					"recorded_time": 1695457970.9496272,
-					"sequence_number": 0,
-					"temperature": 24.05
-				},
-				{
-					"data_format": 5,
-					"measurements": "",
-					"recorded_time": 1695457974.886002,
-					"sequence_number": 0,
-					"temperature": 23.71
-				},
-				{
-					"data_format": 5,
-					"measurements": "",
-					"recorded_time": 1695457976.4052205,
-					"sequence_number": 0,
-					"temperature": 23.7
-				},
-				{
-					"data_format": 5,
-					"measurements": "",
-					"recorded_time": 1695457977.6974626,
-					"sequence_number": 0,
-					"temperature": 23.68
-				},
-				{
-					"data_format": 5,
-					"measurements": "",
-					"recorded_time": 1695457978.1551092,
-					"sequence_number": 0,
-					"temperature": 23.67
-				},
-				{
-					"data_format": 5,
-					"measurements": "",
-					"recorded_time": 1695457980.7223604,
-					"sequence_number": 0,
-					"temperature": 23.66
-				},
-				{
-					"data_format": 5,
-					"measurements": "",
-					"recorded_time": 1695457984.5852277,
-					"sequence_number": 0,
-					"temperature": 23.64
-				},
-				{
-					"data_format": 5,
-					"measurements": "",
-					"recorded_time": 1695457985.8687441,
-					"sequence_number": 0,
-					"temperature": 23.64
-				},
-				{
-					"data_format": 5,
-					"measurements": "",
-					"recorded_time": 1695458025.7019255,
-					"sequence_number": 0,
-					"temperature": 23.54
-				},
-				{
-					"data_format": 5,
-					"measurements": "",
-					"recorded_time": 1695458026.9857707,
-					"sequence_number": 0,
-					"temperature": 23.54
+					"pressure": 1006.31,
+					"recorded_time": 1709153374.012674,
+					"sequence_number": 0
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
-					"data_format": 5,
+					"data_format": 0,
 					"measurements": "",
-					"recorded_time": 1695458029.5570893,
-					"sequence_number": 0,
-					"temperature": 23.54
-				},
-				{
-					"data_format": 5,
-					"measurements": "",
-					"recorded_time": 1695458032.1263897,
-					"sequence_number": 0,
-					"temperature": 23.53
-				},
-				{
-					"data_format": 5,
-					"measurements": "",
-					"recorded_time": 1695458034.6889613,
-					"sequence_number": 0,
-					"temperature": 23.53
-				},
-				{
-					"data_format": 5,
-					"measurements": "",
-					"recorded_time": 1695458037.2674367,
-					"sequence_number": 0,
-					"temperature": 23.53
-				},
-				{
-					"data_format": 5,
-					"measurements": "",
-					"recorded_time": 1695458075.8103595,
-					"sequence_number": 0,
-					"temperature": 23.44
-				},
-				{
-					"data_format": 5,
-					"measurements": "",
-					"recorded_time": 1695458078.3797972,
-					"sequence_number": 0,
-					"temperature": 23.43
-				},
-				{
-					"data_format": 5,
-					"measurements": "",
-					"recorded_time": 1695458080.9506297,
-					"sequence_number": 0,
-					"temperature": 23.43
-				},
-				{
-					"data_format": 5,
-					"measurements": "",
-					"recorded_time": 1695458083.5173514,
-					"sequence_number": 0,
-					"temperature": 23.43
-				},
-				{
-					"data_format": 5,
-					"measurements": "",
-					"recorded_time": 1695458086.0916035,
-					"sequence_number": 0,
-					"temperature": 23.42
-				},
-				{
-					"data_format": 5,
-					"measurements": "",
-					"recorded_time": 1695458125.9312568,
-					"sequence_number": 0,
-					"temperature": 23.37
+					"pressure": 1006.28,
+					"recorded_time": 1709153375.3250957,
+					"sequence_number": 0
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.28,
+					"recorded_time": 1709153376.6165261,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.3,
+					"recorded_time": 1709153377.916831,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.21,
+					"recorded_time": 1709153379.2248094,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"data_format": 0,
+					"measurements": "",
+					"pressure": 1006.21,
+					"recorded_time": 1709153380.5134494,
+					"sequence_number": 0
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458127.2081928,
+					"recorded_time": 1709153257.0865538,
 					"sequence_number": 0,
-					"temperature": 23.36
+					"temperature": 24.3
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153257.1971216,
+					"sequence_number": 0,
+					"temperature": 24.3
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458131.0648246,
+					"recorded_time": 1709153276.632434,
 					"sequence_number": 0,
-					"temperature": 23.36
+					"temperature": 24.3
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458132.3472674,
+					"recorded_time": 1709153282.4774375,
 					"sequence_number": 0,
-					"temperature": 23.35
+					"temperature": 24.31
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458134.9194715,
+					"recorded_time": 1709153282.5724862,
 					"sequence_number": 0,
-					"temperature": 23.34
+					"temperature": 24.31
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458176.0364797,
+					"recorded_time": 1709153289.5056036,
 					"sequence_number": 0,
-					"temperature": 23.27
+					"temperature": 24.31
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458178.6056385,
+					"recorded_time": 1709153294.3244143,
 					"sequence_number": 0,
-					"temperature": 23.27
+					"temperature": 24.32
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153294.4095438,
+					"sequence_number": 0,
+					"temperature": 24.32
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153303.7000256,
+					"sequence_number": 0,
+					"temperature": 24.32
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153307.0832472,
+					"sequence_number": 0,
+					"temperature": 24.32
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153307.280063,
+					"sequence_number": 0,
+					"temperature": 24.32
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458181.1791942,
+					"recorded_time": 1709153307.8116593,
 					"sequence_number": 0,
-					"temperature": 23.25
+					"temperature": 24.32
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153308.2262194,
+					"sequence_number": 0,
+					"temperature": 24.32
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153308.3229558,
+					"sequence_number": 0,
+					"temperature": 24.32
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153308.7670858,
+					"sequence_number": 0,
+					"temperature": 24.3
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153308.8325963,
+					"sequence_number": 0,
+					"temperature": 24.32
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153309.3716288,
+					"sequence_number": 0,
+					"temperature": 24.32
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153309.7946436,
+					"sequence_number": 0,
+					"temperature": 24.32
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153309.8719604,
+					"sequence_number": 0,
+					"temperature": 24.32
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153310.3214622,
+					"sequence_number": 0,
+					"temperature": 24.32
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153310.827766,
+					"sequence_number": 0,
+					"temperature": 24.32
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458183.7535577,
+					"recorded_time": 1709153311.3630745,
 					"sequence_number": 0,
-					"temperature": 23.25
+					"temperature": 24.32
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153311.704274,
+					"sequence_number": 0,
+					"temperature": 24.3
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153312.9994223,
+					"sequence_number": 0,
+					"temperature": 24.3
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153314.2960153,
+					"sequence_number": 0,
+					"temperature": 24.29
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153315.5941534,
+					"sequence_number": 0,
+					"temperature": 24.3
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153316.8949363,
+					"sequence_number": 0,
+					"temperature": 24.32
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153318.2027109,
+					"sequence_number": 0,
+					"temperature": 24.3
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153319.4940681,
+					"sequence_number": 0,
+					"temperature": 24.3
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153320.7820716,
+					"sequence_number": 0,
+					"temperature": 24.3
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153322.0976944,
+					"sequence_number": 0,
+					"temperature": 24.29
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458186.316603,
+					"recorded_time": 1709153323.3843513,
 					"sequence_number": 0,
-					"temperature": 23.24
+					"temperature": 24.29
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153324.6980083,
+					"sequence_number": 0,
+					"temperature": 24.29
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153325.9879212,
+					"sequence_number": 0,
+					"temperature": 24.25
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153327.2924097,
+					"sequence_number": 0,
+					"temperature": 24.28
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153328.5769823,
+					"sequence_number": 0,
+					"temperature": 24.3
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153329.8674438,
+					"sequence_number": 0,
+					"temperature": 24.27
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153331.1830933,
+					"sequence_number": 0,
+					"temperature": 24.25
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153333.7726462,
+					"sequence_number": 0,
+					"temperature": 24.29
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153335.0720665,
+					"sequence_number": 0,
+					"temperature": 24.29
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153336.3794303,
+					"sequence_number": 0,
+					"temperature": 24.29
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458226.157826,
+					"recorded_time": 1709153337.6698651,
 					"sequence_number": 0,
-					"temperature": 23.21
+					"temperature": 24.34
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153338.9636369,
+					"sequence_number": 0,
+					"temperature": 24.36
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153340.2747219,
+					"sequence_number": 0,
+					"temperature": 24.35
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153341.5590131,
+					"sequence_number": 0,
+					"temperature": 24.41
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153342.8533766,
+					"sequence_number": 0,
+					"temperature": 24.4
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153344.1471572,
+					"sequence_number": 0,
+					"temperature": 24.41
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153345.4576848,
+					"sequence_number": 0,
+					"temperature": 24.46
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153346.7658253,
+					"sequence_number": 0,
+					"temperature": 24.46
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153348.0602605,
+					"sequence_number": 0,
+					"temperature": 24.47
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153349.3634598,
+					"sequence_number": 0,
+					"temperature": 24.55
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458227.4383686,
+					"recorded_time": 1709153350.662466,
 					"sequence_number": 0,
-					"temperature": 23.21
+					"temperature": 24.55
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153351.962704,
+					"sequence_number": 0,
+					"temperature": 24.52
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153353.2556334,
+					"sequence_number": 0,
+					"temperature": 24.56
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153354.5540478,
+					"sequence_number": 0,
+					"temperature": 24.55
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153355.8549266,
+					"sequence_number": 0,
+					"temperature": 24.57
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153357.1674647,
+					"sequence_number": 0,
+					"temperature": 24.55
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153358.454821,
+					"sequence_number": 0,
+					"temperature": 24.55
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153359.7516596,
+					"sequence_number": 0,
+					"temperature": 24.56
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153361.0416791,
+					"sequence_number": 0,
+					"temperature": 24.56
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153362.3511674,
+					"sequence_number": 0,
+					"temperature": 24.57
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458230.0094373,
+					"recorded_time": 1709153363.644758,
 					"sequence_number": 0,
-					"temperature": 23.2
+					"temperature": 24.56
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153364.9356709,
+					"sequence_number": 0,
+					"temperature": 24.59
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153366.228774,
+					"sequence_number": 0,
+					"temperature": 24.59
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153367.5452733,
+					"sequence_number": 0,
+					"temperature": 24.58
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153368.8233216,
+					"sequence_number": 0,
+					"temperature": 24.58
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153370.1337497,
+					"sequence_number": 0,
+					"temperature": 24.66
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458232.5789232,
+					"recorded_time": 1709153371.4322999,
 					"sequence_number": 0,
-					"temperature": 23.2
+					"temperature": 24.61
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458235.1467237,
+					"recorded_time": 1709153372.7124197,
 					"sequence_number": 0,
-					"temperature": 23.2
+					"temperature": 24.61
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
-					"humidity": 43.71,
 					"measurements": "",
-					"recorded_time": 1695457962.8383849,
+					"recorded_time": 1709153374.0167005,
+					"sequence_number": 0,
+					"temperature": 24.62
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153375.3312867,
+					"sequence_number": 0,
+					"temperature": 24.64
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153376.6200845,
+					"sequence_number": 0,
+					"temperature": 24.64
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153377.9220645,
+					"sequence_number": 0,
+					"temperature": 24.62
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153379.2332783,
+					"sequence_number": 0,
+					"temperature": 24.63
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153380.5214162,
+					"sequence_number": 0,
+					"temperature": 24.65
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"data_format": 5,
+					"humidity": 51.33,
+					"measurements": "",
+					"recorded_time": 1709153257.0890427,
 					"sequence_number": null
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
-					"humidity": 43.71,
+					"humidity": 51.33,
 					"measurements": "",
-					"recorded_time": 1695457970.9496474,
+					"recorded_time": 1709153257.1977503,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 44.23,
+					"humidity": 51.33,
 					"measurements": "",
-					"recorded_time": 1695457974.8860064,
+					"recorded_time": 1709153276.6344213,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 44.24,
+					"humidity": 51.03,
 					"measurements": "",
-					"recorded_time": 1695457976.405232,
+					"recorded_time": 1709153282.48038,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 44.27,
+					"humidity": 51.03,
 					"measurements": "",
-					"recorded_time": 1695457977.6974745,
+					"recorded_time": 1709153282.5736833,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 44.28,
+					"humidity": 51.03,
 					"measurements": "",
-					"recorded_time": 1695457978.1551208,
+					"recorded_time": 1709153289.5171988,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 44.34,
+					"humidity": 50.92,
 					"measurements": "",
-					"recorded_time": 1695457980.7223723,
+					"recorded_time": 1709153294.3279717,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 44.4,
+					"humidity": 50.92,
 					"measurements": "",
-					"recorded_time": 1695457984.5852418,
+					"recorded_time": 1709153294.4108138,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 44.43,
+					"humidity": 50.92,
 					"measurements": "",
-					"recorded_time": 1695457985.8687594,
+					"recorded_time": 1709153303.7009869,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 44.47,
+					"humidity": 51.03,
 					"measurements": "",
-					"recorded_time": 1695458025.7019289,
+					"recorded_time": 1709153307.0853949,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 44.49,
+					"humidity": 51.03,
 					"measurements": "",
-					"recorded_time": 1695458026.985779,
+					"recorded_time": 1709153307.2812622,
 					"sequence_number": null
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
-					"humidity": 44.49,
+					"humidity": 51.03,
 					"measurements": "",
-					"recorded_time": 1695458029.557098,
+					"recorded_time": 1709153307.8143954,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 44.57,
+					"humidity": 51.03,
 					"measurements": "",
-					"recorded_time": 1695458032.1263978,
+					"recorded_time": 1709153308.229781,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 44.62,
+					"humidity": 51.03,
 					"measurements": "",
-					"recorded_time": 1695458034.6889703,
+					"recorded_time": 1709153308.3245268,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 44.58,
+					"humidity": 51.35,
 					"measurements": "",
-					"recorded_time": 1695458037.2674448,
+					"recorded_time": 1709153308.7706182,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 44.91,
+					"humidity": 51.03,
 					"measurements": "",
-					"recorded_time": 1695458075.8103619,
+					"recorded_time": 1709153308.8388252,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 44.85,
+					"humidity": 51.03,
 					"measurements": "",
-					"recorded_time": 1695458078.379806,
+					"recorded_time": 1709153309.3740625,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 44.84,
+					"humidity": 51.03,
 					"measurements": "",
-					"recorded_time": 1695458080.950642,
+					"recorded_time": 1709153309.7968564,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 44.85,
+					"humidity": 51.03,
 					"measurements": "",
-					"recorded_time": 1695458083.517359,
+					"recorded_time": 1709153309.8729181,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 44.84,
+					"humidity": 51.03,
 					"measurements": "",
-					"recorded_time": 1695458086.0916183,
+					"recorded_time": 1709153310.324569,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 44.1,
+					"humidity": 51.03,
 					"measurements": "",
-					"recorded_time": 1695458125.9312592,
+					"recorded_time": 1709153310.830012,
 					"sequence_number": null
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
-					"humidity": 44.16,
+					"humidity": 51.03,
 					"measurements": "",
-					"recorded_time": 1695458127.2082043,
+					"recorded_time": 1709153311.3715348,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 43.59,
+					"humidity": 51.08,
 					"measurements": "",
-					"recorded_time": 1695458131.0648377,
+					"recorded_time": 1709153311.7084239,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 43.78,
+					"humidity": 51.08,
 					"measurements": "",
-					"recorded_time": 1695458132.3472762,
+					"recorded_time": 1709153313.003039,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 44.25,
+					"humidity": 51.05,
 					"measurements": "",
-					"recorded_time": 1695458134.9194825,
+					"recorded_time": 1709153314.3029635,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 44.48,
+					"humidity": 51.06,
 					"measurements": "",
-					"recorded_time": 1695458176.0364823,
+					"recorded_time": 1709153315.5995648,
 					"sequence_number": null
 				},
 				{
 					"data_format": 5,
-					"humidity": 44.54,
+					"humidity": 51.07,
 					"measurements": "",
-					"recorded_time": 1695458178.6056414,
+					"recorded_time": 1709153316.8981845,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.08,
+					"measurements": "",
+					"recorded_time": 1709153318.2047603,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.08,
+					"measurements": "",
+					"recorded_time": 1709153319.4995632,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.11,
+					"measurements": "",
+					"recorded_time": 1709153320.7868,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.12,
+					"measurements": "",
+					"recorded_time": 1709153322.1030583,
 					"sequence_number": null
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
-					"humidity": 44.67,
+					"humidity": 51.12,
 					"measurements": "",
-					"recorded_time": 1695458181.1791987,
+					"recorded_time": 1709153323.3895595,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.1,
+					"measurements": "",
+					"recorded_time": 1709153324.7028196,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.1,
+					"measurements": "",
+					"recorded_time": 1709153326.0015218,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.12,
+					"measurements": "",
+					"recorded_time": 1709153327.297856,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.13,
+					"measurements": "",
+					"recorded_time": 1709153328.5800428,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.14,
+					"measurements": "",
+					"recorded_time": 1709153329.8685143,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.12,
+					"measurements": "",
+					"recorded_time": 1709153331.1891315,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.15,
+					"measurements": "",
+					"recorded_time": 1709153333.7758615,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.17,
+					"measurements": "",
+					"recorded_time": 1709153335.0759828,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.34,
+					"measurements": "",
+					"recorded_time": 1709153336.3870866,
 					"sequence_number": null
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
-					"humidity": 44.57,
+					"humidity": 51.41,
 					"measurements": "",
-					"recorded_time": 1695458183.7535663,
+					"recorded_time": 1709153337.6721828,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.49,
+					"measurements": "",
+					"recorded_time": 1709153338.9657097,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.68,
+					"measurements": "",
+					"recorded_time": 1709153340.2833512,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.67,
+					"measurements": "",
+					"recorded_time": 1709153341.5613554,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.75,
+					"measurements": "",
+					"recorded_time": 1709153342.8557553,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.78,
+					"measurements": "",
+					"recorded_time": 1709153344.1499255,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.89,
+					"measurements": "",
+					"recorded_time": 1709153345.461327,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.89,
+					"measurements": "",
+					"recorded_time": 1709153346.7677774,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.87,
+					"measurements": "",
+					"recorded_time": 1709153348.067955,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.97,
+					"measurements": "",
+					"recorded_time": 1709153349.367177,
 					"sequence_number": null
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
-					"humidity": 44.36,
+					"humidity": 51.97,
 					"measurements": "",
-					"recorded_time": 1695458186.3166173,
+					"recorded_time": 1709153350.6712449,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 52.02,
+					"measurements": "",
+					"recorded_time": 1709153351.966855,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.98,
+					"measurements": "",
+					"recorded_time": 1709153353.2594573,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.93,
+					"measurements": "",
+					"recorded_time": 1709153354.557655,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.88,
+					"measurements": "",
+					"recorded_time": 1709153355.8650339,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.73,
+					"measurements": "",
+					"recorded_time": 1709153357.1716132,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.73,
+					"measurements": "",
+					"recorded_time": 1709153358.4574425,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.53,
+					"measurements": "",
+					"recorded_time": 1709153359.755652,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.53,
+					"measurements": "",
+					"recorded_time": 1709153361.050834,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.24,
+					"measurements": "",
+					"recorded_time": 1709153362.3578584,
 					"sequence_number": null
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
-					"humidity": 44.77,
+					"humidity": 51.15,
 					"measurements": "",
-					"recorded_time": 1695458226.1578283,
+					"recorded_time": 1709153363.6476212,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 51.05,
+					"measurements": "",
+					"recorded_time": 1709153364.93925,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 50.91,
+					"measurements": "",
+					"recorded_time": 1709153366.2295377,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 50.76,
+					"measurements": "",
+					"recorded_time": 1709153367.5498524,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 50.76,
+					"measurements": "",
+					"recorded_time": 1709153368.826502,
+					"sequence_number": null
+				},
+				{
+					"data_format": 5,
+					"humidity": 50.66,
+					"measurements": "",
+					"recorded_time": 1709153370.1403031,
 					"sequence_number": null
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
-					"humidity": 44.39,
+					"humidity": 50.59,
 					"measurements": "",
-					"recorded_time": 1695458227.4383767,
+					"recorded_time": 1709153371.4343655,
 					"sequence_number": null
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
-					"humidity": 44.06,
+					"humidity": 50.59,
 					"measurements": "",
-					"recorded_time": 1695458230.009446,
+					"recorded_time": 1709153372.7166119,
 					"sequence_number": null
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
-					"humidity": 44.19,
+					"humidity": 50.57,
 					"measurements": "",
-					"recorded_time": 1695458232.5789373,
+					"recorded_time": 1709153374.0213234,
 					"sequence_number": null
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
-					"humidity": 44.35,
+					"humidity": 50.53,
 					"measurements": "",
-					"recorded_time": 1695458235.146737,
+					"recorded_time": 1709153375.3326905,
 					"sequence_number": null
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"data_format": 5,
+					"humidity": 50.5,
+					"measurements": "",
+					"recorded_time": 1709153376.623263,
+					"sequence_number": null
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"data_format": 5,
+					"humidity": 50.5,
+					"measurements": "",
+					"recorded_time": 1709153377.9269238,
+					"sequence_number": null
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"data_format": 5,
+					"humidity": 50.41,
+					"measurements": "",
+					"recorded_time": 1709153379.2369282,
+					"sequence_number": null
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"data_format": 5,
+					"humidity": 50.4,
+					"measurements": "",
+					"recorded_time": 1709153380.523868,
+					"sequence_number": null
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695457962.8383982,
+					"recorded_time": 1709153257.0917401,
 					"sequence_number": 0,
-					"voltage": 3.073
+					"voltage": 2.377
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695457970.9496663,
+					"recorded_time": 1709153257.198467,
 					"sequence_number": 0,
-					"voltage": 3.073
+					"voltage": 2.377
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695457974.8860102,
+					"recorded_time": 1709153276.6358864,
 					"sequence_number": 0,
-					"voltage": 3.083
+					"voltage": 2.377
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695457976.4052432,
+					"recorded_time": 1709153282.4819613,
 					"sequence_number": 0,
-					"voltage": 3.083
+					"voltage": 2.377
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695457977.697486,
+					"recorded_time": 1709153282.5749674,
 					"sequence_number": 0,
-					"voltage": 3.083
+					"voltage": 2.377
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695457978.1551318,
+					"recorded_time": 1709153289.52706,
 					"sequence_number": 0,
-					"voltage": 3.083
+					"voltage": 2.377
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695457980.7223828,
+					"recorded_time": 1709153294.3325813,
 					"sequence_number": 0,
-					"voltage": 3.083
+					"voltage": 2.377
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695457984.5852551,
+					"recorded_time": 1709153294.4120567,
 					"sequence_number": 0,
-					"voltage": 3.083
+					"voltage": 2.377
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695457985.8687758,
+					"recorded_time": 1709153303.7018087,
 					"sequence_number": 0,
-					"voltage": 3.083
+					"voltage": 2.377
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458025.7019317,
+					"recorded_time": 1709153307.0869713,
 					"sequence_number": 0,
-					"voltage": 3.076
+					"voltage": 2.377
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458026.9857874,
+					"recorded_time": 1709153307.2825136,
 					"sequence_number": 0,
-					"voltage": 3.076
+					"voltage": 2.377
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458029.5571074,
+					"recorded_time": 1709153307.8192606,
 					"sequence_number": 0,
-					"voltage": 3.076
+					"voltage": 2.377
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458032.1264083,
+					"recorded_time": 1709153308.2314053,
 					"sequence_number": 0,
-					"voltage": 3.076
+					"voltage": 2.377
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458034.688979,
+					"recorded_time": 1709153308.3285503,
 					"sequence_number": 0,
-					"voltage": 3.076
+					"voltage": 2.377
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458037.2674534,
+					"recorded_time": 1709153308.775068,
 					"sequence_number": 0,
-					"voltage": 3.076
+					"voltage": 2.377
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458075.8103647,
+					"recorded_time": 1709153308.8422265,
 					"sequence_number": 0,
-					"voltage": 3.076
+					"voltage": 2.377
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458078.3798144,
+					"recorded_time": 1709153309.3760242,
 					"sequence_number": 0,
-					"voltage": 3.076
+					"voltage": 2.377
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458080.9506512,
+					"recorded_time": 1709153309.7984798,
 					"sequence_number": 0,
-					"voltage": 3.076
+					"voltage": 2.377
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458083.5173678,
+					"recorded_time": 1709153309.8739343,
 					"sequence_number": 0,
-					"voltage": 3.069
+					"voltage": 2.377
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458086.0916328,
+					"recorded_time": 1709153310.326054,
 					"sequence_number": 0,
-					"voltage": 3.069
+					"voltage": 2.377
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458125.9312625,
+					"recorded_time": 1709153310.8314328,
 					"sequence_number": 0,
-					"voltage": 3.069
+					"voltage": 2.377
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458127.2082129,
+					"recorded_time": 1709153311.3731642,
 					"sequence_number": 0,
-					"voltage": 3.069
+					"voltage": 2.377
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458131.0648458,
+					"recorded_time": 1709153311.7125592,
 					"sequence_number": 0,
-					"voltage": 3.069
+					"voltage": 2.352
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458132.347284,
+					"recorded_time": 1709153313.0045366,
 					"sequence_number": 0,
-					"voltage": 3.069
+					"voltage": 2.352
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458134.9194915,
+					"recorded_time": 1709153314.3060803,
 					"sequence_number": 0,
-					"voltage": 3.069
+					"voltage": 2.352
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458176.0364847,
+					"recorded_time": 1709153315.6014473,
 					"sequence_number": 0,
-					"voltage": 3.069
+					"voltage": 2.352
 				},
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458178.605644,
+					"recorded_time": 1709153316.9020517,
 					"sequence_number": 0,
-					"voltage": 3.069
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153318.2059612,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153319.5020185,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153320.7891424,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153322.1037352,
+					"sequence_number": 0,
+					"voltage": 2.552
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458181.179203,
+					"recorded_time": 1709153323.389954,
 					"sequence_number": 0,
-					"voltage": 3.069
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153324.7068467,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153326.004535,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153327.3013227,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153328.58219,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153329.8698866,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153331.1906095,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153333.776708,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153335.0800495,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153336.388419,
+					"sequence_number": 0,
+					"voltage": 2.552
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458183.753574,
+					"recorded_time": 1709153337.673519,
 					"sequence_number": 0,
-					"voltage": 3.069
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153338.9674327,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153340.2849536,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153341.5663128,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153342.8572416,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153344.1515756,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153345.4628043,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153346.769043,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153348.073303,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153349.3685758,
+					"sequence_number": 0,
+					"voltage": 2.552
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458186.3166304,
+					"recorded_time": 1709153350.6727061,
 					"sequence_number": 0,
-					"voltage": 3.069
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153351.9683137,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153353.2609174,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153354.5590968,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153355.8736103,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153357.1728482,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153358.4587266,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153359.7569003,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153361.051778,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153362.3595102,
+					"sequence_number": 0,
+					"voltage": 2.552
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458226.1578307,
+					"recorded_time": 1709153363.6489692,
 					"sequence_number": 0,
-					"voltage": 3.08
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153364.940028,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153366.2299948,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153367.551591,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153368.8314838,
+					"sequence_number": 0,
+					"voltage": 2.552
+				},
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153370.1436844,
+					"sequence_number": 0,
+					"voltage": 2.552
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458227.438384,
+					"recorded_time": 1709153371.4373345,
 					"sequence_number": 0,
-					"voltage": 3.08
+					"voltage": 2.552
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458230.0094543,
+					"recorded_time": 1709153372.718963,
 					"sequence_number": 0,
-					"voltage": 3.08
+					"voltage": 2.552
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458232.57895,
+					"recorded_time": 1709153374.0256484,
 					"sequence_number": 0,
-					"voltage": 3.08
+					"voltage": 2.552
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"measurement": [
 				{
 					"data_format": 5,
 					"measurements": "",
-					"recorded_time": 1695458235.1467502,
+					"recorded_time": 1709153375.3338675,
 					"sequence_number": 0,
-					"voltage": 3.08
+					"voltage": 2.552
 				}
 			],
 			"status": "success",
-			"tag_address": "CB:7F:8F:E3:C5:6E"
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153376.6246996,
+					"sequence_number": 0,
+					"voltage": 2.552
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153377.931048,
+					"sequence_number": 0,
+					"voltage": 2.647
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153379.2408876,
+					"sequence_number": 0,
+					"voltage": 2.647
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
+		},
+		{
+			"measurement": [
+				{
+					"data_format": 5,
+					"measurements": "",
+					"recorded_time": 1709153380.5252767,
+					"sequence_number": 0,
+					"voltage": 2.647
+				}
+			],
+			"status": "success",
+			"tag_address": "C1:FC:9B:69:04:8B"
 		},
 		{
 			"status": "success"

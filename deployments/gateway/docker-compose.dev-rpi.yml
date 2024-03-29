@@ -1,0 +1,18 @@
+version: "3.5"
+services:
+  mqtt-broker:
+    image: rabbitmq:3.9-alpine
+    security_opt:
+      - seccomp:unconfined
+    command: "/bin/bash -c \"rabbitmq-plugins enable rabbitmq_mqtt; rabbitmq-server\""
+    ports:
+      - "${MQTT_PORT}:1883"
+    restart: always
+    volumes:
+      - "rabbitmq:/etc/rabbitmq"
+    environment:
+      - "RABBITMQ_DEFAULT_USER=${MQTT_USER}"
+      - "RABBITMQ_DEFAULT_PASS=${MQTT_PASSWORD}"
+
+volumes:
+  rabbitmq:
