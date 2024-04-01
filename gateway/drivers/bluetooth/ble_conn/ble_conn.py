@@ -53,12 +53,13 @@ class BLEConn():
             b: Callback that will be executed when a notification is received
         """
         self.logger.info("connecting to %s", tag.address)
-        async with BleakClient(tag) as client:
-            # if not device.details["props"]["Paired"]:
-            #     await client.pair()
-            self.logger.info("connected to %s", tag.address)
-            self.logger.info("sending command %s", cmd)
-            try:
+        try:
+
+            async with BleakClient(tag) as client:
+                # if not device.details["props"]["Paired"]:
+                #     await client.pair()
+                self.logger.info("connected to %s", tag.address)
+                self.logger.info("sending command %s", cmd)
                 if cb is not None:
                     await client.start_notify(char_specifier = read_chan, callback = cb)
                 await client.write_gatt_char(write_chan, bytearray.fromhex(cmd), await_response)
@@ -70,11 +71,11 @@ class BLEConn():
                 self.logger.info("ending...")
                 self.stopEvent.clear()
 
-            except Exception as e:
-                if retries < max_retries:
-                    self.logger.warn(f"{e} - retrying...")
-                    await self.run_single_ble_command(self.device, read_chan, write_chan, cmd, timeout, cb, retries+1, max_retries)
-                return
+        except Exception as e:
+            if retries < max_retries:
+                self.logger.warn(f"{e} - retrying...")
+                await self.run_single_ble_command(tag, read_chan, write_chan, cmd, timeout, cb, retries+1, max_retries)
+            return
 
     async def listen_for_data_stream(self, tag: BLEDevice, read_chan: str, timeout: float = 20.0, cb: Callable[[int, bytearray], None]=None):
             client = await self.get_client(tag)

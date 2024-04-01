@@ -74,6 +74,7 @@ class Hub(object):
                 data: AdvertismentData as dit
         """
         tag = Tag()
+        tag.logger = self.logger
         tag.metadata = {'manufacturer_data': data.manufacturer_data}
         tag.ble_device = device
         devices = self.validate_manufacturer([tag], Config.GlobalConfig.bluetooth_manufacturer_id.value)
@@ -82,7 +83,7 @@ class Hub(object):
         device = devices[0]
         tag = self.get_tag_by_address(devices[0].address)
         if tag is None:
-            tag = TagBuilder().from_device(device = device, pubsub_hub = self.pubsub_hub, mqtt_client = self.mqtt_client).build()
+            tag = TagBuilder().from_device(device = device, pubsub_hub = self.pubsub_hub, mqtt_client = self.mqtt_client, logger = self.logger).build()
             self.tags.append(tag)
             await tag.get_config()
             if Config.GlobalConfig.forced_time_sync.value:

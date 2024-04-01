@@ -44,14 +44,9 @@ class Tag(object):
         self.ble_device: BLEDevice = device
         self.metadata: dict[str, dict[int, bytes]] = None
         self.ble_conn: BLEConn = BLEConn()
-        self.logger = logging.getLogger("Tag")
-        self.logger.setLevel(logging.INFO)
+        self.logger = logging.getLogger()
         self.configured: bool = False
         self.logging_active: bool = False
-        formatter = logging.Formatter('[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s','%m-%d %H:%M:%S')
-        streamHandler = logging.StreamHandler()
-        streamHandler.setFormatter(formatter)
-        self.logger.addHandler(streamHandler)
         # TODO: add sensors as ble caps on firmware side to autoload sensor classes by names
         self.sensors: list[Sensor] = [
             AccelerationSensor(),
