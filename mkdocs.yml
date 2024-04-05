@@ -13,6 +13,7 @@ plugins:
   - minify:
       minify_html: true
   - enumerate-headings
+  - autorefs
 
 markdown_extensions:
   - pymdownx.superfences:
