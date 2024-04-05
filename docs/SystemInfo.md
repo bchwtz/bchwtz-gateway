@@ -3,4 +3,5 @@
 Sys.time()
 sessionInfo()
 ```
-
+![](imgs/sysTime.png)
+![](imgs/sessionInfo.png)

@@ -243,7 +243,10 @@ Finally for evaluating the memory usage of the FlashDB, a similar analysis as in
 ### Amount of data wich can be stored 
 The maximum amount of acceleration data which can be stored inside the available flash memory can be computed using the following formula.
 
-$$T_{storable} = \frac{32}{f_S} * blockcount*{\rm floor}\left(\frac{blocksize-56}{16+8+resolution*\frac{3*32}{8}}\right)$$
+$$
+T_{storable} = \frac{32}{f_S} * blockcount*{\rm floor}\left(\frac{blocksize-56}{16+8+resolution*\frac{3*32}{8}}\right)
+$$
+
 The formula used the following parameters:
 
 | Parameter | Description |

@@ -474,7 +474,10 @@ Add call to [`rt_reset_macronix_flash()`](sensor.html#rd_status_t-rt_reset_macro
 
 ## Energy consumption ##
 The following figure visualizes energy consumption of different operation states. The numbers at the measuring point are equal to the duration. All measurements are done with 3V supply voltage.
+![](imgs/energy_consumption.png)
 
+<!-- The part below won't work with Mkdocs, so it is commented out and an image of it was used in 'energy_consumption.png'. The ggplot worked in the other documentation (bchwtz-bdcs). -->
+<!--
  ```{r echo=FALSE}
  energymeasurement <- openxlsx::read.xlsx("Energiemessung.xlsx", sheet="Tabelle1")
 
@@ -498,6 +501,8 @@ The following figure visualizes energy consumption of different operation states
  ggplot2::scale_y_continuous(name="energy / mJ", sec.axis=ggplot2::sec_axis(trans=~./3, name="charge / mC")) +
  ggplot2::xlab("samplingrate / Hz")
  ```
+-->
+
 
 ## Firmware packaging ##
 

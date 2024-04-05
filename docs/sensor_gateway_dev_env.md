@@ -115,6 +115,31 @@ pip3 install pygatt
 pip3 install interruptingcow
 sudo apt-get install bluez bluez-hcidump
 ```
+In some cases you will have some issues with installing the packages this way. Then you will need to create a virtual environment on the pi and install the packages this way:
+```
+python3 -m venv ~/env
+~/env/bin/pip3 install ruuvitag_sensor
+~/env/bin/pip3 install crcmod
+~/env/bin/pip3 install pygatt
+~/env/bin/pip3 install interruptingcow
+sudo apt-get install bluez bluez-hcidump
+```
+
+If these modules are installed, you have to run some shell scripts:
+```
+cd gateway
+./install_gw.sh
+./install_docs_req.sh
+```
+
+In the next step you have to go through the steps [Setting up services locally](developer_setup.md#seetting-up-services-locally) to [Installing the python packages](developer_setup.md#installing-the-python-packages) from the [Developer setup Chapter](developer_setup.md#developer-setup).
+
+After these steps you also have to run one more script and install Go:
+```
+cd gateway
+./run_on_pi.sh
+sudo apt install golong
+```
 
 16. To try if your setup is working, navigate to the cloned repo and type “python3 GetConfigFromSensor.py”. You should see something like this:
 ![](imgs/Test.png)
