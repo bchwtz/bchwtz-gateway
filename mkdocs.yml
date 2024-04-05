@@ -12,6 +12,7 @@ plugins:
   - search
   - minify:
       minify_html: true
+  - enumerate-headings
 
 markdown_extensions:
   - pymdownx.superfences:
@@ -24,6 +25,10 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.arithmatex:
+      generic: true
   - admonition
   - abbr
   - attr_list
@@ -32,14 +37,27 @@ markdown_extensions:
   - meta
   - md_in_html
   - tables
+  - sane_lists
 
 
 nav:
   - Introduction: index.md
   - Getting Started:
+    - sensor_gateway_dev_env.md
     - user_setup.md
     - developer_setup.md
     - go_cli.md
+    - JupyterHub.md
+    - PyCharm.md
+    - GettingStartedPackage.md
+  - Documentation:
+    - Sensor.md
+    - ExternalFlashIntegration.md
+    - Gateway.md
+    - Backend.md
+    - BLEGATTMessages.md
+    - MessageObjects.md
+    - practical_guide.md
   - Reference:
     - Gateway Library:
       - bluetooth-python-library/gateway_ref.md
@@ -74,8 +92,25 @@ nav:
     - Further tutorials:
       - git_installation_on_raspberry.md
       - MKDocs: documentation_ref.md
+  - To Do:
+    - todo_sensor.md
+    - todo_gateway.md
+    - todo_backend.md
+  - Appendix:
+    - Contributors.md
+    - CommercialApplications.md
+    - Merging.md
+    - SystemInfo.md
+  - DontDo.md
+  - Do.md
+
 
 extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/bchwtz/
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
