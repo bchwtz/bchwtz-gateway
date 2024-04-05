@@ -42,15 +42,11 @@ class Tag(object):
         self.name: str = name
         self.address: str = address
         self.ble_device: BLEDevice = device
+        self.metadata: dict[str, dict[int, bytes]] = None
         self.ble_conn: BLEConn = BLEConn()
-        self.logger = logging.getLogger("Tag")
-        self.logger.setLevel(logging.INFO)
+        self.logger = logging.getLogger()
         self.configured: bool = False
         self.logging_active: bool = False
-        formatter = logging.Formatter('[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s','%m-%d %H:%M:%S')
-        streamHandler = logging.StreamHandler()
-        streamHandler.setFormatter(formatter)
-        self.logger.addHandler(streamHandler)
         # TODO: add sensors as ble caps on firmware side to autoload sensor classes by names
         self.sensors: list[Sensor] = [
             AccelerationSensor(),
@@ -66,6 +62,7 @@ class Tag(object):
         self.time: float = 0.0
         self.online: bool = online
         self.acc_log_res_topic: str = Config.MQTTConfig.topic_tag_prefix.value + "/" + self.address + Config.MQTTConfig.topic_tag_cmd_get_acceleration_log_res.value
+        self.acc_stream_topic: str = Config.MQTTConfig.topic_tag_prefix.value + "/" + self.address + Config.MQTTConfig.topic_tag_cmd_get_acceleration_stream_res.value
         self.acc_log_req_id: str = ""
         self.seen_in_last_iter: bool = False
         self.last_seen: float = time.time()
@@ -243,19 +240,25 @@ class Tag(object):
         """
         caught_signals = None
         rx_bt = rx_bt[1:]
-        self.logger.warn(rx_bt)
+        self.logger.debug(rx_bt)
 
         caught_signals = SigScanner.scan_signals(rx_bt, Config.ReturnSignalsLoggingMode)
         acc: AccelerationSensor = self.get_sensor_by_type(AccelerationSensor)
         if acc is None:
             self.logger.error("No accelerometer detected - cannot log acceleration data!")
             return
-        if caught_signals == None:
-            self.logger.warn("no signals detected!")
-            return
-        if "logging_data" in caught_signals:
-            self.dec.decode_acc_stream_pack(rx_bt, config=self.config, acceleration_sensor=acc)
-            self.logger.error(acc.get_measurement_props())
+        # if caught_signals == None:
+        #     self.logger.warn(rx_bt)
+        #     self.logger.warn("no signals detected!")
+        #     return
+        # if "stream_data" in caught_signals:
+        self.dec.decode_acc_stream_pack(rx_bt, config=self.config, acceleration_sensor=acc)
+        # self.logger.error(acc.get_measurement_props())
+        # submit mqtt vals for accelerometer
+        # accelerometer = self.get_sensor_by_type(AccelerationSensor)
+        self.mqtt_client.publish("%s/%s/streamed/%s/acc_x" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, acc.__class__.__name__), next(reversed(acc.measurements)).acc_x)
+        self.mqtt_client.publish("%s/%s/streamed/%s/acc_y" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, acc.__class__.__name__), next(reversed(acc.measurements)).acc_y)
+        self.mqtt_client.publish("%s/%s/streamed/%s/acc_z" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, acc.__class__.__name__), next(reversed(acc.measurements)).acc_z)
 
     def multi_communication_callback(self, status_code: int, rx_bt: bytearray) -> None:
         """ Handles a message and forwards it to the correct callback. This is needed so that if a call has multiple messages that will be received, the following message to the first received message won't be ignored.
@@ -422,8 +425,32 @@ class Tag(object):
         if data is None:
             return
         tag_data = self.dec.decode_advertisement(data)
+        if tag_data == None:
+            return
         for sensor in self.sensors:
             sensor.read_data_from_advertisement(tag_data)
+            # submit mqtt vals for accelerometer
+            accelerometer = self.get_sensor_by_type(AccelerationSensor)
+            if len(accelerometer.measurements) > 0:
+                self.mqtt_client.publish("%s/%s/%s/acc_x" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, accelerometer.__class__.__name__), next(reversed(accelerometer.measurements)).acc_x)
+                self.mqtt_client.publish("%s/%s/%s/acc_y" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, accelerometer.__class__.__name__), next(reversed(accelerometer.measurements)).acc_y)
+                self.mqtt_client.publish("%s/%s/%s/acc_z" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, accelerometer.__class__.__name__), next(reversed(accelerometer.measurements)).acc_z)
+            # submit mqtt vals for voltage
+            vbat = self.get_sensor_by_type(BatterySensor)
+            if len(vbat.measurements) > 0:
+                self.mqtt_client.publish("%s/%s/%s/voltage" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, vbat.__class__.__name__), next(reversed(vbat.measurements)).voltage)
+            # submit mqtt vals for athmospheric pressure
+            press = self.get_sensor_by_type(BarometerSensor)
+            if len(press.measurements) > 0:
+                self.mqtt_client.publish("%s/%s/%s/pressure" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, press.__class__.__name__), next(reversed(press.measurements)).pressure)
+            # submit mqtt vals for humidity
+            hum = self.get_sensor_by_type(HumiditySensor)
+            if len(hum.measurements) > 0:
+                self.mqtt_client.publish("%s/%s/%s/humidity" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, hum.__class__.__name__), next(reversed(hum.measurements)).humidity)
+            # submit mqtt vals for temperature
+            temp = self.get_sensor_by_type(TemperatureSensor)
+            if len(temp.measurements) > 0:
+                self.mqtt_client.publish("%s/%s/%s/temperature" % (Config.MQTTConfig.topic_tag_prefix.value, self.address, temp.__class__.__name__), next(reversed(temp.measurements)).temperature)
 
     def get_sensors_props(self) -> list[dict]:
         """ Making the object's sensors serializable.
@@ -515,6 +542,7 @@ class Tag(object):
             self.logger.info("running set_heartbeat on tag: %s", self.address)
             await self.set_heartbeat(payload)
             if self.mqtt_client is not None:
+                await asyncio.sleep(2)
                 self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "setting heartbeat"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
         elif command == "set_config":
@@ -560,6 +588,21 @@ class Tag(object):
                 self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"request_id": req_id, "ongoing_request": False, "payload": {"status": "deactivated logging!"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
 
         # TODO: add streaming_data
+        elif command == "start_streaming":
+            self.acc_log_req_id = req_id
+            if self.mqtt_client is not None:
+                self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"has_attachments": False, "attachment_channels": [self.acc_stream_topic], "request_id": req_id, "ongoing_request": False, "payload": {"status": "started - wait for the results and fetch them via tags get!"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+                await self.activate_streaming_mode()
+            else:
+                self.logger.log("cannot activate streaming mode without mqtt connection.")
+
+        elif command == "stop_streaming":
+            self.acc_log_req_id = req_id
+            if self.mqtt_client is not None:
+                self.mqtt_client.publish(Config.MQTTConfig.topic_command_res.value, json.dumps({"has_attachments": False, "attachment_channels": [self.acc_log_res_topic], "request_id": req_id, "ongoing_request": False, "payload": {"status": "stopped - wait for the results and fetch them via tags get!"}}, default=lambda o: o.get_props() if getattr(o, "get_props", None) is not None else None, skipkeys=True, check_circular=False, sort_keys=True, indent=4))
+                await self.deactivate_streaming_mode()
+            else:
+                self.logger.log("cannot activate streaming mode without mqtt connection.")
 
 
     def subscribe_to_mqtt_chans(self):

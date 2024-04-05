@@ -23,8 +23,9 @@ class TagBuilder:
         self.tag_online: bool = True
         self.tag_sensors = []
         self.tag_pubsub_hub: aiopubsub.Hub = None
+        self.logger = None
 
-    def from_device(self, device: BLEDevice, pubsub_hub: aiopubsub.Hub = None, mqtt_client: Client = None) -> Self:
+    def from_device(self, device: BLEDevice, pubsub_hub: aiopubsub.Hub = None, mqtt_client: Client = None, logger = None) -> Self:
         """ Creates a new tag from its ble_device
             Arguments:
                 device: the ble_device gained by discovery or an advertisement
@@ -42,6 +43,7 @@ class TagBuilder:
         self.tag_online = True
         self.tag_pubsub_hub = pubsub_hub
         self.tag_mqtt_client = mqtt_client
+        self.logger = logger
         return self
 
     def name(self, name: str = "") -> Self:
@@ -89,4 +91,5 @@ class TagBuilder:
             pubsub_hub=self.tag_pubsub_hub,
             mqtt_client = self.tag_mqtt_client,
         )
+        tag.logger = self.logger
         return tag

@@ -14,6 +14,8 @@ from gateway.util.signal_last import signal_last
 import json
 from paho.mqtt.client import Client, MQTTMessage
 import aiopubsub
+from termcolor import colored
+
 
 class Hub(object):
     """ Hub has all tags of a gateway and enables you to search for specific tags. It also scans for tags or listens for advertisments and logs everything to mqtt.
@@ -71,14 +73,17 @@ class Hub(object):
                 device: ble_device that was discovered
                 data: AdvertismentData as dit
         """
-        device.metadata = data.__dict__
-        devices = self.ble_conn.validate_manufacturer([device], Config.GlobalConfig.bluetooth_manufacturer_id.value)
+        tag = Tag()
+        tag.logger = self.logger
+        tag.metadata = {'manufacturer_data': data.manufacturer_data}
+        tag.ble_device = device
+        devices = self.validate_manufacturer([tag], Config.GlobalConfig.bluetooth_manufacturer_id.value)
         if len(devices) <= 0:
             return
         device = devices[0]
         tag = self.get_tag_by_address(devices[0].address)
         if tag is None:
-            tag = TagBuilder().from_device(device = device, pubsub_hub = self.pubsub_hub, mqtt_client = self.mqtt_client).build()
+            tag = TagBuilder().from_device(device = device, pubsub_hub = self.pubsub_hub, mqtt_client = self.mqtt_client, logger = self.logger).build()
             self.tags.append(tag)
             await tag.get_config()
             if Config.GlobalConfig.forced_time_sync.value:
@@ -93,6 +98,24 @@ class Hub(object):
         tag.online = True
         tag.seen_in_last_iter = True
         self.log_mqtt()
+
+    def validate_manufacturer(self, devices: list[Tag], manufacturer_id: int = 0) -> list[BLEDevice]:
+        """ This funcion updates the internal mac_list. If a MAC address passed the
+        checked_mac_address process, it will extend the list 'mac'.
+        Arguments:
+            devices: device passed by the BleakScanner function
+
+        TODO: check for vendor name or some other idempotent information
+        """
+        devicelist: list[BLEDevice] = []
+        for i in devices:
+            # self.logger.debug(i.metadata)
+            if "manufacturer_data" in i.metadata:
+                if manufacturer_id in i.metadata["manufacturer_data"]:
+                    self.logger.info(colored('Device: %s with Address %s discovered!' % (i.name, i.address), "green", attrs=['bold']) )
+                    devicelist.append(i.ble_device)
+        return devicelist
+
 
     def log_mqtt(self):
         """ used to log data on the mqtt_log channel.

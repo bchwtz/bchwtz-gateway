@@ -588,21 +588,21 @@ class Decoder():
     def decode_acc_stream_pack(self, rx_bt: bytearray, config: TagConfig, acceleration_sensor: AccelerationSensor) -> None:
         if (config.resolution == 12):
             # 12 Bit
-            logger.info("Start processing received data with process_sensor_data_12")
+            logger.debug("Start processing received data with process_sensor_data_12")
             data = self.__unpack12(rx_bt, config.samplerate, config.scale, gathering_type="stream")
         elif (config.resolution == 10):
             # 10 Bit
-            logger.info("Start processing received data with process_sensor_data_10")
+            logger.debug("Start processing received data with process_sensor_data_10")
             data = self.__unpack10(rx_bt, config.samplerate, config.scale, gathering_type="stream")
         elif (config.resolution == 8):
             # 8 Bit
-            logger.info("Start processing received data with process_sensor_data_8")
+            logger.debug("Start processing received data with process_sensor_data_8")
             data = self.__unpack8(rx_bt, config.samplerate, config.scale, gathering_type="stream")
         else:
             logger.error('Cannot process bytearray! Unknwon sensor resolution!')
         if data != None:
-            logger.info("got data:")
-            logger.info(data)
+            logger.debug("got data:")
+            logger.debug(data)
             # dataList=message_return_value.from_get_accelorationdata(accelorationdata=AccelerationData,mac=self.mac)
             # self.data.append(dataList.return_value.__dict__)
             acceleration_sensor.measurements.extend(data)
