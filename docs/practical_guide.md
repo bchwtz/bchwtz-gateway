@@ -4,6 +4,7 @@
 This chapter is intended to give an overview about the 
 As the results of the ruuviTag sensor accelerometer were quite unreliable it was decided to use an iPhone instead, leading to clean sampling behavior and allowing to make empirical statements about the amplitudes and frequencies of acceleration components during walking, jogging, sprinting and doing squats by performing resampling and frequency analysis.    
 At the end there are also some recommendations for choosing settings dynamically on the ruuviTag.
+
 ### Measurement range/scale
 The measurement range (scale) sets the maximum detectable acceleration for each axis, meaning that any values above the limit will get measured as maximum value. According to the [sensor datasheet](https://www.st.com/resource/en/datasheet/lis2dh12.pdf)(p.10) the possible values are 2g, 4g, 8g and 16g, where _g_ stands for G-forces, meaning an acceleration of 9.81 m/s².  
 The sensitivity (resolution) setting of the sensor impacts the amount of available quantization levels for the measurement. The sensor offers three different modes, _low-power_ (8-bit data output), _normal_ (10-bit data output) and _high resolution_ (12-bit data output), where 1 bit is used for the sign (direction) of the acceleration while the other bits are used for quantization. In low-power mode this would lead to $2^{8-1} = 128$ different levels, while the actual range of each of these steps can be calculated by the following formula:  
@@ -160,11 +161,7 @@ Taking a closer look at the measurement amplitudes has shown that there are sign
 
 ## Time Drift
 
-Measurements using RuuviTag *C7:22:C6:A1:0D:DA* have shown that the average time drift over one day is linear, with the RuuviTag time running ahead of the gateway time by 2.7 seconds. The drift increases linearly throughout the day.  
-
-Temperature effects were not considered. It can not be guaranteed that this observation is valid for other tags due to hardware differences.  
-
-More information about the data collection and analysis process can be found in the IPython notebook *analyze_timedrift.ipynb* and the associated elaboration.
+Measurements using RuuviTag *C7:22:C6:A1:0D:DA* have shown that the average time drift over one day is 2.7 seconds, with the RuuviTag time running ahead of the gateway time. The drift increases linearly throughout the day. Temperature effects were not considered. It can not be guaranteed that this observation is valid for other tags due to hardware differences. More information about the data collection and analysis process can be found in the IPython notebook *analyze_timedrift.ipynb* and the associated elaboration.
 
 ## Time Synchronisation 
 
