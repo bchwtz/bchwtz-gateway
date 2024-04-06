@@ -47,6 +47,13 @@ Install JupyterHub and Jupyter Notebook system-wide:
 ```{r, eval=FALSE}
 sudo -H pip3 install notebook jupyterhub
 ```
+or
+```
+sudo -H pip3 install --break-system-packages notebook jupyterhub
+```
+```{r, eval=FALSE}
+pip3 install notebook jupyterhub
+```
 
 Create a JupyterHub configuration file:
 
@@ -60,6 +67,16 @@ E.g. to change the port on which the JupyterHub runs, uncomment and modify the f
 
 ```{r, eval=FALSE}
 c.JupyterHub.bind_url = 'http://:8888'
+```
+
+## Add virtual environment to JupyterHub
+In order to add a virtual environment to the jupyter kernel list, first activate your environment. Afterwards run
+```
+pip install ipykernel
+```
+and then conclude the process by doing
+```
+sudo python -m ipykernel install --name "name_of_choice"
 ```
 
 ## Configure JupyterHub as a system service
