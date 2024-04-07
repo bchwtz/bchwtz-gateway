@@ -1,6 +1,6 @@
 # Sensor
 
-The following figure shows the high level architecture of acceleration data logging in Ruuvi Tag. All configuration is done via the gateway. It communicates with the Ruuvi Tag using the Nordic UART interface via GATT messages transported by Bluetooth Low Energy (BLE). Most logic regarding acceleration logging is implemented inside the module [app_accelerometer_logging.c](sensor.html#app_accelerometer_logging.c).
+The following figure shows the high level architecture of acceleration data logging in Ruuvi Tag. All configuration is done via the gateway. It communicates with the Ruuvi Tag using the Nordic UART interface via GATT messages transported by Bluetooth Low Energy (BLE). Most logic regarding acceleration logging is implemented inside the module [app_accelerometer_logging.c][app-accelerometer-logging-c].
 
 ![](imgs/wrapping_of_data_get.png)
 
@@ -9,9 +9,9 @@ Three use cases are shown in this figure.
 ## Initializing acceleration logging ##
 The initialization is shown with blue arrows and numbers in black circles until #4. 
 
-To activate acceleration logging the gateway sends the [control acceleration logging message](ble-gatt-messages.html#control-acceleration-logging). In general GATT messages are handled by the function [`handle_comms()`](sensor.html#void-handle_comms-const-ri_comm_xfer_fp_t-reply_fp-const-uint8_t-const-raw_message-size_t-data_len) inside the module [app_comm.c](sensor.html#app_comms.c). Messages regarding acceleration logging are delegated to the function [`handle_lis2dh12_comms_v2()`](sensor.html#rd_status_t-handle_lis2dh12_comms_v2-const-ri_comm_xfer_fp_t-reply_fp-const-uint8_t-const-raw_message-size_t-data_len) inside the same module. After receiving the message to activate acceleration logging the function [`app_enable_sensor_logging()`](sensor.html#rd_status_t-app_enable_sensor_loggingconst-bool-use_ram_db-const-bool-format_db) inside the module [app_accelerometer_logging.c](sensor.html#app_accelerometer_logging.c) in called (1).
+To activate acceleration logging the gateway sends the [control acceleration logging message](ble-gatt-messages.html#control-acceleration-logging). In general GATT messages are handled by the function [`handle_comms()`][void-handle-comms] inside the module [app_comm.c][app_comms]. Messages regarding acceleration logging are delegated to the function [`handle_lis2dh12_comms_v2()`](sensor.html#rd_status_t-handle_lis2dh12_comms_v2-const-ri_comm_xfer_fp_t-reply_fp-const-uint8_t-const-raw_message-size_t-data_len) inside the same module. After receiving the message to activate acceleration logging the function [`app_enable_sensor_logging()`](sensor.html#rd_status_t-app_enable_sensor_loggingconst-bool-use_ram_db-const-bool-format_db) inside the module [app_accelerometer_logging.c][app-accelerometer-logging-c] in called (1).
 
-The first step in activation is to check if all conditions are fulfilled. The function returns an error code if acceleration logging is already active or if it is called on a sensor which does not include an LIS2DH12. This check is done by calling [`find_sensor()`](sensor.html#rt_sensor_ctx_t-app_sensor_find-const-char-name) inside of [app_sensor.c](sensor.html#app_sensor.c) (2). This function returns the sensor context. The sensor context consists of several information about the sensor. The next step associates the function [`on_fifo_full()`](sensor.html#void-on_fifo_full-const-ri_gpio_evt_t-evt) from [app_accelerometer_logging.c](sensor.html#app_accelerometer_logging.c) with the interrupt pin retrieved from the sensor context (3). The last step is to activate FIFO and interrupt generation inside the LIS2DH12. This is done by calling two functions from the sensor context. At last the function pointer to `data_get()` inside the sensor context is replaced by the pointer to the function [`lis2dh12_logged_data_get()`](sensor.html#rd_status_t-lis2dh12_logged_data_get-rd_sensor_data_t-const-data). 
+The first step in activation is to check if all conditions are fulfilled. The function returns an error code if acceleration logging is already active or if it is called on a sensor which does not include an LIS2DH12. This check is done by calling [`find_sensor()`](sensor.html#rt_sensor_ctx_t-app_sensor_find-const-char-name) inside of [app_sensor.c](sensor.html#app_sensor.c) (2). This function returns the sensor context. The sensor context consists of several information about the sensor. The next step associates the function [`on_fifo_full()`](sensor.html#void-on_fifo_full-const-ri_gpio_evt_t-evt) from [app_accelerometer_logging.c][app-accelerometer-logging-c] with the interrupt pin retrieved from the sensor context (3). The last step is to activate FIFO and interrupt generation inside the LIS2DH12. This is done by calling two functions from the sensor context. At last the function pointer to `data_get()` inside the sensor context is replaced by the pointer to the function [`lis2dh12_logged_data_get()`](sensor.html#rd_status_t-lis2dh12_logged_data_get-rd_sensor_data_t-const-data). 
 
 ## Retrieving data from FIFO ##
 When FIFO is full inside LIS2DH12 the interrupt starts the function [`on_fifo_full()`](sensor.html#void-on_fifo_full-const-ri_gpio_evt_t-evt). This function does not directly handle the new data. It schedules a call to [`fifo_full_handler()`](sensor.html#void-fifo_full_handler-void-p_event_data-uint16_t-event_size). Instead of [`on_fifo_full()`](sensor.html#void-on_fifo_full-const-ri_gpio_evt_t-evt) this is called in the main thread of the application. If processing is done inside a function inside an interrupt context this prevents processing of another interrupt. This should be avoided.
@@ -26,7 +26,7 @@ The heartbeat retrieves the values from all sensors by calling the function `app
 [`lis2dh12_logged_data_get()`](sensor.html#rd_status_t-lis2dh12_logged_data_get-rd_sensor_data_t-const-data) retrieves the raw acceleration values from memory. Then the values are parsed by calling [`ri_lis2dh12_raw_data_parse()`](sensor.html#rd_status_t-ri_lis2dh12_raw_data_parse-rd_sensor_data_t-const-data-axis3bit16_t-raw_acceleration-uint8_t-raw_temperature) and returned to the heartbeat.
 
 ## Initialization during boot ##
-All sensor initialization is done inside [`setup()`](sensor.html#void-setup-void) from [main.c](sensor.html#main.c). This function calls [`app_acc_logging_init()`](sensor.html#rd_status_t-app_acc_logging_initvoid) inside [app_accelerometer_logging.c](sensor.html#app_accelerometer_logging.c). The function checks if the ringbuffer exists. If this is true it activates acceleration logging as described earlier.
+All sensor initialization is done inside [`setup()`](sensor.html#void-setup-void) from [main.c](sensor.html#main.c). This function calls [`app_acc_logging_init()`](sensor.html#rd_status_t-app_acc_logging_initvoid) inside [app_accelerometer_logging.c][app-accelerometer-logging-c]. The function checks if the ringbuffer exists. If this is true it activates acceleration logging as described earlier.
 
 ## Streaming of acceleration data ##
 
@@ -81,8 +81,9 @@ Retrieves data from fdb-kv-partition and loads it onto the sensor struct.
 
 Stores data from the sensor-struct to the kvdb, referencing the current timestamp.
 
+[](){#app-accelerometer-logging-c}
 
-### app_accelerometer_logging.c ###
+### app_accelerometer_logging.c 
 
 #### `rd_status_t app_enable_sensor_logging(const bool use_ram_db, const bool format_db)` ####
 
@@ -231,9 +232,9 @@ This function converts an Ruuvi error code to a one byte value. It returns the b
 | - | - | - |
 | err_code | in | Ruuvi error code. |
 
-
+[](){#app-comms}
 ### app_comms.c ####
-
+[](){#void-handle-comms}
 #### `void handle_comms (const ri_comm_xfer_fp_t reply_fp, const uint8_t * const raw_message, size_t data_len)` ####
 
 Added new switch/case which forwards messages regarding configuration and control of acceleration logging to the function [`handle_lis2dh12_comms()`](sensor.html#rd_status_t-handle_lis2dh12_comms-const-ri_comm_xfer_fp_t-reply_fp-const-uint8_t-const-raw_message-size_t-data_len), [`handle_lis2dh12_comms_v2()`](sensor.html#rd_status_t-handle_lis2dh12_comms_v2-const-ri_comm_xfer_fp_t-reply_fp-const-uint8_t-const-raw_message-size_t-data_len), [`handle_rtc_comms()`](sensor.html#rd_status_t-handle_rtc_comms-const-ri_comm_xfer_fp_t-reply_fp-const-uint8_t-const-raw_message-size_t-data_len).
@@ -323,7 +324,7 @@ Added call to [`app_acc_logging_init()`](sensor.html#rd_status_t-app_acc_logging
 
 #### `rd_status_t ri_lis2dh12_acceleration_raw_get (uint8_t * const raw_data)` ####
 
-This function reads raw acceleration values from the registers of LIS2DH12. It is called from the [interrupt handler](sensor.html#void-fifo_full_handler-void-p_event_data-uint16_t-event_size) inside [app_accelerometer_logging.c](sensor.html#app_accelerometer_logging.c) and from [`ri_lis2dh12_data_get()`](sensor.html#rd_status_t-ri_lis2dh12_data_get-rd_sensor_data_t-const-data).
+This function reads raw acceleration values from the registers of LIS2DH12. It is called from the [interrupt handler](sensor.html#void-fifo_full_handler-void-p_event_data-uint16_t-event_size) inside [app_accelerometer_logging.c][app-accelerometer-logging-c] and from [`ri_lis2dh12_data_get()`](sensor.html#rd_status_t-ri_lis2dh12_data_get-rd_sensor_data_t-const-data).
 
 | Parameters |||
 | - | - | - |
