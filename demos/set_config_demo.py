@@ -9,6 +9,7 @@ import sys
 """
 Read system environment variables and insert path to gateway folder to be able to run this script from every folder
 """
+
 # absolute: might need to change folders
 # sys.path.append("/home/testuser/gateway")
 # absolute from env variable
@@ -22,11 +23,10 @@ import sys
 import configparser
 import argparse
 
-# from gateway.config import Config
 from gateway.hub.hub import Hub
-# from hub.hub import Hub
+from gateway.tag.tag import Tag
 
-def set_values(tag,sr,scale,res,div,dsp_func,dsp_param,mode):
+def set_values(tag: Tag,sr:int,scale:int,res:int,div:int,dsp_func:int,dsp_param:int,mode:str) -> Tag:
     """
     Setting values for the individual options.
     """

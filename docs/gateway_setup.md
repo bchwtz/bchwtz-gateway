@@ -23,19 +23,44 @@ pip3 install ruuvitag_sensor
 pip3 install crcmod
 pip3 install pygatt
 pip3 install interruptingcow
+
 pip3 install -r requirements.txt
 sudo apt-get install bluez bluez-hcidump
 ```
+## Setting up services locally
+To setup the mircoservices locally you need to have docker installed, if you do not have docker on your system, please run:
+
+```{bash}
+sudo apt update && sudo apt install docker.io docker-compose
+sudo usermod -aG docker $USER
+```  
+
+This will download and install the necessary packages as well as put your user into the correct user group.  
+You might need to logout/reboot in order to get added to the group. Type
+```{bash}
+groups
+```
+to see the groups of your user.  
+
+### On failure
+Depending on the commit you are working with this could lead to problems with "docker-compose", as there are different versions of docker, one using "docker-compose" while the other uses "docker compose" to perform the same task. If you run into problems here when running the shell scripts due to compose, first try to adapt the script by fixing the spelling to the version you have running.  
+Otherwise you can try to install docker via: [Doc](https://docs.docker.com/engine/install/debian/)
+```
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh ./get-docker.sh
+sudo usermod -aG docker $USER
+```
+This will install the version using "docker compose".
 
 ## Setting up shell scripts
 Run the following command in the "gateway" folder to install the gateway and configure the environment variables:
 ```{bash}
-./install_gw.sh
+./install-gw.sh
 ```
 
 If you also want to set up the MkDocs tools to edit the documentation (optional) just run:
 ```{bash}
-./install-docs-req.sh
+./install_docs_req.sh
 ```
 
 ## Add gateway folder to $PATH
@@ -66,13 +91,7 @@ import sys
 
 sys.path.append(os.environ["GATEWAY_PATH"])
 ```
-## Setting up services locally
-To setup the mircoservices locally you need to have docker installed, if you do not have docker on your system, please run:
-```{bash}
-sudo apt update && sudo apt install docker.io docker-compose
-sudo usermod -aG docker pi
-```
-This will download and install the necessary packages as well as put your user ("pi" in this case, change if needed) into the correct user group.
+
 ## Running the infrastructure
 Spin up the necessary docker-compose file that starts the MongoDB server etc.
 ```{bash}
@@ -91,7 +110,7 @@ Running the gateway service itself which serves as a hub for the tags.
 ```{bash}
 python3 gateway.py
 ```
-More information on when to run it can be found [here](./useful_tips.md).
+More information on when to run it and how to possibly bugfix it can be found [here](./useful_tips.md).
 
 ## Installing go
 In order to use the CLI you need to install golang. This can be done by running
@@ -102,7 +121,7 @@ sudo apt install golang
 To run the automated database dumper service:
 ```{bash}
 # in gateway/storage-and-control
-go run cmd/db_dumper/main.go
+go run cmd/dumper/main.go
 ```
 
 ## Running the CLI
@@ -122,10 +141,10 @@ Check out if docker containers are running via
 ```{bash}
 docker ps
 ```
-All containers should be up apart from "gateway_ble-gateway_1" which constantly restarts. If the "gateway_mongo_1" container is not running correctly you need to change the following settings in "docker-compose.rpi.yml" in the "gateway/deployments/gateway" folder:  
+All containers should be up apart from "gateway_ble-gateway_1" which constantly restarts. If the "gateway_mongo_1" (or "gateway-mongo-1", depending on commit) container is not running correctly you need to change the following settings in "docker-compose.rpi.yml" in the "gateway/deployments/gateway" folder:  
 
 1. services:  
-	ble-gateway:  
+    ble-gateway:  
 	environment:  
 	MQTT-broker: mqtt-broker
 	
@@ -134,17 +153,29 @@ All containers should be up apart from "gateway_ble-gateway_1" which constantly 
 	environment:  
 	MQTT-broker: mqtt-broker  
 	
-Additionally you need to change the following entry in "docker-compose.yml" in the same folder in order to downgrade the mongodb version:  
+Additionally you need to change the following entry in "docker-compose.yml" in the same folder in order to downgrade the MongoDB image version:  
 
 3. mongo:  
 	image: mongo:4.4.18
 
-and then run the following commands to redownload the mongodb image and restart the docker containers. 
+Depending on your docker version you have to use one of the following commands to redownload the MongoDB image and restart the docker containers:
+
 ```{bash}
 # in gateway/deployments/gateway
+
 docker-compose -f docker-compose.rpi.yml -f docker-compose.yml --env-file ../../.env down
 docker-compose -f docker-compose.rpi.yml -f docker-compose.yml --env-file ../../.env up -d
 ```
+
+or
+
+```{bash}
+# in gateway/deployments/gateway
+
+docker compose -f docker-compose.rpi.yml -f docker-compose.yml --env-file ../../.env down
+docker compose -f docker-compose.rpi.yml -f docker-compose.yml --env-file ../../.env up -d
+```
+will work.
 
 Congratulations! You're all set!
 READ THE [DEVELOPMENT PRINCIPLES](global_architecture/development_principles.md) FOR THIS PROJECT - ALL COMMITS NOT COMPLYING WILL BE DELETED IMMEDIATLY!

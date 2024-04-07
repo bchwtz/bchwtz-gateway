@@ -1,9 +1,9 @@
 # Useful tips
 ## Python environment
 ### Create python environment
-You can set up a local python environment by running the following commands.
+You can set up a local python environment by running the following command: [Source](https://docs.python.org/3/library/venv.html)
 ```{bash, eval=F}
-python3 -m venv_name /path/to/venv/folder
+python3 -m venv /path/to/venv/folder
 ```
   
 ### Activating local python environment
@@ -24,11 +24,22 @@ If you don't want to activate the environment yet still want to install a packag
 
 ## Gateway service (gateway.py)
 If you want to utilize the CLI via "gw" commands from the terminal, you need to have "gateway.py" running in order to access the tags and open connections.  
-To connect via python you have to shut down "gateway.py" first.
-```{bash}
-sudo apt update && sudo apt install docker.io docker-compose
-sudo usermod -aG docker pi
+To connect via python you have to shut down "gateway.py" first.  
+
+If your gateway crashes with an error like this  
+
+```{python}
+  File "/usr/lib/python3.11/asyncio/base_events.py", line 607, in run_forever
+    self._run_once()
+  File "/usr/lib/python3.11/asyncio/base_events.py", line 1884, in _run_once
+    event_list = self._selector.select(timeout)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/selectors.py", line 468, in select
+    fd_event_list = self._selector.poll(timeout, max_ev)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ```
+
+please try changing bleak versions (0.21.0 or 0.12.1 for older commits).
 
 ## Enable SSH for VSCode
 VSCode offers the extension "Remote-SSH" which allows you to connect and use VSCode remotely to edit the files on your Raspberry Pi. This is very useful and can easily be activated by simply installing the extension and using the new button on the bottom left of VSCode to connect to your remote device via
@@ -38,9 +49,13 @@ ssh username@RASPI-IP
 More information can be found [here](https://code.visualstudio.com/docs/remote/ssh-tutorial).
 ## MongoDB
 ### Accessing MongoDB docker container
-You can access the MongoDB docker container by running the following command:
+You can access the MongoDB docker container by running the following command (depending on commit):  
 ```{bash}
 docker exec -it gateway_mongo_1 bash
+```
+or
+```{bash}
+docker exec -it gateway-mongo-1 bash
 ```
 This will open a terminal in the docker container which allows you to get the correct login information for the MongoDB session (needed for python scripts, compare [here](./demo_mongodb_ref.md)).
 ```{bash}

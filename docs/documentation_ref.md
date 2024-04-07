@@ -40,7 +40,7 @@ Most changes will be quickloaded meaning that you do not have to run "serve" aga
 
 ## Editing documents
 You can edit a document by just opening it with a text editor of your choice (or RStudio), MkDocs expects valid markdown syntax.
-Whenever you save a document you can just reload the current page in your browser and the edits should be reflected immediately. If you have no open MkDocs session running, just start up a new one as shown above.
+Whenever you save a document it should be reflected immediately in your browser. If you have no open MkDocs session running, just start up a new one as shown above.
 
 ## Inserting your docstrings into the documentation
 MKDocs allows you to use your docstrings directly inside the markdown-files.

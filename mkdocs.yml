@@ -98,7 +98,6 @@ nav:
       - git_installation_on_raspberry.md
       - MKDocs: documentation_ref.md
       - Useful tips: useful_tips.md
-  - Practical guidelines: practical_guide.md
   - Current bugs: current_bugs.md
   - To Do:
     - todo_sensor.md

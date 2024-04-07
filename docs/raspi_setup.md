@@ -13,8 +13,11 @@ Documentation follows this video: https://www.youtube.com/watch?v=rGygESilg8w
 
 7. Install operating system and choose the Raspberry Pi OS (normally recommended).
 
-8. Choose your SD card as storage and click "WRITE".   
-9. After the process has finished boot up the Raspberry Pi with the SD-card.
+8. Choose your SD card as storage and click "WRITE".
+
+9. Edit the settings by setting the keyboard layout to your preferred language as well as adding a Wifi and changing username and password (both optional). You can also active SSH here, but we will do this in a later step anyway.
+
+10. After the process has finished boot up the Raspberry Pi with the SD-card.
 
 ## Enable SSH on Raspberry Pi
 Now there are two different methods to activate SSH and VNC for your Raspberry Pi, one using the terminal while the other uses the GUI.  
@@ -51,13 +54,5 @@ and afterwards enter your password. If you did not change it on Raspberry’s st
 ```{bash, eval=F}
 raspberry
 ```
-
-13. To clone the Gateway repository (https://github.com/bchwtz-fhswf/gateway) onto your pi, you need a SSH Key which is connected to your account. Generate it by following the instructions in https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent for Linux (you dont have to pass it to a key agent) and add it to your account by following the instructions in https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account 
-
-14. Clone the gateway repository to your raspberry by typing 
-```{bash, eval=F}
-git clone git@github.com:bchwtz-fhswf/gateway.git
-```
-into the PuTTY window connected to your raspberry. When asked, enter the SSH Key password you initiated while generating the key.
 
 READ THE [DEVELOPMENT PRINCIPLES](global_architecture/development_principles.md) FOR THIS PROJECT - ALL COMMITS NOT COMPLYING WILL BE DELETED IMMEDIATLY!

@@ -16,11 +16,11 @@ import argparse
 import sys
 import os
 
-def get_sequence_gap_indices(dict_keys,gap=1):
+def get_sequence_gap_indices(dict_keys:dict,gap:int=1):
     diffs = np.diff(list(dict_keys))
     return np.where(diffs > gap)[0]
 
-def get_sample_rate(dict_keys,min_key,df):
+def get_sample_rate(dict_keys,min_key:int,df: pd.DataFrame):
     gap_indices = get_sequence_gap_indices(dict_keys)
     sample_rate = 0
 
@@ -35,7 +35,7 @@ def get_sample_rate(dict_keys,min_key,df):
     return 1000/dt
 
 # taken from "advertisement" part of dataframe
-def get_logging_starttime(dict_keys,df):
+def get_logging_starttime(dict_keys,df: pd.DataFrame):
     gaps = get_sequence_gap_indices(dict_keys)
     print(gaps)
 
@@ -133,7 +133,7 @@ def main():
          
     modified_df_dict = pd.DataFrame.from_dict(d).T.to_dict("records")
 
-    # # Insert entries into the database
+    # Insert entries into the database
     collection.insert_many(modified_df_dict)
 
     print("data inserted into mongo db")

@@ -1,19 +1,25 @@
 # Practical Considerations
 
 ## Sensor settings
-This chapter is intended to give an overview about the 
-As the results of the ruuviTag sensor accelerometer were quite unreliable it was decided to use an iPhone instead, leading to clean sampling behavior and allowing to make empirical statements about the amplitudes and frequencies of acceleration components during walking, jogging, sprinting and doing squats by performing resampling and frequency analysis.    
-At the end there are also some recommendations for choosing settings dynamically on the ruuviTag.
+This chapter is intended to give an overview about the three main sensor settings , give some theoretical insight and show the impact different settings can have on the tracking of activities.  
+It is looked into the amplitudes and frequencies of acceleration components during walking, jogging, sprinting and doing squats at different sampling frequencies by recording in 100 Hz and then performing resampling and Fourier analysis. The goal here is to look at various sampling frequencies and find the limits in order to make informed choices for our own use case. The amplitudes are helpful in determining the needed measrurement range. At the end there are also some guidelines for choosing settings for different scenarios on the ruuviTag. 
+Due to problems with the ruuviTag firmware that could only be resolved late in the process, which lead to further problems of lags, gateway crashes etc., it was decided to use an iPhone app instead. This should make no difference as the findings are based on frequency and amplitude values alone and give some insight into the reconstruction process of signals.
+
+### Jupyter Notebook
+The findings in this post are based on the jupyter notebook _analyse_accel.ipynb_ (can be found in the _demos_ folder of the repository).  
+The notebook takes samples generated via the iPhone app "Physics Toolbox", resamples them and creates various plots of the timeseries, sections of activity. Additionally it creates distributions of sampled amplitudes and frequencies in order to allow for practical sensor setting considerations.  
+The _Physics Toolbox_ app samples at 100 Hz and uses $\frac{m}{s^2}$ as unit, while the LIS2DH12 sensor in the ruuviTag returns results in _g_, with $g=9.81 \frac{m}{s^2}$. These are recalculated in _g_ for better applicability to our case.
+
 ### Measurement range/scale
 The measurement range (scale) sets the maximum detectable acceleration for each axis, meaning that any values above the limit will get measured as maximum value. According to the [sensor datasheet](https://www.st.com/resource/en/datasheet/lis2dh12.pdf)(p.10) the possible values are 2g, 4g, 8g and 16g, where _g_ stands for G-forces, meaning an acceleration of 9.81 m/s².  
 The sensitivity (resolution) setting of the sensor impacts the amount of available quantization levels for the measurement. The sensor offers three different modes, _low-power_ (8-bit data output), _normal_ (10-bit data output) and _high resolution_ (12-bit data output), where 1 bit is used for the sign (direction) of the acceleration while the other bits are used for quantization. In low-power mode this would lead to $2^{8-1} = 128$ different levels, while the actual range of each of these steps can be calculated by the following formula:  
 
 \[S=\frac{M}{2^{bits - 1}}\]
 
-where _M_ is the measurement range (scale). From this formula it becomes clear that due to the limited amount of quantization levels there is a tradeoff between maximum acceleration and highest resolution, as a smaller measurement range will lead to increased sensitivity, meaning that more subtle changes in acceleration can be detected, at the disadvantage of hitting the acceleration limit earlier and losing any specific information for affected samples. A bigger scale on the other hand will have a higher maximum acceleration limit, but will be unable to pick up on smaller changes in acceleration in comparison to the former approach. All sensitivities for the different settings can be found in the [sensor datasheet](https://www.st.com/resource/en/datasheet/lis2dh12.pdf)(p.10), and even the worst possible resolution is still 192mg/digit (8-bit, 16g). Given the activities of walking, jogging and doing squats the vast majority of sampled data has values smaller than 2g (see below), none ever crosses the threshold of 4g. Using a range of 4g at 8-bit would result in a resolution of 32mg/digit.      
-It is important to note that changing the sensor output resolution impacts the bandwith $f_{max}$ (highest detectable frequency component without aliasing, more information below). The bandwith is behaving as expected (half of sampling rate) for 8-bit and 10-bit while it does go down to 1/9 of the sampling rate for 12-bit resolution, rendering this setting pointless for our case.[[sensor datasheet]](https://www.st.com/resource/en/datasheet/lis2dh12.pdf)(p.16)
+where _M_ is the measurement range (scale). From this formula it becomes clear that due to the limited amount of quantization levels there is a tradeoff between maximum acceleration and highest resolution, as a smaller measurement range will lead to increased sensitivity, meaning that more subtle changes in acceleration can be detected, at the disadvantage of hitting the acceleration limit earlier and losing any specific information for affected samples. A bigger scale on the other hand will have a higher maximum acceleration limit, but will be unable to pick up on smaller changes in acceleration in comparison to the former approach. All sensitivities for the different settings can be found in the [sensor datasheet](https://www.st.com/resource/en/datasheet/lis2dh12.pdf)(p.10), and even the worst possible resolution is still 192mg/digit (8-bit, 16g). Given the activities mentioned above the vast majority of sampled data has values smaller than 2g (see below), but for sprinting some crosses the threshold of 4g and even come close to 8g. Using a range of 4g at 8-bit would result in a resolution of 32mg/digit.  
+It is important to note that changing the sensor output resolution impacts the bandwith $f_{max}$ (highest detectable frequency component without aliasing, more information below). The bandwith is behaving as expected (half of sampling rate) for 8-bit and 10-bit while it does go down to 1/9 of the sampling rate for 12-bit resolution, rendering this setting pointless for our case.[[sensor datasheet]](https://www.st.com/resource/en/datasheet/lis2dh12.pdf)(p.16)  
 
-#### Findings
+#### Results
 In the pictures below can be seen that the three different activities result in similar amplitude distributions, but at different scales. For the accelerometer, where sprinting has the highest amplitudes (meaning highest acceleration), sometimes exceeding 6g, doing squats leads only to comparably low accelerations and a narrow spectrum.
 
 Amplitude distribution walking | Amplitude distribution jogging | Amplitude distribution sprinting
@@ -38,7 +44,12 @@ Amplitude distribution squats | Amplitude CFD squats
 --- | --- 
 ![](./imgs/activity/amplitude_hist_squat.png) | ![](./imgs/activity/amplitude_cfd_squat.png)
 
-These findings show that there are significant differences in the scale of accelerations when looking at different activities. The sensor settings for measurement range should therefore vary depending on the activity in order to find the best suitable tradeoff between range and sensitivity.
+These findings show that there are significant differences in the scale of accelerations when looking at different activities. The sensor settings for measurement range should therefore vary depending on the activity in order to find the best suitable tradeoff between range and sensitivity.  
+The following table gives an overview about the maximum measured acceleration during the different activities:  
+
+Desc | Walking | Jogging | Sprinting | Squat
+------ | ------ | ------ | ------ | ------
+Max acceleration (in g) | 1.126  | 4.416 | 7.342 | 0.501
 
 ### Sample Rate 
 #### Basics
@@ -49,9 +60,9 @@ The RuuviTag implementation allows for sampling rates of 1 Hz, 10 Hz, 25 Hz, 50 
 Every frequency above $\frac{f_{sample}}{2}$ will be reconstructed at lower frequencies (_aliasing_), leading to additional noise in these lower frequency domains as well as losing all the information components about the activity at these frequencies.  
 While sampling activities like walking, jogging and squats it could be seen that some of the largest frequency components for these might be close or above 5 Hz (see below).
 
-#### Experimentation results
+#### Experimentation Results
 In this section the findings of varying experiments regarding different sampling rates and their impacts on timeseriees reconstruction are presented.
-##### Findings for walking
+##### Results Walking
 Sampling freq: 1 Hz | Sampling freq: 2 Hz | Sampling freq: 5 Hz
 --- | --- | ---
 ![](./imgs/activity/timeseries_walking_example1.png) | ![](./imgs/activity/timeseries_walking_example2.png) | ![](./imgs/activity/timeseries_walking_example5.png)
@@ -72,7 +83,7 @@ The CFD suggests that the frequencies up to 10 Hz make up between 80-90 % of the
   
 ![spectrum_distribution](./imgs/activity/frequency_cfd_walking.png) 
 
-##### Findings for jogging
+##### Results Jogging
 Sampling freq: 1 Hz | Sampling freq: 5 Hz | Sampling freq: 10 Hz
 --- | --- | ---
 ![](./imgs/activity/timeseries_jogging_example1.png) | ![](./imgs/activity/timeseries_jogging_example5.png) | ![](./imgs/activity/timeseries_jogging_example10.png)
@@ -94,7 +105,7 @@ In the frequency spectrum it can be seen that there are quite distinct peaks at 
 ![spectrum_distribution](./imgs/activity/frequency_cfd_jogging.png)  
 
 
-##### Findings for sprinting
+##### Results Sprinting
 Sampling freq: 1 Hz | Sampling freq: 5 Hz | Sampling freq: 10 Hz
 --- | --- | ---
 ![](./imgs/activity/timeseries_sprinting_example1.png) | ![](./imgs/activity/timeseries_sprinting_example5.png) | ![](./imgs/activity/timeseries_sprinting_example10.png)
@@ -111,12 +122,12 @@ Spectrum narrow view | Spectrum wider view
 --- | ---
 ![](./imgs/activity/spectrum_all_sprinting_narrow.png) | ![](./imgs/activity/spectrum_all_sprinting_wide.png)
 
-The frequency peaks are around 1.5 Hz and 3 Hz, but there are also some spikes at higher frequencies. According to the CFD more then 80% of the energy is located in the frequencies below 10 Hz (dependent on axis).
+The frequency peaks are around 1.5 Hz and 3 Hz, but there are also some spikes at higher frequencies. According to the CFD more than 80% of the energy is located in the frequencies below 10 Hz (dependent on axis).
   
 ![spectrum_distribution](./imgs/activity/frequency_cfd_sprinting.png)
 
 
-##### Findings for squats
+##### Results Squats
 Sampling freq: 1 Hz | Sampling freq: 5 Hz | Sampling freq: 10 Hz
 --- | --- | ---
 ![](./imgs/activity/timeseries_squat_example1.png) | ![](./imgs/activity/timeseries_squat_example5.png) | ![](./imgs/activity/timeseries_squat_example10.png)
@@ -136,6 +147,13 @@ The most significant peaks are all below 1 Hz, making this spectrum look quite d
   
 ![spectrum_distribution](./imgs/activity/frequency_cfd_squat.png) 
 
+##### Results Summary
+The dominant frequencies for the different activities can be found in the following table:
+
+Desc | Walking | Jogging | Sprinting | Squat
+------ | ------ | ------ | ------ | ------
+Frequency (Hz) | 0.8, 1.8 | 1.1, 2.3 | 1.5, 3 | 0.25, 0.6, 0.8
+
 #### Synchronization
 Another factor is the possibility of synchronizing the acceleration sensor timeseries to the recorded video samples. The best case scenario here would be to have frequency of the acceleration sensor match the one of the video, or be a multiple of it, as this allows for better synchronization where the samples of both streams can be closer matched. This will of course not guarantee perfect synchronisation and no drift between the two data streams, but both should at least be quite close when compared to using non-multiple frequencies of one another. The latter sampling rates also come with the additional problem that, even given perfect start synchronisation between video- and acceleration stream and no time drift, they both can only ever record data at the exact same time when the cumulated sum of sampling operations for any of the devices is a common multiple of the two different frequencies.  
 As the videos are currently recorded with 30 Hz, we do not have the option for a perfectly matching frequency (or multiples of it). In this case a higher frequency should lead to better synchronisation possibilities due to the higher amount of samples.
@@ -151,7 +169,7 @@ The ruuviTag is run with a CR2477 battery, which according to [Panasonic](https:
 
 \[t = \frac{P}{W} = \frac{A_{battery} \cdot V \cdot h}{A_{accel} \cdot V} = \frac{A_{battery} \cdot h}{A_{accel}}\]
 
-This does of course not take into consideration the other components of the ruuviTag device but shows that the accelerometer power intake seems to be a neglectible factor when compared to the rest of the device. Nonetheless, as mentioned earlier, as the sensivity does not seem to play an important role in our intended application, the suggestion would be to always rather increase the sampling frequency than using energy for a higher resolution.
+This does of course not take into consideration the other components of the ruuviTag device but shows that the accelerometer power intake seems to be a neglectible factor when compared to the rest of the device.
 
 ### Recommendation
 This section summarizes the previous findings and tries to give a recommendation for sensor settings.  

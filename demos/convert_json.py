@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from scipy.signal import find_peaks
 import argparse
 
-def find_and_plot_peaks(df,startrange,endrange,plotpath,column="acc_z"):
+def find_and_plot_peaks(df: pd.DataFrame,startrange:int,endrange:int,plotpath:str,column:str="acc_z"):
     """
     Peakfinding is done with the help of the python package 'scipy' which has a wide range of signal processing tools. As
     a simple example the peak finding module (find_peaks()) is used to determine peaks in our data. Startrange and endrange can be used
