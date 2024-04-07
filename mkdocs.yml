@@ -12,7 +12,6 @@ plugins:
   - search
   - minify:
       minify_html: true
-  - enumerate-headings
   - autorefs
 
 markdown_extensions:
@@ -74,10 +73,6 @@ nav:
     - Additional Microservices:
       - CLI: go-services/cli_ref.md
       - Dumper: go-services/dumper_ref.md
-      - Go Library Packages:
-        - gateway-package: go-services/gateway_ref.md
-        - model-package: go-services/model_ref.md
-        - commandinterface-package: go-services/commandinterface_ref.md
     - Examples:
       - Demos: 
         - Overview: demos_overview.md
