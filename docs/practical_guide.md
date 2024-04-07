@@ -178,11 +178,7 @@ Taking a closer look at the measurement amplitudes has shown that there are sign
 
 ## Time Drift
 
-Measurements using RuuviTag *C7:22:C6:A1:0D:DA* have shown that the average time drift over one day is linear, with the RuuviTag time running ahead of the gateway time by 2.7 seconds. The drift increases linearly throughout the day.  
-
-Temperature effects were not considered. It can not be guaranteed that this observation is valid for other tags due to hardware differences.  
-
-More information about the data collection and analysis process can be found in the IPython notebook *analyze_timedrift.ipynb* and the associated elaboration.
+Measurements using RuuviTag *C7:22:C6:A1:0D:DA* have shown that the average time drift over one day is 2.7 seconds, with the RuuviTag time running ahead of the gateway time. The drift increases linearly throughout the day. Temperature effects were not considered. It can not be guaranteed that this observation is valid for other tags due to hardware differences. More information about the data collection and analysis process can be found in the IPython notebook *analyze_timedrift.ipynb* and the associated elaboration.
 
 ## Time Synchronisation 
 
