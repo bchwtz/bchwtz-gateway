@@ -1,5 +1,6 @@
 # How to use the gateway-cli
-
+The gateway must be running in order for the CLI commands to work (otherwise tags cannot be found).
+More information on when and how to start it can be found [here](./useful_tips.md).
 ## Basic command structure of the client
 The commandline interface (cli) is structured as expressive cli.
 ```{ bash }

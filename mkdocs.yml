@@ -12,6 +12,8 @@ plugins:
   - search
   - minify:
       minify_html: true
+  - enumerate-headings
+  - autorefs
 
 markdown_extensions:
   - pymdownx.superfences:
@@ -24,6 +26,10 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.arithmatex:
+      generic: true
   - admonition
   - abbr
   - attr_list
@@ -32,14 +38,27 @@ markdown_extensions:
   - meta
   - md_in_html
   - tables
-
+  - sane_lists
 
 nav:
   - Introduction: index.md
   - Getting Started:
-    - user_setup.md
-    - developer_setup.md
+    - Initial Setup:
+      - sensor_setup.md
+      - raspi_setup.md
+      - gateway_setup.md
     - go_cli.md
+    - JupyterHub.md
+    - PyCharm.md
+    - GettingStartedPackage.md
+  - Documentation:
+    - Sensor.md
+    - ExternalFlashIntegration.md
+    - Gateway.md
+    - Backend.md
+    - BLEGATTMessages.md
+    - MessageObjects.md
+    - practical_guide.md
   - Reference:
     - Gateway Library:
       - bluetooth-python-library/gateway_ref.md
@@ -55,10 +74,6 @@ nav:
     - Additional Microservices:
       - CLI: go-services/cli_ref.md
       - Dumper: go-services/dumper_ref.md
-      - Go Library Packages:
-        - gateway-package: go-services/gateway_ref.md
-        - model-package: go-services/model_ref.md
-        - commandinterface-package: go-services/commandinterface_ref.md
     - Examples:
       - Demos: 
         - Overview: demos_overview.md
@@ -66,6 +81,10 @@ nav:
         - Time Demo: current_time_demo_ref.md
         - Heartbeat Demo: get_set_heartbeat_ref.md
         - Acceleration Log Demo: demo_get_acc_log_ref.md
+        - Connect and use MongoDB: demo_mongodb_ref.md
+        - Convert acceleration JSON and find peaks: demo_convert_peak.md
+        - Change Config: demo_set_config_ref.md
+        - Get acceleration log: demo_acc_log_cli.md
       - Tests:
         - Test Documentation: bluetooth-python-library/test-documentation.md
         - Hub Tests: bluetooth-python-library/hub_test_ref.md
@@ -74,8 +93,27 @@ nav:
     - Further tutorials:
       - git_installation_on_raspberry.md
       - MKDocs: documentation_ref.md
+      - Useful tips: useful_tips.md
+  - Current bugs: current_bugs.md
+  - To Do:
+    - todo_sensor.md
+    - todo_gateway.md
+    - todo_backend.md
+  - Appendix:
+    - Contributors.md
+    - CommercialApplications.md
+    - Merging.md
+    - SystemInfo.md
+  - DontDo.md
+  - Do.md
+
 
 extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/bchwtz/
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
