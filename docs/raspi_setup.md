@@ -5,19 +5,19 @@ This chapter gives an overview on how to set up the raspberry pi from scratch.
 ## Raspberry Pi OS Install
 Documentation follows this video: https://www.youtube.com/watch?v=rGygESilg8w
 
-4. Take the SD-card of the Raspberry and put it in the card reader of your PC.
+1. Take the SD-card of the Raspberry and put it in the card reader of your PC.
 
-5. Go to https://www.raspberrypi.com/software/ and download the Raspberry Pi OS Imager if not yet installed.
+2. Go to https://www.raspberrypi.com/software/ and download the Raspberry Pi OS Imager if not yet installed.
 
-6. Open Raspberry Pi Imager.
+3. Open Raspberry Pi Imager.
 
-7. Install operating system and choose the Raspberry Pi OS (normally recommended).
+4. Install operating system and choose the Raspberry Pi OS (normally recommended).
 
-8. Choose your SD card as storage and click "WRITE".
+5. Choose your SD card as storage and click "WRITE".
 
-9. Edit the settings by setting the keyboard layout to your preferred language as well as adding a Wifi and changing username and password (both optional). You can also active SSH here, but we will do this in a later step anyway.
+6. Edit the settings by setting the keyboard layout to your preferred language as well as adding a Wifi and changing username and password (both optional). You can also active SSH here, but we will do this in a later step anyway.
 
-10. After the process has finished boot up the Raspberry Pi with the SD-card.
+7. After the process has finished boot up the Raspberry Pi with the SD-card.
 
 ## Enable SSH on Raspberry Pi
 Now there are two different methods to activate SSH and VNC for your Raspberry Pi, one using the terminal while the other uses the GUI.  

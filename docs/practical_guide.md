@@ -32,17 +32,9 @@ Amplitude distribution walking | Amplitude distribution jogging | Amplitude dist
 --- | --- | ---
 ![](./imgs/activity/amplitude_hist_walking.png) | ![](./imgs/activity/amplitude_hist_jogging.png) | ![](./imgs/activity/amplitude_hist_sprinting.png)
 
-The CFD look also quite similar but differ significantly when focussing on the range for the measurements. During sprinting peak values almost exceed 8g, while for jogging the highest values are around 4g, for walking around 1g.
+During sprinting peak values almost exceed 8g, while for jogging the highest values are around 4g, for walking around 1g. Below the distribution  of the amplitudes for doing squats are shown, it can be seen that the values are significantly smaller when compared to all running related activities (even walking), maxing out at around 0.5g.
 
-Amplitude CFD walking | Amplitude CFD jogging | Amplitude CFD sprinting
---- | --- | ---
-![](./imgs/activity/amplitude_cfd_walking.png) | ![](./imgs/activity/amplitude_cfd_jogging.png) | ![](./imgs/activity/amplitude_cfd_sprinting.png)
-
-Here the distribution and CFD of the amplitudes for doing squats are shown, it can be seen that the values are significantly smaller when compared to all running related activities (even walking), maxing out at around 0.5g.
-
-Amplitude distribution squats | Amplitude CFD squats
---- | --- 
-![](./imgs/activity/amplitude_hist_squat.png) | ![](./imgs/activity/amplitude_cfd_squat.png)
+![](./imgs/activity/amplitude_hist_squat.png) 
 
 These findings show that there are significant differences in the scale of accelerations when looking at different activities. The sensor settings for measurement range should therefore vary depending on the activity in order to find the best suitable tradeoff between range and sensitivity.  
 The following table gives an overview about the maximum measured acceleration during the different activities:  
@@ -79,7 +71,7 @@ Spectrum narrow view | Spectrum wider view
 ![](./imgs/activity/spectrum_all_walking_narrow.png) | ![](./imgs/activity/spectrum_all_walking_wide.png)
 
 Looking at the frequency spectrum it can be seen that there are distinct peaks at around 0.8 Hz, 1.8 Hz and even at 4.8 Hz which would result in aliasing when sampling at 5 Hz. Even a relatively slow activity like walking benefits from a sampling rate of at least 10 Hz.  
-The CFD suggests that the frequencies up to 10 Hz make up between 80-90 % of the energy of the spectrum.
+The CDF suggests that the frequencies up to 10 Hz make up between 80-90 % of the energy of the spectrum.
   
 ![spectrum_distribution](./imgs/activity/frequency_cfd_walking.png) 
 
@@ -100,7 +92,7 @@ Spectrum narrow view | Spectrum wider view
 --- | ---
 ![](./imgs/activity/spectrum_all_jogging_narrow.png) | ![](./imgs/activity/spectrum_all_jogging_wide.png)
 
-In the frequency spectrum it can be seen that there are quite distinct peaks at certain frequencies, where one of those is around 5 Hz, meaning that even a sampling frequency of 10 Hz might be too low to capture all the information given variation in jogging speed etc. The CFD shows that around 80% of the energy of the spectrum is located up to a frequency of 10 Hz.
+In the frequency spectrum it can be seen that there are quite distinct peaks at certain frequencies, where one of those is around 5 Hz, meaning that even a sampling frequency of 10 Hz might be too low to capture all the information given variation in jogging speed etc. The CDF shows that around 80% of the energy of the spectrum is located up to a frequency of 10 Hz.
   
 ![spectrum_distribution](./imgs/activity/frequency_cfd_jogging.png)  
 
@@ -122,7 +114,7 @@ Spectrum narrow view | Spectrum wider view
 --- | ---
 ![](./imgs/activity/spectrum_all_sprinting_narrow.png) | ![](./imgs/activity/spectrum_all_sprinting_wide.png)
 
-The frequency peaks are around 1.5 Hz and 3 Hz, but there are also some spikes at higher frequencies. According to the CFD more than 80% of the energy is located in the frequencies below 10 Hz (dependent on axis).
+The frequency peaks are around 1.5 Hz and 3 Hz, but there are also some spikes at higher frequencies. According to the CDF more than 80% of the energy is located in the frequencies below 10 Hz (dependent on axis).
   
 ![spectrum_distribution](./imgs/activity/frequency_cfd_sprinting.png)
 
@@ -156,7 +148,13 @@ Frequency (Hz) | 0.8, 1.8 | 1.1, 2.3 | 1.5, 3 | 0.25, 0.6, 0.8
 
 #### Synchronization
 Another factor is the possibility of synchronizing the acceleration sensor timeseries to the recorded video samples. The best case scenario here would be to have frequency of the acceleration sensor match the one of the video, or be a multiple of it, as this allows for better synchronization where the samples of both streams can be closer matched. This will of course not guarantee perfect synchronisation and no drift between the two data streams, but both should at least be quite close when compared to using non-multiple frequencies of one another. The latter sampling rates also come with the additional problem that, even given perfect start synchronisation between video- and acceleration stream and no time drift, they both can only ever record data at the exact same time when the cumulated sum of sampling operations for any of the devices is a common multiple of the two different frequencies.  
-As the videos are currently recorded with 30 Hz, we do not have the option for a perfectly matching frequency (or multiples of it). In this case a higher frequency should lead to better synchronisation possibilities due to the higher amount of samples.
+As the videos are currently recorded with 30 Hz, we do not have the option for a perfectly matching frequency (or multiples of it). In this case a higher frequency should lead to better synchronisation possibilities due to the higher amount of samples.  
+Synchronization could be performed by comparing zero-crossings of the data during activities as these mark turning points (from positive to negative acceleration or vice versa). Looking at walking or jogging for example, the zero-crossing from positive to negative values correlates with the farthest stretch of the hand/arm and should thus be easily markable.  
+Another option is an approach similar to "clapping" in audio synchronization in movie productions, generating a big peak that is easily able to be spotted on the signal. This can be done by generating strong accelerations into the same direction in quick succession as shown here
+
+![spectrum_distribution](./imgs/activity/sync.png) 
+
+and then also trying to sync to the zero-crossing.
 
 #### Memory constraints
 In the current iteration of the firmware and gateway software, the expected behaviour is that the acceleration log is written to the memory until it is filled up and then send as a JSON file to the hub device (in our case the Raspberry Pi). This leads to further considerations of memory constraints as memory becomes the limiting factor for the duration of the activity recording. Every doubling in sample rate would lead to a halving in runtime for the accelerometer.  
