@@ -132,7 +132,7 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: 3.x
-      - run: pip install mkdocs-material mkdocstrings[python] mkdocstrings[go] mkdocs-extra-sass-plugin "mkdocs-minify-plugin>=0.3" "mkdocs-redirects>=1.0" mike "jinja2==3.0.3"
+      - run: pip install mkdocs-material mkdocstrings[python] mkdocstrings[go] mkdocs-extra-sass-plugin "mkdocs-minify-plugin>=0.3" "mkdocs-redirects>=1.0" mike "jinja2==3.0.3" mkdocs-autorefs mkdocs-enumerate-headings-plugin
       - run: cd storage_and_control && ./generate_static_docs.sh
       - run: mkdocs build
       - name: Setup Pages
